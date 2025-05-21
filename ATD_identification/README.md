@@ -22,7 +22,3 @@ In the beggining of the file it says `with open("cyclesTensorflow.json") as f:`.
 
 ## Note:
 I am in the very beggining of working on my master thesis, so to achieve fast prototyping a lot of the code is generated using chatGPT. That is why I created the testProject2, to be able to verify that it is working as intended. And also, when applying this on big projects like e.g. tensorflow, some of the components are very thightly connected and there is therefore a ton of cycles. So to make the cycle_extractor not run forever I made it extract at most 500 cycles per strongly connected component (SCC). A SCC is a set of nodes where every node can reach every other node. I also made the cycle_extractor try to avoid including modules used for testing. So files that include "test" in their name is ignored. If you do not want this behaviour, you can simply comment it out in `parse_module_cycles.py` (see the function `is_test_node()`).
-
-
-## Extra:
-If you already have the depends output 
