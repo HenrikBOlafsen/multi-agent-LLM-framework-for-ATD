@@ -1,0 +1,923 @@
+{
+  "schemaVersion" : "1.0",
+  "name" : "..\\output\\result-modules-sdsm.json-file-sdsm",
+  "variables" : [ "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\calculateDistance.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\car.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py", "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py" ],
+  "cells" : [ {
+    "src" : 4,
+    "dest" : 10,
+    "values" : {
+      "Call" : 4.0,
+      "Import" : 1.0,
+      "Use" : 4.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 10
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.announceNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 11
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.announceNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 12
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.numberInfo",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 6
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.numberInfo",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 6
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 10
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 11
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 12
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    } ]
+  }, {
+    "src" : 1,
+    "dest" : 0,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.car.Car.get_total_distance_driven",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\car.py",
+        "type" : "function",
+        "lineNumber" : 19
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.calculateDistance.getTotalTravelDistance",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\calculateDistance.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\car.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\car.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\calculateDistance.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\calculateDistance.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    } ]
+  }, {
+    "src" : 3,
+    "dest" : 2,
+    "values" : {
+      "Call" : 2.0,
+      "Import" : 1.0,
+      "Use" : 2.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getCapitalOfCountry",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "function",
+        "lineNumber" : 21
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getCityCountryList",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 19
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getLanguageOfCountry",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "function",
+        "lineNumber" : 29
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getLanguageOfCity",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 22
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getCapitalOfCountry",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "function",
+        "lineNumber" : 21
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getLanguageOfCountry",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "function",
+        "lineNumber" : 29
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    } ]
+  }, {
+    "src" : 6,
+    "dest" : 1,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.moon.Moon.getMassAsAmountOfCars",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.car.getMassOfAverageCar",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\car.py",
+        "type" : "function",
+        "lineNumber" : 21
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\car.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\car.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    } ]
+  }, {
+    "src" : 9,
+    "dest" : 8,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textUpgrader.addDashesAboveAndBelowText",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "type" : "function",
+        "lineNumber" : 7
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textPadder.padTextTopBottom",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    } ]
+  }, {
+    "src" : 7,
+    "dest" : 10,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.numberModifiers.numberToSentence",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 25
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.announceNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    } ]
+  }, {
+    "src" : 10,
+    "dest" : 9,
+    "values" : {
+      "Call" : 2.0,
+      "Import" : 1.0,
+      "Use" : 2.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.announceNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 4
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textUpgrader.addDashesAboveAndBelowText",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "type" : "function",
+        "lineNumber" : 6
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.announceNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 4
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textUpgrader.addDashesToText",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.announceNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 4
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textWriter.announceNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textWriter.py",
+        "type" : "function",
+        "lineNumber" : 4
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textUpgrader.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    } ]
+  }, {
+    "src" : 0,
+    "dest" : 6,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0,
+      "Use" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.calculateDistance.distanceToPercentageOfDistanceToMoon",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\calculateDistance.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.moon.getCurentDistanceToTheMoon",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py",
+        "type" : "function",
+        "lineNumber" : 10
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\calculateDistance.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\calculateDistance.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.calculateDistance.distanceToPercentageOfDistanceToMoon",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\calculateDistance.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\moon.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    } ]
+  }, {
+    "src" : 2,
+    "dest" : 3,
+    "values" : {
+      "Call" : 2.0,
+      "Import" : 1.0,
+      "Use" : 4.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getCityInformation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 16
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getCountryPopulation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "function",
+        "lineNumber" : 17
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getLanguageOfCity",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 23
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getLanguageOfCountry",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "function",
+        "lineNumber" : 28
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getCityInformation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 16
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.countryPopulation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "var",
+        "lineNumber" : 4
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getCityInformation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 16
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getCityInformation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 17
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.countryPopulation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "var",
+        "lineNumber" : 4
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getLanguageOfCity",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 23
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    } ]
+  }, {
+    "src" : 4,
+    "dest" : 3,
+    "values" : {
+      "Call" : 2.0,
+      "Import" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 24
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getRandomCountry",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "function",
+        "lineNumber" : 14
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 25
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getCountryInformation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "function",
+        "lineNumber" : 25
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    } ]
+  }, {
+    "src" : 4,
+    "dest" : 2,
+    "values" : {
+      "Call" : 2.0,
+      "Import" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 20
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getRandomCity",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 7
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 22
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getCityInformation",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    } ]
+  }, {
+    "src" : 8,
+    "dest" : 7,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0,
+      "Use" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textPadder.getpaddedNumberList",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.numberModifiers.makeNumberWithProperties",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 11
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textPadder.getpaddedNumberList",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    } ]
+  }, {
+    "src" : 4,
+    "dest" : 7,
+    "values" : {
+      "Call" : 4.0,
+      "Import" : 1.0,
+      "Use" : 4.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.numberModifiers.makeNumberMultipleOf5",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.numberModifiers.randomlyIncreaseNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 5
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 9
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.numberModifiers.makeNumberMultipleOf5",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 9
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.numberModifiers.randomlyIncreaseNumber",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 5
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 9
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 9
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\numberModifiers.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Use"
+    } ]
+  }, {
+    "src" : 4,
+    "dest" : 8,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.main.mainFunction",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "function",
+        "lineNumber" : 16
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.textPadder.getpaddedNumberList",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "type" : "function",
+        "lineNumber" : 12
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\main.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "dest" : {
+        "object" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "file" : "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\textPadder.py",
+        "type" : "file",
+        "lineNumber" : 0
+      },
+      "type" : "Import"
+    } ]
+  } ]
+}

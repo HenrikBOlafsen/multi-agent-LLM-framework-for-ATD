@@ -1,0 +1,80 @@
+{
+  "cycles": [
+    {
+      "id": "func_cycle_0",
+      "summary": "Function-level cycle between 2 functions",
+      "nodes": [
+        {
+          "id": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.miniCycle.aaa)",
+          "type": "function",
+          "name": "aaa",
+          "file_path": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py",
+          "span": {
+            "start_line": 1,
+            "end_line": 2
+          }
+        },
+        {
+          "id": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.miniCycle.bbb)",
+          "type": "function",
+          "name": "bbb",
+          "file_path": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py",
+          "span": {
+            "start_line": 5,
+            "end_line": 6
+          }
+        }
+      ],
+      "edges": [
+        {
+          "source": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.miniCycle.aaa)",
+          "target": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.miniCycle.bbb)",
+          "relation": "function_call"
+        },
+        {
+          "source": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.miniCycle.bbb)",
+          "target": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.miniCycle.aaa)",
+          "relation": "function_call"
+        }
+      ]
+    },
+    {
+      "id": "func_cycle_1",
+      "summary": "Function-level cycle between 2 functions",
+      "nodes": [
+        {
+          "id": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getLanguageOfCity)",
+          "type": "function",
+          "name": "getLanguageOfCity",
+          "file_path": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py",
+          "span": {
+            "start_line": 22,
+            "end_line": 23
+          }
+        },
+        {
+          "id": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getLanguageOfCountry)",
+          "type": "function",
+          "name": "getLanguageOfCountry",
+          "file_path": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py",
+          "span": {
+            "start_line": 29,
+            "end_line": 30
+          }
+        }
+      ],
+      "edges": [
+        {
+          "source": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getLanguageOfCity)",
+          "target": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getLanguageOfCountry)",
+          "relation": "function_call"
+        },
+        {
+          "source": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\country.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.country.getLanguageOfCountry)",
+          "target": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2\\city.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master_clean\\testProject2.city.getLanguageOfCity)",
+          "relation": "function_call"
+        }
+      ]
+    }
+  ]
+}
