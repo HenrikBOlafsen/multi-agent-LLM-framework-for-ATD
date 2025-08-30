@@ -1,0 +1,12 @@
+# Ignore all subfolders of myfolder
+projects_to_analyze/*/
+# …except this one
+!projects_to_analyze/customTestProject/
+
+.git
+.venv/
+__pycache__/
+*.pyc
+ATD_identification/output/*
+.vscode/
+*.log

@@ -1,7 +1,7 @@
 @echo off
 setlocal
 
-:: run with: .\analyze_cycles.bat ..\testProject2\
+:: run with: .\analyze_cycles.bat ..\..\projects_to_analyze\customTestProject\
 
 REM === CONFIG ===
 set DEPENDS_JAR=..\depends\depends.jar

@@ -1,0 +1,664 @@
+{
+  "schemaVersion" : "1.0",
+  "name" : "../../output/result-functions-sdsm.json-method-sdsm",
+  "variables" : [ "/workspace/projects_to_analyze/customTestProject/calculateDistance.py(/workspace/projects_to_analyze/customTestProject.calculateDistance.distanceToPercentageOfDistanceToMoon)", "/workspace/projects_to_analyze/customTestProject/calculateDistance.py(/workspace/projects_to_analyze/customTestProject.calculateDistance.getTotalTravelDistance)", "/workspace/projects_to_analyze/customTestProject/car.py(/workspace/projects_to_analyze/customTestProject.car.Car.__init__)", "/workspace/projects_to_analyze/customTestProject/car.py(/workspace/projects_to_analyze/customTestProject.car.Car.get_car_name)", "/workspace/projects_to_analyze/customTestProject/car.py(/workspace/projects_to_analyze/customTestProject.car.Car.get_total_distance_driven)", "/workspace/projects_to_analyze/customTestProject/car.py(/workspace/projects_to_analyze/customTestProject.car.Car.get_weight)", "/workspace/projects_to_analyze/customTestProject/car.py(/workspace/projects_to_analyze/customTestProject.car.Car.register_trip)", "/workspace/projects_to_analyze/customTestProject/car.py(/workspace/projects_to_analyze/customTestProject.car.getMassOfAverageCar)", "/workspace/projects_to_analyze/customTestProject/city.py(/workspace/projects_to_analyze/customTestProject.city.getCityCountry)", "/workspace/projects_to_analyze/customTestProject/city.py(/workspace/projects_to_analyze/customTestProject.city.getCityCountryList)", "/workspace/projects_to_analyze/customTestProject/city.py(/workspace/projects_to_analyze/customTestProject.city.getCityInformation)", "/workspace/projects_to_analyze/customTestProject/city.py(/workspace/projects_to_analyze/customTestProject.city.getLanguageOfCity)", "/workspace/projects_to_analyze/customTestProject/city.py(/workspace/projects_to_analyze/customTestProject.city.getRandomCity)", "/workspace/projects_to_analyze/customTestProject/country.py(/workspace/projects_to_analyze/customTestProject.country.getCapitalOfCountry)", "/workspace/projects_to_analyze/customTestProject/country.py(/workspace/projects_to_analyze/customTestProject.country.getCountryInformation)", "/workspace/projects_to_analyze/customTestProject/country.py(/workspace/projects_to_analyze/customTestProject.country.getCountryPopulation)", "/workspace/projects_to_analyze/customTestProject/country.py(/workspace/projects_to_analyze/customTestProject.country.getLanguageOfCountry)", "/workspace/projects_to_analyze/customTestProject/country.py(/workspace/projects_to_analyze/customTestProject.country.getRandomCountry)", "/workspace/projects_to_analyze/customTestProject/main.py(/workspace/projects_to_analyze/customTestProject.main.mainFunction)", "/workspace/projects_to_analyze/customTestProject/miniCycle.py(/workspace/projects_to_analyze/customTestProject.miniCycle.aaa)", "/workspace/projects_to_analyze/customTestProject/miniCycle.py(/workspace/projects_to_analyze/customTestProject.miniCycle.bbb)", "/workspace/projects_to_analyze/customTestProject/moon.py(/workspace/projects_to_analyze/customTestProject.moon.Moon.__init__)", "/workspace/projects_to_analyze/customTestProject/moon.py(/workspace/projects_to_analyze/customTestProject.moon.Moon.getMassAsAmountOfCars)", "/workspace/projects_to_analyze/customTestProject/moon.py(/workspace/projects_to_analyze/customTestProject.moon.getCurentDistanceToTheMoon)", "/workspace/projects_to_analyze/customTestProject/moon.py(/workspace/projects_to_analyze/customTestProject.moon.getMassOfTheMoon)", "/workspace/projects_to_analyze/customTestProject/numberModifiers.py(/workspace/projects_to_analyze/customTestProject.numberModifiers.makeNumberMultipleOf5)", "/workspace/projects_to_analyze/customTestProject/numberModifiers.py(/workspace/projects_to_analyze/customTestProject.numberModifiers.makeNumberWithProperties)", "/workspace/projects_to_analyze/customTestProject/numberModifiers.py(/workspace/projects_to_analyze/customTestProject.numberModifiers.numberToSentence)", "/workspace/projects_to_analyze/customTestProject/numberModifiers.py(/workspace/projects_to_analyze/customTestProject.numberModifiers.randomlyIncreaseNumber)", "/workspace/projects_to_analyze/customTestProject/textPadder.py(/workspace/projects_to_analyze/customTestProject.textPadder.getpaddedNumberList)", "/workspace/projects_to_analyze/customTestProject/textPadder.py(/workspace/projects_to_analyze/customTestProject.textPadder.padList)", "/workspace/projects_to_analyze/customTestProject/textPadder.py(/workspace/projects_to_analyze/customTestProject.textPadder.padTextTopBottom)", "/workspace/projects_to_analyze/customTestProject/textUpgrader.py(/workspace/projects_to_analyze/customTestProject.textUpgrader.addDashesAboveAndBelowText)", "/workspace/projects_to_analyze/customTestProject/textUpgrader.py(/workspace/projects_to_analyze/customTestProject.textUpgrader.addDashesToText)", "/workspace/projects_to_analyze/customTestProject/textWriter.py(/workspace/projects_to_analyze/customTestProject.textWriter.announceNumber)", "/workspace/projects_to_analyze/customTestProject/textWriter.py(/workspace/projects_to_analyze/customTestProject.textWriter.numberInfo)" ],
+  "cells" : [ {
+    "src" : 32,
+    "dest" : 31,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textUpgrader.addDashesAboveAndBelowText",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textUpgrader.py",
+        "type" : "function",
+        "lineNumber" : 7
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textPadder.padTextTopBottom",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textPadder.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 1,
+    "dest" : 0,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.calculateDistance.getTotalTravelDistance",
+        "file" : "/workspace/projects_to_analyze/customTestProject/calculateDistance.py",
+        "type" : "function",
+        "lineNumber" : 5
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.calculateDistance.distanceToPercentageOfDistanceToMoon",
+        "file" : "/workspace/projects_to_analyze/customTestProject/calculateDistance.py",
+        "type" : "function",
+        "lineNumber" : 7
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 10,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 22
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getCityInformation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 12,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 20
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getRandomCity",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 7
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 34,
+    "values" : {
+      "Call" : 2.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 10
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textWriter.announceNumber",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textWriter.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 11
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textWriter.announceNumber",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textWriter.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 35,
+    "values" : {
+      "Call" : 2.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 12
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textWriter.numberInfo",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textWriter.py",
+        "type" : "function",
+        "lineNumber" : 6
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textWriter.numberInfo",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textWriter.py",
+        "type" : "function",
+        "lineNumber" : 6
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 10,
+    "dest" : 15,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getCityInformation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 16
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getCountryPopulation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 17
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 14,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 25
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getCountryInformation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 25
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 17,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 24
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getRandomCountry",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 14
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 19,
+    "dest" : 20,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.miniCycle.aaa",
+        "file" : "/workspace/projects_to_analyze/customTestProject/miniCycle.py",
+        "type" : "function",
+        "lineNumber" : 2
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.miniCycle.bbb",
+        "file" : "/workspace/projects_to_analyze/customTestProject/miniCycle.py",
+        "type" : "function",
+        "lineNumber" : 4
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 34,
+    "dest" : 33,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textWriter.announceNumber",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textWriter.py",
+        "type" : "function",
+        "lineNumber" : 4
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textUpgrader.addDashesToText",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textUpgrader.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 34,
+    "dest" : 32,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textWriter.announceNumber",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textWriter.py",
+        "type" : "function",
+        "lineNumber" : 4
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textUpgrader.addDashesAboveAndBelowText",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textUpgrader.py",
+        "type" : "function",
+        "lineNumber" : 6
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 0,
+    "dest" : 23,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.calculateDistance.distanceToPercentageOfDistanceToMoon",
+        "file" : "/workspace/projects_to_analyze/customTestProject/calculateDistance.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.moon.getCurentDistanceToTheMoon",
+        "file" : "/workspace/projects_to_analyze/customTestProject/moon.py",
+        "type" : "function",
+        "lineNumber" : 10
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 11,
+    "dest" : 16,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getLanguageOfCity",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 23
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getLanguageOfCountry",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 28
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 29,
+    "dest" : 30,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textPadder.getpaddedNumberList",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textPadder.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textPadder.padList",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textPadder.py",
+        "type" : "function",
+        "lineNumber" : 6
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 14,
+    "dest" : 13,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getCountryInformation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 26
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getCapitalOfCountry",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 20
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 14,
+    "dest" : 15,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getCountryInformation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 26
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getCountryPopulation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 17
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 20,
+    "dest" : 19,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.miniCycle.bbb",
+        "file" : "/workspace/projects_to_analyze/customTestProject/miniCycle.py",
+        "type" : "function",
+        "lineNumber" : 5
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.miniCycle.aaa",
+        "file" : "/workspace/projects_to_analyze/customTestProject/miniCycle.py",
+        "type" : "function",
+        "lineNumber" : 1
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 25,
+    "values" : {
+      "Call" : 2.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.numberModifiers.makeNumberMultipleOf5",
+        "file" : "/workspace/projects_to_analyze/customTestProject/numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 9
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.numberModifiers.makeNumberMultipleOf5",
+        "file" : "/workspace/projects_to_analyze/customTestProject/numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 28,
+    "values" : {
+      "Call" : 2.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.numberModifiers.randomlyIncreaseNumber",
+        "file" : "/workspace/projects_to_analyze/customTestProject/numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 5
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 9
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.numberModifiers.randomlyIncreaseNumber",
+        "file" : "/workspace/projects_to_analyze/customTestProject/numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 5
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 10,
+    "dest" : 8,
+    "values" : {
+      "Call" : 2.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getCityInformation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 15
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getCityCountry",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 10
+      },
+      "type" : "Call"
+    }, {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getCityInformation",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 17
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getCityCountry",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 10
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 18,
+    "dest" : 29,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.main.mainFunction",
+        "file" : "/workspace/projects_to_analyze/customTestProject/main.py",
+        "type" : "function",
+        "lineNumber" : 16
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textPadder.getpaddedNumberList",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textPadder.py",
+        "type" : "function",
+        "lineNumber" : 12
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 29,
+    "dest" : 26,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textPadder.getpaddedNumberList",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textPadder.py",
+        "type" : "function",
+        "lineNumber" : 13
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.numberModifiers.makeNumberWithProperties",
+        "file" : "/workspace/projects_to_analyze/customTestProject/numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 11
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 22,
+    "dest" : 7,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.moon.Moon.getMassAsAmountOfCars",
+        "file" : "/workspace/projects_to_analyze/customTestProject/moon.py",
+        "type" : "function",
+        "lineNumber" : 8
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.car.getMassOfAverageCar",
+        "file" : "/workspace/projects_to_analyze/customTestProject/car.py",
+        "type" : "function",
+        "lineNumber" : 21
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 4,
+    "dest" : 1,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.car.Car.get_total_distance_driven",
+        "file" : "/workspace/projects_to_analyze/customTestProject/car.py",
+        "type" : "function",
+        "lineNumber" : 19
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.calculateDistance.getTotalTravelDistance",
+        "file" : "/workspace/projects_to_analyze/customTestProject/calculateDistance.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 27,
+    "dest" : 34,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.numberModifiers.numberToSentence",
+        "file" : "/workspace/projects_to_analyze/customTestProject/numberModifiers.py",
+        "type" : "function",
+        "lineNumber" : 25
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.textWriter.announceNumber",
+        "file" : "/workspace/projects_to_analyze/customTestProject/textWriter.py",
+        "type" : "function",
+        "lineNumber" : 3
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 13,
+    "dest" : 9,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getCapitalOfCountry",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 21
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getCityCountryList",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 19
+      },
+      "type" : "Call"
+    } ]
+  }, {
+    "src" : 16,
+    "dest" : 11,
+    "values" : {
+      "Call" : 1.0
+    },
+    "details" : [ {
+      "src" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.country.getLanguageOfCountry",
+        "file" : "/workspace/projects_to_analyze/customTestProject/country.py",
+        "type" : "function",
+        "lineNumber" : 29
+      },
+      "dest" : {
+        "object" : "/workspace/projects_to_analyze/customTestProject.city.getLanguageOfCity",
+        "file" : "/workspace/projects_to_analyze/customTestProject/city.py",
+        "type" : "function",
+        "lineNumber" : 22
+      },
+      "type" : "Call"
+    } ]
+  } ]
+}
