@@ -1,121 +1,326 @@
+# parse_module_cycles.py
 import json
 import os
 import sys
-import heapq
+import time
+from collections import deque
 import networkx as nx
 
-def load_sdsm_module_json(path):
-    with open(path, "r") as f:
-        data = json.load(f)
+# ======================
+# Tunables
+# ======================
 
-    modules = data["variables"]
-    edges = []
+# Keep up to K cycles per SCC for LLM/refactoring context
+K_CYCLES_PER_SCC = 5
 
-    for cell in data.get("cells", []):
-        src_idx = cell["src"]
-        dst_idx = cell["dest"]
-        src_full_path = modules[src_idx]
-        dst_full_path = modules[dst_idx]
+# Budgets (tune if needed)
+TIME_BUDGET_PER_SCC_SEC = 5.0      # total wall-clock per SCC (Johnson + BFS combined)
+MAX_CYCLES_ENUM = 2000             # cap on Johnson enumeration
+BFS_MAX_EXPANSIONS = 100_000       # per-edge BFS expansions
 
-        src_module = os.path.splitext(os.path.basename(src_full_path))[0]
-        dst_module = os.path.splitext(os.path.basename(dst_full_path))[0]
+# Johnson only on "small" SCCs
+MAX_SCC_NODES_FOR_JOHNSON = 200
+MAX_SCC_EDGES_FOR_JOHNSON = 2000
 
-        # Skip if either module is test-related
-        if is_test_node(src_module) or is_test_node(dst_module):
-            continue
+# De-dup policy: treat a cycle and its reverse as the same (good for refactoring context)
+DEDUP_IGNORE_DIRECTION = True
 
-        edges.append((src_module, dst_module))
+# Skip modules that look like tests
+SKIP_TESTS = True
 
-    return modules, edges
 
-def is_test_node(name):
+# ======================
+# Helpers
+# ======================
+
+def is_test_node(name: str) -> bool:
+    if not SKIP_TESTS:
+        return False
     lowered = name.lower()
     return "test" in lowered or "tests" in lowered
 
-def find_cycles_by_scc(edges, min_len=2, max_cycles=500, max_cycles_per_scc=5000):
-    G = nx.DiGraph()
-    G.add_edges_from(edges)
 
-    print(f"Graph loaded: {len(G.nodes)} modules, {len(G.edges)} edges")
+def _normalize_var_name(raw: str) -> str:
+    """
+    Depends 'variables' entries can be full paths, sometimes with "(...)" suffixes.
+    Normalize to a module key: basename without extension; drop any '(... )' suffix.
+    """
+    # Drop trailing "(...)" suffix if present
+    if "(" in raw and raw.endswith(")"):
+        raw = raw.split("(")[-1][:-1]
+    base = os.path.basename(raw)
+    mod, _ = os.path.splitext(base)
+    return mod
 
-    all_cycles = []
-    sccs = sorted(nx.strongly_connected_components(G), key=len, reverse=True)
 
-    for i, scc in enumerate(sccs):
-        if len(scc) <= 1:
+def load_module_edges_from_sdsm(path: str):
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    variables = data.get("variables", [])
+    edges = []
+    nodes = set()
+
+    for cell in data.get("cells", []):
+        src_idx = cell.get("src")
+        dst_idx = cell.get("dest")
+        if src_idx is None or dst_idx is None:
+            continue
+        try:
+            src_full = variables[src_idx]
+            dst_full = variables[dst_idx]
+        except (IndexError, TypeError):
             continue
 
-        print(f"\nProcessing SCC {i}: {len(scc)} nodes")
-        subgraph = G.subgraph(scc).copy()
-        cycle_heap = []
-        found = 0
+        src_mod = _normalize_var_name(src_full)
+        dst_mod = _normalize_var_name(dst_full)
 
-        for cycle in nx.simple_cycles(subgraph):
-            if len(cycle) < min_len:
-                continue
-            heapq.heappush(cycle_heap, (-len(cycle), cycle))
-            if len(cycle_heap) > max_cycles:
-                heapq.heappop(cycle_heap)
-            found += 1
-            if found % 100 == 0:
-                print(f"...{found} cycles seen (heap size: {len(cycle_heap)})")
-            if found >= max_cycles_per_scc:
-                print(f"Reached max cycles for SCC ({max_cycles_per_scc}), stopping search")
+        if is_test_node(src_mod) or is_test_node(dst_mod):
+            continue
+
+        if src_mod == "" or dst_mod == "":
+            continue
+
+        nodes.add(src_mod)
+        nodes.add(dst_mod)
+        edges.append((src_mod, dst_mod))
+
+    return nodes, edges
+
+
+def canonicalize_cycle(cyc):
+    """
+    Canonicalize a cycle for deduplication:
+      - rotate so lexicographically smallest node is first
+      - optionally, compare forward vs reversed rotations and pick lexicographically smaller
+    Return a tuple.
+    """
+    if not cyc:
+        return tuple()
+    n = len(cyc)
+
+    # forward rotation
+    fmin = min(range(n), key=lambda i: cyc[i])
+    fwd = tuple(cyc[fmin:] + cyc[:fmin])
+
+    if not DEDUP_IGNORE_DIRECTION:
+        return fwd
+
+    # reverse rotation
+    rc = list(reversed(cyc))
+    rmin = min(range(n), key=lambda i: rc[i])
+    rev = tuple(rc[rmin:] + rc[:rmin])
+
+    return fwd if fwd <= rev else rev
+
+
+# ======================
+# Cycle finders (budgeted)
+# ======================
+
+def shortest_cycle_through_edge_bfs(Gscc: nx.DiGraph, u, v, max_expansions=BFS_MAX_EXPANSIONS):
+    """
+    Find a shortest directed cycle that includes edge (u->v) by searching
+    for a shortest path v -> u (budgeted by expansion count).
+    Returns canonicalized node list or None.
+    """
+    if u not in Gscc or v not in Gscc or not Gscc.has_edge(u, v):
+        return None
+
+    q = deque([(v, [v])])
+    visited = {v}
+    expansions = 0
+
+    while q:
+        node, path = q.popleft()
+        expansions += 1
+        if expansions > max_expansions:
+            return None
+        for nxt in Gscc.successors(node):
+            if nxt == u:
+                cyc = [u] + path  # u -> ... -> v -> u
+                return list(canonicalize_cycle(cyc))
+            if nxt not in visited:
+                visited.add(nxt)
+                q.append((nxt, path + [nxt]))
+    return None
+
+
+def cycles_via_johnson(Gscc: nx.DiGraph, k: int, time_budget: float, max_enum: int, seen: set):
+    """
+    Try Johnson's algorithm (nx.simple_cycles) with time and count budgets.
+    Append up to k new (deduped) cycles into 'picked'.
+    Returns (picked, elapsed_seconds).
+    """
+    start = time.time()
+    picked = []
+    count = 0
+    try:
+        for cyc in nx.simple_cycles(Gscc):
+            count += 1
+            if count > max_enum or (time.time() - start) > time_budget:
                 break
+            key = canonicalize_cycle(cyc)
+            if key in seen:
+                continue
+            seen.add(key)
+            picked.append(list(key))
+            if len(picked) >= k:
+                break
+    except Exception:
+        # Large SCCs can make Johnson heavy; ignore and fall back
+        pass
+    return picked, time.time() - start
 
-        selected_cycles = [cycle for _, cycle in sorted(cycle_heap)]
-        print(f"  -> Kept {len(selected_cycles)} longest cycles")
-        all_cycles.extend(selected_cycles)
 
-    return G, all_cycles
+def cycles_via_bfs_edges(Gscc: nx.DiGraph, k: int, time_budget: float, seen: set):
+    """
+    Edge-scanning BFS fallback: for each edge (u->v), try to form a shortest cycle
+    that includes that edge, within the remaining time budget. Dedups via 'seen'.
+    """
+    start = time.time()
+    picked = []
+    for (u, v) in Gscc.edges():
+        if (time.time() - start) > time_budget:
+            break
+        cyc = shortest_cycle_through_edge_bfs(Gscc, u, v)
+        if not cyc:
+            continue
+        key = canonicalize_cycle(cyc)
+        if key in seen:
+            continue
+        seen.add(key)
+        picked.append(list(key))
+        if len(picked) >= k:
+            break
+    return picked
 
-def format_module_cycles_json(cycles, G):
-    output = {"cycles": []}
 
-    for i, cycle in enumerate(cycles):
+def any_directed_cycle_nodes(Gscc: nx.DiGraph, seen: set):
+    """
+    Final fallback: return *some* directed cycle (not necessarily shortest).
+    Uses networkx.find_cycle; guaranteed to find one in a cyclic SCC.
+    Returns canonicalized node list or None if somehow not found.
+    """
+    try:
+        cyc_edges = nx.find_cycle(Gscc, orientation='original')
+        # cyc_edges is a list of (u, v, direction). Reconstruct node order.
         nodes = []
-        edges = []
+        for i, (u, v, _dir) in enumerate(cyc_edges):
+            if i == 0:
+                nodes.append(u)
+            nodes.append(v)
+        if nodes and nodes[0] == nodes[-1]:
+            nodes = nodes[:-1]
+        key = canonicalize_cycle(nodes)
+        if key in seen:
+            return None
+        seen.add(key)
+        return list(key)
+    except nx.NetworkXNoCycle:
+        return None
 
-        for module in cycle:
-            nodes.append({
-                "id": module,
-                "type": "module",
-                "name": module
-            })
 
-        for idx in range(len(cycle)):
-            src = cycle[idx]
-            tgt = cycle[(idx + 1) % len(cycle)]
-            if G.has_edge(src, tgt):
-                edges.append({
-                    "source": src,
-                    "target": tgt,
-                    "relation": "module_dep"
-                })
+# ======================
+# Orchestration
+# ======================
 
-        output["cycles"].append({
-            "id": f"mod_cycle_{i}",
-            "summary": f"Module-level cycle between {len(cycle)} modules",
+def extract_representative_cycles(Gscc: nx.DiGraph, k=K_CYCLES_PER_SCC, time_budget=TIME_BUDGET_PER_SCC_SEC):
+    """
+    For each SCC:
+      1) If SCC is small, try Johnson with a partial, budgeted scan (good at short cycles).
+      2) Top up via BFS-over-edges within the remaining time.
+      3) If still empty or budgets exhausted, return at least ONE cycle via find_cycle().
+    Returns up to k cycles (deduped, canonicalized). Prefers shorter cycles overall.
+    """
+    n, m = Gscc.number_of_nodes(), Gscc.number_of_edges()
+    remaining = float(time_budget)
+    seen = set()
+    collected = []
+
+    # Johnson on small SCCs
+    if n <= MAX_SCC_NODES_FOR_JOHNSON and m <= MAX_SCC_EDGES_FOR_JOHNSON and remaining > 0.0:
+        got, elapsed = cycles_via_johnson(Gscc, k, remaining, MAX_CYCLES_ENUM, seen)
+        collected.extend(got)
+        remaining = max(0.0, remaining - elapsed)
+
+    # BFS fallback (or top-up)
+    if len(collected) < k and remaining > 0.0:
+        topup = cycles_via_bfs_edges(Gscc, k - len(collected), remaining, seen)
+        collected.extend(topup)
+
+    # Final safety net: ensure at least one cycle
+    if not collected:
+        any_cyc = any_directed_cycle_nodes(Gscc, seen)
+        if any_cyc:
+            collected.append(any_cyc)
+
+    # Prefer shorter cycles (and deterministic order)
+    collected.sort(key=lambda c: (len(c), tuple(c)))
+    return collected[:k]
+
+
+def build_output(G: nx.DiGraph, sccs_with_cycles):
+    out = {"sccs": []}
+    for idx, (scc_nodes, cycles) in enumerate(sccs_with_cycles):
+        sub = G.subgraph(scc_nodes).copy()
+        nodes = [{"id": n, "type": "module", "name": n} for n in sorted(sub.nodes())]
+        edges = [{"source": u, "target": v, "relation": "module_dep"} for u, v in sub.edges()]
+        out["sccs"].append({
+            "id": f"scc_{idx}",
+            "size": sub.number_of_nodes(),
+            "edge_count": sub.number_of_edges(),
             "nodes": nodes,
             "edges": edges,
-            "definitions": []
+            "representative_cycles": [
+                {
+                    "id": f"scc_{idx}_cycle_{j}",
+                    "length": len(cyc),
+                    "nodes": cyc,
+                    "edges": [
+                        {"source": cyc[t], "target": cyc[(t + 1) % len(cyc)], "relation": "module_dep"}
+                        for t in range(len(cyc))
+                    ],
+                    "summary": f"Representative cycle of length {len(cyc)}"
+                }
+                for j, cyc in enumerate(cycles)
+            ]
         })
+    return out
 
-    return output
 
-def run_pipeline(input_path, output_path):
-    _, edges = load_sdsm_module_json(input_path)
-    G, cycles = find_cycles_by_scc(edges)
-    result = format_module_cycles_json(cycles, G)
+def run_pipeline(sdsm_path: str, output_path: str):
+    nodes, edges = load_module_edges_from_sdsm(sdsm_path)
+    G = nx.DiGraph()
+    G.add_nodes_from(nodes)
+    G.add_edges_from(edges)
+    print(f"Module graph: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 
-    with open(output_path, "w") as f:
+    # Nontrivial SCCs = architectural smell instances
+    sccs = [s for s in nx.strongly_connected_components(G) if len(s) > 1]
+    sccs = sorted(sccs, key=len, reverse=True)
+    print(f"Found {len(sccs)} cyclic SCC(s).")
+
+    sccs_with_cycles = []
+    for scc in sccs:
+        sub = G.subgraph(scc).copy()
+        rep_cycles = extract_representative_cycles(sub, k=K_CYCLES_PER_SCC, time_budget=TIME_BUDGET_PER_SCC_SEC)
+        sccs_with_cycles.append((scc, rep_cycles))
+
+    result = build_output(G, sccs_with_cycles)
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(result, f, indent=2)
+    print(f"Module-level SCCs & representative cycles written to: {output_path}")
 
-    print(f"\nModule-level cycles saved to: {output_path}")
+
+# ======================
+# CLI
+# ======================
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python parse_module_cycles.py input.json output.json")
+    if not (2 <= len(sys.argv) <= 3):
+        print("Usage: python parse_module_cycles.py <sdsm.json> [output.json]")
         sys.exit(1)
-
-    run_pipeline(sys.argv[1], sys.argv[2])
+    sdsm = sys.argv[1]
+    out = sys.argv[2] if len(sys.argv) == 3 else "module_cycles.json"
+    run_pipeline(sdsm, out)

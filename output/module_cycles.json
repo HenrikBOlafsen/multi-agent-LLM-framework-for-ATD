@@ -1,121 +1,1866 @@
 {
-  "cycles": [
+  "sccs": [
     {
-      "id": "mod_cycle_0",
-      "summary": "Module-level cycle between 4 modules",
+      "id": "scc_0",
+      "size": 46,
+      "edge_count": 242,
       "nodes": [
         {
-          "id": "textUpgrader",
+          "id": "__init__",
           "type": "module",
-          "name": "textUpgrader"
+          "name": "__init__"
         },
         {
-          "id": "textPadder",
+          "id": "batch_notifier",
           "type": "module",
-          "name": "textPadder"
+          "name": "batch_notifier"
         },
         {
-          "id": "numberModifiers",
+          "id": "beam_dataflow",
           "type": "module",
-          "name": "numberModifiers"
+          "name": "beam_dataflow"
         },
         {
-          "id": "textWriter",
+          "id": "bigquery",
           "type": "module",
-          "name": "textWriter"
+          "name": "bigquery"
+        },
+        {
+          "id": "bigquery_avro",
+          "type": "module",
+          "name": "bigquery_avro"
+        },
+        {
+          "id": "cmdline_parser",
+          "type": "module",
+          "name": "cmdline_parser"
+        },
+        {
+          "id": "date_interval",
+          "type": "module",
+          "name": "date_interval"
+        },
+        {
+          "id": "db_task_history",
+          "type": "module",
+          "name": "db_task_history"
+        },
+        {
+          "id": "docker_runner",
+          "type": "module",
+          "name": "docker_runner"
+        },
+        {
+          "id": "dynamic_requirements",
+          "type": "module",
+          "name": "dynamic_requirements"
+        },
+        {
+          "id": "external_program",
+          "type": "module",
+          "name": "external_program"
+        },
+        {
+          "id": "format",
+          "type": "module",
+          "name": "format"
+        },
+        {
+          "id": "gcs",
+          "type": "module",
+          "name": "gcs"
+        },
+        {
+          "id": "hadoop",
+          "type": "module",
+          "name": "hadoop"
+        },
+        {
+          "id": "hive",
+          "type": "module",
+          "name": "hive"
+        },
+        {
+          "id": "local_target",
+          "type": "module",
+          "name": "local_target"
+        },
+        {
+          "id": "lsf",
+          "type": "module",
+          "name": "lsf"
+        },
+        {
+          "id": "lsf_runner",
+          "type": "module",
+          "name": "lsf_runner"
+        },
+        {
+          "id": "mock",
+          "type": "module",
+          "name": "mock"
+        },
+        {
+          "id": "mrrunner",
+          "type": "module",
+          "name": "mrrunner"
+        },
+        {
+          "id": "notifications",
+          "type": "module",
+          "name": "notifications"
+        },
+        {
+          "id": "opener",
+          "type": "module",
+          "name": "opener"
+        },
+        {
+          "id": "parameter",
+          "type": "module",
+          "name": "parameter"
+        },
+        {
+          "id": "per_task_retry_policy",
+          "type": "module",
+          "name": "per_task_retry_policy"
+        },
+        {
+          "id": "postgres",
+          "type": "module",
+          "name": "postgres"
+        },
+        {
+          "id": "pyspark_runner",
+          "type": "module",
+          "name": "pyspark_runner"
+        },
+        {
+          "id": "range",
+          "type": "module",
+          "name": "range"
+        },
+        {
+          "id": "redshift",
+          "type": "module",
+          "name": "redshift"
+        },
+        {
+          "id": "s3",
+          "type": "module",
+          "name": "s3"
+        },
+        {
+          "id": "salesforce",
+          "type": "module",
+          "name": "salesforce"
+        },
+        {
+          "id": "scalding",
+          "type": "module",
+          "name": "scalding"
+        },
+        {
+          "id": "scheduler",
+          "type": "module",
+          "name": "scheduler"
+        },
+        {
+          "id": "sge",
+          "type": "module",
+          "name": "sge"
+        },
+        {
+          "id": "sge_runner",
+          "type": "module",
+          "name": "sge_runner"
+        },
+        {
+          "id": "spark",
+          "type": "module",
+          "name": "spark"
+        },
+        {
+          "id": "sparkey",
+          "type": "module",
+          "name": "sparkey"
+        },
+        {
+          "id": "ssh",
+          "type": "module",
+          "name": "ssh"
+        },
+        {
+          "id": "ssh_remote_execution",
+          "type": "module",
+          "name": "ssh_remote_execution"
+        },
+        {
+          "id": "target",
+          "type": "module",
+          "name": "target"
+        },
+        {
+          "id": "task",
+          "type": "module",
+          "name": "task"
+        },
+        {
+          "id": "task_history",
+          "type": "module",
+          "name": "task_history"
+        },
+        {
+          "id": "task_register",
+          "type": "module",
+          "name": "task_register"
+        },
+        {
+          "id": "util",
+          "type": "module",
+          "name": "util"
+        },
+        {
+          "id": "wordcount",
+          "type": "module",
+          "name": "wordcount"
+        },
+        {
+          "id": "wordcount_hadoop",
+          "type": "module",
+          "name": "wordcount_hadoop"
+        },
+        {
+          "id": "worker",
+          "type": "module",
+          "name": "worker"
         }
       ],
       "edges": [
         {
-          "source": "textUpgrader",
-          "target": "textPadder",
+          "source": "parameter",
+          "target": "task",
           "relation": "module_dep"
         },
         {
-          "source": "textPadder",
-          "target": "numberModifiers",
+          "source": "parameter",
+          "target": "task_register",
           "relation": "module_dep"
         },
         {
-          "source": "numberModifiers",
-          "target": "textWriter",
+          "source": "parameter",
+          "target": "date_interval",
           "relation": "module_dep"
         },
         {
-          "source": "textWriter",
-          "target": "textUpgrader",
+          "source": "parameter",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "parameter",
+          "target": "cmdline_parser",
+          "relation": "module_dep"
+        },
+        {
+          "source": "parameter",
+          "target": "__init__",
+          "relation": "module_dep"
+        },
+        {
+          "source": "opener",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "batch_notifier",
+          "target": "notifications",
+          "relation": "module_dep"
+        },
+        {
+          "source": "batch_notifier",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "batch_notifier",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "date_interval",
+          "target": "range",
+          "relation": "module_dep"
+        },
+        {
+          "source": "date_interval",
+          "target": "__init__",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcs",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcs",
+          "target": "hive",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcs",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcs",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcs",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcs",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcs",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcs",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "db_task_history",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "db_task_history",
+          "target": "hive",
+          "relation": "module_dep"
+        },
+        {
+          "source": "db_task_history",
+          "target": "salesforce",
+          "relation": "module_dep"
+        },
+        {
+          "source": "db_task_history",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "db_task_history",
+          "target": "task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "db_task_history",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "opener",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "mrrunner",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hadoop",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "parameter",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "notifications",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "range",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "task_register",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "worker",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "dynamic_requirements",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "db_task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "date_interval",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "sparkey",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "spark",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "sge",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "salesforce",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "redshift",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "pyspark_runner",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "mrrunner",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "lsf",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "external_program",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "docker_runner",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "bigquery_avro",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "beam_dataflow",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "__init__",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "wordcount",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "ssh_remote_execution",
+          "relation": "module_dep"
+        },
+        {
+          "source": "util",
+          "target": "per_task_retry_policy",
+          "relation": "module_dep"
+        },
+        {
+          "source": "pyspark_runner",
+          "target": "worker",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sparkey",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sparkey",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sparkey",
+          "target": "opener",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sparkey",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sparkey",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sparkey",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sparkey",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sparkey",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "hive",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "per_task_retry_policy",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "__init__",
+          "target": "range",
+          "relation": "module_dep"
+        },
+        {
+          "source": "__init__",
+          "target": "__init__",
+          "relation": "module_dep"
+        },
+        {
+          "source": "__init__",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "__init__",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "target",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "target",
+          "target": "db_task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task_register",
+          "target": "__init__",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task_register",
+          "target": "db_task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task_register",
+          "target": "range",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task_register",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "notifications",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "notifications",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "notifications",
+          "target": "db_task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "lsf_runner",
+          "target": "sge",
+          "relation": "module_dep"
+        },
+        {
+          "source": "lsf_runner",
+          "target": "lsf",
+          "relation": "module_dep"
+        },
+        {
+          "source": "docker_runner",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "docker_runner",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "docker_runner",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "docker_runner",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "docker_runner",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "docker_runner",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "cmdline_parser",
+          "target": "task_register",
+          "relation": "module_dep"
+        },
+        {
+          "source": "redshift",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "redshift",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "postgres",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "wordcount",
+          "target": "date_interval",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "hive",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "local_target",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sge",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sge",
+          "target": "sge_runner",
+          "relation": "module_dep"
+        },
+        {
+          "source": "ssh",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "ssh",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "ssh",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "ssh",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "ssh",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "mock",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "mock",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "redshift",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "scalding",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "hive",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "per_task_retry_policy",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "ssh_remote_execution",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "wordcount",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "wordcount_hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "dynamic_requirements",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "format",
+          "target": "range",
+          "relation": "module_dep"
+        },
+        {
+          "source": "format",
+          "target": "__init__",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task_history",
+          "target": "db_task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery_avro",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery_avro",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "bigquery_avro",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "task_register",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "util",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "notifications",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "parameter",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "scheduler",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "db_task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "worker",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "range",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "range",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "range",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "range",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "range",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "range",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "range",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "redshift",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "hive",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "per_task_retry_policy",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "ssh_remote_execution",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "wordcount_hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "dynamic_requirements",
+          "target": "wordcount",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "opener",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "redshift",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "salesforce",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "wordcount",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "wordcount_hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "per_task_retry_policy",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "ssh_remote_execution",
+          "relation": "module_dep"
+        },
+        {
+          "source": "hive",
+          "target": "dynamic_requirements",
+          "relation": "module_dep"
+        },
+        {
+          "source": "mrrunner",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sge_runner",
+          "target": "sge",
+          "relation": "module_dep"
+        },
+        {
+          "source": "sge_runner",
+          "target": "lsf",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scalding",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "external_program",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "external_program",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "lsf",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "lsf",
+          "target": "lsf_runner",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "hive",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "local_target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "mock",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "s3",
+          "target": "worker",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "db_task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "hive",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "s3",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "redshift",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "postgres",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "per_task_retry_policy",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "ssh_remote_execution",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "wordcount_hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "wordcount",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "parameter",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "notifications",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "task_register",
+          "relation": "module_dep"
+        },
+        {
+          "source": "task",
+          "target": "dynamic_requirements",
+          "relation": "module_dep"
+        },
+        {
+          "source": "wordcount_hadoop",
+          "target": "date_interval",
+          "relation": "module_dep"
+        },
+        {
+          "source": "spark",
+          "target": "external_program",
+          "relation": "module_dep"
+        },
+        {
+          "source": "ssh_remote_execution",
+          "target": "ssh",
+          "relation": "module_dep"
+        },
+        {
+          "source": "beam_dataflow",
+          "target": "gcs",
+          "relation": "module_dep"
+        },
+        {
+          "source": "beam_dataflow",
+          "target": "bigquery",
+          "relation": "module_dep"
+        },
+        {
+          "source": "beam_dataflow",
+          "target": "target",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scheduler",
+          "target": "format",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scheduler",
+          "target": "db_task_history",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scheduler",
+          "target": "hadoop",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scheduler",
+          "target": "batch_notifier",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scheduler",
+          "target": "parameter",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scheduler",
+          "target": "notifications",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scheduler",
+          "target": "task",
+          "relation": "module_dep"
+        },
+        {
+          "source": "scheduler",
+          "target": "worker",
+          "relation": "module_dep"
+        },
+        {
+          "source": "salesforce",
+          "target": "hadoop",
           "relation": "module_dep"
         }
       ],
-      "definitions": []
+      "representative_cycles": [
+        {
+          "id": "scc_0_cycle_0",
+          "length": 1,
+          "nodes": [
+            "__init__"
+          ],
+          "edges": [
+            {
+              "source": "__init__",
+              "target": "__init__",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 1"
+        },
+        {
+          "id": "scc_0_cycle_1",
+          "length": 6,
+          "nodes": [
+            "format",
+            "range",
+            "s3",
+            "worker",
+            "parameter",
+            "task"
+          ],
+          "edges": [
+            {
+              "source": "format",
+              "target": "range",
+              "relation": "module_dep"
+            },
+            {
+              "source": "range",
+              "target": "s3",
+              "relation": "module_dep"
+            },
+            {
+              "source": "s3",
+              "target": "worker",
+              "relation": "module_dep"
+            },
+            {
+              "source": "worker",
+              "target": "parameter",
+              "relation": "module_dep"
+            },
+            {
+              "source": "parameter",
+              "target": "task",
+              "relation": "module_dep"
+            },
+            {
+              "source": "task",
+              "target": "format",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 6"
+        },
+        {
+          "id": "scc_0_cycle_2",
+          "length": 7,
+          "nodes": [
+            "format",
+            "range",
+            "s3",
+            "worker",
+            "scheduler",
+            "parameter",
+            "task"
+          ],
+          "edges": [
+            {
+              "source": "format",
+              "target": "range",
+              "relation": "module_dep"
+            },
+            {
+              "source": "range",
+              "target": "s3",
+              "relation": "module_dep"
+            },
+            {
+              "source": "s3",
+              "target": "worker",
+              "relation": "module_dep"
+            },
+            {
+              "source": "worker",
+              "target": "scheduler",
+              "relation": "module_dep"
+            },
+            {
+              "source": "scheduler",
+              "target": "parameter",
+              "relation": "module_dep"
+            },
+            {
+              "source": "parameter",
+              "target": "task",
+              "relation": "module_dep"
+            },
+            {
+              "source": "task",
+              "target": "format",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 7"
+        },
+        {
+          "id": "scc_0_cycle_3",
+          "length": 7,
+          "nodes": [
+            "format",
+            "range",
+            "s3",
+            "worker",
+            "util",
+            "parameter",
+            "task"
+          ],
+          "edges": [
+            {
+              "source": "format",
+              "target": "range",
+              "relation": "module_dep"
+            },
+            {
+              "source": "range",
+              "target": "s3",
+              "relation": "module_dep"
+            },
+            {
+              "source": "s3",
+              "target": "worker",
+              "relation": "module_dep"
+            },
+            {
+              "source": "worker",
+              "target": "util",
+              "relation": "module_dep"
+            },
+            {
+              "source": "util",
+              "target": "parameter",
+              "relation": "module_dep"
+            },
+            {
+              "source": "parameter",
+              "target": "task",
+              "relation": "module_dep"
+            },
+            {
+              "source": "task",
+              "target": "format",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 7"
+        },
+        {
+          "id": "scc_0_cycle_4",
+          "length": 14,
+          "nodes": [
+            "bigquery",
+            "db_task_history",
+            "target",
+            "gcs",
+            "range",
+            "format",
+            "task",
+            "parameter",
+            "util",
+            "worker",
+            "s3",
+            "opener",
+            "hadoop",
+            "postgres"
+          ],
+          "edges": [
+            {
+              "source": "bigquery",
+              "target": "db_task_history",
+              "relation": "module_dep"
+            },
+            {
+              "source": "db_task_history",
+              "target": "target",
+              "relation": "module_dep"
+            },
+            {
+              "source": "target",
+              "target": "gcs",
+              "relation": "module_dep"
+            },
+            {
+              "source": "gcs",
+              "target": "range",
+              "relation": "module_dep"
+            },
+            {
+              "source": "range",
+              "target": "format",
+              "relation": "module_dep"
+            },
+            {
+              "source": "format",
+              "target": "task",
+              "relation": "module_dep"
+            },
+            {
+              "source": "task",
+              "target": "parameter",
+              "relation": "module_dep"
+            },
+            {
+              "source": "parameter",
+              "target": "util",
+              "relation": "module_dep"
+            },
+            {
+              "source": "util",
+              "target": "worker",
+              "relation": "module_dep"
+            },
+            {
+              "source": "worker",
+              "target": "s3",
+              "relation": "module_dep"
+            },
+            {
+              "source": "s3",
+              "target": "opener",
+              "relation": "module_dep"
+            },
+            {
+              "source": "opener",
+              "target": "hadoop",
+              "relation": "module_dep"
+            },
+            {
+              "source": "hadoop",
+              "target": "postgres",
+              "relation": "module_dep"
+            },
+            {
+              "source": "postgres",
+              "target": "bigquery",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 14"
+        }
+      ]
     },
     {
-      "id": "mod_cycle_1",
-      "summary": "Module-level cycle between 3 modules",
+      "id": "scc_1",
+      "size": 2,
+      "edge_count": 2,
       "nodes": [
         {
-          "id": "car",
+          "id": "presto",
           "type": "module",
-          "name": "car"
+          "name": "presto"
         },
         {
-          "id": "calculateDistance",
+          "id": "rdbms",
           "type": "module",
-          "name": "calculateDistance"
-        },
-        {
-          "id": "moon",
-          "type": "module",
-          "name": "moon"
+          "name": "rdbms"
         }
       ],
       "edges": [
         {
-          "source": "car",
-          "target": "calculateDistance",
+          "source": "rdbms",
+          "target": "presto",
           "relation": "module_dep"
         },
         {
-          "source": "calculateDistance",
-          "target": "moon",
-          "relation": "module_dep"
-        },
-        {
-          "source": "moon",
-          "target": "car",
+          "source": "presto",
+          "target": "rdbms",
           "relation": "module_dep"
         }
       ],
-      "definitions": []
+      "representative_cycles": [
+        {
+          "id": "scc_1_cycle_0",
+          "length": 2,
+          "nodes": [
+            "presto",
+            "rdbms"
+          ],
+          "edges": [
+            {
+              "source": "presto",
+              "target": "rdbms",
+              "relation": "module_dep"
+            },
+            {
+              "source": "rdbms",
+              "target": "presto",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 2"
+        }
+      ]
     },
     {
-      "id": "mod_cycle_2",
-      "summary": "Module-level cycle between 2 modules",
+      "id": "scc_2",
+      "size": 2,
+      "edge_count": 2,
       "nodes": [
         {
-          "id": "country",
+          "id": "base_parser",
           "type": "module",
-          "name": "country"
+          "name": "base_parser"
         },
         {
-          "id": "city",
+          "id": "cfg_parser",
           "type": "module",
-          "name": "city"
+          "name": "cfg_parser"
         }
       ],
       "edges": [
         {
-          "source": "country",
-          "target": "city",
+          "source": "cfg_parser",
+          "target": "base_parser",
           "relation": "module_dep"
         },
         {
-          "source": "city",
-          "target": "country",
+          "source": "base_parser",
+          "target": "cfg_parser",
           "relation": "module_dep"
         }
       ],
-      "definitions": []
+      "representative_cycles": [
+        {
+          "id": "scc_2_cycle_0",
+          "length": 2,
+          "nodes": [
+            "base_parser",
+            "cfg_parser"
+          ],
+          "edges": [
+            {
+              "source": "base_parser",
+              "target": "cfg_parser",
+              "relation": "module_dep"
+            },
+            {
+              "source": "cfg_parser",
+              "target": "base_parser",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 2"
+        }
+      ]
+    },
+    {
+      "id": "scc_3",
+      "size": 2,
+      "edge_count": 2,
+      "nodes": [
+        {
+          "id": "dataproc",
+          "type": "module",
+          "name": "dataproc"
+        },
+        {
+          "id": "gcp",
+          "type": "module",
+          "name": "gcp"
+        }
+      ],
+      "edges": [
+        {
+          "source": "dataproc",
+          "target": "gcp",
+          "relation": "module_dep"
+        },
+        {
+          "source": "gcp",
+          "target": "dataproc",
+          "relation": "module_dep"
+        }
+      ],
+      "representative_cycles": [
+        {
+          "id": "scc_3_cycle_0",
+          "length": 2,
+          "nodes": [
+            "dataproc",
+            "gcp"
+          ],
+          "edges": [
+            {
+              "source": "dataproc",
+              "target": "gcp",
+              "relation": "module_dep"
+            },
+            {
+              "source": "gcp",
+              "target": "dataproc",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 2"
+        }
+      ]
     }
   ]
 }
