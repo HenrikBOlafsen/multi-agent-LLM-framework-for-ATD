@@ -7,6 +7,6 @@ projects_to_analyze/*/
 .venv/
 __pycache__/
 *.pyc
-ATD_identification/output/*
+output/*
 .vscode/
 *.log
