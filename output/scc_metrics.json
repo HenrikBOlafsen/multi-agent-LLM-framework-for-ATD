@@ -1,33 +1,16 @@
 {
-  "scc_count": 4,
-  "total_nodes_in_cyclic_sccs": 52,
-  "total_edges_in_cyclic_sccs": 248,
-  "max_scc_size": 46,
-  "avg_scc_size": 13.0,
+  "scc_count": 1,
+  "total_nodes_in_cyclic_sccs": 10,
+  "total_edges_in_cyclic_sccs": 28,
+  "max_scc_size": 10,
+  "avg_scc_size": 10.0,
   "sccs": [
     {
-      "size": 46,
-      "edge_count": 242,
-      "density_directed": 0.1169,
-      "edge_surplus_lb": 165
-    },
-    {
-      "size": 2,
-      "edge_count": 2,
-      "density_directed": 1.0,
-      "edge_surplus_lb": 0
-    },
-    {
-      "size": 2,
-      "edge_count": 2,
-      "density_directed": 1.0,
-      "edge_surplus_lb": 0
-    },
-    {
-      "size": 2,
-      "edge_count": 2,
-      "density_directed": 1.0,
-      "edge_surplus_lb": 0
+      "size": 10,
+      "edge_count": 28,
+      "density_directed": 0.3111,
+      "edge_surplus_lb": 15
     }
-  ]
+  ],
+  "cycle_pressure_lb": 15
 }
