@@ -65,6 +65,18 @@ def repo_relative_key(abs_path: str, repo_root: str) -> str:
         rel = rel[:-3]
     return rel
 
+def key_to_abs_path(key: str, repo_root: str) -> str:
+    # keys are repo-relative without .py, inkl. '__init__' unfused
+    return os.path.realpath(os.path.join(repo_root, key + ".py"))
+
+def count_loc(abs_path: str) -> int:
+    # Physical LOC: counts non-blank lines. Robust against encoding.
+    try:
+        with open(abs_path, "r", encoding="utf-8", errors="ignore") as f:
+            return sum(1 for line in f if line.strip())
+    except (FileNotFoundError, IsADirectoryError):
+        return 0
+
 
 # ----- SDSM -> graph -----
 def load_edges_from_sdsm(
@@ -108,17 +120,25 @@ def load_edges_from_sdsm(
         nodes.add(src)
         nodes.add(dst)
 
-    return nodes, edges
+    return nodes, edges, repo_root
 
 
 def build_graph_from_sdsm(
     path: str, include_tests: bool, edge_kinds: Set[str]
 ) -> nx.DiGraph:
-    nodes, edges = load_edges_from_sdsm(path, include_tests, edge_kinds)
+    nodes, edges, repo_root = load_edges_from_sdsm(path, include_tests, edge_kinds)
     G = nx.DiGraph()
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
+    G.graph["repo_root"] = repo_root
+
+    # add file path and LOC per node
+    for n in G.nodes:
+        ap = key_to_abs_path(n, repo_root)
+        G.nodes[n]["abs_path"] = ap
+        G.nodes[n]["loc"] = count_loc(ap)
     return G
+
 
 
 def nontrivial_sccs(G: nx.DiGraph) -> List[set]:
@@ -134,10 +154,12 @@ def scc_metrics(G: nx.DiGraph) -> dict:
         "scc_count": len(sccs),
         "total_nodes_in_cyclic_sccs": 0,
         "total_edges_in_cyclic_sccs": 0,
+        "total_loc_in_cyclic_sccs": 0,   # <— NY
         "max_scc_size": 0,
         "avg_scc_size": 0.0,
         "sccs": [],
     }
+
     if not sccs:
         metrics["cycle_pressure_lb"] = 0
         return metrics
@@ -152,16 +174,21 @@ def scc_metrics(G: nx.DiGraph) -> dict:
         und = sub.to_undirected()
         m_und = und.number_of_edges()
         edge_surplus_lb = max(0, m_und - (n - 1))
+        total_loc = sum(int(G.nodes[u].get("loc", 0)) for u in scc)
         metrics["sccs"].append(
             {
                 "size": n,
                 "edge_count": m,
                 "density_directed": round(dens, 4),
                 "edge_surplus_lb": edge_surplus_lb,
+                "total_loc": total_loc,
+                "avg_loc_per_node": round(total_loc / n, 1),
             }
         )
         metrics["total_nodes_in_cyclic_sccs"] += n
         metrics["total_edges_in_cyclic_sccs"] += m
+        metrics["total_loc_in_cyclic_sccs"] += total_loc
+
 
     metrics["max_scc_size"] = max(sizes)
     metrics["avg_scc_size"] = round(sum(sizes) / len(sizes), 2)
