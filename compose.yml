@@ -1,0 +1,17 @@
+services:
+  openhands:
+    image: docker.all-hands.dev/all-hands-ai/openhands:0.56
+    container_name: openhands-app
+    ports: ["3000:3000"]
+    environment:
+      LLM_MODEL: "${LLM_MODEL}"
+      LLM_BASE_URL: "${LLM_BASE_URL}"
+      LLM_API_KEY: "${LLM_API_KEY}"
+      LOG_ALL_EVENTS: "true"
+      SANDBOX_RUNTIME_CONTAINER_IMAGE: "docker.all-hands.dev/all-hands-ai/runtime:0.56-nikolaik"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${USERPROFILE:-~}/.openhands:/.openhands
+      - ./oh-work:/workspace   # shared folder you'll also mount in your ATD container
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
