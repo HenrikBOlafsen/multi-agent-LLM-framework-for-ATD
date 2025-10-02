@@ -1,0 +1,45 @@
+Goal
+Break the dependency cycle between `tinydb/__init__.py` and `tinydb/database.py` by removing exactly one static edge, using the least disruptive refactoring technique that preserves behavior and public API.
+
+Important (exact text:) "Please refactor to break this cycle, without increasing architectural technical debt elsewhere (e.g., no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy/type-only all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not runtime import order."
+
+Why this exists (short)
+The cycle forms because `__init__.py` imports `TinyDB` from `database.py`, while `database.py` indirectly depends on `__init__.py` to expose `JSONStorage`. Breaking either edge will resolve the cycle.
+
+Technique
+1. **Move `JSONStorage` from `__init__.py` to `storages.py`**
+   - Currently, `JSONStorage` is imported in `__init__.py` and re-exported for convenience.
+   - Instead, move its definition to `storages.py` where it logically belongs.
+   - Update `__init__.py` to import `JSONStorage` directly from `storages.py` instead of relying on the re-export.
+
+2. **Update `database.py` to import `JSONStorage` directly from `storages.py`**
+   - Change `from . import JSONStorage` to `from .storages import JSONStorage`.
+   - This removes the indirect dependency on `__init__.py`.
+
+3. **Ensure backward compatibility via re-export in `__init__.py`**
+   - Keep `JSONStorage` available at the top level for existing users.
+   - Re-export it from `__init__.py` so that `from tinydb import JSONStorage` continues to work.
+
+4. **Remove the redundant import in `__init__.py`**
+   - Remove the line `from .storages import Storage, JSONStorage` from `__init__.py` since it's now handled by direct imports in `database.py`.
+
+5. **Verify all internal usage remains intact**
+   - Ensure that `database.py` and other modules continue to work correctly after the change.
+
+Any remaining changes needed to make sure the rest of the codebase will work fine after the change:
+- All references to `JSONStorage` in `database.py` must be updated to import directly from `storages.py`.
+- The `__init__.py` file must be adjusted to maintain the same public interface.
+- Tests should verify that both `from tinydb import TinyDB` and `from tinydb import JSONStorage` still work as before.
+
+Scope & guardrails
+- Only touch the specific dependency chain involving `JSONStorage` and `TinyDB`.
+- Do not alter the public API or behavior of the library.
+- Avoid introducing new dependencies or cycles.
+- Ensure that all existing functionality continues to work exactly as before.
+- The change must preserve the ability to do `from tinydb import TinyDB`, `from tinydb import JSONStorage`, etc.
+
+Done when
+- The cycle is broken: `__init__.py` no longer depends on `database.py` via `TinyDB`, and `database.py` no longer depends on `__init__.py` via `JSONStorage`.
+- Tests pass for both `TinyDB` and `JSONStorage` imports.
+- No new cycles are introduced.
+- Public APIs remain unchanged.

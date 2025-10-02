@@ -89,10 +89,10 @@ if __name__ == "__main__":
     MODEL = "Qwen/Qwen3-Coder-30B-A3B-Instruct" # "mistralai/Devstral-Small-2507" # "mistralai/magistral-small-2509" # "meta-llama/Llama-3.1-70B-Instruct"  # "google/gemma-3-12b" / your 24B devstral id
 
     # Repo root: path to your local kombu checkout (folder containing 'kombu/' package)
-    REPO_ROOT = "../projects_to_analyze/kombu"
+    REPO_ROOT = "../projects_to_analyze/click"
 
-    # Example cycle (connection ↔ messaging) — or use your transport/* example
-    cycle = {
+    # Example cycle (connection <-> messaging) — or use your transport/* example
+    cycle_kombu = {
         "id": "scc_demo",
         "length": 2,
         "nodes": ["connection", "messaging"],
@@ -103,11 +103,95 @@ if __name__ == "__main__":
         "summary": "Representative cycle of length 2",
     }
 
+    cycle_tinydb = {
+        "id": "scc_0_cycle_0",
+        "length": 2,
+        "nodes": [
+            "__init__",
+            "database"
+        ],
+        "edges": [
+            {
+                "source": "__init__",
+                "target": "database",
+                "relation": "module_dep"
+            },
+            {
+                "source": "database",
+                "target": "__init__",
+                "relation": "module_dep"
+            }
+        ],
+        "summary": "Representative cycle of length 2"
+    }
+
+    cycle_click = {
+        "id": "scc_0_cycle_0",
+        "length": 2,
+        "nodes": [
+            "_compat",
+            "_winconsole"
+        ],
+        "edges": [
+            {
+                "source": "_compat",
+                "target": "_winconsole",
+                "relation": "module_dep"
+            },
+            {
+                "source": "_winconsole",
+                "target": "_compat",
+                "relation": "module_dep"
+            }
+        ],
+        "summary": "Representative cycle of length 2"
+    }
+
+    cycle_werkzeug = {
+        "id": "scc_0_cycle_0",
+        "length": 5,
+        "nodes": [
+            "__init__",
+            "datastructures/range",
+            "datastructures/__init__",
+            "urls",
+            "serving"
+        ],
+        "edges": [
+            {
+                "source": "__init__",
+                "target": "datastructures/range",
+                "relation": "module_dep"
+            },
+            {
+                "source": "datastructures/range",
+                "target": "datastructures/__init__",
+                "relation": "module_dep"
+            },
+            {
+                "source": "datastructures/__init__",
+                "target": "urls",
+                "relation": "module_dep"
+            },
+            {
+                "source": "urls",
+                "target": "serving",
+                "relation": "module_dep"
+            },
+            {
+                "source": "serving",
+                "target": "__init__",
+                "relation": "module_dep"
+            }
+        ],
+        "summary": "Representative cycle of length 5"
+    }
+
     client = LLMClient(LLM_URL, API_KEY, MODEL, temperature=0.1, max_tokens=16384)
-    orch = Orchestrator(client, package_root="kombu")
+    orch = Orchestrator(client, package_root="src/click") # src/werkzeug
 
     try:
-        prompt = orch.run(REPO_ROOT, cycle)
+        prompt = orch.run(REPO_ROOT, cycle_click)
         log_section("FINAL REFACTORING PROMPT", "green")
         print(prompt)
         log_section("END", "green")
