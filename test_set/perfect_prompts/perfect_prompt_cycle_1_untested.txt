@@ -1,0 +1,31 @@
+Goal  
+Break the architectural cycle between `tinydb/__init__.py` and `tinydb/database.py` without changing behavior or the public API.
+
+Important  
+Please refactor to remove this cycle **without** introducing new cycles or increasing architectural technical debt elsewhere.
+My ATD metric treats **any** module reference as a dependency (dynamic/lazy/type-only all count). So just making the import lazy is **not** sufficient. Functionality and public surface (including current re-exports from `tinydb.__init__`) must remain unchanged for users.
+
+Why this exists (short)  
+- `tinydb/__init__.py` re-exports names and **imports `TinyDB` from `.database`**.  
+- `tinydb/database.py` sets `default_storage_class = JSONStorage` but currently **imports `JSONStorage` via `from . import JSONStorage`**, i.e., from the package namespace (`__init__`), which statically depends on `__init__`.  
+These two edges create a bidirectional dependency (`__init__` ↔ `database`) in the static graph.
+
+Technique (describe what to do, not exact code)  
+1) In `tinydb/database.py`, **import storages directly from their module**, not via the package:  
+   - Replace `from . import JSONStorage` with `from .storages import JSONStorage`.  
+   - Keep the existing `from .storages import Storage` import (or combine into one line).  
+   This removes `database.py`’s dependency on `__init__.py` while preserving behavior.  
+2) Do **not** change `tinydb/__init__.py`’s public re-exports (`TinyDB`, `Storage`, `JSONStorage`, `Query`, `where`) unless strictly necessary for import order. If you touch it, only reorder internal imports to keep behavior identical and the public API intact.  
+3) Avoid introducing any new intermediate module just for this; it’s unnecessary here. (Only add files if you discover a hidden coupling that truly requires it—and if so, the new file must be private and dependency-minimal.)
+
+Scope & guardrails  
+- Keep the diff minimal: only `tinydb/database.py` (and, if absolutely required for order, small, no-op import order tweaks in `tinydb/__init__.py`).  
+- No new third-party deps. No broad formatting changes. No function signature changes.  
+- Preserve all docstrings, typing, and runtime behavior (including default `default_storage_class` = `JSONStorage`).  
+- The public API remains the same: users can still `from tinydb import TinyDB, where` etc.
+
+Done when  
+- `tinydb/database.py` **does not** import from `tinydb` (the package) anymore; it imports `JSONStorage` **directly** from `.storages`.  
+- `tinydb/__init__.py` still re-exports `TinyDB`, `Storage`, `JSONStorage`, `Query`, `where` exactly as before.  
+- The static dependency graph shows **no cycle** between `tinydb/__init__.py` and `tinydb/database.py`, and **no new cycles** were introduced.  
+- All tests and import/use examples continue to work unchanged (e.g., `from tinydb import TinyDB, where` and default storage being `JSONStorage`).  

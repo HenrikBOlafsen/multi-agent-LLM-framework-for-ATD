@@ -1,0 +1,28 @@
+### Goal
+Break the static dependency cycle between `connection.py` and `messaging.py` without changing behavior or public API.
+
+### Important
+Chosen edge to cut: `../projects_to_analyze/kombu/kombu/messaging.py` → `../projects_to_analyze/kombu/kombu/connection.py`
+
+### Why this exists (short)
+The cycle exists due to `messaging.py` importing `PooledConnection`, `is_connection`, and `maybe_channel` from `connection.py`, while `connection.py` dynamically imports `Producer` and `Consumer` from `messaging.py`.
+
+### Technique
+Extract the interfaces of `is_connection`, `maybe_channel`, and `PooledConnection` into a new neutral helper module. Use duck typing to ensure compatibility without direct imports from the repo.
+
+### Scope & guardrails
+- **What to do**:
+  - Create a new file `connection_abstractions.py` in the same directory.
+  - Define `is_connection`, `maybe_channel`, and `PooledConnection` interfaces in this file.
+  - Update `messaging.py` to import these interfaces from `connection_abstractions.py`.
+  - Ensure `connection.py` remains unchanged.
+
+- **What NOT to touch**:
+  - Do not modify `connection.py`.
+  - Do not change the public API or behavior of `Producer` and `Consumer`.
+  - Do not introduce new cycles elsewhere.
+
+### Done when
+- `connection_abstractions.py` contains the extracted interfaces.
+- `messaging.py` imports `is_connection`, `maybe_channel`, and `PooledConnection` from `connection_abstractions.py`.
+- All tests pass, confirming no change in behavior or public API.

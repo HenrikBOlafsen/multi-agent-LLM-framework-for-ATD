@@ -1,0 +1,40 @@
+Goal
+Break the architectural cycle in Werkzeug between:
+- `werkzeug/__init__.py`
+- `werkzeug/datastructures/range.py`
+- `werkzeug/datastructures/__init__.py`
+- `werkzeug/urls.py`
+- `werkzeug/serving.py`
+…without changing behavior or public API.
+
+Important
+Please refactor to eliminate this cycle without increasing architectural technical debt elsewhere (no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy/type-only all count). Making imports lazy (or hiding them under TYPE_CHECKING) is NOT sufficient. I care about architecture (static coupling), not runtime import order. Functionality must not change.
+
+Why this exists (short)
+`werkzeug/urls.py` imports the `datastructures` façade solely to get `iter_multi_items`. That façade re-exports from leaf modules and pulls in `range`, which in turn depends upward, closing a 5-node cycle together with `serving` and the package-level `__init__`.
+
+Technique (describe what to do, not exact code)
+1) Narrow the dependency in `werkzeug/urls.py`:
+   - Import `iter_multi_items` directly from the defining **leaf** module (`werkzeug/datastructures/structures.py`) instead of from the `datastructures` façade (`werkzeug/datastructures/__init__.py`).
+   - Add a brief comment explaining this is an internal leaf import to avoid pulling the façade and to keep the graph acyclic.
+2) Do not add lazy/dynamic imports or move the cycle elsewhere. Keep the diff minimal.
+3) (Only if, after step 1, your analyzer still reports a cycle) Extract any low-level helpers that cause upward imports into a tiny private “foundation” module (e.g., `werkzeug/_http_header_utils.py`) and have both sides import from there. This fallback should be used only if step 1 doesn’t break the cycle.
+
+Scope & guardrails
+- Touch as few files as possible; ideally just `werkzeug/urls.py`.
+- No behavior changes, no public API changes, no new third-party deps, no broad formatting diffs.
+- Avoid introducing any new static edges that could form new SCCs.
+- Keep external/public imports (used by library users) unchanged; this is an internal dependency tightening.
+
+Done when
+- `werkzeug/urls.py` imports `iter_multi_items` from the leaf module (not via `datastructures` façade).
+- The static dependency graph no longer contains the 5-node cycle involving `__init__`, `datastructures/range`, `datastructures/__init__`, `urls`, `serving`.
+- No new cycles are introduced elsewhere.
+- Tests and linters pass.
+
+Deliverables
+- A small diff (preferably a single-line import change + one comment).
+- A short note in the commit message explaining: “Narrow `urls` → `datastructures` dependency by importing `iter_multi_items` from leaf module to break import cycle (ATD counts all references; lazy imports don’t help). No behavior or API changes.”
+
+Optional verification
+- If an ATD tool is available in the environment, run it before/after and include the SCC summary confirming the cycle is gone. Otherwise, explain in the PR/notes how the static edge `urls → datastructures/__init__` was removed and why that breaks the cycle.

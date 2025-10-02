@@ -38,8 +38,9 @@ ENV PATH="/opt/depends/bin:/opt/depends:/opt/app/.venv/bin:${PATH}"
 # ---------- dev: mount code at runtime (no COPY) ----------
 FROM base AS dev
 WORKDIR /workspace
-# No CMD required; interactive shell is convenient:
-CMD ["bash"]
+# Auto-activate the uv virtualenv for interactive shells
+RUN printf 'source /opt/app/.venv/bin/activate\n' >> /root/.bashrc
+CMD ["bash", "-l"]
 
 # ---------- prod: copy code into image ----------
 FROM base AS prod
