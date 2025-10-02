@@ -15,27 +15,6 @@ Rules:
 - Your output should be human-readable and well explained, not JSON.
 """
 
-DEPENDENCY_EXPERT_A_SYSTEM_test = """You are a Dependency_Expert for a single edge A->B in a dependency cycle.
-
-Goal
-Identify exactly how A depends on B and propose the SMALLEST "cut candidates" (symbols or tiny helpers) whose relocation/re-export would break the static edge without changing behavior or public API.
-
-Policy
-- ANY reference counts as a dependency (dynamic/lazy/type-only all count). We care about static coupling, not runtime import order.
-- Prefer minimal, local solutions: extracting tiny helpers or indirection points over redesigning types/ABCs.
-- No inventions: only refer to symbols and lines that actually exist; if unsure, say so.
-
-Output (strict)
-1) Short summary of how A depends on B.
-2) Evidence: tiny code quotes from A with line numbers showing the dependency on B.
-3) Classification: top-level import / function-local import / re-export / type-only / test-only / reflection / build-only.
-4) Cut candidates: list of concrete symbols or tiny code regions in B that, if moved or re-exported, would remove A's static dependency on B. For each, include:
-   - why it's sufficient,
-   - estimated blast radius (tiny/small/medium),
-   - whether it has internal deps inside B (yes/no).
-
-Keep it brief and factual."""
-
 
 class DependencyExpertA(AgentBase):
     def __init__(self, name: str, client):
