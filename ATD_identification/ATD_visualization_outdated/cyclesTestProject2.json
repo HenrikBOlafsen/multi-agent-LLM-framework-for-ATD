@@ -1,0 +1,202 @@
+{
+  "cycles": [
+    {
+      "id": "mod_cycle_0",
+      "summary": "Module-level cycle between 4 modules",
+      "nodes": [
+        {
+          "id": "textPadder",
+          "type": "module",
+          "name": "textPadder"
+        },
+        {
+          "id": "numberModifiers",
+          "type": "module",
+          "name": "numberModifiers"
+        },
+        {
+          "id": "textWriter",
+          "type": "module",
+          "name": "textWriter"
+        },
+        {
+          "id": "textUpgrader",
+          "type": "module",
+          "name": "textUpgrader"
+        }
+      ],
+      "edges": [
+        {
+          "source": "textPadder",
+          "target": "numberModifiers",
+          "relation": "module_dep"
+        },
+        {
+          "source": "numberModifiers",
+          "target": "textWriter",
+          "relation": "module_dep"
+        },
+        {
+          "source": "textWriter",
+          "target": "textUpgrader",
+          "relation": "module_dep"
+        },
+        {
+          "source": "textUpgrader",
+          "target": "textPadder",
+          "relation": "module_dep"
+        }
+      ],
+      "definitions": []
+    },
+    {
+      "id": "mod_cycle_1",
+      "summary": "Module-level cycle between 3 modules",
+      "nodes": [
+        {
+          "id": "car",
+          "type": "module",
+          "name": "car"
+        },
+        {
+          "id": "calculateDistance",
+          "type": "module",
+          "name": "calculateDistance"
+        },
+        {
+          "id": "moon",
+          "type": "module",
+          "name": "moon"
+        }
+      ],
+      "edges": [
+        {
+          "source": "car",
+          "target": "calculateDistance",
+          "relation": "module_dep"
+        },
+        {
+          "source": "calculateDistance",
+          "target": "moon",
+          "relation": "module_dep"
+        },
+        {
+          "source": "moon",
+          "target": "car",
+          "relation": "module_dep"
+        }
+      ],
+      "definitions": []
+    },
+    {
+      "id": "mod_cycle_2",
+      "summary": "Module-level cycle between 2 modules",
+      "nodes": [
+        {
+          "id": "country",
+          "type": "module",
+          "name": "country"
+        },
+        {
+          "id": "city",
+          "type": "module",
+          "name": "city"
+        }
+      ],
+      "edges": [
+        {
+          "source": "country",
+          "target": "city",
+          "relation": "module_dep"
+        },
+        {
+          "source": "city",
+          "target": "country",
+          "relation": "module_dep"
+        }
+      ],
+      "definitions": []
+    },
+    {
+      "id": "func_cycle_0",
+      "summary": "Function-level cycle between 2 functions",
+      "nodes": [
+        {
+          "id": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.miniCycle.aaa)",
+          "type": "function",
+          "name": "aaa",
+          "file_path": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\miniCycle.py",
+          "span": {
+            "start_line": 1,
+            "end_line": 2
+          }
+        },
+        {
+          "id": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.miniCycle.bbb)",
+          "type": "function",
+          "name": "bbb",
+          "file_path": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\miniCycle.py",
+          "span": {
+            "start_line": 5,
+            "end_line": 6
+          }
+        }
+      ],
+      "edges": [
+        {
+          "source": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.miniCycle.aaa)",
+          "target": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.miniCycle.bbb)",
+          "relation": "function_call"
+        },
+        {
+          "source": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.miniCycle.bbb)",
+          "target": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\miniCycle.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.miniCycle.aaa)",
+          "relation": "function_call"
+        }
+      ]
+    },
+    {
+      "id": "func_cycle_1",
+      "summary": "Function-level cycle between 2 functions",
+      "nodes": [
+        {
+          "id": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\country.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.country.getLanguageOfCountry)",
+          "type": "function",
+          "name": "getLanguageOfCountry",
+          "file_path": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\country.py",
+          "span": {
+            "start_line": 29,
+            "end_line": 30
+          }
+        },
+        {
+          "id": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\city.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.city.getLanguageOfCity)",
+          "type": "function",
+          "name": "getLanguageOfCity",
+          "file_path": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\city.py",
+          "span": {
+            "start_line": 22,
+            "end_line": 23
+          }
+        }
+      ],
+      "edges": [
+        {
+          "source": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\country.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.country.getLanguageOfCountry)",
+          "target": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\city.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.city.getLanguageOfCity)",
+          "relation": "function_call"
+        },
+        {
+          "source": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\city.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.city.getLanguageOfCity)",
+          "target": "C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2\\country.py(C:\\Users\\olafs\\Documents\\StudieGreier\\Master\\DependencyGraphExperiments\\testProject2.country.getLanguageOfCountry)",
+          "relation": "function_call"
+        }
+      ]
+    }
+  ],
+  "metrics": {
+    "scc_count": 5,
+    "max_scc_size": 4,
+    "avg_scc_size": 2.6
+  }
+}

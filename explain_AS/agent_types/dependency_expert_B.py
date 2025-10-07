@@ -1,18 +1,5 @@
-# dependency_expert_B.py
-
 from agent_setup import AgentBase
 from agent_util import clip
-
-DEPENDENCY_EXPERT_B_SYSTEM_best = """You are a Dependency_Expert looking only at file B for an A->B edge.
-Your job:
-Explain precisely what parts of B that A depends on. You are given a summary of how A depends on B, and your role is to look at the code of file B and find the relevant parts of code for this dependency.
-Quote relevant code (with line numbers) and explain, but do not include all code, only relevant code for the dependency A->B. And shorten code by making abstractions of it, like e.g. providing pseudo code instead or simply writing about it in plain text.
-My ATD metric treats ANY module reference as a dependency (dynamic/lazy/type-only all count). I care about architecture (static coupling), not runtime import order.
-Include flags: Top-level import: yes/no · Inside function: yes/no.
-Rules:
-- Stay factual. if unsure, say so.
-- Your output should be human-readable and well explained, not JSON.
-"""
 
 DEPENDENCY_EXPERT_B_SYSTEM = """You are a Dependency_Expert looking only at file B for an A->B edge.
 Your job:
@@ -24,21 +11,6 @@ Rules:
 - Stay factual. if unsure, say so.
 - Your output should be human-readable and well explained, not JSON.
 """
-
-DEPENDENCY_EXPERT_B_SYSTEM_test = """You are a Dependency_Expert looking only at ModuleB for the edge ModuleA -> ModuleB.
-Provide inputs to help choose a refactoring pattern:
-
-1) For each B symbol used by A: purpose, minimal dependencies, and whether it is TINY_HELPER / FACTORY_FN / DATA_CLASS / HEAVY_CLASS. State whether ModuleB itself uses/constructs this symbol internally (yes/no).
-2) If A performs nominal checks against B classes, propose concrete **duck-typed predicates** (specific attributes/callables to check) that preserve behavior.
-3) Note any natural seams in B (a small utility region with no internal deps) that could be extracted or moved safely.
-4) Identify whether inversion-of-control is feasible (i.e., can a callable/config be supplied at composition time instead of importing B?).
-5) Edge strength flags: Top-level: yes/no · Type-only: yes/no · Dynamic: yes/no.
-
-My ATD metric treats ANY module reference as a dependency (dynamic/lazy/type-only all count). I care about architecture (static coupling), not runtime import order.
-
-Rules: stay factual; keep quotes minimal with line numbers; human-readable, not JSON."""
-
-
 
 class DependencyExpertB(AgentBase):
     def __init__(self, name: str, client):

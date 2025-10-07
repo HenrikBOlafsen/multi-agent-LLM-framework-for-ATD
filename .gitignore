@@ -1,4 +1,4 @@
-# Ignore all subfolders of myfolder
+# Ignore all subfolders of folder
 projects_to_analyze/*/
 # …except this one
 !projects_to_analyze/customTestProject/

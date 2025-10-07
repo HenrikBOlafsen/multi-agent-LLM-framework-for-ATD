@@ -1,4 +1,3 @@
-# agent_setup.py
 import os
 import requests
 from dataclasses import dataclass, field
@@ -73,7 +72,6 @@ class LLMClient:
         r.raise_for_status()
         data = r.json()
         content = data["choices"][0]["message"]["content"]
-        # Do not print here; AgentBase handles colored, labeled output.
         return content
     
 

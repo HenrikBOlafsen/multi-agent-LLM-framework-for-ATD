@@ -1,0 +1,19 @@
+{
+  "scc_count": 1,
+  "total_nodes_in_cyclic_sccs": 2,
+  "total_edges_in_cyclic_sccs": 2,
+  "total_loc_in_cyclic_sccs": 236,
+  "max_scc_size": 2,
+  "avg_scc_size": 2.0,
+  "sccs": [
+    {
+      "size": 2,
+      "edge_count": 2,
+      "density_directed": 1.0,
+      "edge_surplus_lb": 0,
+      "total_loc": 236,
+      "avg_loc_per_node": 118.0
+    }
+  ],
+  "cycle_pressure_lb": 0
+}

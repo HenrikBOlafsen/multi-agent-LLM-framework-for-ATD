@@ -1,0 +1,146 @@
+{
+  "schemaVersion" : "1.0",
+  "name" : "output_ATD_identification/result-modules-sdsm-file-sdsm",
+  "variables" : [ "/workspace/projects_to_analyze/tinydb/tinydb/__init__.py", "/workspace/projects_to_analyze/tinydb/tinydb/database.py", "/workspace/projects_to_analyze/tinydb/tinydb/middlewares.py", "/workspace/projects_to_analyze/tinydb/tinydb/mypy_plugin.py", "/workspace/projects_to_analyze/tinydb/tinydb/operations.py", "/workspace/projects_to_analyze/tinydb/tinydb/queries.py", "/workspace/projects_to_analyze/tinydb/tinydb/storages.py", "/workspace/projects_to_analyze/tinydb/tinydb/table.py", "/workspace/projects_to_analyze/tinydb/tinydb/utils.py", "/workspace/projects_to_analyze/tinydb/tinydb/version.py" ],
+  "cells" : [ {
+    "src" : 1,
+    "dest" : 4,
+    "values" : {
+      "Call" : 1.0
+    }
+  }, {
+    "src" : 1,
+    "dest" : 0,
+    "values" : {
+      "Import" : 1.0,
+      "Use" : 1.0
+    }
+  }, {
+    "src" : 8,
+    "dest" : 4,
+    "values" : {
+      "Use" : 1.0
+    }
+  }, {
+    "src" : 6,
+    "dest" : 0,
+    "values" : {
+      "Call" : 2.0
+    }
+  }, {
+    "src" : 1,
+    "dest" : 8,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0
+    }
+  }, {
+    "src" : 1,
+    "dest" : 7,
+    "values" : {
+      "Call" : 1.0,
+      "Import" : 1.0,
+      "Use" : 6.0,
+      "Contain" : 1.0
+    }
+  }, {
+    "src" : 7,
+    "dest" : 8,
+    "values" : {
+      "Import" : 1.0,
+      "Use" : 2.0,
+      "Contain" : 1.0
+    }
+  }, {
+    "src" : 5,
+    "dest" : 6,
+    "values" : {
+      "Use" : 1.0
+    }
+  }, {
+    "src" : 3,
+    "dest" : 8,
+    "values" : {
+      "Use" : 2.0
+    }
+  }, {
+    "src" : 1,
+    "dest" : 6,
+    "values" : {
+      "Import" : 1.0,
+      "Use" : 3.0,
+      "Contain" : 1.0
+    }
+  }, {
+    "src" : 5,
+    "dest" : 8,
+    "values" : {
+      "Call" : 6.0,
+      "Import" : 1.0,
+      "Use" : 6.0
+    }
+  }, {
+    "src" : 0,
+    "dest" : 6,
+    "values" : {
+      "Import" : 1.0,
+      "Use" : 1.0
+    }
+  }, {
+    "src" : 7,
+    "dest" : 4,
+    "values" : {
+      "Call" : 1.0
+    }
+  }, {
+    "src" : 2,
+    "dest" : 0,
+    "values" : {
+      "Use" : 1.0
+    }
+  }, {
+    "src" : 0,
+    "dest" : 9,
+    "values" : {
+      "Import" : 1.0
+    }
+  }, {
+    "src" : 7,
+    "dest" : 5,
+    "values" : {
+      "Import" : 1.0,
+      "Use" : 12.0
+    }
+  }, {
+    "src" : 7,
+    "dest" : 6,
+    "values" : {
+      "Import" : 1.0,
+      "Use" : 4.0
+    }
+  }, {
+    "src" : 0,
+    "dest" : 1,
+    "values" : {
+      "Import" : 1.0
+    }
+  }, {
+    "src" : 8,
+    "dest" : 6,
+    "values" : {
+      "Use" : 1.0
+    }
+  }, {
+    "src" : 0,
+    "dest" : 5,
+    "values" : {
+      "Import" : 1.0
+    }
+  }, {
+    "src" : 2,
+    "dest" : 6,
+    "values" : {
+      "Use" : 1.0
+    }
+  } ]
+}

@@ -1,17 +1,13 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-
-import json
-import time
-import argparse
+import os, json, time, argparse
 from collections import deque
 import networkx as nx
 
 from sdsm_utils import (
-    PROFILES,
-    parse_edge_kinds,
     build_graph_from_sdsm,
     nontrivial_sccs,
+    parse_edge_kinds_from_env,  # new helper
 )
 
 # ===== Tunables for representative cycles =====
@@ -160,8 +156,8 @@ def build_output(G: nx.DiGraph, sccs_with_cycles):
     return out
 
 
-def run_pipeline(sdsm_path: str, output_path: str, include_tests: bool, edge_kinds: set[str]):
-    G = build_graph_from_sdsm(sdsm_path, include_tests=include_tests, edge_kinds=edge_kinds)
+def run_pipeline(sdsm_path: str, output_path: str, edge_kinds: set[str]):
+    G = build_graph_from_sdsm(sdsm_path, edge_kinds=edge_kinds)
     print(f"Module graph: {G.number_of_nodes()} nodes, {G.number_of_edges()} edges")
 
     sccs = nontrivial_sccs(G)
@@ -183,11 +179,7 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser(description="Parse module-level SCCs & representative cycles from Depends SDSM.")
     ap.add_argument("sdsm_json", help="Depends SDSM JSON (module-level)")
     ap.add_argument("output_json", nargs="?", default="module_cycles.json", help="Output JSON path")
-    ap.add_argument("--include-tests", action="store_true", help="Include test/ and tests/ files")
-    ap.add_argument("--edge-profile", choices=sorted(PROFILES), default="import",
-                    help="Edge-kind profile (default: import)")
-    ap.add_argument("--edge-kinds", default="", help="Comma-separated kinds to override profile")
     args = ap.parse_args()
 
-    kinds = parse_edge_kinds(args.edge_profile, args.edge_kinds)
-    run_pipeline(args.sdsm_json, args.output_json, include_tests=args.include_tests, edge_kinds=kinds)
+    kinds = parse_edge_kinds_from_env(default_csv=os.getenv("EDGE_KINDS", "Import,Include,Extend,Implement,Mixin"))
+    run_pipeline(args.sdsm_json, args.output_json, edge_kinds=kinds)

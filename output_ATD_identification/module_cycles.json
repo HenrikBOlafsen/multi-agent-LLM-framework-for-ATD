@@ -1,0 +1,56 @@
+{
+  "sccs": [
+    {
+      "id": "scc_0",
+      "size": 2,
+      "edge_count": 2,
+      "nodes": [
+        {
+          "id": "__init__.py",
+          "type": "module",
+          "name": "__init__.py"
+        },
+        {
+          "id": "database.py",
+          "type": "module",
+          "name": "database.py"
+        }
+      ],
+      "edges": [
+        {
+          "source": "database.py",
+          "target": "__init__.py",
+          "relation": "module_dep"
+        },
+        {
+          "source": "__init__.py",
+          "target": "database.py",
+          "relation": "module_dep"
+        }
+      ],
+      "representative_cycles": [
+        {
+          "id": "scc_0_cycle_0",
+          "length": 2,
+          "nodes": [
+            "__init__.py",
+            "database.py"
+          ],
+          "edges": [
+            {
+              "source": "__init__.py",
+              "target": "database.py",
+              "relation": "module_dep"
+            },
+            {
+              "source": "database.py",
+              "target": "__init__.py",
+              "relation": "module_dep"
+            }
+          ],
+          "summary": "Representative cycle of length 2"
+        }
+      ]
+    }
+  ]
+}

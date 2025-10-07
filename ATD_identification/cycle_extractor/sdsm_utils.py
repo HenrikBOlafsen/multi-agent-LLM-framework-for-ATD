@@ -1,51 +1,17 @@
-#!/usr/bin/env python3
-"""Shared helpers for loading Depends SDSM and building graphs/metrics."""
+"""Shared helpers for loading Depends SDSM and building graphs/metrics (language-agnostic)."""
 from __future__ import annotations
 
-import json
-import os
+import json, os
 from typing import Iterable, Tuple, Set, Dict, List
 import networkx as nx
 
-# ----- Edge-kind profiles (documented & stable) -----
-PROFILES: Dict[str, Set[str]] = {
-    # import-level coupling (what your refactors actually change)
-    "import": {"Import", "Include"},
-    # structural: import + inheritance/interface/mixin
-    "structural": {"Import", "Include", "Extend", "Implement", "Mixin"},
-    # broadest (noisiest) view
-    "all": {
-        "Import", "Include", "Extend", "Implement", "Mixin",
-        "Call", "Cast", "Contain", "Create", "Parameter", "Return",
-        "Throw", "Use", "ImplLink",
-    },
-}
+def parse_edge_kinds_from_env(default_csv: str) -> Set[str]:
+    """EDGE_KINDS comes from environment (set by analyze_cycles.sh)."""
+    csv = os.getenv("EDGE_KINDS", default_csv) or ""
+    return {k.strip() for k in csv.split(",") if k.strip()}
 
-
-def parse_edge_kinds(profile: str | None, kinds_csv: str | None) -> Set[str]:
-    """Pick a set of edge kinds from a profile, optionally overridden by CSV."""
-    if kinds_csv and kinds_csv.strip():
-        return {k.strip() for k in kinds_csv.split(",") if k.strip()}
-    prof = (profile or "import").lower()
-    if prof not in PROFILES:
-        raise SystemExit(f"--edge-profile must be one of {sorted(PROFILES)}")
-    return PROFILES[prof]
-
-
-# ----- Paths & filtering -----
-def is_test_path(rel_path: str, skip_tests: bool) -> bool:
-    """Heuristic: ignore test modules if skip_tests=True."""
-    if not skip_tests:
-        return False
-    parts = rel_path.replace("\\", "/").split("/")
-    fname = parts[-1]
-    if any(p in {"test", "tests"} for p in parts):
-        return True
-    return fname.startswith("test_") or fname.endswith("_test.py")
-
-
+# ----- Paths -----
 def detect_repo_root(paths: Iterable[str]) -> str:
-    """Common root for absolute paths; respects REPO_ROOT if set."""
     env_root = os.getenv("REPO_ROOT")
     if env_root:
         return os.path.realpath(env_root)
@@ -55,34 +21,25 @@ def detect_repo_root(paths: Iterable[str]) -> str:
     except ValueError:
         return os.getcwd()
 
-
 def repo_relative_key(abs_path: str, repo_root: str) -> str:
-    """Repo-relative POSIX-ish key without .py; keep '__init__' unfused."""
+    """Repo-relative POSIX-ish key; keep original filename + extension."""
     ap = os.path.realpath(abs_path)
     rr = os.path.realpath(repo_root)
-    rel = os.path.relpath(ap, rr).replace("\\", "/")
-    if rel.endswith(".py"):
-        rel = rel[:-3]
-    return rel
+    return os.path.relpath(ap, rr).replace("\\", "/")
 
 def key_to_abs_path(key: str, repo_root: str) -> str:
-    # keys are repo-relative without .py, inkl. '__init__' unfused
-    return os.path.realpath(os.path.join(repo_root, key + ".py"))
+    return os.path.realpath(os.path.join(repo_root, key))
 
 def count_loc(abs_path: str) -> int:
-    # Physical LOC: counts non-blank lines. Robust against encoding.
     try:
         with open(abs_path, "r", encoding="utf-8", errors="ignore") as f:
             return sum(1 for line in f if line.strip())
     except (FileNotFoundError, IsADirectoryError):
         return 0
 
-
 # ----- SDSM -> graph -----
-def load_edges_from_sdsm(
-    path: str, include_tests: bool, edge_kinds: Set[str]
-) -> Tuple[Set[str], Set[Tuple[str, str]]]:
-    """Parse Depends SDSM (file granularity) into (nodes, edges)."""
+def load_edges_from_sdsm(path: str, edge_kinds: Set[str]) -> Tuple[Set[str], Set[Tuple[str, str]], str]:
+    """Parse Depends SDSM (file granularity) into (nodes, edges, repo_root)."""
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -96,7 +53,6 @@ def load_edges_from_sdsm(
 
     nodes: Set[str] = set()
     edges: Set[Tuple[str, str]] = set()
-    skip_tests = not include_tests
 
     for cell in data.get("cells", []):
         src_idx = cell.get("src")
@@ -104,7 +60,7 @@ def load_edges_from_sdsm(
         if src_idx is None or dst_idx is None:
             continue
         vals: Dict[str, float] = cell.get("values", {}) or {}
-        # filter by selected relation kinds
+        # keep only selected relation kinds (non-zero weight)
         if not any(k in edge_kinds and vals.get(k, 0) for k in vals):
             continue
 
@@ -112,49 +68,36 @@ def load_edges_from_sdsm(
         dst = key_from_idx.get(dst_idx, "")
         if not src or not dst or src == dst:
             continue
-        if is_test_path(src, skip_tests) or is_test_path(dst, skip_tests):
-            continue
 
-        # Keep SDSM direction (observed: for "Import", __init__ -> gui if __init__ imports gui)
         edges.add((src, dst))
-        nodes.add(src)
-        nodes.add(dst)
+        nodes.add(src); nodes.add(dst)
 
     return nodes, edges, repo_root
 
-
-def build_graph_from_sdsm(
-    path: str, include_tests: bool, edge_kinds: Set[str]
-) -> nx.DiGraph:
-    nodes, edges, repo_root = load_edges_from_sdsm(path, include_tests, edge_kinds)
+def build_graph_from_sdsm(path: str, edge_kinds: Set[str]) -> nx.DiGraph:
+    nodes, edges, repo_root = load_edges_from_sdsm(path, edge_kinds=edge_kinds)
     G = nx.DiGraph()
     G.add_nodes_from(nodes)
     G.add_edges_from(edges)
     G.graph["repo_root"] = repo_root
 
-    # add file path and LOC per node
     for n in G.nodes:
         ap = key_to_abs_path(n, repo_root)
         G.nodes[n]["abs_path"] = ap
         G.nodes[n]["loc"] = count_loc(ap)
     return G
 
-
-
 def nontrivial_sccs(G: nx.DiGraph) -> List[set]:
-    """List SCCs with size > 1, largest first."""
     sccs = [set(s) for s in nx.strongly_connected_components(G) if len(s) > 1]
     return sorted(sccs, key=len, reverse=True)
 
-
 def scc_metrics(G: nx.DiGraph) -> dict:
-    """Project-level SCC metrics including a 'cycle_pressure_lb' lower bound."""
     sccs = nontrivial_sccs(G)
     metrics = {
         "scc_count": len(sccs),
         "total_nodes_in_cyclic_sccs": 0,
         "total_edges_in_cyclic_sccs": 0,
-        "total_loc_in_cyclic_sccs": 0,   # <— NY
+        "total_loc_in_cyclic_sccs": 0,
         "max_scc_size": 0,
         "avg_scc_size": 0.0,
         "sccs": [],
@@ -188,7 +131,6 @@ def scc_metrics(G: nx.DiGraph) -> dict:
         metrics["total_nodes_in_cyclic_sccs"] += n
         metrics["total_edges_in_cyclic_sccs"] += m
         metrics["total_loc_in_cyclic_sccs"] += total_loc
-
 
     metrics["max_scc_size"] = max(sizes)
     metrics["avg_scc_size"] = round(sum(sizes) / len(sizes), 2)
