@@ -8,5 +8,6 @@ projects_to_analyze/*/
 __pycache__/
 *.pyc
 output/*
+output_ATD_identification/*
 .vscode/
 *.log
