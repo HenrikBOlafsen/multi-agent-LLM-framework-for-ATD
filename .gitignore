@@ -11,3 +11,5 @@ output/*
 output_ATD_identification/*
 .vscode/
 *.log
+.quality/*
+reports/*

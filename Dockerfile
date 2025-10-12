@@ -2,9 +2,9 @@
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS base
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl ca-certificates openjdk-17-jre-headless unzip \
+    curl ca-certificates openjdk-17-jre-headless unzip git \
  && rm -rf /var/lib/apt/lists/*
-
+    
 WORKDIR /opt/app
 COPY pyproject.toml uv.lock ./
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --no-install-project
