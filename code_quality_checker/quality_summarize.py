@@ -83,6 +83,17 @@ def pip_audit_counts(p):
     return {"vulnerable_deps": len(vulns)} if isinstance(vulns, list) else {"vulnerable_deps": None}
 
 def collect(folder: Path):
+    def safe_strip(p: Path):
+        try:
+            return p.read_text(encoding="utf-8").strip()
+        except Exception:
+            return ""
+    def safe_text(p: Path):
+        try:
+            return p.read_text(encoding="utf-8")
+        except Exception:
+            return ""
+
     return {
         "pytest": junit_counts(folder/"pytest.xml"),
         "coverage": {"line_percent": coverage_percent(folder/"coverage.xml")},
@@ -93,7 +104,19 @@ def collect(folder: Path):
         "vulture": {"suspects": vulture_suspects(folder/"vulture.txt")},
         "bandit": bandit_counts(folder/"bandit.json"),
         "pip_audit": pip_audit_counts(folder/"pip_audit.json"),
+        # --- provenance for reproducibility (paper-grade) ---
+        "provenance": {
+            "run_started_utc": safe_strip(folder/"run_started_utc.txt"),
+            "python_version":  safe_strip(folder/"python_version.txt"),
+            "git_sha":         safe_strip(folder/"git_sha.txt"),
+            "git_branch":      safe_strip(folder/"git_branch.txt"),
+            "uname":           safe_strip(folder/"uname.txt"),
+            "tool_versions":   safe_text(folder/"tool_versions.txt"),
+            "pip_freeze":      safe_text(folder/"pip_freeze.txt"),
+            "src_paths":       safe_text(folder/"src_paths.txt").splitlines(),
+        },
     }
+
 
 def deltas(a, b):
     def d(x, y):

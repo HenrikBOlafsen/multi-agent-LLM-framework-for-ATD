@@ -8,6 +8,11 @@
 # Writes to: .quality/<repo_name>/<label>
 set -euo pipefail
 
+# --- reproducibility controls (deterministic-ish runs) ---
+export PYTHONHASHSEED=0
+export TZ=UTC
+
+
 if [[ $# -lt 1 ]]; then
   echo "Usage: $0 <REPO_PATH> [LABEL] [SRC_HINT]" >&2
   exit 2
@@ -37,6 +42,9 @@ OUT_ROOT="${OUT_ROOT:-.quality}"
 OUT_DIR="$OUT_ROOT/$REPO_NAME/$LABEL"
 mkdir -p "$OUT_DIR"
 OUT_ABS="$(realpath "$OUT_DIR")"
+
+# --- monotonic run timestamp (UTC) ---
+date -u +'%Y-%m-%dT%H:%M:%SZ' > "$OUT_ABS/run_started_utc.txt" 2>/dev/null || true
 
 # --- helpers ------------------------------------------------------------------
 detect_src_paths() {
@@ -119,10 +127,16 @@ if os.path.isfile(os.path.join(root,"poetry.lock")) or poetry_toml_has:
     run(["python","-m","pip","install","poetry"])
     run(["poetry","install","--with","dev,test"])
 
-# 4) tox / nox to pull env deps (best-effort)
+# 3.5) ensure the project-under-test (and its install_requires) are installed
+# This is the key bit that pulls in runtime deps like "MarkupSafe" for Werkzeug.
+run(["python","-m","pip","install", root])
+
+# 4) tox / nox tooling present (don't run tests here!)
 run(["python","-m","pip","install","tox","nox"])
-run(["tox","-q","-r","-e","py"])
-run(["nox","-s","tests"])
+
+# Try to create tox envs without running tests (helps pull dev deps in some repos)
+# It's okay if this no-ops or fails; we still fall back below.
+run(["tox","-q","-r","-e","py","--notest"])
 
 # 5) safety net: common test deps
 run(["python","-m","pip","install",
@@ -200,6 +214,8 @@ if [[ $IS_GIT -eq 1 ]]; then
   git -C "$WT_ROOT" rev-parse --short HEAD > "$OUT_ABS/git_sha.txt" || true
   git -C "$WT_ROOT" branch --show-current  > "$OUT_ABS/git_branch.txt" || true
 fi
+uname -a > "$OUT_ABS/uname.txt" 2>/dev/null || true
+
 
 # Helper: expand tool args for multiple src paths
 cov_args=()
@@ -220,10 +236,23 @@ done
   # Best-effort install of test/dev deps for this repo
   install_test_deps "$WT_ROOT"
 
+  # Snapshot the exact Python packages and tool versions used
+  python -m pip freeze > "$OUT_ABS/pip_freeze.txt" 2>/dev/null || true
+  {
+    echo -n "pytest: ";    (pytest --version    2>/dev/null || true)
+    echo -n "ruff: ";      (ruff --version      2>/dev/null || true)
+    echo -n "mypy: ";      (mypy --version      2>/dev/null || true)
+    echo -n "radon: ";     (radon --version     2>/dev/null || true)
+    echo -n "vulture: ";   (vulture --version   2>/dev/null || true)
+    echo -n "bandit: ";    (bandit --version    2>/dev/null || true)
+    echo -n "pip-audit: "; (pip-audit --version 2>/dev/null || true)
+  } > "$OUT_ABS/tool_versions.txt"
+
+
   # Avoid watchdog backend issues in containers
   export WATCHDOG_FORCE_POLLING=1
 
-  # Functionality (tests) + coverage XML (if pytest is available)
+  # Functionality (tests) + coverage XML
   if command -v pytest >/dev/null 2>&1; then
     _pp="${PYTHONPATH:-}"
     [[ -d "src" ]] && export PYTHONPATH="src:${PYTHONPATH:-}"
@@ -231,18 +260,38 @@ done
     test_arg="."
     [[ -d "tests" ]] && test_arg="tests"
 
-    # Global timeout so a single test can't hang the whole run
-    pytest --maxfail=1 --disable-warnings -q \
-      --timeout=20 --timeout-method=thread \
-      --durations=25 \
-      --junitxml "$OUT_ABS/pytest.xml" \
-      "${cov_args[@]}" --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
-      "$test_arg" || true
+    # Always capture the full test log so errors don't scroll away
+    TEST_LOG="$OUT_ABS/pytest_full.log"
+
+    # If the repo defines a nox test session, prefer it (projects often rely on it)
+    if [[ -f "noxfile.py" ]] && command -v nox >/dev/null 2>&1; then
+      # Pass through junitxml + coverage options to pytest via nox’ “--” passthrough
+      # Many Pallets-style repos (like Werkzeug) expect to be run this way.
+      nox -s tests -- \
+        -n 0 \
+        -q --disable-warnings \
+        --timeout=20 --timeout-method=thread \
+        --durations=25 \
+        --junitxml "$OUT_ABS/pytest.xml" \
+        "${cov_args[@]}" --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
+        "$test_arg" 2>&1 | tee "$TEST_LOG" || true
+    else
+      # Fallback: run pytest directly
+      pytest -q \
+        -n 0 \
+        --disable-warnings \
+        --timeout=20 --timeout-method=thread \
+        --durations=25 \
+        --junitxml "$OUT_ABS/pytest.xml" \
+        "${cov_args[@]}" --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
+        "$test_arg" 2>&1 | tee "$TEST_LOG" || true
+    fi
 
     export PYTHONPATH="$_pp"
   else
     echo "pytest not found; skipping tests & coverage" >&2
   fi
+
 
   # Readability / standards (ruff)
   if command -v ruff >/dev/null 2>&1; then
