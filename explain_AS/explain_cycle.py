@@ -4,6 +4,7 @@ from agent_setup import LLMClient, log_section, log_line, Ansi
 from agent_types.dependency_expert_A import DependencyExpertA
 from agent_types.dependency_expert_B import DependencyExpertB
 from agent_types.refactoring_expert import RefactoringExpert
+from agent_types.cycle_expert import CycleExpert
 from agent_util import default_node_to_path, read_file
 
 # -------------------------
@@ -11,7 +12,7 @@ from agent_util import default_node_to_path, read_file
 # -------------------------
 
 class Orchestrator:
-    def __init__(self, client: LLMClient, package_root: str = "kombu"):
+    def __init__(self, client: LLMClient, package_root: str):
         self.client = client
         self.package_root = package_root
 
@@ -60,134 +61,104 @@ class Orchestrator:
             )
             dependency_summaries_B[a_path] = (b_path, dep_summary_b)
 
-        # 3) Refactoring_Expert -> final prompt
-        log_section("Cycle Expert (propose refactoring prompt)", "green")
+        # 3) Cycle_Expert -> final prompt
+        log_section("Cycle Expert (explain cycle)", "green")
+        cycle_expert = CycleExpert("Cycle_Expert", self.client)
+        cycle_explanation = cycle_expert.explain(dependency_summaries_A, dependency_summaries_B)
+
+        # 4) Refactoring_Expert -> final prompt
+        log_section("Refactoring Expert (propose refactoring prompt)", "green")
         refactoring_expert = RefactoringExpert("Refactoring_Expert", self.client)
-        #cycle_expert = CycleExpert("Cycle_Expert", self.client)
-        final_prompt = refactoring_expert.propose(dependency_summaries_A, dependency_summaries_B)
+        final_prompt = refactoring_expert.propose(dependency_summaries_A, dependency_summaries_B, cycle_explanation)
         return final_prompt
 
 # -------------------------
-# Example usage
+# CLI / Example usage
 # -------------------------
 
 if __name__ == "__main__":
-    # Adjust these to your environment
-    #LLM_URL = "http://localhost:1234/v1/chat/completions"
-    #LLM_URL = "http://host.docker.internal:1234/v1/chat/completions" # LM studio (when running in docker)
-    LLM_URL = "http://host.docker.internal:8000/v1/chat/completions" # UiO fox cluster (when running in docker)
+    import argparse
+    import json
+    import os
+    from pathlib import Path
+    from typing import Dict
 
-    #API_KEY = "lm-studio"  # LM Studio default
-    API_KEY = "token"  # LM Studio default
-    MODEL = "Qwen/Qwen3-Coder-30B-A3B-Instruct" # "mistralai/Devstral-Small-2507" # "mistralai/magistral-small-2509" # "meta-llama/Llama-3.1-70B-Instruct"  # "google/gemma-3-12b" / your 24B devstral id
+    # Defaults (can still be overridden via args or env)
+    DEFAULT_LLM_URL = os.environ.get("LLM_URL", "http://host.docker.internal:8000/v1/chat/completions")
+    DEFAULT_API_KEY = os.environ.get("API_KEY", "token")
+    DEFAULT_MODEL = os.environ.get("MODEL", "Qwen/Qwen3-Coder-30B-A3B-Instruct")
 
-    # Repo root: path to your local kombu checkout (folder containing 'kombu/' package)
-    REPO_ROOT = "../projects_to_analyze/click"
+    parser = argparse.ArgumentParser(description="Explain a dependency cycle and propose a refactoring prompt.")
+    parser.add_argument("--repo-root", type=str, help="Absolute or relative path to the repository root.")
+    parser.add_argument("--src-root", type=str, help="Package root relative to repo (e.g., 'kombu' or 'src/werkzeug').")
+    parser.add_argument("--cycle-json", type=str, help="Path to module_cycles.json output from analyze_cycles.sh.")
+    parser.add_argument("--cycle-id", type=str, help="ID of the representative cycle to explain (e.g., 'scc_0_cycle_0').")
+    parser.add_argument("--out-prompt", type=str, default=None, help="If set, write the final refactoring prompt to this file.")
+    parser.add_argument("--llm-url", type=str, default=DEFAULT_LLM_URL, help="LLM API URL (overrides env LLM_URL).")
+    parser.add_argument("--api-key", type=str, default=DEFAULT_API_KEY, help="LLM API key (overrides env API_KEY).")
+    parser.add_argument("--model", type=str, default=DEFAULT_MODEL, help="Model name or id (overrides env MODEL).")
 
-    # Example cycle (connection <-> messaging) — or use your transport/* example
-    cycle_kombu = {
-        "id": "scc_demo",
-        "length": 2,
-        "nodes": ["connection", "messaging"],
-        "edges": [
-            {"source": "connection", "target": "messaging", "relation": "module_dep"},
-            {"source": "messaging", "target": "connection", "relation": "module_dep"},
-        ],
-        "summary": "Representative cycle of length 2",
-    }
+    args = parser.parse_args()
 
-    cycle_tinydb = {
-        "id": "scc_0_cycle_0",
-        "length": 2,
-        "nodes": [
-            "__init__",
-            "database"
-        ],
-        "edges": [
-            {
-                "source": "__init__",
-                "target": "database",
-                "relation": "module_dep"
-            },
-            {
-                "source": "database",
-                "target": "__init__",
-                "relation": "module_dep"
-            }
-        ],
-        "summary": "Representative cycle of length 2"
-    }
+    def load_cycle_from_json(json_path: str, cycle_id: str) -> Dict:
+        data = json.loads(Path(json_path).read_text())
+        for scc in data.get("sccs", []):
+            for cyc in scc.get("representative_cycles", []):
+                if cyc.get("id") == cycle_id:
+                    return cyc
+        raise KeyError(f"Cycle id '{cycle_id}' not found in {json_path}")
 
-    cycle_click = {
-        "id": "scc_0_cycle_0",
-        "length": 2,
-        "nodes": [
-            "_compat",
-            "_winconsole"
-        ],
-        "edges": [
-            {
-                "source": "_compat",
-                "target": "_winconsole",
-                "relation": "module_dep"
-            },
-            {
-                "source": "_winconsole",
-                "target": "_compat",
-                "relation": "module_dep"
-            }
-        ],
-        "summary": "Representative cycle of length 2"
-    }
+    # If CLI args provided, run in non-interactive mode
+    if args.repo_root and args.src_root and args.cycle_json and args.cycle_id:
+        LLM_URL = args.llm_url
+        API_KEY = args.api_key
+        MODEL = args.model
 
-    cycle_werkzeug = {
-        "id": "scc_0_cycle_0",
-        "length": 5,
-        "nodes": [
-            "__init__",
-            "datastructures/range",
-            "datastructures/__init__",
-            "urls",
-            "serving"
-        ],
-        "edges": [
-            {
-                "source": "__init__",
-                "target": "datastructures/range",
-                "relation": "module_dep"
-            },
-            {
-                "source": "datastructures/range",
-                "target": "datastructures/__init__",
-                "relation": "module_dep"
-            },
-            {
-                "source": "datastructures/__init__",
-                "target": "urls",
-                "relation": "module_dep"
-            },
-            {
-                "source": "urls",
-                "target": "serving",
-                "relation": "module_dep"
-            },
-            {
-                "source": "serving",
-                "target": "__init__",
-                "relation": "module_dep"
-            }
-        ],
-        "summary": "Representative cycle of length 5"
-    }
+        # Assumes LLMClient, Orchestrator, log_section, log_line, Ansi exist above
+        client = LLMClient(LLM_URL, API_KEY, MODEL, temperature=0.1, max_tokens=16384)
+        orch = Orchestrator(client, package_root=args.src_root)
 
-    client = LLMClient(LLM_URL, API_KEY, MODEL, temperature=0.1, max_tokens=16384)
-    orch = Orchestrator(client, package_root="src/click") # src/werkzeug
+        try:
+            cycle = load_cycle_from_json(args.cycle_json, args.cycle_id)
+            prompt = orch.run(args.repo_root, cycle)
+            log_section("FINAL REFACTORING PROMPT", "green")
+            print(prompt)
+            if args.out_prompt:
+                Path(args.out_prompt).parent.mkdir(parents=True, exist_ok=True)
+                Path(args.out_prompt).write_text(prompt)
+                log_line(f"Wrote final prompt to: {args.out_prompt}", Ansi.GREEN)
+            log_section("END", "green")
+        except Exception as e:
+            log_section("Pipeline error", "red")
+            print(e)
+            raise SystemExit(1)
+    else:
+        # Optional fallback demo (safe to keep/remove)
+        LLM_URL = DEFAULT_LLM_URL
+        API_KEY = DEFAULT_API_KEY
+        MODEL = DEFAULT_MODEL
 
-    try:
-        prompt = orch.run(REPO_ROOT, cycle_click)
-        log_section("FINAL REFACTORING PROMPT", "green")
-        print(prompt)
-        log_section("END", "green")
-    except Exception as e:
-        log_section("Pipeline error", "red")
-        print(e)
+        REPO_ROOT = "projects_to_analyze/kombu"
+        cycle_kombu = {
+            "id": "scc_demo",
+            "length": 2,
+            "nodes": ["connection.py", "messaging.py"],
+            "edges": [
+                {"source": "connection.py", "target": "messaging.py", "relation": "module_dep"},
+                {"source": "messaging.py", "target": "connection.py", "relation": "module_dep"},
+            ],
+            "summary": "Representative cycle of length 2",
+        }
+
+        client = LLMClient(LLM_URL, API_KEY, MODEL, temperature=0.1, max_tokens=16384)
+        orch = Orchestrator(client, package_root="kombu")
+
+        try:
+            prompt = orch.run(REPO_ROOT, cycle_kombu)
+            log_section("FINAL REFACTORING PROMPT", "green")
+            print(prompt)
+            log_section("END", "green")
+        except Exception as e:
+            log_section("Pipeline error", "red")
+            print(e)
+            raise SystemExit(1)
