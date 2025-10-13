@@ -95,7 +95,7 @@ class AgentBase:
     def ask(self, user_text: str) -> str:
         if not USE_SYSTEM_PROMPT and self.system_prompt:
             # Emulate a system prompt by inlining it at the top of the user message
-            user_text = f"{self.system_prompt}\n\n---\n\n{user_text}"
+            user_text = f"{self.system_prompt}\n\n---------\n\n{user_text}"
         # Avoid dumping file contents: only show a tiny preview.
         if SHOW_USER_PREVIEW:
             preview = truncate_for_console(user_text.strip(), USER_PREVIEW_MAX_CHARS)
