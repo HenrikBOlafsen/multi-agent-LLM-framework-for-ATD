@@ -1,0 +1,18 @@
+Repo: kombu
+SCC sizes: 6, 2, 2
+
+Repo: tinyDB
+SCC sizes: 2
+
+Repo: werkzeug
+SCC sizes: 5, 5
+
+Repo: click
+SCC sizes: 2
+
+Repo: twisted
+SCC sizes: 4, 2, 2
+Note: slow to run Depends on
+
+
+

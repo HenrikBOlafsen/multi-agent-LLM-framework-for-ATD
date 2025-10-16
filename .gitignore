@@ -3,6 +3,7 @@ projects_to_analyze/*/
 # …except this one
 !projects_to_analyze/customTestProject/
 
+.env
 .git
 .venv/
 __pycache__/
@@ -13,3 +14,4 @@ output_ATD_identification/*
 *.log
 .quality/*
 reports/*
+openhands_logs/*

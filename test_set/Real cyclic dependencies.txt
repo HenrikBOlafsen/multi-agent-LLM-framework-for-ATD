@@ -9,7 +9,6 @@ git rev-parse --abbrev-ref HEAD
 
 ID: 0
 Repo: kombu
-language: python
 commit: 03b1f82da3f41811635d469589570cac42968519
 commit date: 2025-09-08T13:14:02+06:00
 branch: main
@@ -20,7 +19,6 @@ perfect prompt: perfect_prompt_cycle_0.txt
 
 ID: 1
 Repo: tinyDB
-language: python
 commit: 10644a0e07ad180c5b756aba272ee6b0dbd12df8
 commit date: 2024-10-12T17:22:46+02:00
 branch: master
@@ -31,7 +29,6 @@ perfect prompt: perfect_prompt_cycle_1.txt
 
 ID: 2
 Repo: click
-language: python
 commit: 309ce9178707e1efaf994f191d062edbdffd5ce6
 commit date: 2025-09-23T20:29:00-07:00
 branch: main
@@ -42,10 +39,17 @@ perfect prompt: perfect_prompt_cycle_2.txt
 
 ID: 3
 Repo: werkzeug
-language: python
-commit: 309ce9178707e1efaf994f191d062edbdffd5ce6
-commit date: 2025-09-23T20:29:00-07:00
-branch: main
+
+
+----- NEW -----
+
+ID: 4
+Repo: sanic
 Cycle size: 2
-Cycle: _compat.py <-> _winconsole.py
-perfect prompt: perfect_prompt_cycle_2.txt
+Cycle: server/websockets/frame.py <-> server/websockets/impl.py
+
+
+ID: 5
+Repo: aiohttp
+Cycle size: 2
+Cycle: __init__.py <-> client_middleware_digest_auth.py

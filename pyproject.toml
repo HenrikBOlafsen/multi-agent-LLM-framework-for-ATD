@@ -8,6 +8,7 @@ dependencies = [
     "bandit>=1.8.6",
     "mypy>=1.18.2",
     "networkx>=3.5",
+    "openhands>=1.0.1",
     "pip-audit>=2.9.0",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",

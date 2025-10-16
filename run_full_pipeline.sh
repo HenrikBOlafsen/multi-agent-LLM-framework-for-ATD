@@ -11,7 +11,7 @@ set -euo pipefail
 #   explain_AS/explain_cycle.py
 #   explain_AS/select_cycle.py
 #   ATD_identification/cycle_extractor/analyze_cycles.sh
-#   output_ATD_identification/ (default OUTPUT_DIR)
+#   results/<repo-name>/ (default OUTPUT_DIR)
 
 if [[ $# -lt 2 || $# -gt 3 ]]; then
   echo "Usage: $0 REPO_PATH SRC_PATH [OUTPUT_DIR]" >&2
@@ -22,7 +22,10 @@ SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 REPO_PATH="${1%/}"
 SRC_PATH="${2%/}"                          # package root relative to REPO_PATH (e.g., 'kombu' or 'src/werkzeug')
-OUTPUT_DIR="${3:-output_ATD_identification}"
+# Default OUTPUT_DIR is the repo name (basename of REPO_PATH) unless explicitly provided
+REPO_BASENAME="$(basename "$REPO_PATH")"
+DEFAULT_OUT_PATH="results/$REPO_BASENAME"
+OUTPUT_DIR="${3:-$DEFAULT_OUT_PATH}"
 
 EXPLAIN_DIR="${SCRIPT_DIR}/explain_AS"
 ANALYZE_SH="${SCRIPT_DIR}/ATD_identification/cycle_extractor/analyze_cycles.sh"
@@ -35,12 +38,13 @@ EXPLAIN_PY="${EXPLAIN_DIR}/explain_cycle.py"
 [[ -f "$EXPLAIN_PY" ]] || { echo "ERROR: explain_cycle.py not found at $EXPLAIN_PY"; exit 1; }
 
 mkdir -p "$OUTPUT_DIR"
+mkdir -p "${OUTPUT_DIR}/output_ATD_identification"
 mkdir -p "${OUTPUT_DIR}/explanations"
 
 echo "== Step 1: Analyze cycles =="
-bash "$ANALYZE_SH" "$REPO_PATH/$SRC_PATH" "$OUTPUT_DIR"
+bash "$ANALYZE_SH" "$REPO_PATH/$SRC_PATH" "$OUTPUT_DIR/output_ATD_identification"
 
-CYCLES_JSON="${OUTPUT_DIR}/module_cycles.json"
+CYCLES_JSON="${OUTPUT_DIR}/output_ATD_identification/module_cycles.json"
 if [[ ! -f "$CYCLES_JSON" ]]; then
   echo "ERROR: Expected cycles JSON not found: $CYCLES_JSON" >&2
   exit 1
