@@ -1,0 +1,118 @@
+{
+  "pytest": {
+    "tests": 17,
+    "failures": 0,
+    "errors": 6,
+    "skipped": 11
+  },
+  "coverage": {
+    "line_percent": null
+  },
+  "ruff": {
+    "issues": 22671
+  },
+  "mypy": {
+    "errors": 0
+  },
+  "radon_cc": {
+    "total": 3609,
+    "by_rank": {
+      "C": 39,
+      "B": 190,
+      "A": 3378,
+      "D": 2
+    }
+  },
+  "radon_mi": {
+    "avg": 54.46,
+    "worst": 0.0,
+    "files": 157
+  },
+  "vulture": {
+    "suspects": 0
+  },
+  "bandit": {
+    "high": 0,
+    "medium": 8,
+    "low": 1939,
+    "total": 1947
+  },
+  "pip_audit": {
+    "vulnerable_deps": 0
+  },
+  "pyexamine": {
+    "total": 454,
+    "by_name": {
+      "High Number of Methods (NOM)": 30,
+      "High Lack of Cohesion of Methods (LCOM)": 27,
+      "High Response for a Class (RFC)": 29,
+      "High Number of Classes (NOCC)": 1,
+      "High Lines of Code (LOC)": 12,
+      "High Number of Classes (NOC)": 1,
+      "High Cyclomatic Complexity": 13,
+      "High Fan-out": 7,
+      "High Fan-in": 6,
+      "Long File": 8,
+      "Too Many Branches": 71,
+      "Potential Divergent Change": 32,
+      "Message Chains": 3,
+      "Speculative Generality": 6,
+      "Temporary Field": 27,
+      "Potential Shotgun Surgery": 5,
+      "Feature Envy": 8,
+      "Large Class": 10,
+      "Middle Man": 2,
+      "Alternative Classes with Different Interfaces": 1,
+      "Long Parameter List": 2,
+      "Long Method": 1,
+      "Scattered Functionality": 74,
+      "God Object": 12,
+      "Potential Improper API Usage": 20,
+      "Cyclic Dependency": 3,
+      "Unstable Dependency": 43
+    },
+    "by_kind": {
+      "High Number of Methods (NOM)": 30,
+      "High Lack of Cohesion of Methods (LCOM)": 27,
+      "High Response for a Class (RFC)": 29,
+      "High Number of Classes (NOCC)": 1,
+      "High Lines of Code (LOC)": 12,
+      "High Number of Classes (NOC)": 1,
+      "High Cyclomatic Complexity": 13,
+      "High Fan-out": 7,
+      "High Fan-in": 6,
+      "Long File": 8,
+      "Too Many Branches": 71,
+      "Potential Divergent Change": 32,
+      "Message Chains": 3,
+      "Speculative Generality": 6,
+      "Temporary Field": 27,
+      "Potential Shotgun Surgery": 5,
+      "Feature Envy": 8,
+      "Large Class": 10,
+      "Middle Man": 2,
+      "Alternative Classes with Different Interfaces": 1,
+      "Long Parameter List": 2,
+      "Long Method": 1,
+      "Scattered Functionality": 74,
+      "God Object": 12,
+      "Potential Improper API Usage": 20,
+      "Cyclic Dependency": 3,
+      "Unstable Dependency": 43
+    },
+    "by_type": {
+      "Structural": 205,
+      "Code": 97,
+      "Architectural": 152
+    },
+    "by_severity": {
+      "High": 77,
+      "Medium": 128,
+      "medium": 213,
+      "low": 27,
+      "high": 6,
+      "unspecified": 3
+    },
+    "files_aggregated": 1
+  }
+}

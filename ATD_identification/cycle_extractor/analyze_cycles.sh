@@ -5,8 +5,8 @@ set -euo pipefail
 #   ./analyze_cycles.sh PROJECT_PATH [OUTPUT_DIR]
 #
 # Edit the line below to change which dependency kinds are included.
-# Default = "structural": Import, Include, Extend, Implement, Mixin
-EDGE_KINDS="Import,Include,Extend,Implement,Mixin"
+# Default = "structural": Import, Extend, Implement, Mixin
+EDGE_KINDS="Import,Extend,Implement,Mixin"
 
 if [[ $# -lt 1 || $# -gt 2 ]]; then
   echo "Usage: $0 PROJECT_PATH [OUTPUT_DIR]"
@@ -15,10 +15,21 @@ fi
 
 PROJECT_PATH="${1%/}"
 OUTPUT_DIR="${2:-output_ATD_identification}"
+
+
+[[ -d "$PROJECT_PATH" ]] || { echo "ERROR: project path not found: $PROJECT_PATH" >&2; exit 1; }
 mkdir -p "$OUTPUT_DIR"
+
+# Force language; default to python unless caller overrides: LANGUAGE=python|java|cpp
+LANGUAGE="${LANGUAGE:-python}"
+case "$LANGUAGE" in
+  python|java|cpp) ;;
+  *) echo "ERROR: LANGUAGE must be one of: python, java, cpp (got '$LANGUAGE')" >&2; exit 2 ;;
+esac
 
 echo "Analyzing project: $PROJECT_PATH"
 echo "Output dir       : $OUTPUT_DIR"
+echo "Language         : $LANGUAGE"
 echo "Edge kinds       : $EDGE_KINDS"
 
 # Ensure depends-cli exists
@@ -27,27 +38,6 @@ if ! command -v depends-cli >/dev/null 2>&1; then
   exit 1
 fi
 DEP_CMD=(depends-cli)
-
-# --- pick language for Depends based on files present ---
-detect_lang() {
-  shopt -s nullglob globstar
-  local p="$PROJECT_PATH"
-  # Python
-  if compgen -G "$p/**/*.py" > /dev/null; then echo "python"; return; fi
-  # Java
-  if compgen -G "$p/**/*.java" > /dev/null; then echo "java"; return; fi
-  # C/C++
-  if compgen -G "$p/**/*.{c,cc,cpp,cxx,h,hpp}" > /dev/null; then echo "cpp"; return; fi
-  echo ""
-}
-
-LANGUAGE="$(detect_lang)"
-if [[ -z "$LANGUAGE" ]]; then
-  echo "ERROR: Could not detect project language (looked for .py, .java, C/C++)."
-  echo "Add a detector or set LANGUAGE manually in the script."
-  exit 2
-fi
-echo "Detected language : $LANGUAGE"
 
 # Depends output base (no .json; tool appends '-file.json')
 OUT_BASE="$OUTPUT_DIR/result-modules-sdsm"

@@ -13,6 +13,20 @@ COPY pyproject.toml uv.lock ./
 # make sure you've done: `uv add openhands` locally before building
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --no-install-project
 
+# Install PyExamine at the same ref
+ARG PYX_REF=eba4777fcef9987022bf739fc6ffeae1c883dae3
+RUN /opt/app/.venv/bin/pip install --no-cache-dir \
+    git+https://github.com/KarthikShivasankar/python_smells_detector.git@${PYX_REF}
+
+# Grab the default config from the repo at that ref
+RUN mkdir -p /opt/configs \
+ && curl -fsSL \
+      "https://raw.githubusercontent.com/KarthikShivasankar/python_smells_detector/${PYX_REF}/code_quality_config.yaml" \
+      -o /opt/configs/pyexamine_default.yaml
+
+# Ensure PATH contains your venv as before
+ENV PATH="/opt/app/.venv/bin:${PATH}"
+
 # ----- your existing "depends" tool setup (unchanged) -----
 ARG DEPENDS_ZIP="depends-0.9.7-package-20221030.zip"
 ARG DEPENDS_URL="https://github.com/multilang-depends/depends/releases/download/v0.9.7/${DEPENDS_ZIP}"

@@ -2,7 +2,7 @@
 # Usage:
 #   ./quality_collect.sh <REPO_PATH> [LABEL] [SRC_HINT]
 # Examples:
-#   ./quality_collect.sh projects_to_analyze/kombu main
+#   ./quality_collect.sh projects_to_analyze/kombu main kombu
 #   ./quality_collect.sh projects_to_analyze/kombu refactor-branch kombu
 #
 # Writes to: .quality/<repo_name>/<label>
@@ -38,10 +38,17 @@ LABEL="${2:-$DEFAULT_LABEL}"
 SRC_HINT="${3:-}"
 
 # ---- output dir --------------------------------------------------------------
+# Preferred (exact) target if provided by caller:
+#   OUT_DIR=/path/to/final/dir  ./quality_collect.sh ...
+# Back-compat default: OUT_ROOT/<repo>/<label>
 OUT_ROOT="${OUT_ROOT:-.quality}"
-OUT_DIR="$OUT_ROOT/$REPO_NAME/$LABEL"
-mkdir -p "$OUT_DIR"
-OUT_ABS="$(realpath "$OUT_DIR")"
+if [[ -n "${OUT_DIR:-}" ]]; then
+  FINAL_OUT_DIR="$OUT_DIR"
+else
+  FINAL_OUT_DIR="$OUT_ROOT/$REPO_NAME/$LABEL"
+fi
+mkdir -p "$FINAL_OUT_DIR"
+OUT_ABS="$(realpath "$FINAL_OUT_DIR")"
 
 # --- monotonic run timestamp (UTC) ---
 date -u +'%Y-%m-%dT%H:%M:%SZ' > "$OUT_ABS/run_started_utc.txt" 2>/dev/null || true
@@ -328,6 +335,37 @@ done
   if command -v pip-audit >/dev/null 2>&1; then
     pip-audit -f json -o "$OUT_ABS/pip_audit.json" || true
   fi
+
+  # PyExamine (Code Quality Analyzer)
+  if command -v analyze_code_quality >/dev/null 2>&1; then
+    PYX_DIR="$OUT_ABS/pyexamine"; mkdir -p "$PYX_DIR"
+
+    # 15-minute cap per source root; adjust if you like
+    PYX_TIMEOUT="${PYX_TIMEOUT:-15m}"
+
+    idx=0
+    for p in "${SRC_PATHS[@]}"; do
+      # Skip common non-source dirs defensively
+      case "$p" in
+        tests|test|t|docs|doc|build|dist|.venv|venv) continue;;
+      esac
+
+      base="$PYX_DIR/code_quality_report_${idx}"
+      echo "PyExamine on source root: $p  →  $base"
+      # Run with your default config baked into the image
+      # timeout exits non-zero if it hits the cap; we don’t fail the whole run
+      timeout -k 10s "$PYX_TIMEOUT" \
+        analyze_code_quality "$WT_ROOT/$p" \
+        --config "/opt/configs/pyexamine_default.yaml" \
+        --output "$base" || echo "PyExamine timed out or failed on $p" >&2
+      idx=$((idx+1))
+    done
+  else
+    echo "PyExamine (analyze_code_quality) not found; skipping." >&2
+  fi
+
+
+
 )
 
 echo "==> Collected metrics in $OUT_ABS"
