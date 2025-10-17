@@ -10,6 +10,7 @@ dependencies = [
     "networkx>=3.5",
     "openhands>=1.0.1",
     "pip-audit>=2.9.0",
+    "pydeps>=3.0.1",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",
     "radon>=6.0.1",

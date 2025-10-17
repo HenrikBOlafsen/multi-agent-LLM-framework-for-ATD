@@ -1,0 +1,14 @@
+# Default: treat files as text and use LF in the working tree
+* text=auto eol=lf
+
+# Be explicit for common code files
+*.py  text eol=lf
+*.sh  text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+
+# If you actually need Windows-native scripts, keep CRLF for those only:
+# *.bat text eol=crlf
+# *.ps1 text eol=crlf

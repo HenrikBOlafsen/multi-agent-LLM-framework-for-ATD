@@ -1497,6 +1497,7 @@ dependencies = [
     { name = "networkx" },
     { name = "openhands" },
     { name = "pip-audit" },
+    { name = "pydeps" },
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "radon" },
@@ -1513,6 +1514,7 @@ requires-dist = [
     { name = "networkx", specifier = ">=3.5" },
     { name = "openhands", specifier = ">=1.0.1" },
     { name = "pip-audit", specifier = ">=2.9.0" },
+    { name = "pydeps", specifier = ">=3.0.1" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
     { name = "radon", specifier = ">=6.0.1" },
@@ -2321,6 +2323,18 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/20/c5/dbbc27b814c71676593d1c3f718e6cd7d4f00652cefa24b75f7aa3efb25e/pydantic_settings-2.11.0.tar.gz", hash = "sha256:d0e87a1c7d33593beb7194adb8470fc426e95ba02af83a0f23474a04c9a08180", size = 188394, upload-time = "2025-09-24T14:19:11.764Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/83/d6/887a1ff844e64aa823fb4905978d882a633cfe295c32eacad582b78a7d8b/pydantic_settings-2.11.0-py3-none-any.whl", hash = "sha256:fe2cea3413b9530d10f3a5875adffb17ada5c1e1bab0b2885546d7310415207c", size = 48608, upload-time = "2025-09-24T14:19:10.015Z" },
+]
+
+[[package]]
+name = "pydeps"
+version = "3.0.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "stdlib-list" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/5a/03/ce4baba41362297576f84f2d1906af25e43b46cc368afda4ac8bfe4bfd81/pydeps-3.0.1.tar.gz", hash = "sha256:a57415a8fae2ff6840a199b7dfcfecb90c37e4b9b54b58a111808a3440bc03bc", size = 53070, upload-time = "2025-02-04T11:50:10.167Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a0/ea/663366200286a95fa6ac0ea3a67510cc5799983b102bddc845d9370bf1c8/pydeps-3.0.1-py3-none-any.whl", hash = "sha256:7c86ee63c9ee6ddd088c840364981c5aa214a994d323bb7fa4724fca30829bee", size = 47596, upload-time = "2025-02-04T11:50:07.717Z" },
 ]
 
 [[package]]
@@ -5556,6 +5570,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/a7/a5/d6f429d43394057b67a6b5bbe6eae2f77a6bf7459d961fdb224bf206eee6/starlette-0.48.0.tar.gz", hash = "sha256:7e8cee469a8ab2352911528110ce9088fdc6a37d9876926e73da7ce4aa4c7a46", size = 2652949, upload-time = "2025-09-13T08:41:05.699Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/be/72/2db2f49247d0a18b4f1bb9a5a39a0162869acf235f3a96418363947b3d46/starlette-0.48.0-py3-none-any.whl", hash = "sha256:0764ca97b097582558ecb498132ed0c7d942f233f365b86ba37770e026510659", size = 73736, upload-time = "2025-09-13T08:41:03.869Z" },
+]
+
+[[package]]
+name = "stdlib-list"
+version = "0.11.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/09/8d5c564931ae23bef17420a6c72618463a59222ca4291a7dd88de8a0d490/stdlib_list-0.11.1.tar.gz", hash = "sha256:95ebd1d73da9333bba03ccc097f5bac05e3aa03e6822a0c0290f87e1047f1857", size = 60442, upload-time = "2025-02-18T15:39:38.769Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/88/c7/4102536de33c19d090ed2b04e90e7452e2e3dc653cf3323208034eaaca27/stdlib_list-0.11.1-py3-none-any.whl", hash = "sha256:9029ea5e3dfde8cd4294cfd4d1797be56a67fc4693c606181730148c3fd1da29", size = 83620, upload-time = "2025-02-18T15:39:37.02Z" },
 ]
 
 [[package]]
