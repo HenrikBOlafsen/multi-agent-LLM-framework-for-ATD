@@ -356,7 +356,7 @@ done
       # timeout exits non-zero if it hits the cap; we don’t fail the whole run
       timeout -k 10s "$PYX_TIMEOUT" \
         analyze_code_quality "$WT_ROOT/$p" \
-        --config "/opt/configs/pyexamine_default.yaml" \
+        --config "/opt/configs/pyexamine_fast.yaml" \
         --output "$base" || echo "PyExamine timed out or failed on $p" >&2
       idx=$((idx+1))
     done

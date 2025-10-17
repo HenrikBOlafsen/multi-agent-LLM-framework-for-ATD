@@ -24,6 +24,13 @@ RUN mkdir -p /opt/configs \
       "https://raw.githubusercontent.com/KarthikShivasankar/python_smells_detector/${PYX_REF}/code_quality_config.yaml" \
       -o /opt/configs/pyexamine_default.yaml
 
+# Create a "fast" config by bumping the noisy thresholds
+RUN set -eu; \
+  sed -E \
+    -e '/^  DATA_CLUMPS_THRESHOLD:/{n;s/^(\s*value:).*/\1 999/;}' \
+    /opt/configs/pyexamine_default.yaml \
+    > /opt/configs/pyexamine_fast.yaml
+
 # Ensure PATH contains your venv as before
 ENV PATH="/opt/app/.venv/bin:${PATH}"
 

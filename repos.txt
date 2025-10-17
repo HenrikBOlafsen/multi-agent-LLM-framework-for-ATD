@@ -1,2 +1,1 @@
-kombu main kombu
-click main src/click
+django main django

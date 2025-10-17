@@ -118,7 +118,7 @@ if [[ $LLM_ACTIVE -eq 0 ]]; then
   echo "== Step 1: Identify cyclic dependencies =="
   # Force the analyzer to treat the project as Python — no guessing.
   export LANGUAGE=python
-  bash "$ANALYZE_SH" "$REPO_PATH/$SRC_REL_PATH" "$ATD_DIR"
+  bash "$ANALYZE_SH" "$REPO_PATH" "$SRC_REL_PATH" "$ATD_DIR"
 
   CYCLES_JSON="$ATD_DIR/module_cycles.json"
   [[ -f "$CYCLES_JSON" ]] || err "Expected cycles JSON not found: $CYCLES_JSON"
