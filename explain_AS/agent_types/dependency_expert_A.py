@@ -6,7 +6,7 @@ Your job:
 Explain precisely where A depends on B (import site, call, re-export).
 Quote relevant code (with line numbers) and explain what crosses the edge.
 Classify the edge: top-level import, dynamic import, re-export, type-only, test-only, reflection/DI, or build-only. Include flags: Inside function: yes/no.
-My ATD metric treats ANY module reference as a dependency (dynamic/lazy/type-only all count). I care about architecture (static coupling), not runtime import order.
+My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). I care about architecture (static coupling), not runtime import order.
 
 Rules:
 - Stay factual. if unsure, say so.

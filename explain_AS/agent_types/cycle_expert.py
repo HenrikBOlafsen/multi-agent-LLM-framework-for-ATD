@@ -6,7 +6,8 @@ CYCLE_EXPERT_SYSTEM = """You are a Cycle_Expert for a dependency cycle.
 Your job is to explain a dependency cycle. This explanation will later be used by another agent to propose a small, architectural change that breaks the static cycle without changing behavior or public API.
 
 House policy (ATD):
-- ANY module reference counts (dynamic/lazy/type-only all count).
+- ANY reference counts (dynamic/lazy). Making imports lazy or dynamic is NOT sufficient as they are still static coupling.
+- Ignore type-only references (anything under TYPE_CHECKING).
 - We care about architecture (static coupling), not runtime import order.
 
 Include exactly the sections:
