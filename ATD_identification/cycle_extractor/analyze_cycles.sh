@@ -44,7 +44,9 @@ PYDEPS_JSON="$(realpath "$OUTPUT_DIR")/pydeps.json"
 echo "Running pydeps on directory: $PKG_DIR"
 # Important: pass the *directory*, not the module name; avoids needing installed deps
 #pydeps "$PKG_DIR" --noshow --no-output --show-deps --deps-output "$PYDEPS_JSON"
-pydeps "$PKG_DIR" --noshow --no-output --show-deps --deps-output "$PYDEPS_JSON" --max-bacon=0
+#pydeps "$PKG_DIR" --noshow --no-output --show-deps --deps-output "$PYDEPS_JSON" --max-bacon=0
+export PACKAGE_NAME="$PKG_NAME"
+pydeps "$PKG_DIR" --noshow --no-output --show-deps --deps-output "$PYDEPS_JSON" --max-bacon=0 --only "$PKG_NAME"
 
 if [ ! -f "$PYDEPS_JSON" ]; then
   echo "ERROR: pydeps did not produce $PYDEPS_JSON"

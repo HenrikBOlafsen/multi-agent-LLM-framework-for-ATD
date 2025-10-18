@@ -21,6 +21,17 @@ Single-edge rule:
 - Replace nominal cross-checks (`isinstance(x, B.Class)`) with duck-typed predicates (attribute/callable checks) so the nominal import can be dropped.
 - Replace a direct import with a callback/event hook registered from the outside (composition root), keeping modules mutually unaware.
 - Import directly from leaf node instead of trough façade (like e.g. __init__)
+- Inline the minimal type or constant used across modules (especially under TYPE_CHECKING) so that the consumer no longer imports the provider; prefer duplication of tiny literals over cross-imports.
+- Convert an import-based reference to a forward declaration or string-based annotation when type information is all that's needed.
+- Move shared interfaces or types into a new neutral "_interfaces" or "_types" module that both sides depend on, but which has no other imports.
+- Encapsulate shared logic behind a minimal function or class passed in from composition root instead of direct import (a variant of dependency inversion).
+- If a cycle arises purely from test-only or example code, isolate those imports into test modules or docstring examples rather than production modules.
+
+Do not "solve" the cycle by:
+- duplicating large sections of code,
+- introducing unnecessary global singletons or registries,
+- moving all symbols into a shared util module unless they truly belong together,
+- or by suppressing imports via conditional imports that still imply architectural knowledge.
 
 ## Output format (exactly these sections, in order)
 Goal

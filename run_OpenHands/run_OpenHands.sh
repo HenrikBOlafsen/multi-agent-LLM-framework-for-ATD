@@ -47,8 +47,6 @@ TRAJ_PATH="$LOG_DIR/trajectory.json"
 abs() { python3 -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$1"; }
 PROMPT_ABS="$(abs "$PROMPT_PATH")"; LOG_DIR_ABS="$(abs "$LOG_DIR")"; OH_HOME_ABS="$(abs "$OH_HOME")"
 
-
-
 WORKBASE="$PWD/.openhands_tmp"
 WORKSPACE="$WORKBASE/$(basename "$REPO_SLUG")"
 mkdir -p "$WORKBASE" "$LOG_DIR" "$OH_HOME"
@@ -74,25 +72,52 @@ fi
 git switch -C "$NEW_BRANCH"
 popd >/dev/null
 
-echo "Running OpenHands (slug mode)…
-  repo:    $REPO_SLUG
-  base:    $BASE_BRANCH
-  new:     $NEW_BRANCH
-  prompt:  $PROMPT_ABS
-Logs: $RUN_LOG
-Trajectory: $TRAJ_PATH"
+echo "Running OpenHands (slug mode)…"
+echo "  repo:    $REPO_SLUG"
+echo "  base:    $BASE_BRANCH"
+echo "  new:     $NEW_BRANCH"
+echo "  prompt:  $PROMPT_ABS"
+echo "Logs: $RUN_LOG"
+echo "Trajectory: $TRAJ_PATH"
 
 echo "SANDBOX_VOLUMES: $WORKSPACE:/project:rw,$LOG_DIR:/logs:rw"
 test -f "$WORKSPACE/pyproject.toml" && echo "repo looks good" || echo "repo missing?"
 
+# Paths for mounting
+PROMPT_DIR="$(dirname "$PROMPT_ABS")"
+
 # Run OpenHands headless (prompt as-is)
 set -o pipefail
-docker run --rm -it \
-  --volumes-from "$HOSTNAME" \
-  -e DOCKER_HOST \
+
+# TTY flags: avoid '-t' when piping to tee
+TTY_FLAGS=""
+if [ -t 1 ] && [ -t 0 ]; then
+  TTY_FLAGS="-it"
+elif [ -t 0 ]; then
+  TTY_FLAGS="-i"
+fi
+
+# Harden image defaults even if env exports empty strings
+: "${OPENHANDS_IMAGE:=docker.all-hands.dev/all-hands-ai/openhands:0.59}"
+: "${RUNTIME_IMAGE:=docker.all-hands.dev/all-hands-ai/runtime:0.59-nikolaik}"
+
+echo "Using OpenHands image : $OPENHANDS_IMAGE"
+echo "Using runtime image   : $RUNTIME_IMAGE"
+
+# Mount the repo at /workspace (OpenHands uses this path internally)
+# Mount logs at /logs, and mount the prompt's directory read-only so -f is valid
+PROMPT_DIR="$(dirname "$PROMPT_ABS")"
+
+docker run --rm $TTY_FLAGS \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v "$WORKSPACE:/workspace:rw" \
+  -v "$LOG_DIR_ABS:/logs:rw" \
+  -v "$PROMPT_DIR:$PROMPT_DIR:ro" \
+  $( [ -n "${DOCKER_HOST:-}" ] && printf -- '-e DOCKER_HOST=%s ' "$DOCKER_HOST" || true ) \
   -e SANDBOX_RUNTIME_CONTAINER_IMAGE="$RUNTIME_IMAGE" \
   -e SANDBOX_USER_ID="$(id -u)" \
-  -e SANDBOX_VOLUMES="$WORKSPACE:$WORKSPACE:rw,$LOG_DIR:$LOG_DIR:rw" \
+  -e SANDBOX_VOLUMES="$WORKSPACE:/workspace:rw,$LOG_DIR_ABS:/logs:rw" \
+  -e PYTHONPATH="/workspace:${PYTHONPATH:-}" \
   -e LLM_MODEL="$LLM_MODEL" \
   -e LLM_BASE_URL="$LLM_BASE_URL" \
   -e LLM_API_KEY="$LLM_API_KEY" \
@@ -100,11 +125,12 @@ docker run --rm -it \
   -e SAVE_TRAJECTORY_PATH="/logs/trajectory.json" \
   "$OPENHANDS_IMAGE" \
   python -m openhands.core.main \
-    -d "$WORKSPACE" \
+    -d "/workspace" \
     -f "$PROMPT_ABS" \
     -i "$MAX_ITERS" \
-    --no-auto-continue 2>&1 | tee "$RUN_LOG"
+    2>&1 | tee "$RUN_LOG"
 RUN_EXIT=$?
+
 
 
 if [ $RUN_EXIT -ne 0 ]; then

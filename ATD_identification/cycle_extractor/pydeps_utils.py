@@ -2,9 +2,9 @@
 from __future__ import annotations
 import json, os, sys
 from typing import Dict, List, Tuple
-import networkx as nx
 from functools import lru_cache
 import importlib.machinery
+import networkx as nx
 
 def load_pydeps(pydeps_json: str) -> Tuple[Dict[str, List[str]], Dict[str, str]]:
     """Normalize pydeps JSON to (imports, paths)."""
@@ -15,11 +15,11 @@ def load_pydeps(pydeps_json: str) -> Tuple[Dict[str, List[str]], Dict[str, str]]
     paths   = {m: obj.get("path")            for m, obj in raw.items() if isinstance(obj, dict)}
     return imports, paths
 
-def is_path_like(s: str) -> bool:
+def _is_path_like(s: str) -> bool:
     return isinstance(s, str) and ("/" in s or "\\" in s) and s.endswith(".py")
 
 @lru_cache(maxsize=None)
-def safe_find_spec(mod: str) -> str | None:
+def _safe_find_spec(mod: str) -> str | None:
     try:
         spec = importlib.machinery.PathFinder.find_spec(mod, sys.path)
         if spec and getattr(spec, "origin", None) and spec.origin != "built-in":
@@ -28,41 +28,43 @@ def safe_find_spec(mod: str) -> str | None:
         pass
     return None
 
-def module_to_file(mod: str, paths: Dict[str, str], package_name: str) -> str | None:
-    """Prefer pydeps `path`; otherwise accept path-like keys; otherwise bounded spec lookup."""
+def _module_to_file(mod: str, paths: Dict[str, str], pkg: str) -> str | None:
+    """Prefer pydeps path; else accept path-like mod; else bounded spec for our package names."""
     p = paths.get(mod)
     if p:
         return p
-    if is_path_like(mod):
+    if _is_path_like(mod):
         return mod
-    # Only try resolving names that look like they belong to our package.
-    if package_name and (mod == package_name or mod.startswith(package_name + ".")):
-        return safe_find_spec(mod)
+    if pkg and (mod == pkg or mod.startswith(pkg + ".")):
+        return _safe_find_spec(mod)
     return None
 
-def repo_rel(path: str, root: str) -> str:
+def _repo_rel(path: str, root: str) -> str:
     return os.path.relpath(os.path.realpath(path), os.path.realpath(root)).replace("\\", "/")
 
 def build_graph_from_pydeps(pydeps_json: str, repo_root: str) -> nx.DiGraph:
-    """Fast graph build: resolve each module once, filter to repo, then connect via dict lookups."""
+    """
+    Resolve each module once, keep only files inside repo_root, then connect edges via dict lookups.
+    Assumes pydeps was run with --only "$PKG_NAME" to avoid externals in the first place.
+    """
     imports, paths = load_pydeps(pydeps_json)
     root = os.path.realpath(repo_root)
-    package_name = os.getenv("PACKAGE_NAME", "")
+    pkg  = os.getenv("PACKAGE_NAME", "")
 
-    # 1) module -> abs path (in repo only)
+    # Map module -> abs path (filtered to repo)
     mod_abs: Dict[str, str] = {}
     for mod in imports.keys():
-        p = module_to_file(mod, paths, package_name)
+        p = _module_to_file(mod, paths, pkg)
         if not p:
             continue
         rp = os.path.realpath(p)
         if rp.startswith(root):
             mod_abs[mod] = rp
 
-    # 2) module -> repo-relative key
-    mod_key: Dict[str, str] = {m: repo_rel(p, root) for m, p in mod_abs.items()}
+    # Map module -> repo key
+    mod_key: Dict[str, str] = {m: _repo_rel(p, root) for m, p in mod_abs.items()}
 
-    # 3) edges via dict lookups (no per-edge I/O)
+    # Edges
     edges = []
     for src_mod, deps in imports.items():
         skey = mod_key.get(src_mod)
@@ -70,27 +72,22 @@ def build_graph_from_pydeps(pydeps_json: str, repo_root: str) -> nx.DiGraph:
             continue
         for dmod in deps or []:
             dkey = mod_key.get(dmod)
-            if not dkey or dkey == skey:
-                continue
-            edges.append((skey, dkey))
+            if dkey and dkey != skey:
+                edges.append((skey, dkey))
 
-    # 4) graph + abs_path attributes (LOC handled elsewhere)
     G = nx.DiGraph()
     G.add_nodes_from(mod_key.values())
     G.add_edges_from(edges)
 
+    # Attach abs_path for LOC later
     abs_map = {mod_key[m]: mod_abs[m] for m in mod_key.keys()}
     for n in G.nodes():
         G.nodes[n]["abs_path"] = abs_map.get(n, os.path.join(root, n))
-
     G.graph["repo_root"] = root
     return G
 
-# ---- SCC helpers & metrics (LOC computed only for SCC nodes) ----
+# ---- metrics helpers (LOC counted only for SCC nodes) ----
 from functools import lru_cache as _lru
-
-def nontrivial_sccs(G: nx.DiGraph):
-    return [set(s) for s in nx.strongly_connected_components(G) if len(s) > 1]
 
 @_lru(maxsize=None)
 def _count_loc(abs_path: str) -> int:
@@ -99,6 +96,9 @@ def _count_loc(abs_path: str) -> int:
             return sum(1 for line in f if line.strip())
     except (FileNotFoundError, IsADirectoryError):
         return 0
+
+def nontrivial_sccs(G: nx.DiGraph):
+    return [set(s) for s in nx.strongly_connected_components(G) if len(s) > 1]
 
 def scc_metrics(G: nx.DiGraph) -> dict:
     sccs = nontrivial_sccs(G)
@@ -124,12 +124,7 @@ def scc_metrics(G: nx.DiGraph) -> dict:
         dens = m / (n * (n - 1)) if n > 1 else 0.0
         m_und = sub.to_undirected(as_view=True).number_of_edges()
         edge_surplus_lb = max(0, m_und - (n - 1))
-
-        total_loc = 0
-        for u in s:
-            ap = G.nodes[u].get("abs_path")
-            if ap:
-                total_loc += _count_loc(ap)
+        total_loc = sum(_count_loc(G.nodes[u].get("abs_path", "")) for u in s)
 
         metrics["sccs"].append({
             "size": n,

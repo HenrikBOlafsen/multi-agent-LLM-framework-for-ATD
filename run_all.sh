@@ -29,6 +29,14 @@ if [[ "${6:-}" == "--LLM-active" ]]; then
   LLM_ACTIVE=1
 fi
 
+# Collect pass-through for without-explanations (accept either spelling)
+PASS_NOEXPLAIN=""
+for a in "$@"; do
+  if [[ "$a" == "--without-explanations" || "$a" == "--without-explanation" ]]; then
+    PASS_NOEXPLAIN="--without-explanations"
+  fi
+done
+
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 RUN_PIPELINE="${SCRIPT_DIR}/run_pipeline.sh"
 
@@ -86,13 +94,18 @@ while IFS=$' \t' read -r REPO_NAME MAIN_BRANCH SRC_REL || [[ -n "${REPO_NAME:-}"
     # LLM phase → create next iter branch with experiment id
     NEW_BRANCH="$(next_branch_after_iter "$ITER" "$EXPERIMENT_ID")"
     bash "$RUN_PIPELINE" "$REPO_DIR" "$BRANCH_NAME" "$SRC_REL" "$OUT_DIR" \
-      --LLM-active --new-branch "$NEW_BRANCH"
+      --LLM-active --new-branch "$NEW_BRANCH" $PASS_NOEXPLAIN
     # (Alternative: omit --new-branch and let run_pipeline derive it)
     # bash "$RUN_PIPELINE" "$REPO_DIR" "$BRANCH_NAME" "$SRC_REL" "$OUT_DIR" \
-    #   --LLM-active --experiment "$EXPERIMENT_ID" --iter "$ITER"
+    #   --LLM-active --experiment "$EXPERIMENT_ID" --iter "$ITER" $PASS_NOEXPLAIN
   fi
 
 done < "$REPOS_FILE"
 
 echo
 echo "✅ All done."
+
+# Notify via ntfy.sh (optional)
+if command -v curl >/dev/null 2>&1; then
+  curl -fsS -d "ATD batch finished (exp=${EXPERIMENT_ID:-?}, iter=${ITER:-?})" https://ntfy.sh/my-atd-build-abc123 >/dev/null 2>&1 || true
+fi

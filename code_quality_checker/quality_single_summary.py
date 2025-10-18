@@ -87,7 +87,7 @@ def pyexamine_summary(folder: Path):
     if not px.exists():
         return None
 
-    # support multiple outputs if you run per-src root
+    # Support one or many outputs
     csv_files = sorted(px.glob("code_quality_report_*.csv"))
     if not csv_files:
         single = px / "code_quality_report.csv"
@@ -96,47 +96,72 @@ def pyexamine_summary(folder: Path):
     if not csv_files:
         return None
 
+    # Canonical buckets
+    type_buckets = ["Architectural", "Code", "Structural"]
+    sev_buckets  = ["High", "Medium", "Low"]
+    def norm_type(s): 
+        s = (s or "").strip()
+        return s if s in type_buckets else "Unspecified"
+    def norm_sev(s):
+        s = (s or "").strip().capitalize()
+        return s if s in sev_buckets else "Unspecified"
+
     total = 0
     by_name = {}
-    by_type = {}
-    by_sev  = {}
+    by_type = {t: 0 for t in type_buckets + ["Unspecified"]}
+    by_severity = {s: 0 for s in sev_buckets + ["Unspecified"]}
+    # Type x Severity counts
+    by_type_severity = {
+        t: {s: 0 for s in sev_buckets + ["Unspecified"]}
+        for t in by_type.keys()
+    }
+
     files_aggregated = 0
 
     for path in csv_files:
         try:
             with path.open(newline="", encoding="utf-8") as f:
                 reader = csv.DictReader(f)
-                # build a case-insensitive map of header -> original header
+                # case-insensitive header access
                 headers = { (h or "").strip().lower(): h for h in (reader.fieldnames or []) }
-
-                name_col = headers.get("name") or headers.get("smell") or headers.get("smell name")
-                type_col = headers.get("type") or headers.get("category") or headers.get("smell_type")
-                sev_col  = headers.get("severity")
+                type_col = headers.get("type")         # "Type"
+                name_col = headers.get("name")         # "Name"
+                sev_col  = headers.get("severity")     # "Severity"
 
                 for row in reader:
                     total += 1
+                    typ = norm_type(row.get(type_col, "")) if type_col else "Unspecified"
+                    sev = norm_sev(row.get(sev_col, "")) if sev_col else "Unspecified"
                     name = (row.get(name_col) or "unknown").strip() if name_col else "unknown"
-                    typ  = (row.get(type_col)  or "unspecified").strip() if type_col else "unspecified"
-                    sev  = (row.get(sev_col)   or "unspecified").strip() if sev_col  else "unspecified"
 
+                    by_type[typ] += 1
+                    by_severity[sev] += 1
+                    by_type_severity[typ][sev] += 1
                     by_name[name] = by_name.get(name, 0) + 1
-                    by_type[typ]  = by_type.get(typ, 0) + 1
-                    by_sev[sev]   = by_sev.get(sev, 0) + 1
 
             files_aggregated += 1
         except Exception:
-            # ignore bad files and continue
+            # ignore problematic files and continue
             continue
 
-    # keep by_kind as alias of by_name for backward-compat
+    def weighted(sev_counts):
+        # 3*High + 1*Medium
+        return 3*sev_counts.get("High", 0) + 1*sev_counts.get("Medium", 0)
+
+    # Per-type weighted
+    per_type_weighted = { t: weighted(by_type_severity[t]) for t in by_type_severity }
+
     return {
         "total": total,
-        "by_name": by_name,
-        "by_kind": by_name,
-        "by_type": by_type,
-        "by_severity": by_sev,
+        "by_name": by_name,                  # detailed, for drill-downs (don’t put in the paper table)
+        "by_type": by_type,                  # Architectural / Code / Structural / Unspecified
+        "by_severity": by_severity,          # High / Medium / Low / Unspecified
+        "by_type_severity": by_type_severity,# matrix
+        "weighted_total": weighted(by_severity),
+        "weighted_by_type": per_type_weighted,
         "files_aggregated": files_aggregated
     }
+
 
 
 
