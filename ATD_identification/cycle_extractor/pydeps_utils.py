@@ -226,7 +226,7 @@ def scc_metrics(G: nx.DiGraph) -> dict:
     metrics = {
         "scc_count": len(sccs),
         "total_nodes_in_cyclic_sccs": 0,
-        "total_edges_in_cclic_sccs": 0,
+        "total_edges_in_cyclic_sccs": 0,
         "total_loc_in_cyclic_sccs": 0,
         "max_scc_size": 0,
         "avg_scc_size": 0.0,
@@ -256,7 +256,7 @@ def scc_metrics(G: nx.DiGraph) -> dict:
             "avg_loc_per_node": round(total_loc / n, 1) if n else 0.0,
         })
         metrics["total_nodes_in_cyclic_sccs"] += n
-        metrics["total_edges_in_cclic_sccs"] += m
+        metrics["total_edges_in_cyclic_sccs"] += m
         metrics["total_loc_in_cyclic_sccs"] += total_loc
 
     metrics["max_scc_size"] = max(sizes)

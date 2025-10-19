@@ -1,5 +1,6 @@
 kombu main kombu
 click main src/click
 django main django
-typer main typer
-dynaconf main dynaconf
+typer master typer
+dynaconf master dynaconf
+httpx master httpx

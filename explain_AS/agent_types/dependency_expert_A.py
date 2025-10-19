@@ -4,7 +4,7 @@ from agent_util import clip
 DEPENDENCY_EXPERT_A_SYSTEM = """You are a Dependency_Expert for a single edge A->B in a cycle.
 Your job:
 Explain precisely where A depends on B (import site, call, re-export).
-Quote relevant code (with line numbers) and explain what crosses the edge.
+Quote relevant code (with line numbers) and explain, but do not include all code, only relevant code for the dependency A->B. And shorten code by making abstractions of it, like e.g. providing pseudo code instead or simply writing about it in plain text.
 Classify the edge: top-level import, dynamic import, re-export, type-only, test-only, reflection/DI, or build-only. Include flags: Inside function: yes/no.
 My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). I care about architecture (static coupling), not runtime import order.
 
@@ -21,7 +21,7 @@ class DependencyExpertA(AgentBase):
         self.reset()
         user = f"""File A: {file_path_A}. File B {file_path_B}.
 
-Please summarize how file A depends on file B, for later use by other agents. Only caring about static coupling.
+Please summarize how file A depends on file B, for later use by other agents. Only caring about static coupling. Name the files by their actual names (don't call them A and B).
 
 Here is file A:
 
@@ -30,7 +30,7 @@ Here is file A:
 === END FILE ===
 
 """
-        return self.ask(user)
+        return clip(self.ask(user))
 
     def answer_question(self, file_path: str, file_text: str, question: str) -> str:
         # For follow-ups, include the file again (24B context). Keep it light; model should quote minimally.

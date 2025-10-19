@@ -31,7 +31,7 @@ def default_node_to_path(repo_root: str, package_root: str, node: str) -> str:
     parts = rel.split("/") if rel else []
     return os.path.join(repo_root, *( [pkg] if pkg else [] ), *parts)
 
-def clip(text: str, max_chars: int = 100000) -> str:
+def clip(text: str, max_chars: int = 50000) -> str:
     """Safety clip for very large files"""
     if len(text) <= max_chars:
         return text

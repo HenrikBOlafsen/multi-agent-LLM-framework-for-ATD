@@ -34,11 +34,11 @@ STRICT EMISSION RULES:
 - Output **only** the following two sections, in this exact order, bounded by the sentinels:
 <<<BEGIN_REFACTORING_PROMPT>>>
 Cycle (concise)
-Technique (step-by-step)
+Technique
 <<<END_REFACTORING_PROMPT>>>
 - “Cycle (concise)” = 3-6 sentences that clearly name the specific static edge you will remove (A→B), why that edge exists, and why removing it is lowest-risk and breaks the cycle without new ones.
-- “Technique (step-by-step)” = an executable plan: file-level moves/creations/deletions, exact import path changes, any re-exports to preserve public API, and a final verification checklist (graph check + tests).
-- Do not include any other text before <<<BEGIN_REFACTORING_PROMPT>>> or after <<<END_REFACTORING_PROMPT>>>.
+- “Technique” = Do not give too detailed of a plan. No step by step list. But do give some loose directions of possible approaches and what you reccomend.
+- Make sure both sections are inside <<<BEGIN_REFACTORING_PROMPT>>> <<<END_REFACTORING_PROMPT>>>.
 """
 
 
@@ -60,7 +60,7 @@ class RefactoringExpert(AgentBase):
             for i, (a, (b, txt)) in enumerate(dep_summaries_B.items())]
         )
 
-        user = f"""{REFACTORING_EXPERT_PROMPT}
+        user = f"""Here is the data:
 
 Context (edges A->B with summaries):
 {A_deps_text}

@@ -31,7 +31,7 @@ Done when
 - No new cycles are created in the dependency graph
 
 This is how you check that the edge A->B in the cycle has been successfully broken:
-- There is not a single import X from B or import B in the script A. Not as top-level import and not even as a nested import inside a function or class ot whatever (except if under TYPE_CHECKING).
+- There is not a single import X from B or import B in the script A. Not as top-level import and not even as a nested import inside a function or class or whatever (except if under TYPE_CHECKING).
 - If you introduce a new file, make sure the new file does not just make the cycle longer. E.g. if new file is C, don't make A->B->A into A->C->B->A.
 - Make sure the dependency is not just partially broken. It is not enough to remove just some of the imports. They ALL need to be removed (For the given edge. Except if under TYPE_CHECKING).
 """
