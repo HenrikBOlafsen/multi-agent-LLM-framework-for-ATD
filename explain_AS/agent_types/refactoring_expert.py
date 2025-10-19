@@ -1,7 +1,7 @@
 from agent_setup import AgentBase
 from typing import Dict, Tuple
 
-REFACTORING_EXPERT_SYSTEM = """You are a Refactoring_Expert for a dependency cycle.
+REFACTORING_EXPERT_PROMPT = """You are a Refactoring Expert for a dependency cycle.
 Your job: propose an ARCHITECTURAL change that breaks the cycle without changing behavior or public API.
 
 ATD rules:
@@ -11,34 +11,40 @@ ATD rules:
 - No new cycles.
 
 Single-edge rule:
-- Break the cycle by removing EXACTLY ONE static edge. Make sure it is the edge that is the easiest to break (least chance of codebase to break) while also being an actual useful/good refactoring.
+- Break the cycle by removing EXACTLY ONE static edge. Choose the edge that is the easiest/safest to break while still being a good refactor.
 
-## Refactoring techniques catalog (you are not to choose from this list but rather use it for inspiration. Feel free to use multiple. E.g. duck-typing is often useful addition to the other techniques etc.)
-- Extract tiny cross-imported helpers into a private, dependency-free helper module (helper files should never import anything from the project, rather use duck-typing when relevant). Re-export from the original module to keep public imports working, and to avoid code duplication.
-- Move a lightweight symbol (function/constant/tiny utility) from one side to the other to align with ownership; keep public API via re-export. Only do this when the moved symbol is natural to have in the new location.
-- Dependency inversion via a provider function/parameter: the consumer stops importing the provider module and instead receives the behavior (callable/instance) from the caller/composition root.
-- Introduce a minimal local protocol/ABC **only if** it adds no new import edges (e.g., a tiny type defined inside the consumer or inline typing). Prefer duck typing; use a protocol/ABC as a last resort.
-- Split a mixed-responsibility module (ModuleB → ModuleB_core + ModuleB_features), moving only what ModuleA needs into a core part that has no reverse dependency.
-- Replace nominal cross-checks (`isinstance(x, B.Class)`) with duck-typed predicates (attribute/callable checks) so the nominal import can be dropped.
-- Replace a direct import with a callback/event hook registered from the outside (composition root), keeping modules mutually unaware.
-- Import directly from leaf node instead of trough façade (like e.g. __init__)
+How to verify the chosen edge A->B is fully broken:
+- There is not a single import of B from A (no top-level and no nested imports anywhere; TYPE_CHECKING-only is allowed).
+- If you introduce a new file, it must not import back to the original files involved in the cycle.
+- Do not partially break the edge: remove **all** imports for the chosen edge (except TYPE_CHECKING).
 
-## Output format (exactly these sections, in order)
-Goal
-Important (exact text:) "Please refactor to break this cycle, without increasing architectural technical debt elsewhere (e.g., no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy/type-only all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not runtime import order."
-Why this exists (short)
-Technique (describe what to do, not exact code; step-by-step. Include a step at the end "Any remaining changes needed to make sure the rest of the codebase will work fine after the change."; if code is moved, it must be removed from the old location; require re-exports if public paths would/might otherwise break)
-Scope & guardrails
-Done when (make sure to include that tests should be conducted to make sure code is still working and the cycle was actually broken)
+Refactoring techniques catalog (for inspiration; you may mix them or use other techniques):
+- Extract tiny cross-imported helpers into a private, dependency-free helper module (helpers should avoid importing the project; prefer duck typing). Re-export as needed to keep public imports working.
+- Move a lightweight symbol (function/constant/tiny utility) to the side that naturally owns it; preserve public API via re-export.
+- Dependency inversion via a provider function/parameter so the consumer stops importing the provider.
+- Introduce a minimal local protocol/ABC only if it adds no new import edges (prefer duck typing).
+- Split a mixed-responsibility module into a dependency-free core plus features.
+- Replace nominal cross-checks (isinstance against B.Class) with duck-typed predicates so the nominal import can be dropped.
+- Replace a direct import with a callback/event hook registered from the outside (composition root).
+- Import directly from a leaf instead of through a façade (__init__).
 
-The Technique section should be the main part of the prompt. Make sure to include ANY info or techniques that can be useful to the person refactoring the code.
+Please refactor to break this cycle, without increasing architectural technical debt elsewhere (e.g., no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not just runtime import order.
 
-I often run into the problem that the refactoring does not break the cycle but rather just worsen it, so make sure this does not happen from your technique.
+STRICT EMISSION RULES:
+- Output **only** the following two sections, in this exact order, bounded by the sentinels:
+<<<BEGIN_REFACTORING_PROMPT>>>
+Cycle (concise)
+Technique (step-by-step)
+<<<END_REFACTORING_PROMPT>>>
+- “Cycle (concise)” = 3-6 sentences that clearly name the specific static edge you will remove (A→B), why that edge exists, and why removing it is lowest-risk and breaks the cycle without new ones.
+- “Technique (step-by-step)” = an executable plan: file-level moves/creations/deletions, exact import path changes, any re-exports to preserve public API, and a final verification checklist (graph check + tests).
+- Do not include any other text before <<<BEGIN_REFACTORING_PROMPT>>> or after <<<END_REFACTORING_PROMPT>>>.
 """
+
 
 class RefactoringExpert(AgentBase):
     def __init__(self, name: str, client):
-        super().__init__(name, client, REFACTORING_EXPERT_SYSTEM)
+        super().__init__(name, client, REFACTORING_EXPERT_PROMPT)
 
     def propose(self, dep_summaries_A: Dict[str, Tuple[str, str]], dep_summaries_B: Dict[str, Tuple[str, str]], cycle_explanation: str) -> str:
         """
@@ -54,7 +60,7 @@ class RefactoringExpert(AgentBase):
             for i, (a, (b, txt)) in enumerate(dep_summaries_B.items())]
         )
 
-        user = f"""Generate a refactoring plan in the required format, to break EXACTLY ONE of the edges. We don't want to overcomplicate.
+        user = f"""{REFACTORING_EXPERT_PROMPT}
 
 Context (edges A->B with summaries):
 {A_deps_text}

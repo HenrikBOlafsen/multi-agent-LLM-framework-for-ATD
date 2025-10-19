@@ -1,0 +1,76 @@
+from agent_setup import AgentBase
+from typing import Dict, Tuple
+
+REFACTORING_EXPERT_SYSTEM = """You are a Refactoring_Expert for a dependency cycle.
+Your job: propose an ARCHITECTURAL change that breaks the cycle without changing behavior or public API.
+
+ATD rules:
+- ANY reference counts (dynamic/lazy). Making imports lazy or dynamic is NOT sufficient as they are still static coupling.
+- Ignore type-only references (anything under TYPE_CHECKING).
+- We care about static coupling, not just runtime import order.
+- No new cycles.
+
+Single-edge rule:
+- Break the cycle by removing EXACTLY ONE static edge. Make sure it is the edge that is the easiest to break (least chance of codebase to break) while also being an actual useful/good refactoring.
+
+## Refactoring techniques catalog (you are not to choose from this list but rather use it for inspiration. Feel free to use multiple. E.g. duck-typing is often useful addition to the other techniques etc.)
+- Extract tiny cross-imported helpers into a private, dependency-free helper module (helper files should never import anything from the project, rather use duck-typing when relevant). Re-export from the original module to keep public imports working, and to avoid code duplication.
+- Move a lightweight symbol (function/constant/tiny utility) from one side to the other to align with ownership; keep public API via re-export. Only do this when the moved symbol is natural to have in the new location.
+- Dependency inversion via a provider function/parameter: the consumer stops importing the provider module and instead receives the behavior (callable/instance) from the caller/composition root.
+- Introduce a minimal local protocol/ABC **only if** it adds no new import edges (e.g., a tiny type defined inside the consumer or inline typing). Prefer duck typing; use a protocol/ABC as a last resort.
+- Split a mixed-responsibility module (ModuleB → ModuleB_core + ModuleB_features), moving only what ModuleA needs into a core part that has no reverse dependency.
+- Replace nominal cross-checks (`isinstance(x, B.Class)`) with duck-typed predicates (attribute/callable checks) so the nominal import can be dropped.
+- Replace a direct import with a callback/event hook registered from the outside (composition root), keeping modules mutually unaware.
+- Import directly from leaf node instead of trough façade (like e.g. __init__)
+
+## Output format (exactly these sections, in order)
+Goal
+Important (exact text:) "Please refactor to break this cycle, without increasing architectural technical debt elsewhere (e.g., no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not just runtime import order."
+Why this exists (short)
+Technique (describe what to do, not exact code; step-by-step. Include a step at the end "Any remaining changes needed to make sure the rest of the codebase will work fine after the change."; if code is moved, it must be removed from the old location; require re-exports if public paths would/might otherwise break)
+Scope & guardrails
+Done when (make sure to include that tests should be conducted to make sure code is still working. And include that it should check that the cycle was actually broken. And the exact text: "Make sure the dependency is not just partially broken. For the edge A->B you decide to break there should be NO imports from A to B (except potentially under TYPE_CHECKING).")
+
+The Technique section should be the main part of the prompt. Make sure to include ANY info or techniques that can be useful to the person refactoring the code.
+
+I often run into the problem that the refactoring does not actually break the cycle but rather just worsen it, so make sure this does not happen from your technique. And also that the dependency is not just partially broken. 
+
+STRICT EMISSION RULES:
+- Output only the final refactoring prompt between the markers. Before the markers you can think freely, and it will not be included in the actual refactoring prompt.
+- Write the actual final refactoring prompt inside these sentinels:
+<<<BEGIN_REFACTORING_PROMPT>>>
+... (the required sections, in order; no extra headings)
+<<<END_REFACTORING_PROMPT>>>
+"""
+
+class RefactoringExpert(AgentBase):
+    def __init__(self, name: str, client):
+        super().__init__(name, client, REFACTORING_EXPERT_SYSTEM)
+
+    def propose(self, dep_summaries_A: Dict[str, Tuple[str, str]], dep_summaries_B: Dict[str, Tuple[str, str]], cycle_explanation: str) -> str:
+        """
+        dep_summaries: list of (A_path, B_path, dep_expert_text)
+        """
+        self.reset()
+        A_deps_text = "\n\n".join(
+            [f"Edge {i+1}: {a} → {b}\n{txt}"
+            for i, (a, (b, txt)) in enumerate(dep_summaries_A.items())]
+        )
+        B_deps_text = "\n\n".join(
+            [f"Edge {i+1}: {a} → {b}\n{txt}"
+            for i, (a, (b, txt)) in enumerate(dep_summaries_B.items())]
+        )
+
+        user = f"""First think, then generate a refactoring plan in the required format.
+
+Context (edges A->B with summaries):
+{A_deps_text}
+
+Additional detail (what parts of B are used by A):
+{B_deps_text}
+
+Cycle explanation (generated by another LLM):
+{cycle_explanation}
+"""
+
+        return self.ask(user)

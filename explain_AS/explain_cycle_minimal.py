@@ -22,14 +22,18 @@ Cycle size: {size}
 
 Remove exactly one static edge, ensuring no new cycles are introduced and behavior remains unchanged.
 
-Please refactor to break this cycle, without increasing architectural technical debt elsewhere (e.g., no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy/type-only all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not runtime import order.
+Please refactor to break this cycle, without increasing architectural technical debt elsewhere (e.g., no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not just runtime import order.
 
 Done when
 - The cycle is broken
 - All public APIs remain identical
 - Tests pass confirming no behavioral changes
 - No new cycles are created in the dependency graph
-- The refactored code maintains the same import structure and functionality
+
+This is how you check that the edge A->B in the cycle has been successfully broken:
+- There is not a single import X from B or import B in the script A. Not as top-level import and not even as a nested import inside a function or class ot whatever (except if under TYPE_CHECKING).
+- If you introduce a new file, make sure the new file does not just make the cycle longer. E.g. if new file is C, don't make A->B->A into A->C->B->A.
+- Make sure the dependency is not just partially broken. It is not enough to remove just some of the imports. They ALL need to be removed (For the given edge. Except if under TYPE_CHECKING).
 """
 
 def load_cycle(cycles_path: Path, cycle_id: str):

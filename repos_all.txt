@@ -1,3 +1,5 @@
 kombu main kombu
 click main src/click
 django main django
+typer main typer
+dynaconf main dynaconf

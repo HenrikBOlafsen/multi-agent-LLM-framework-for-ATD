@@ -2,14 +2,14 @@
 set -euo pipefail
 
 # Usage:
-#   run_all.sh PATH_TO_REPOS REPOS_FILE REFACTORING_ITERATION EXPERIMENT_ID [OUTPUT_ROOT] [--LLM-active]
+#   ./run_all.sh PATH_TO_REPOS REPOS_FILE REFACTORING_ITERATION EXPERIMENT_ID [OUTPUT_ROOT] [--LLM-active]
 #
 # Examples:
 #   # Non-LLM phase for experiment "expA"
-#   run_all.sh projects_to_analyze/ repos.txt 0 expA results/
+#   ./run_all.sh projects_to_analyze/ repos.txt 0 expA results/
 #
 #   # LLM phase (creates next branch fix-cycle-1-expA from main)
-#   run_all.sh projects_to_analyze/ repos.txt 0 expA results/ --LLM-active
+#   ./run_all.sh projects_to_analyze/ repos.txt 0 expA results/ --LLM-active
 #
 # REPOS_FILE lines:  repo_name  main_branch  src_rel_path
 #   kombu main kombu
@@ -76,7 +76,15 @@ while IFS=$' \t' read -r REPO_NAME MAIN_BRANCH SRC_REL || [[ -n "${REPO_NAME:-}"
 
   BRANCH_NAME="$(branch_for_iter "$MAIN_BRANCH" "$ITER" "$EXPERIMENT_ID")"
   OUT_DIR="${OUTPUT_ROOT%/}/${REPO_NAME}/${BRANCH_NAME}"
+
+  # Skip repos already marked done for this branch
+  if [[ -f "$OUT_DIR/.repo_done" ]]; then
+    echo "==> Skipping ${REPO_NAME} (branch ${BRANCH_NAME}): already marked done at $OUT_DIR/.repo_done"
+    continue
+  fi
+
   mkdir -p "$OUT_DIR"
+
 
   echo
   echo "==================== ${REPO_NAME} :: iter ${ITER} :: exp ${EXPERIMENT_ID} ===================="

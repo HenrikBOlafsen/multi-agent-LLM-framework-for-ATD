@@ -6,6 +6,9 @@ from agent_types.dependency_expert_B import DependencyExpertB
 from agent_types.refactoring_expert import RefactoringExpert
 from agent_types.cycle_expert import CycleExpert
 from agent_util import default_node_to_path, read_file
+import re
+from explain_cycle_minimal import TEMPLATE as BASE_TEMPLATE, cycle_chain_str
+
 
 # -------------------------
 # Orchestrator
@@ -15,6 +18,11 @@ class Orchestrator:
     def __init__(self, client: LLMClient, package_root: str):
         self.client = client
         self.package_root = package_root
+
+    @staticmethod
+    def _extract_refactoring_prompt(text: str) -> str:
+        m = re.search(r"<<<BEGIN_REFACTORING_PROMPT>>>(.*?)<<<END_REFACTORING_PROMPT>>>", text, re.DOTALL)
+        return m.group(1).strip() if m else text.strip()
 
     def run(self, repo_root: str, cycle: Dict) -> str:
         """Run the full pipeline on one cycle dict."""
@@ -69,8 +77,21 @@ class Orchestrator:
         # 4) Refactoring_Expert -> final prompt
         log_section("Refactoring Expert (propose refactoring prompt)", "green")
         refactoring_expert = RefactoringExpert("Refactoring_Expert", self.client)
-        final_prompt = refactoring_expert.propose(dependency_summaries_A, dependency_summaries_B, cycle_explanation)
-        return final_prompt
+        raw = refactoring_expert.propose(
+            dependency_summaries_A,
+            dependency_summaries_B,
+            cycle_explanation
+        )
+        final_prompt = self._extract_refactoring_prompt(raw)
+
+        # Build the minimal base template and append the two generated sections
+        size = cycle.get("length", len(nodes))
+        chain = cycle_chain_str(nodes)
+        base = BASE_TEMPLATE.format(size=size, chain=chain)
+
+        combined = f"{base}\n\n{final_prompt}"
+        return combined
+
 
 # -------------------------
 # CLI / Example usage

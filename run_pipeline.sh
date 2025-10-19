@@ -80,10 +80,21 @@ need git
 
 # Layout
 ATD_DIR="$OUTPUT_DIR/ATD_identification"
-EXPLAIN_DIR_OUT="$OUTPUT_DIR/explain_AS"
 QC_DIR="$OUTPUT_DIR/code_quality_checks"
-OPENHANDS_DIR="$OUTPUT_DIR/openhands"
-mkdir -p "$ATD_DIR" "$EXPLAIN_DIR_OUT" "$QC_DIR" "$OPENHANDS_DIR"
+
+# Separate outputs by mode to avoid overwriting between runs
+# NO_EXPLAIN=1 when --without-explanations was passed
+if [[ $NO_EXPLAIN -eq 1 ]]; then
+  MODE_SUBDIR="without_explanation"
+else
+  MODE_SUBDIR="with_explanation"
+fi
+
+EXPLAIN_DIR_OUT="$OUTPUT_DIR/explain_AS/$MODE_SUBDIR"
+OPENHANDS_DIR="$OUTPUT_DIR/openhands/$MODE_SUBDIR"
+
+mkdir -p "$ATD_DIR" "$QC_DIR" "$EXPLAIN_DIR_OUT" "$OPENHANDS_DIR"
+
 
 err() { echo "ERROR: $*"; exit 1; }
 
@@ -109,10 +120,25 @@ newest_prompt_in() {
 }
 
 echo "==> Switching $REPO_PATH to branch '$BRANCH_NAME'"
+# Ensure a clean working tree (you said it's fine to discard changes)
+echo "==> Ensuring clean working tree in $REPO_PATH (reset --hard; clean -fdx)"
+git -C "$REPO_PATH" reset --hard
+git -C "$REPO_PATH" clean -fdx
+
+# Fetch and switch ONLY if the branch really exists (avoid fabricating it)
 git -C "$REPO_PATH" fetch --all --quiet || true
-git -C "$REPO_PATH" switch -C "$BRANCH_NAME" "origin/$BRANCH_NAME" 2>/dev/null || \
-git -C "$REPO_PATH" switch "$BRANCH_NAME" || \
-git -C "$REPO_PATH" switch -c "$BRANCH_NAME"
+if git -C "$REPO_PATH" rev-parse --verify --quiet "origin/$BRANCH_NAME" >/dev/null; then
+  git -C "$REPO_PATH" switch -C "$BRANCH_NAME" "origin/$BRANCH_NAME"
+elif git -C "$REPO_PATH" rev-parse --verify --quiet "$BRANCH_NAME" >/dev/null; then
+  git -C "$REPO_PATH" switch "$BRANCH_NAME"
+else
+  echo "ERROR: Branch '$BRANCH_NAME' not found on origin and no local branch exists."
+  echo "       Did the LLM step push to another remote/fork? Remotes:"
+  git -C "$REPO_PATH" remote -v || true
+  exit 1
+fi
+
+echo "==> On $(git -C "$REPO_PATH" rev-parse --abbrev-ref HEAD) @ $(git -C "$REPO_PATH" rev-parse --short HEAD)"
 
 if [[ $LLM_ACTIVE -eq 0 ]]; then
   # -------------------------- Non-LLM steps ----------------------------------
@@ -128,6 +154,7 @@ if [[ $LLM_ACTIVE -eq 0 ]]; then
   [[ -f "$CYCLES_JSON" ]] || err "Expected cycles JSON not found: $CYCLES_JSON"
 
   echo "== Step 2: Collect code quality metrics =="
+  echo "TEMPORARILY SKIPPED TO SPEED UP TESTING"
   OUT_DIR="$QC_DIR" bash "$QUALITY_SH" "$REPO_PATH" "$BRANCH_NAME" "$SRC_REL_PATH" || true
 
   SINGLE_SUMMARIZER="${SCRIPT_DIR}/code_quality_checker/quality_single_summary.py"
@@ -140,7 +167,20 @@ if [[ $LLM_ACTIVE -eq 0 ]]; then
   echo "== Step 3: Select representative cycle =="
   need python3
   CYCLE_ID="$(python3 "$SELECT_PY" "$CYCLES_JSON" || true)"
-  [[ -n "${CYCLE_ID:-}" ]] || err "Failed to determine a representative cycle from: $CYCLES_JSON"
+
+  if [[ -z "${CYCLE_ID:-}" ]]; then
+    # No representative cycle → repo is DONE for this branch
+    DONE_FILE="$OUTPUT_DIR/.repo_done"
+    {
+      echo "timestamp: $(date -Iseconds)"
+      echo "reason: no representative cycles remain"
+      echo "branch: $BRANCH_NAME"
+    } > "$DONE_FILE"
+    echo "✅ No cycles remain. Marked as done: $DONE_FILE"
+    echo "Non-LLM phase complete. Nothing to refactor."
+    exit 0
+  fi
+
   echo "Chosen cycle: $CYCLE_ID"
   echo "Non-LLM phase complete. Re-run with --LLM-active to continue."
   exit 0
