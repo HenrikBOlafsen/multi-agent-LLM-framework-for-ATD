@@ -4,3 +4,4 @@ django main django
 typer master typer
 dynaconf master dynaconf
 httpx master httpx
+structlog main src/structlog

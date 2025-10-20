@@ -20,9 +20,11 @@ TEMPLATE = """Please refactor to break this dependency cycle:
 Cycle size: {size}
 {chain}
 
-Remove exactly one static edge, ensuring no new cycles are introduced and behavior remains unchanged.
+Remove preferably just one static edge, ensuring no new cycles are introduced and behavior remains unchanged.
 
 Please refactor to break this cycle, without increasing architectural technical debt elsewhere (e.g., no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not just runtime import order.
+
+Make sure code quality actually improves from your refactoring. Do not apply hacky bad solutions just to break the cycle. Do it properly
 
 Done when
 - The cycle is broken

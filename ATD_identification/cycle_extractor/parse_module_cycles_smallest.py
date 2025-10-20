@@ -7,11 +7,8 @@ import networkx as nx
 from pydeps_utils import build_graph_from_pydeps
 
 # ---- tunables ----
-# Representative cycles are chosen as the LARGEST (longest simple) cycles.
-# Note: longest cycle selection requires enumeration and can be slower on large SCCs.
-K_CYCLES_PER_SCC = 1
-
-# (canonicalization only used during enumeration)
+K_CYCLES_PER_SCC = 1  # 1 = fast exact shortest cycle; >1 = enumerate
+# (canonicalization only used when k>1)
 def _canonicalize_cycle(nodes: List[str]) -> tuple[str, ...]:
     if not nodes:
         return ()
@@ -27,7 +24,6 @@ def _shortest_cycle_one(Gscc: nx.DiGraph) -> List[str]:
     """
     Globally shortest directed simple cycle (directed girth) via reverse-BFS.
     O(V * (V+E)) per SCC. Returns [] if none.
-    (Kept for reference; not used when selecting largest cycles.)
     """
     if Gscc.number_of_edges() == 0:
         return []
@@ -62,8 +58,8 @@ def _shortest_cycle_one(Gscc: nx.DiGraph) -> List[str]:
                 best_cyc = cyc
     return best_cyc or []
 
-def _topk_cycles_by_enumeration(Gscc: nx.DiGraph, k: int, *, largest: bool = False) -> list[list[str]]:
-    # Johnson via networkx; dedup + deterministic selection.
+def _topk_cycles_by_enumeration(Gscc: nx.DiGraph, k: int) -> list[list[str]]:
+    # Johnson via networkx; dedup + deterministic shortest-first selection.
     seen = set()
     all_cycles: list[list[str]] = []
     for cyc in nx.simple_cycles(Gscc):
@@ -80,20 +76,27 @@ def _topk_cycles_by_enumeration(Gscc: nx.DiGraph, k: int, *, largest: bool = Fal
                 if key not in seen:
                     seen.add(key)
                     two.append(list(key))
-        two.sort(key=lambda nodes: (len(nodes), tuple(nodes)), reverse=largest)
+        two.sort(key=lambda nodes: (len(nodes), tuple(nodes)))
         return two[:max(1, k)] if two else []
-    # Sort by length then lexicographically; reverse if we want largest-first
-    all_cycles.sort(key=lambda nodes: (len(nodes), tuple(nodes)), reverse=largest)
-    if largest:
-        # Take the longest-length bucket, then up to k from that bucket
-        top_len = len(all_cycles[0])
-        bucket = [c for c in all_cycles if len(c) == top_len]
-        return bucket[:max(1, k)]
-    else:
-        # Take the shortest-length bucket, then up to k (kept for completeness)
-        top_len = len(all_cycles[-1])
-        bucket = [c for c in reversed(all_cycles) if len(c) == top_len]
-        return bucket[:max(1, k)]
+    all_cycles.sort(key=lambda nodes: (len(nodes), tuple(nodes)))
+    out, cur_len = [], None
+    for cyc in all_cycles:
+        L = len(cyc)
+        if cur_len is None:
+            cur_len = L
+        if L == cur_len:
+            out.append(cyc)
+            if len(out) >= k:
+                break
+        else:
+            if len(out) < k:
+                cur_len = L
+                out.append(cyc)
+                if len(out) >= k:
+                    break
+            else:
+                break
+    return out[:max(1, k)]
 
 # ---- JSON shapers (match your example format) ----
 def _scc_node_objects(nodes: list[str]) -> list[dict]:
@@ -114,7 +117,7 @@ if __name__ == "__main__":
     ap.add_argument("pydeps_json", help="pydeps intermediate JSON (deps-output)")
     ap.add_argument("output_json", nargs="?", default="module_cycles.json", help="Output JSON path")
     ap.add_argument("--k", type=int, default=K_CYCLES_PER_SCC,
-                    help="Number of representative cycles to include (picked from the largest-length bucket).")
+                    help="1 = exact shortest cycle (fast). >1 = enumerate and pick up to k shortest.")
     args = ap.parse_args()
 
     repo_root = os.getenv("REPO_ROOT", os.getcwd())
@@ -131,17 +134,25 @@ if __name__ == "__main__":
         edges_all = _scc_edge_objects(sub)
 
         rep_cycles: list[dict] = []
-        # Always choose largest cycle(s). If there are fewer than k cycles of that max length,
-        # we still only output up to k from the longest-length bucket to honor the “largest” rule.
-        top_cycles = _topk_cycles_by_enumeration(sub, k=args.k, largest=True)
-        for j, cyc in enumerate(top_cycles):
-            rep_cycles.append({
-                "id": f"scc_{idx}_cycle_{j}",
-                "length": len(cyc),
-                "nodes": cyc,
-                "edges": _cycle_edge_objects(cyc),
-                "summary": f"Largest representative cycle of length {len(cyc)}",
-            })
+        if args.k == 1:
+            cyc = _shortest_cycle_one(sub)
+            if cyc:
+                rep_cycles.append({
+                    "id": f"scc_{idx}_cycle_0",
+                    "length": len(cyc),
+                    "nodes": cyc,
+                    "edges": _cycle_edge_objects(cyc),
+                    "summary": f"Shortest cycle of length {len(cyc)}",
+                })
+        else:
+            for j, cyc in enumerate(_topk_cycles_by_enumeration(sub, k=args.k)):
+                rep_cycles.append({
+                    "id": f"scc_{idx}_cycle_{j}",
+                    "length": len(cyc),
+                    "nodes": cyc,
+                    "edges": _cycle_edge_objects(cyc),
+                    "summary": f"Representative cycle of length {len(cyc)}",
+                })
 
         out["sccs"].append({
             "id": f"scc_{idx}",

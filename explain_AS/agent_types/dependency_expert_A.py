@@ -8,6 +8,9 @@ Quote relevant code (with line numbers) and explain, but do not include all code
 Classify the edge: top-level import, dynamic import, re-export, type-only, test-only, reflection/DI, or build-only. Include flags: Inside function: yes/no.
 My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). I care about architecture (static coupling), not runtime import order.
 
+And also explain how the stuff that was imported from B is used by A. For each thing imported from B, explain the context of how and where it is used. 
+In your output, name the files by their actual name, not "A" and "B".
+
 Rules:
 - Stay factual. if unsure, say so.
 - Your output should be human-readable and well explained, not JSON.
