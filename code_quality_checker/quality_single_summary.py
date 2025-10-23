@@ -6,17 +6,28 @@
 
 import json, re, sys, xml.etree.ElementTree as ET
 from pathlib import Path
-import csv, re
+import csv
 
-def read_text(p): return Path(p).read_text(encoding="utf-8") if Path(p).exists() else ""
+def read_text(p): 
+    p = Path(p)
+    return p.read_text(encoding="utf-8") if p.exists() else ""
+
 def read_json(p):
+    p = Path(p)
+    if not p.exists():
+        return None
     try:
-        return json.loads(read_text(p)) if Path(p).exists() else None
+        txt = p.read_text(encoding="utf-8")
+        return json.loads(txt)
     except Exception:
         return None
 
+# -------------------- Pytest / Coverage --------------------
+
 def junit_counts(p):
-    if not Path(p).exists(): return {"tests": 0, "failures": 0, "errors": 0, "skipped": 0}
+    p = Path(p)
+    if not p.exists():
+        return {"tests": 0, "failures": 0, "errors": 0, "skipped": 0}
     root = ET.parse(p).getroot()
     suites = root.findall(".//testsuite") if root.tag != "testsuite" else [root]
     t=f=e=sk=0
@@ -28,59 +39,129 @@ def junit_counts(p):
     return {"tests": t, "failures": f, "errors": e, "skipped": sk}
 
 def coverage_percent(p):
-    if not Path(p).exists(): return None
+    p = Path(p)
+    if not p.exists():
+        return None
     root = ET.parse(p).getroot()
     rate = root.attrib.get("line-rate")
-    try: return round(float(rate) * 100, 2) if rate is not None else None
-    except: return None
+    try:
+        return round(float(rate) * 100, 2) if rate is not None else None
+    except Exception:
+        return None
+
+# -------------------- Linters / Static --------------------
 
 def ruff_issues(p):
     data = read_text(p)
-    if not data: return 0
-    try: return len(json.loads(data))  # JSON array output
-    except: return sum(1 for _ in data.splitlines() if _)
+    if not data:
+        return 0
+    try:
+        obj = json.loads(data)
+        # ruff --output-format=json emits an array of issue objects
+        if isinstance(obj, list):
+            return len(obj)
+        # guard against other shapes
+        return 0
+    except Exception:
+        # if JSON parse fails, fall back to line count
+        return sum(1 for _ in data.splitlines() if _)
 
 def mypy_errors(folder: Path):
     p = Path(folder, "mypy.txt")
-    if not p.exists(): return None
-    txt = p.read_text(encoding="utf-8")
+    if not p.exists(): 
+        return None
+    txt = p.read_text(encoding="utf-8", errors="ignore")
     return len(re.findall(r":\d+:\d+:\s+error:", txt))
 
+# --------- Radon (handle multiple JSON shapes robustly) ---------
+
 def radon_complexity_counts(p):
-    obj = read_json(p) or {}
-    total = 0; by_rank = {}
-    for entries in obj.values():
+    """
+    radon cc -j can appear as:
+      { "<file>": [ { "rank": "A", ... }, ... ], ... }
+    In some environments there can be strings or nested dicts.
+    We:
+      - Count every entry as 1
+      - If an entry has "rank", bucket by that; else bucket under "?".
+    """
+    obj = read_json(p)
+    total = 0
+    by_rank = {}
+    if not obj:
+        return {"total": 0, "by_rank": {}}
+
+    # Normalize iterable of (filename, entries_list)
+    items = []
+    if isinstance(obj, dict):
+        items = list(obj.items())
+    elif isinstance(obj, list):
+        # Single list of entries without filenames
+        items = [("<unknown>", obj)]
+    else:
+        return {"total": 0, "by_rank": {}}
+
+    for _fname, entries in items:
+        # Sometimes radon yields {"functions": [...]} or {"results": [...]}
+        if isinstance(entries, dict):
+            entries = entries.get("functions") or entries.get("results") or entries.get("blocks") or []
+        if not isinstance(entries, list):
+            continue
         for e in entries:
             total += 1
-            r = e.get("rank","?")
+            r = "?"
+            if isinstance(e, dict):
+                r = e.get("rank") or e.get("complexity", {}).get("rank") or "?"
             by_rank[r] = by_rank.get(r, 0) + 1
     return {"total": total, "by_rank": by_rank}
 
 def radon_mi_stats(p):
-    obj = read_json(p) or {}
-    mis = [v.get("mi") for v in obj.values() if isinstance(v, dict) and "mi" in v]
-    if not mis: return {"avg": None, "worst": None, "files": 0}
-    return {"avg": round(sum(mis)/len(mis),2), "worst": round(min(mis),2), "files": len(mis)}
+    """
+    radon mi -j typically:
+      { "<file>": { "mi": 84.2, ... }, ... }
+    Be forgiving if shapes differ.
+    """
+    obj = read_json(p)
+    if not obj:
+        return {"avg": None, "worst": None, "files": 0}
+    mis = []
+    if isinstance(obj, dict):
+        for v in obj.values():
+            if isinstance(v, dict) and "mi" in v:
+                try:
+                    mis.append(float(v["mi"]))
+                except Exception:
+                    pass
+    elif isinstance(obj, list):
+        for v in obj:
+            if isinstance(v, dict) and "mi" in v:
+                try:
+                    mis.append(float(v["mi"]))
+                except Exception:
+                    pass
+    if not mis:
+        return {"avg": None, "worst": None, "files": 0}
+    return {"avg": round(sum(mis)/len(mis), 2), "worst": round(min(mis), 2), "files": len(mis)}
 
 def bandit_counts(p):
     obj = read_json(p) or {}
     results = obj.get("results", []) if isinstance(obj, dict) else []
-    high = sum(1 for r in results if r.get("issue_severity","").lower()=="high")
-    med  = sum(1 for r in results if r.get("issue_severity","").lower()=="medium")
-    low  = sum(1 for r in results if r.get("issue_severity","").lower()=="low")
+    high = sum(1 for r in results if (r.get("issue_severity","") or "").lower()=="high")
+    med  = sum(1 for r in results if (r.get("issue_severity","") or "").lower()=="medium")
+    low  = sum(1 for r in results if (r.get("issue_severity","") or "").lower()=="low")
     return {"high": high, "medium": med, "low": low, "total": high+med+low}
 
 def vulture_suspects(p):
     txt = read_text(p)
-    if not txt: return 0
+    if not txt:
+        return 0
     return len(re.findall(r":\d+:\d+", txt))
 
 def pip_audit_counts(p):
     obj = read_json(p) or {}
-    vulns = obj.get("vulnerabilities", [])
-    return {"vulnerable_deps": len(vulns)} if isinstance(vulns, list) else {"vulnerable_deps": None}
+    vulns = obj.get("vulnerabilities", []) if isinstance(obj, dict) else []
+    return {"vulnerable_deps": len(vulns) if isinstance(vulns, list) else None}
 
-
+# -------------------- PyExamine (optional) --------------------
 
 def pyexamine_summary(folder: Path):
     px = folder / "pyexamine"
@@ -162,12 +243,10 @@ def pyexamine_summary(folder: Path):
         "files_aggregated": files_aggregated
     }
 
-
-
-
-
+# -------------------- Collector --------------------
 
 def collect(folder: Path, with_prov: bool):
+    folder = Path(folder)
     data = {
         "pytest":     junit_counts(folder/"pytest.xml"),
         "coverage":   {"line_percent": coverage_percent(folder/"coverage.xml")},
@@ -198,6 +277,8 @@ def collect(folder: Path, with_prov: bool):
             "src_paths":       safe_text(folder/"src_paths.txt").splitlines(),
         }
     return data
+
+# -------------------- CLI --------------------
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:

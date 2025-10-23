@@ -2,118 +2,103 @@
 set -euo pipefail
 
 # Usage:
-#   ./run_all.sh PATH_TO_REPOS REPOS_FILE REFACTORING_ITERATION EXPERIMENT_ID [OUTPUT_ROOT] [--LLM-active]
+#   ./run_all.sh PATH_TO_REPOS REPOS_FILE EXPERIMENT_ID [OUTPUT_ROOT] [CYCLES_FILE] [--LLM-active] [--without-explanations]
 #
 # Examples:
-#   # Non-LLM phase for experiment "expA"
-#   ./run_all.sh projects_to_analyze/ repos.txt 0 expA results/
+#   # Non-LLM phase for experiment "expA" (builds module_cycles.json + metrics)
+#   ./run_all.sh projects_to_analyze/ repos.txt expA results/
 #
-#   # LLM phase (creates next branch fix-cycle-1-expA from main)
-#   ./run_all.sh projects_to_analyze/ repos.txt 0 expA results/ --LLM-active
+#   # LLM phase for the same experiment, honoring a cycles list
+#   ./run_all.sh projects_to_analyze/ repos.txt expA results/ cycles_to_analyze.txt --LLM-active
 #
-# REPOS_FILE lines:  repo_name  main_branch  src_rel_path
+# REPOS_FILE lines:  <repo_name>  <base_branch>  <src_rel_path>
 #   kombu main kombu
 #   click main src/click
-#
-# Cloning:
-#   If PATH_TO_REPOS/repo_name is missing and CLONE_PREFIX is set
-#   (e.g., export CLONE_PREFIX="git@github.com:myuser/"), it clones repo_name.git.
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# --- Args ---
+if [[ $# -lt 3 ]]; then
+  echo "Usage: $0 PATH_TO_REPOS REPOS_FILE EXPERIMENT_ID [OUTPUT_ROOT] [CYCLES_FILE] [--LLM-active] [--without-explanations]" >&2
+  exit 2
+fi
 
 PATH_TO_REPOS="${1%/}"
 REPOS_FILE="$2"
-ITER="$3"
-EXPERIMENT_ID="$4"
-OUTPUT_ROOT="${5:-results}"
+EXPERIMENT_ID="$3"
+OUTPUT_ROOT="${4:-results}"
+
+# Optional 5th positional: cycles_to_analyze.txt (must not be a flag)
+CYCLES_FILE=""
+if [[ -n "${5:-}" && "${5:0:2}" != "--" && -f "${5}" ]]; then
+  CYCLES_FILE="$5"
+  shift_for_flags=6
+else
+  shift_for_flags=5
+fi
+
 LLM_ACTIVE=0
-if [[ "${6:-}" == "--LLM-active" ]]; then
+if [[ "${!shift_for_flags:-}" == "--LLM-active" ]]; then
   LLM_ACTIVE=1
 fi
 
-# Collect pass-through for without-explanations (accept either spelling)
 PASS_NOEXPLAIN=""
-for a in "$@"; do
+for a in "${@:${shift_for_flags}}"; do
   if [[ "$a" == "--without-explanations" || "$a" == "--without-explanation" ]]; then
     PASS_NOEXPLAIN="--without-explanations"
   fi
 done
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+# --- Binaries/paths ---
 RUN_PIPELINE="${SCRIPT_DIR}/run_pipeline.sh"
 
-[[ -x "$RUN_PIPELINE" ]] || { echo "run_pipeline.sh not found/executable at $RUN_PIPELINE" >&2; exit 1; }
-[[ -f "$REPOS_FILE" ]] || { echo "Repos file not found: $REPOS_FILE" >&2; exit 1; }
+[[ -f "$REPOS_FILE" ]] || { echo "Repos file not found: $REPOS_FILE" >&2; exit 3; }
 
-branch_for_iter() {
-  local main_branch="$1"
-  local it="$2"
-  local exp="$3"
-  if [[ "$it" -eq 0 ]]; then
-    echo "$main_branch"
-  else
-    echo "fix-cycle-$it-$exp"
-  fi
-}
-next_branch_after_iter() {
-  local it="$1"
-  local exp="$2"
-  echo "fix-cycle-$((it + 1))-$exp"
-}
+mkdir -p "$OUTPUT_ROOT"
 
-while IFS=$' \t' read -r REPO_NAME MAIN_BRANCH SRC_REL || [[ -n "${REPO_NAME:-}" ]]; do
-  [[ -z "${REPO_NAME:-}" ]] && continue
-  [[ "$REPO_NAME" =~ ^# ]] && continue
+echo "### Batch run"
+echo "Repos file     : $REPOS_FILE"
+echo "Projects root  : $PATH_TO_REPOS"
+echo "Experiment     : $EXPERIMENT_ID"
+echo "Output root    : $OUTPUT_ROOT"
+echo "Cycles file    : ${CYCLES_FILE:-<none>}"
+echo "LLM active     : $LLM_ACTIVE"
+echo
 
-  REPO_DIR="${PATH_TO_REPOS}/${REPO_NAME}"
-  if [[ ! -d "$REPO_DIR" ]]; then
-    if [[ -n "${CLONE_PREFIX:-}" ]]; then
-      echo "==> Cloning ${REPO_NAME} into ${REPO_DIR}"
-      git clone "${CLONE_PREFIX}${REPO_NAME}.git" "$REPO_DIR"
-    else
-      echo "WARN: Repo not found and CLONE_PREFIX unset; skipping: $REPO_NAME"
-      continue
-    fi
-  fi
+# Read repos list: repo_name  branch  src_rel
+while read -r REPO_NAME BRANCH_NAME SRC_REL || [[ -n "${REPO_NAME:-}" ]]; do
+  [[ -z "${REPO_NAME:-}" || "$REPO_NAME" =~ ^# ]] && continue
 
-  BRANCH_NAME="$(branch_for_iter "$MAIN_BRANCH" "$ITER" "$EXPERIMENT_ID")"
-  OUT_DIR="${OUTPUT_ROOT%/}/${REPO_NAME}/${BRANCH_NAME}"
+  REPO_DIR="${PATH_TO_REPOS%/}/$REPO_NAME"
+  [[ -d "$REPO_DIR" ]] || { echo "Skip (not found): $REPO_DIR" >&2; continue; }
 
-  # Skip repos already marked done for this branch
-  if [[ -f "$OUT_DIR/.repo_done" ]]; then
-    echo "==> Skipping ${REPO_NAME} (branch ${BRANCH_NAME}): already marked done at $OUT_DIR/.repo_done"
-    continue
-  fi
-
+  OUT_DIR="${OUTPUT_ROOT%/}/$REPO_NAME/$BRANCH_NAME"
   mkdir -p "$OUT_DIR"
 
-
   echo
-  echo "==================== ${REPO_NAME} :: iter ${ITER} :: exp ${EXPERIMENT_ID} ===================="
-  echo "Repo dir   : $REPO_DIR"
-  echo "Branch     : $BRANCH_NAME"
-  echo "Src rel    : $SRC_REL"
-  echo "Output dir : $OUT_DIR"
-  echo "LLM active : $LLM_ACTIVE"
-  echo "============================================================================================="
+  echo "===== $(date -Iseconds) | ${REPO_NAME}@${BRANCH_NAME} | exp=${EXPERIMENT_ID} ====="
 
   if [[ $LLM_ACTIVE -eq 0 ]]; then
     # Non-LLM phase
-    bash "$RUN_PIPELINE" "$REPO_DIR" "$BRANCH_NAME" "$SRC_REL" "$OUT_DIR"
+    if [[ -n "$CYCLES_FILE" ]]; then
+      bash "$RUN_PIPELINE" "$REPO_DIR" "$BRANCH_NAME" "$SRC_REL" "$OUT_DIR" \
+        --experiment-id "$EXPERIMENT_ID" --cycles-file "$CYCLES_FILE"
+    else
+      bash "$RUN_PIPELINE" "$REPO_DIR" "$BRANCH_NAME" "$SRC_REL" "$OUT_DIR" \
+        --experiment-id "$EXPERIMENT_ID"
+    fi
   else
-    # LLM phase → create next iter branch with experiment id
-    NEW_BRANCH="$(next_branch_after_iter "$ITER" "$EXPERIMENT_ID")"
-    bash "$RUN_PIPELINE" "$REPO_DIR" "$BRANCH_NAME" "$SRC_REL" "$OUT_DIR" \
-      --LLM-active --new-branch "$NEW_BRANCH" $PASS_NOEXPLAIN
-    # (Alternative: omit --new-branch and let run_pipeline derive it)
-    # bash "$RUN_PIPELINE" "$REPO_DIR" "$BRANCH_NAME" "$SRC_REL" "$OUT_DIR" \
-    #   --LLM-active --experiment "$EXPERIMENT_ID" --iter "$ITER" $PASS_NOEXPLAIN
+    # LLM phase
+    if [[ -n "$CYCLES_FILE" ]]; then
+      bash "$RUN_PIPELINE" "$REPO_DIR" "$BRANCH_NAME" "$SRC_REL" "$OUT_DIR" \
+        --LLM-active --experiment-id "$EXPERIMENT_ID" --cycles-file "$CYCLES_FILE" $PASS_NOEXPLAIN
+    else
+      echo "ERROR: --LLM-active requires a cycles file (cycles_to_analyze.txt)" >&2
+      exit 4
+    fi
   fi
 
 done < "$REPOS_FILE"
 
 echo
 echo "✅ All done."
-
-# Notify via ntfy.sh (optional)
-if command -v curl >/dev/null 2>&1; then
-  curl -fsS -d "ATD batch finished (exp=${EXPERIMENT_ID:-?}, iter=${ITER:-?})" https://ntfy.sh/my-atd-build-abc123 >/dev/null 2>&1 || true
-fi

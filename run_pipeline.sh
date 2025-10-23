@@ -2,150 +2,158 @@
 set -euo pipefail
 
 # Usage:
-#   run_pipeline.sh REPO_PATH BRANCH_NAME SRC_REL_PATH OUTPUT_DIR \
-#     [--LLM-active [--new-branch NEW_BRANCH] [--experiment EXP_ID --iter N]] \
-#     [--without-explanations|--without-explanation]
+#   run_pipeline.sh REPO_PATH BRANCH_NAME SRC_REL_PATH OUTPUT_DIR
+#     [--LLM-active]
+#     [--experiment-id EXP]          # required (both phases), used for naming branches per cycle
+#     [--without-explanations]       # optional
+#     [--cycles-file FILE]           # required only for --LLM-active
 #
-# Behavior:
-#   - Without --LLM-active: run non-LLM phase (cycles + quality + select).
-#   - With --LLM-active: generate prompt (full or minimal) + run OpenHands.
+# NOTES:
+# - Non-LLM phase runs analysis + metrics (no selection).
+# - LLM phase loops over all cycle ids for this repo/branch found in cycles_to_analyze.txt
+#   and creates a separate branch per cycle, named: fix-<cycle_id>-<EXP> (sanitized).
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+# ---- Helpers ----
+err () { echo "ERROR: $*" >&2; exit 1; }
+need () { command -v "$1" >/dev/null 2>&1 || err "Missing required tool: $1"; }
+sanitize_branch () {
+  # Replace anything not [A-Za-z0-9._/-] with '-' and squeeze repeats, trim leading '-'
+  local s="${1// /-}"
+  s="$(printf "%s" "$s" | tr -c 'A-Za-z0-9._/-' '-' | sed -E 's/-+/-/g; s#-+/#/#g; s#/-+#/#g; s#^-+##')"
+  # Avoid trailing '/' or '.lock'
+  s="${s%/}"
+  printf "%s" "$s"
+}
+derive_slug () {
+  local url
+  url="$(git -C "$REPO_PATH" remote get-url origin 2>/dev/null || true)"
+  if [[ "$url" =~ github.com[:/]+([^/]+)/([^.]+)(\.git)?$ ]]; then
+    echo "${BASH_REMATCH[1]}/${BASH_REMATCH[2]}"
+  else
+    err "Cannot derive owner/repo from 'origin' (url='$url')"
+  fi
+}
+branch_exists () {
+  # local and/or remote?
+  local name="$1"
+  git -C "$REPO_PATH" show-ref --verify --quiet "refs/heads/$name" && return 0
+  git -C "$REPO_PATH" ls-remote --exit-code --heads origin "$name" >/dev/null 2>&1 && return 0
+  return 1
+}
 
+# ---- Args ----
 if [[ $# -lt 4 ]]; then
-  echo "Usage: $0 REPO_PATH BRANCH_NAME SRC_REL_PATH OUTPUT_DIR [flags]" >&2
+  echo "Usage: $0 REPO_PATH BRANCH_NAME SRC_REL_PATH OUTPUT_DIR [--LLM-active] [--experiment-id EXP] [--without-explanations] [--cycles-file FILE]" >&2
   exit 2
 fi
 
-REPO_PATH="${1%/}"
+REPO_PATH="$(cd "$1" && pwd)"
 BRANCH_NAME="$2"
-SRC_REL_PATH="${3%/}"
-OUTPUT_DIR="${4%/}"
+SRC_REL_PATH="$3"
+OUTPUT_DIR="$4"; shift 4
 
-# Defaults / flags
 LLM_ACTIVE=0
-NEW_BRANCH=""
 EXPERIMENT_ID=""
-ITER_VAL=""
 NO_EXPLAIN=0
+OVERRIDE_CYCLES_FILE=""
+BASELINE_BRANCH=""
 
-# Parse long options starting at $5
-i=5
-while [[ $i -le $# ]]; do
+i=0
+while [[ $i -lt $# ]]; do
+  i=$((i+1))
   arg="${!i}"
   case "$arg" in
     --LLM-active)
       LLM_ACTIVE=1
       ;;
-    --new-branch)
-      j=$((i+1)); [[ $j -le $# ]] || { echo "--new-branch needs a value" >&2; exit 2; }
-      NEW_BRANCH="${!j}"; i=$((i+1))
-      ;;
-    --experiment)
-      j=$((i+1)); [[ $j -le $# ]] || { echo "--experiment needs a value" >&2; exit 2; }
+    --experiment-id)
+      j=$((i+1)); [[ $j -le $# ]] || err "--experiment-id needs a value"
       EXPERIMENT_ID="${!j}"; i=$((i+1))
-      ;;
-    --iter)
-      j=$((i+1)); [[ $j -le $# ]] || { echo "--iter needs a value" >&2; exit 2; }
-      ITER_VAL="${!j}"; i=$((i+1))
       ;;
     --without-explanations|--without-explanation)
       NO_EXPLAIN=1
       ;;
+    --cycles-file)
+      j=$((i+1)); [[ $j -le $# ]] || err "--cycles-file needs a value"
+      OVERRIDE_CYCLES_FILE="${!j}"; i=$((i+1))
+      ;;
+    --baseline-branch)
+      j=$((i+1)); [[ $j -le $# ]] || err "--baseline-branch needs a value"
+      BASELINE_BRANCH="${!j}"; i=$((i+1))
+      ;;
     *)
-      echo "Unknown option: $arg" >&2
-      exit 2
+      err "Unknown option: $arg"
       ;;
   esac
-  i=$((i+1))
 done
 
-# Tool/script locations (prefer subdirs, then fall back to root)
-ANALYZE_SH="${SCRIPT_DIR}/ATD_identification/cycle_extractor/analyze_cycles.sh"
+[[ -n "$EXPERIMENT_ID" ]] || err "Missing required: --experiment-id EXP"
+
+# ---- Locations ----
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ANALYZE_SH="${SCRIPT_DIR}/ATD_identification/analyze_cycles.sh"
 QUALITY_SH="${SCRIPT_DIR}/code_quality_checker/quality_collect.sh"
-SELECT_PY="${SCRIPT_DIR}/explain_AS/select_cycle.py"
 EXPLAIN_PY="${SCRIPT_DIR}/explain_AS/explain_cycle.py"
 EXPLAIN_MIN_PY="${SCRIPT_DIR}/explain_AS/explain_cycle_minimal.py"
 OPENHANDS_SH="${SCRIPT_DIR}/run_OpenHands/run_OpenHands.sh"
-[[ -x "$ANALYZE_SH" ]] || ANALYZE_SH="${SCRIPT_DIR}/analyze_cycles.sh"
-[[ -x "$QUALITY_SH" ]] || QUALITY_SH="${SCRIPT_DIR}/quality_collect.sh"
-[[ -f "$SELECT_PY"  ]] || SELECT_PY="${SCRIPT_DIR}/select_cycle.py"
-[[ -f "$EXPLAIN_PY" ]] || EXPLAIN_PY="${SCRIPT_DIR}/explain_cycle.py"
-[[ -f "$EXPLAIN_MIN_PY" ]] || EXPLAIN_MIN_PY="${SCRIPT_DIR}/explain_cycle_minimal.py"
-[[ -x "$OPENHANDS_SH" ]] || OPENHANDS_SH="${SCRIPT_DIR}/run_OpenHands.sh"
 
-need() { command -v "$1" >/dev/null 2>&1 || { echo "Missing required tool: $1" >&2; exit 1; }; }
-need git
-[[ -d "$REPO_PATH" ]] || { echo "Repo path not found: $REPO_PATH" >&2; exit 1; }
+[[ -f "$ANALYZE_SH"     ]] || err "Missing analyze script: $ANALYZE_SH"
+[[ -f "$QUALITY_SH"     ]] || err "Missing quality script: $QUALITY_SH"
+[[ -f "$EXPLAIN_PY"     ]] || err "Missing explain_cycle.py: $EXPLAIN_PY"
+[[ -f "$EXPLAIN_MIN_PY" ]] || err "Missing explain_cycle_minimal.py: $EXPLAIN_MIN_PY"
+[[ -f "$OPENHANDS_SH"   ]] || err "Missing OpenHands runner: $OPENHANDS_SH"
 
-# Layout
+# ---- Output dirs ----
 ATD_DIR="$OUTPUT_DIR/ATD_identification"
 QC_DIR="$OUTPUT_DIR/code_quality_checks"
-
-# Separate outputs by mode to avoid overwriting between runs
-# NO_EXPLAIN=1 when --without-explanations was passed
-if [[ $NO_EXPLAIN -eq 1 ]]; then
-  MODE_SUBDIR="without_explanation"
-else
-  MODE_SUBDIR="with_explanation"
-fi
-
-EXPLAIN_DIR_OUT="$OUTPUT_DIR/explain_AS/$MODE_SUBDIR"
-OPENHANDS_DIR="$OUTPUT_DIR/openhands/$MODE_SUBDIR"
-
+EXPLAIN_DIR_OUT="$OUTPUT_DIR/explain_AS/$([[ $NO_EXPLAIN -eq 1 ]] && echo without_explanations || echo with_explanations)"
+OPENHANDS_DIR="$OUTPUT_DIR/openhands/$([[ $NO_EXPLAIN -eq 1 ]] && echo without_explanations || echo with_explanations)"
 mkdir -p "$ATD_DIR" "$QC_DIR" "$EXPLAIN_DIR_OUT" "$OPENHANDS_DIR"
 
+# ---- Repo setup ----
+need git
+git -C "$REPO_PATH" fetch --all --prune >/dev/null 2>&1 || true
 
-err() { echo "ERROR: $*"; exit 1; }
+# If this is a metrics-only run (non-LLM) and the target branch doesn't exist,
+# copy metrics from the baseline branch instead of crashing.
+if [[ $LLM_ACTIVE -eq 0 ]] && ! branch_exists "$BRANCH_NAME"; then
+  [[ -n "$BASELINE_BRANCH" ]] || err "Branch '$BRANCH_NAME' not found and --baseline-branch not provided."
 
-derive_slug() {
-  local url; url="$(git -C "$REPO_PATH" remote get-url origin 2>/dev/null || true)"; [[ -n "$url" ]] || return 1
-  case "$url" in
-    https://github.com/*) echo "${url#https://github.com/}" | sed 's/\.git$//' ;;
-    http://github.com/*)  echo "${url#http://github.com/}"  | sed 's/\.git$//' ;;
-    git@github.com:*)     echo "${url#git@github.com:}"     | sed 's/\.git$//' ;;
-    *) return 1 ;;
-  esac
-}
+  echo "==> Target branch '$BRANCH_NAME' does not exist. Copying metrics from baseline '$BASELINE_BRANCH'."
 
-newest_prompt_in() {
-  local dir="$1"
-  if compgen -G "$dir/"'*_prompt.txt' >/dev/null; then
-    ls -t "$dir/"*_prompt.txt | head -n1
-  elif compgen -G "$dir/"'*.txt' >/dev/null; then
-    ls -t "$dir/"*.txt | head -n1
-  else
-    echo ""
+  # results/<repo>/<baseline> (source) → results/<repo>/<branch> (dest)
+  REPO_NAME="$(basename "$REPO_PATH")"
+  RESULTS_REPO_DIR="$(dirname "$OUTPUT_DIR")"             # results/<repo>
+  SRC_BASE_DIR="$RESULTS_REPO_DIR/$BASELINE_BRANCH"       # results/<repo>/<baseline>
+  DST_BRANCH_DIR="$OUTPUT_DIR"                            # results/<repo>/<branch>
+
+  mkdir -p "$DST_BRANCH_DIR"
+
+  # Copy ATD + quality artifacts if present
+  if [[ -d "$SRC_BASE_DIR/ATD_identification" ]]; then
+    rsync -a --delete "$SRC_BASE_DIR/ATD_identification/" "$DST_BRANCH_DIR/ATD_identification/" || true
   fi
-}
+  if [[ -d "$SRC_BASE_DIR/code_quality_checks" ]]; then
+    rsync -a --delete "$SRC_BASE_DIR/code_quality_checks/" "$DST_BRANCH_DIR/code_quality_checks/" || true
+  fi
 
-echo "==> Switching $REPO_PATH to branch '$BRANCH_NAME'"
-# Ensure a clean working tree (you said it's fine to discard changes)
-echo "==> Ensuring clean working tree in $REPO_PATH (reset --hard; clean -fdx)"
-git -C "$REPO_PATH" reset --hard
-git -C "$REPO_PATH" clean -fdx
+  # Leave a marker for traceability
+  echo "copied_from_baseline=$BASELINE_BRANCH" > "$DST_BRANCH_DIR/.copied_metrics_marker"
+  date -Iseconds >> "$DST_BRANCH_DIR/.copied_metrics_marker"
 
-# Fetch and switch ONLY if the branch really exists (avoid fabricating it)
-git -C "$REPO_PATH" fetch --all --quiet || true
-if git -C "$REPO_PATH" rev-parse --verify --quiet "origin/$BRANCH_NAME" >/dev/null; then
-  git -C "$REPO_PATH" switch -C "$BRANCH_NAME" "origin/$BRANCH_NAME"
-elif git -C "$REPO_PATH" rev-parse --verify --quiet "$BRANCH_NAME" >/dev/null; then
-  git -C "$REPO_PATH" switch "$BRANCH_NAME"
-else
-  echo "ERROR: Branch '$BRANCH_NAME' not found on origin and no local branch exists."
-  echo "       Did the LLM step push to another remote/fork? Remotes:"
-  git -C "$REPO_PATH" remote -v || true
-  exit 1
+  echo "==> Metrics copied from baseline. Skipping analysis for missing branch '$BRANCH_NAME'."
+  exit 0
 fi
 
+# Normal path: switch to the branch and continue
+git -C "$REPO_PATH" checkout -q "$BRANCH_NAME"
+git -C "$REPO_PATH" reset --hard -q "origin/$BRANCH_NAME" || true
 echo "==> On $(git -C "$REPO_PATH" rev-parse --abbrev-ref HEAD) @ $(git -C "$REPO_PATH" rev-parse --short HEAD)"
+REPO_NAME="$(basename "$REPO_PATH")"
 
+
+# ---- Non-LLM phase ----
 if [[ $LLM_ACTIVE -eq 0 ]]; then
-  # -------------------------- Non-LLM steps ----------------------------------
-  [[ -x "$ANALYZE_SH" ]] || err "Not executable: $ANALYZE_SH"
-  [[ -x "$QUALITY_SH" ]] || err "Not executable: $QUALITY_SH"
-  [[ -f "$SELECT_PY"  ]] || err "Missing: $SELECT_PY"
-
   echo "== Step 1: Identify cyclic dependencies =="
   export LANGUAGE=python
   bash "$ANALYZE_SH" "$REPO_PATH" "$SRC_REL_PATH" "$ATD_DIR"
@@ -154,99 +162,100 @@ if [[ $LLM_ACTIVE -eq 0 ]]; then
   [[ -f "$CYCLES_JSON" ]] || err "Expected cycles JSON not found: $CYCLES_JSON"
 
   echo "== Step 2: Collect code quality metrics =="
-  echo "TEMPORARILY SKIPPED TO SPEED UP TESTING"
   OUT_DIR="$QC_DIR" bash "$QUALITY_SH" "$REPO_PATH" "$BRANCH_NAME" "$SRC_REL_PATH" || true
 
   SINGLE_SUMMARIZER="${SCRIPT_DIR}/code_quality_checker/quality_single_summary.py"
   [[ -f "$SINGLE_SUMMARIZER" ]] || SINGLE_SUMMARIZER="${SCRIPT_DIR}/quality_single_summary.py"
 
   METRICS_JSON="$QC_DIR/metrics.json"
-  python3 "$SINGLE_SUMMARIZER" "$QC_DIR" "$METRICS_JSON" || true
-  echo "Metrics summary: $METRICS_JSON"
-
-  echo "== Step 3: Select representative cycle =="
-  need python3
-  CYCLE_ID="$(python3 "$SELECT_PY" "$CYCLES_JSON" || true)"
-
-  if [[ -z "${CYCLE_ID:-}" ]]; then
-    # No representative cycle → repo is DONE for this branch
-    DONE_FILE="$OUTPUT_DIR/.repo_done"
-    {
-      echo "timestamp: $(date -Iseconds)"
-      echo "reason: no representative cycles remain"
-      echo "branch: $BRANCH_NAME"
-    } > "$DONE_FILE"
-    echo "✅ No cycles remain. Marked as done: $DONE_FILE"
-    echo "Non-LLM phase complete. Nothing to refactor."
-    exit 0
+  if [[ -f "$SINGLE_SUMMARIZER" ]]; then
+    python3 "$SINGLE_SUMMARIZER" "$QC_DIR" "$METRICS_JSON" || true
+    echo "Metrics summary: $METRICS_JSON"
   fi
 
-  echo "Chosen cycle: $CYCLE_ID"
-  echo "Non-LLM phase complete. Re-run with --LLM-active to continue."
+  echo "Non-LLM phase complete."
   exit 0
 fi
 
-# ------------------------------ LLM steps ------------------------------------
-[[ -f "$EXPLAIN_PY" ]] || err "Missing: $EXPLAIN_PY"
-[[ -f "$EXPLAIN_MIN_PY" ]] || err "Missing: $EXPLAIN_MIN_PY"
-[[ -x "$OPENHANDS_SH" ]] || err "Not executable: $OPENHANDS_SH"
-
-# If NEW_BRANCH not given, derive from experiment + iter
-if [[ -z "$NEW_BRANCH" ]]; then
-  [[ -n "$EXPERIMENT_ID" && -n "$ITER_VAL" ]] || err "For auto branch naming, provide --experiment EXP_ID and --iter N, or pass --new-branch."
-  NEW_BRANCH="fix-cycle-$((ITER_VAL + 1))-$EXPERIMENT_ID"
-fi
+# ---- LLM phase ----
+[[ -n "$OVERRIDE_CYCLES_FILE" && -f "$OVERRIDE_CYCLES_FILE" ]] || err "--LLM-active requires --cycles-file <cycles_to_analyze.txt>"
 
 CYCLES_JSON="$ATD_DIR/module_cycles.json"
 [[ -f "$CYCLES_JSON" ]] || err "CYCLES_JSON not found. Run non-LLM phase first: $CYCLES_JSON"
 
-echo "== LLM Step 1: Generate refactoring prompt =="
-if [[ -z "${CYCLE_ID:-}" ]]; then
-  need python3
-  CYCLE_ID="$(python3 "$SELECT_PY" "$CYCLES_JSON" || true)"
-  [[ -n "${CYCLE_ID:-}" ]] || err "Failed to determine representative cycle from: $CYCLES_JSON"
-fi
-FULL_LOG="$EXPLAIN_DIR_OUT/${CYCLE_ID}_full.log"
-FINAL_PROMPT="$EXPLAIN_DIR_OUT/${CYCLE_ID}_prompt.txt"
+# Collect all cycle IDs for this repo+branch
+CYCLE_IDS=()
+while IFS=$' \t' read -r r b cid _ || [[ -n "${r:-}" ]]; do
+  [[ -z "${r:-}" || "$r" =~ ^# ]] && continue
+  if [[ "$r" == "$REPO_NAME" && "$b" == "$BRANCH_NAME" ]]; then
+    CYCLE_IDS+=("$cid")
+  fi
+done < "$OVERRIDE_CYCLES_FILE"
 
-if [[ $NO_EXPLAIN -eq 1 ]]; then
-  echo "== Using minimal prompt generator (no explanations) =="
-  python3 "$EXPLAIN_MIN_PY" \
-    --repo-root "$REPO_PATH" \
-    --src-root "$SRC_REL_PATH" \
-    --cycle-json "$CYCLES_JSON" \
-    --cycle-id "$CYCLE_ID" \
-    --out-prompt "$FINAL_PROMPT" \
-    2>&1 | tee "$FULL_LOG"
-else
-  echo "== Using full explanation generator =="
-  python3 "$EXPLAIN_PY" \
-    --repo-root "$REPO_PATH" \
-    --src-root "$SRC_REL_PATH" \
-    --cycle-json "$CYCLES_JSON" \
-    --cycle-id "$CYCLE_ID" \
-    --out-prompt "$FINAL_PROMPT" \
-    2>&1 | tee "$FULL_LOG"
+if [[ ${#CYCLE_IDS[@]} -eq 0 ]]; then
+  echo "== No cycles for ${REPO_NAME}@${BRANCH_NAME} in $OVERRIDE_CYCLES_FILE; skipping LLM =="
+  exit 0
 fi
 
-PROMPT_TO_USE="${PROMPT_PATH:-$FINAL_PROMPT}"
-if [[ ! -f "$PROMPT_TO_USE" ]]; then
-  echo "ERROR: Prompt not found at $PROMPT_TO_USE" >&2
-  exit 2
-fi
+echo "== LLM: cycles to process for ${REPO_NAME}@${BRANCH_NAME}: ${CYCLE_IDS[*]} =="
 
-echo "== LLM Step 2: Perform refactoring with OpenHands =="
-SLUG="$(derive_slug)" || err "Could not derive owner/repo from 'origin' remote."
+for CYCLE_ID in "${CYCLE_IDS[@]}"; do
+  echo
+  echo "== LLM Step 1: Generate refactoring prompt for $CYCLE_ID =="
 
-echo "Repo slug   : $SLUG"
-echo "Base branch : $BRANCH_NAME"
-echo "New branch  : $NEW_BRANCH"
-echo "Prompt      : $PROMPT_TO_USE"
-echo "Logs →      : $OPENHANDS_DIR"
+  EXPLAIN_SUBDIR="$EXPLAIN_DIR_OUT/$CYCLE_ID"
+  OPENHANDS_SUBDIR="$OPENHANDS_DIR/$CYCLE_ID"
+  mkdir -p "$EXPLAIN_SUBDIR" "$OPENHANDS_SUBDIR"
 
-LOG_DIR="$OPENHANDS_DIR" bash "$OPENHANDS_SH" "$SLUG" "$BRANCH_NAME" "$NEW_BRANCH" "$PROMPT_TO_USE"
+  FULL_LOG="$EXPLAIN_SUBDIR/full.log"
+  FINAL_PROMPT="$EXPLAIN_SUBDIR/prompt.txt"
+
+  if [[ $NO_EXPLAIN -eq 1 ]]; then
+    echo "== Using minimal prompt generator (no explanations) =="
+    python3 "$EXPLAIN_MIN_PY" \
+      --repo-root "$REPO_PATH" \
+      --src-root "$SRC_REL_PATH" \
+      --cycle-json "$CYCLES_JSON" \
+      --cycle-id "$CYCLE_ID" \
+      --out-prompt "$FINAL_PROMPT" \
+      2>&1 | tee "$FULL_LOG"
+  else
+    echo "== Using full explanation generator =="
+    python3 "$EXPLAIN_PY" \
+      --repo-root "$REPO_PATH" \
+      --src-root "$SRC_REL_PATH" \
+      --cycle-json "$CYCLES_JSON" \
+      --cycle-id "$CYCLE_ID" \
+      --out-prompt "$FINAL_PROMPT" \
+      2>&1 | tee "$FULL_LOG"
+  fi
+
+  PROMPT_TO_USE="${PROMPT_PATH:-$FINAL_PROMPT}"
+  [[ -f "$PROMPT_TO_USE" ]] || err "Prompt not found at $PROMPT_TO_USE"
+
+  # Branch per cycle (aligned with RQ scripts): cycle-fix-<exp-label>-<cycle_id>
+  SAFE_CYCLE="$(sanitize_branch "$CYCLE_ID")"
+  if [[ $NO_EXPLAIN -eq 1 ]]; then
+    EXP_LABEL="$(sanitize_branch "${EXPERIMENT_ID}_without_explanation")"
+  else
+    EXP_LABEL="$(sanitize_branch "${EXPERIMENT_ID}")"
+  fi
+  NEW_BRANCH="$(sanitize_branch "cycle-fix-${EXP_LABEL}-${SAFE_CYCLE}")"
+
+
+  echo "== LLM Step 2: Perform refactoring with OpenHands for $CYCLE_ID =="
+  SLUG="$(derive_slug)" || err "Could not derive owner/repo from 'origin' remote."
+
+  echo "Repo slug   : $SLUG"
+  echo "Base branch : $BRANCH_NAME"
+  echo "New branch  : $NEW_BRANCH"
+  echo "Prompt      : $PROMPT_TO_USE"
+  echo "Logs →      : $OPENHANDS_SUBDIR"
+
+  LOG_DIR="$OPENHANDS_SUBDIR" bash "$OPENHANDS_SH" "$SLUG" "$BRANCH_NAME" "$NEW_BRANCH" "$PROMPT_TO_USE"
+
+  echo "✅ Done $CYCLE_ID → branch: $NEW_BRANCH ; prompt: $PROMPT_TO_USE ; logs: $OPENHANDS_SUBDIR"
+done
 
 echo
-echo "✅ LLM phase complete."
-echo "  • Prompt         : $PROMPT_TO_USE"
-echo "  • OpenHands logs : $OPENHANDS_DIR"
+echo "✅ LLM phase complete for ${#CYCLE_IDS[@]} cycle(s)."

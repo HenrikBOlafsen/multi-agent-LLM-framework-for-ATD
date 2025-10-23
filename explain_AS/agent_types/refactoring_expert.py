@@ -1,47 +1,7 @@
 from agent_setup import AgentBase
 from typing import Dict, Tuple
 
-REFACTORING_EXPERT_PROMPT_OLD = """You are a Refactoring Expert for a dependency cycle.
-Your job: propose an ARCHITECTURAL change that breaks the cycle without changing behavior or public API.
-
-ATD rules:
-- ANY reference counts (dynamic/lazy). Making imports lazy or dynamic is NOT sufficient as they are still static coupling.
-- Ignore type-only references (anything under TYPE_CHECKING).
-- We care about static coupling, not just runtime import order.
-- No new cycles.
-
-Single-edge rule:
-- Break the cycle by removing EXACTLY ONE static edge. Choose the edge that is the easiest/safest to break while still being a good refactor.
-
-How to verify the chosen edge A->B is fully broken:
-- There is not a single import of B from A (no top-level and no nested imports anywhere; TYPE_CHECKING-only is allowed).
-- If you introduce a new file, it must not import back to the original files involved in the cycle.
-- Do not partially break the edge: remove **all** imports for the chosen edge (except TYPE_CHECKING).
-
-Refactoring techniques catalog (for inspiration; you may mix them or use other techniques):
-- Extract tiny cross-imported helpers into a private, dependency-free helper module (helpers should avoid importing the project; prefer duck typing). Re-export as needed to keep public imports working.
-- Move a lightweight symbol (function/constant/tiny utility) to the side that naturally owns it; preserve public API via re-export.
-- Dependency inversion via a provider function/parameter so the consumer stops importing the provider.
-- Introduce a minimal local protocol/ABC only if it adds no new import edges (prefer duck typing).
-- Split a mixed-responsibility module into a dependency-free core plus features.
-- Replace nominal cross-checks (isinstance against B.Class) with duck-typed predicates so the nominal import can be dropped.
-- Replace a direct import with a callback/event hook registered from the outside (composition root).
-- Import directly from a leaf instead of through a façade (__init__).
-
-Please refactor to break this cycle, without increasing architectural technical debt elsewhere (e.g., no new cycles). My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not just runtime import order.
-
-STRICT EMISSION RULES:
-- Output **only** the following two sections, in this exact order, bounded by the sentinels:
-<<<BEGIN_REFACTORING_PROMPT>>>
-Cycle (concise)
-Technique
-<<<END_REFACTORING_PROMPT>>>
-- “Cycle (concise)” = 3-6 sentences that describes the cycle.
-- “Technique” = Do not give too detailed of a plan. No step by step list. Just give some loose directions of possible approaches and what you reccomend.
-- Make sure both sections are inside <<<BEGIN_REFACTORING_PROMPT>>> <<<END_REFACTORING_PROMPT>>>.
-"""
-
-REFACTORING_EXPERT_PROMPT = """ Your job: Give useful context about a dependency cycle, that might assist in breaking the cycle.
+REFACTORING_EXPERT_PROMPT = """Your job: Give useful context about a dependency cycle, that might assist in breaking the cycle.
 
 ATD rules:
 - ANY reference counts (dynamic/lazy). Making imports lazy or dynamic is NOT sufficient as they are still static coupling.
@@ -54,20 +14,9 @@ An edge A->B is fully broken when:
 - If you introduce a new file, it must not import back to the original files involved in the cycle.
 - Do not partially break the edge: remove **all** imports for the chosen edge (except TYPE_CHECKING).
 
-Refactoring techniques catalog (for inspiration):
-- Extract tiny cross-imported helpers into a private, dependency-free helper module (helpers should avoid importing the project; prefer duck typing). Re-export as needed to keep public imports working.
-- Move a lightweight symbol (function/constant/tiny utility) to the side that naturally owns it; preserve public API via re-export.
-- Dependency inversion via a provider function/parameter so the consumer stops importing the provider.
-- Introduce a minimal local protocol/ABC only if it adds no new import edges (prefer duck typing).
-- Split a mixed-responsibility module into a dependency-free core plus features.
-- Replace nominal cross-checks (isinstance against B.Class) with duck-typed predicates so the nominal import can be dropped.
-- Replace a direct import with a callback/event hook registered from the outside (composition root).
-- Import directly from a leaf instead of through a façade (__init__).
-
-My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). So making imports dynamic or lazy is NOT sufficient. I care about architecture (static coupling), not just runtime import order.
-
-Do not give a refactoring plan. Just give context about the cycle. How difficult each edge might be to break and what refactoring techniques might be useful for this cycle (but without saying exactly how to apply the techniques to the given cycle).
-Make your context as useful as possible, while keeping it phrased as just suggestions. You are not to do the actual refactoring, you just provide useful context. Emphasize in your output that these are just suggestions, and that the reader should look at the actual code too se what will work best.
+Do not give a refactoring plan. Just give context about the cycle, and how difficult each edge might be to break.
+Make your context as useful as possible. You are not to do the actual refactoring or sugest how to refactor, you just provide useful context. 
+Emphasize in your output that the reader should look at the actual code to se what will work best.
 """
 
 

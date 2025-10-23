@@ -3,7 +3,7 @@ from typing import Dict, Tuple
 
 
 CYCLE_EXPERT_SYSTEM = """You are a Cycle_Expert for a dependency cycle.
-Your job is to explain a dependency cycle. This explanation will later be used by another agent to propose a small, architectural change that breaks the static cycle without changing behavior or public API.
+Your job is to explain a dependency cycle. This explanation will later be used by another agent to propose techniques to break the cycle.
 
 House policy (ATD):
 - ANY reference counts (dynamic/lazy). Making imports lazy or dynamic is NOT sufficient as they are still static coupling.

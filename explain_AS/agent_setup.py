@@ -2,7 +2,9 @@ import os
 import requests
 from dataclasses import dataclass, field
 from typing import Dict, List
+from agent_util import clip
 
+# When false, the system prompt is merged with the user prompt and just given to the LLM as a user prompt
 USE_SYSTEM_PROMPT = False
 
 
@@ -106,6 +108,7 @@ class AgentBase:
 
         self.history.append({"role": "user", "content": user_text})
         reply = self.client.chat(self.history).strip()
+        reply = clip(reply, 15000)
         self.history.append({"role": "assistant", "content": reply})
 
         log_line(f"◀ {self.name} reply:", Ansi.GREEN if PRINT_WITH_COLORS else None)

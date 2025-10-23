@@ -1,17 +1,14 @@
 #!/usr/bin/env bash
 # Usage:
 #   ./quality_collect.sh <REPO_PATH> [LABEL] [SRC_HINT]
-# Examples:
-#   ./quality_collect.sh projects_to_analyze/kombu main kombu
-#   ./quality_collect.sh projects_to_analyze/kombu refactor-branch kombu
+# Example:
+#   ./quality_collect.sh projects/kombu main kombu
 #
-# Writes to: .quality/<repo_name>/<label>
+# Writes to: .quality/<repo>/<label>
 set -euo pipefail
 
-# --- reproducibility controls (deterministic-ish runs) ---
 export PYTHONHASHSEED=0
 export TZ=UTC
-
 
 if [[ $# -lt 1 ]]; then
   echo "Usage: $0 <REPO_PATH> [LABEL] [SRC_HINT]" >&2
@@ -20,164 +17,33 @@ fi
 
 REPO_PATH="$(realpath "$1")"
 REPO_NAME="$(basename "$REPO_PATH")"
+LABEL="${2:-current}"          # default label if not a git repo
+SRC_HINT="${3:-}"              # e.g., "src/werkzeug" or "kombu"
 
-# --- detect if repo is a git work tree ---------------------------------------
+# --- Git worktree (isolated checkout) -----------------------------------------
 IS_GIT=0
 if git -C "$REPO_PATH" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   IS_GIT=1
+  LABEL="${2:-$(git -C "$REPO_PATH" branch --show-current 2>/dev/null || echo current)}"
 fi
 
-# Label defaults to current branch (if git) or "current"
-DEFAULT_LABEL="current"
-if [[ $IS_GIT -eq 1 ]]; then
-  DEFAULT_LABEL="$(git -C "$REPO_PATH" branch --show-current 2>/dev/null || echo current)"
-fi
-LABEL="${2:-$DEFAULT_LABEL}"
-
-# Optional hint for source roots under the repo (e.g., "src" or "werkzeug")
-SRC_HINT="${3:-}"
-
-# ---- output dir --------------------------------------------------------------
-# Preferred (exact) target if provided by caller:
-#   OUT_DIR=/path/to/final/dir  ./quality_collect.sh ...
-# Back-compat default: OUT_ROOT/<repo>/<label>
 OUT_ROOT="${OUT_ROOT:-.quality}"
-if [[ -n "${OUT_DIR:-}" ]]; then
-  FINAL_OUT_DIR="$OUT_DIR"
-else
-  FINAL_OUT_DIR="$OUT_ROOT/$REPO_NAME/$LABEL"
-fi
+FINAL_OUT_DIR="${OUT_DIR:-$OUT_ROOT/$REPO_NAME/$LABEL}"
 mkdir -p "$FINAL_OUT_DIR"
 OUT_ABS="$(realpath "$FINAL_OUT_DIR")"
+date -u +'%Y-%m-%dT%H:%M:%SZ' > "$OUT_ABS/run_started_utc.txt" || true
 
-# --- monotonic run timestamp (UTC) ---
-date -u +'%Y-%m-%dT%H:%M:%SZ' > "$OUT_ABS/run_started_utc.txt" 2>/dev/null || true
-
-# --- helpers ------------------------------------------------------------------
-detect_src_paths() {
-  local root="$1"; local hint="${2:-}"
-  local -a found=()
-
-  # Prefer explicit hint if it exists
-  if [[ -n "$hint" && -d "$root/$hint" ]]; then
-    found+=("$hint")
-  fi
-
-  # Common “src/” layout: packages with __init__.py
-  if [[ -d "$root/src" ]]; then
-    while IFS= read -r -d '' pkg; do
-      found+=("src/$(basename "$pkg")")
-    done < <(find "$root/src" -mindepth 1 -maxdepth 1 -type d -exec test -e '{}/__init__.py' \; -print0)
-  fi
-
-  # Flat layout: top-level packages with __init__.py (skip hidden/venv/build/tests)
-  while IFS= read -r -d '' pkg; do
-    base="$(basename "$pkg")"
-    [[ "$base" =~ ^(\.|_|\-)?(venv|.venv|build|dist|tests?)$ ]] && continue
-    found+=("$base")
-  done < <(find "$root" -mindepth 1 -maxdepth 1 -type d -exec test -e '{}/__init__.py' \; -print0)
-
-  # De-duplicate while preserving order
-  awk -v RS='\0' '!seen[$0]++ {print}' < <(printf '%s\0' "${found[@]}") 2>/dev/null || printf '%s\n' "${found[@]}"
-}
-
-install_test_deps() {
-  # Best-effort dependency bootstrap for tests.
-  # Tries: pyproject extras -> requirements files -> poetry -> tox/nox -> safety net.
-  local root="$1"
-  python - <<'PY' "$root"
-import sys, os, subprocess, io
-root=sys.argv[1]
-
-def run(cmd):
-    try:
-        print(">>", " ".join(cmd))
-        return subprocess.call(cmd)==0
-    except FileNotFoundError:
-        return False
-
-# 0) ensure pip is recent
-run(["python","-m","pip","install","-U","pip"])
-
-# 1) pyproject extras (PEP 621 optional-dependencies)
-py = os.path.join(root,"pyproject.toml")
-picked=[]
-if os.path.isfile(py):
-    try:
-        import tomllib
-        with open(py,"rb") as f:
-            data=tomllib.load(f)
-        opt = (data.get("project",{}) or {}).get("optional-dependencies",{}) or {}
-        candidates = ["dev","test","tests","ci","all"]
-        picked = [e for e in candidates if e in opt]
-        if picked:
-            if run(["python","-m","pip","install","-e", f"{root}[{','.join(picked)}]"]):
-                sys.exit(0)
-    except Exception:
-        pass
-
-# 2) common requirements files
-for f in ("requirements-dev.txt","requirements/test.txt","requirements-tests.txt","requirements.txt","dev-requirements.txt"):
-    p=os.path.join(root,f)
-    if os.path.isfile(p):
-        run(["python","-m","pip","install","-r",p])
-
-# 3) poetry
-poetry_toml_has=False
-if os.path.isfile(py):
-    try:
-        with open(py,"r",encoding="utf-8") as fh:
-            poetry_toml_has = "[tool.poetry]" in fh.read()
-    except Exception:
-        pass
-if os.path.isfile(os.path.join(root,"poetry.lock")) or poetry_toml_has:
-    run(["python","-m","pip","install","poetry"])
-    run(["poetry","install","--with","dev,test"])
-
-# 3.5) ensure the project-under-test (and its install_requires) are installed
-# This is the key bit that pulls in runtime deps like "MarkupSafe" for Werkzeug.
-run(["python","-m","pip","install", root])
-
-# 4) tox / nox tooling present (don't run tests here!)
-run(["python","-m","pip","install","tox","nox"])
-
-# Try to create tox envs without running tests (helps pull dev deps in some repos)
-# It's okay if this no-ops or fails; we still fall back below.
-run(["tox","-q","-r","-e","py","--notest"])
-
-# 5) safety net: common test deps
-run(["python","-m","pip","install",
-     "pytest","pytest-cov","pytest-timeout","pytest-xdist",
-     "trustme","watchdog","blinker","greenlet","typing-extensions",
-     "ephemeral-port-reserve"])
-sys.exit(0)
-PY
-}
-
-# --- choose workspace root (git worktree for a label, else REPO_PATH) --------
-WT_DIR=""          # temp worktree (if git)
+WT_DIR=""
 WT_ROOT="$REPO_PATH"
-
 if [[ $IS_GIT -eq 1 ]]; then
-  # Make sure we have the ref (branch/remote/sha) locally
   git -C "$REPO_PATH" fetch --all --quiet || true
   if ! git -C "$REPO_PATH" rev-parse --verify --quiet "${LABEL}^{commit}" >/dev/null; then
-    # Try fetching the label from any remote if not resolvable yet
-    for r in $(git -C "$REPO_PATH" remote); do
-      git -C "$REPO_PATH" fetch "$r" "$LABEL:$LABEL" && break || true
-    done
-  fi
-  if ! git -C "$REPO_PATH" rev-parse --verify --quiet "${LABEL}^{commit}" >/dev/null; then
-    echo "Error: ref '$LABEL' not found (even after fetch) in $REPO_PATH" >&2
+    echo "Ref '$LABEL' not found in $REPO_PATH" >&2
     exit 1
   fi
-
-  # Create a detached worktree at the target ref
   WT_DIR="$(mktemp -d -t qcwt.XXXXXX)"
   git -C "$REPO_PATH" worktree add --detach "$WT_DIR" "$LABEL" >/dev/null
   WT_ROOT="$WT_DIR"
-
-  # Ensure clean removal of the worktree on exit
   cleanup() {
     git -C "$REPO_PATH" worktree remove --force "$WT_DIR" 2>/dev/null || true
     rm -rf "$WT_DIR" 2>/dev/null || true
@@ -185,187 +51,272 @@ if [[ $IS_GIT -eq 1 ]]; then
   trap cleanup EXIT
 fi
 
-CUR_SHA="unknown"
-CUR_BRANCH="detached"
-if [[ $IS_GIT -eq 1 ]]; then
-  CUR_SHA="$(git -C "$WT_ROOT" rev-parse --short HEAD)"
-  CUR_BRANCH="$(git -C "$WT_ROOT" symbolic-ref --short -q HEAD || echo detached)"
-  echo "==> [$REPO_NAME] worktree at $LABEL @ $CUR_SHA (branch: $CUR_BRANCH)"
-else
-  echo "==> [$REPO_NAME] non-git directory; analyzing current files"
-fi
+# --- Source detection (simple & predictable) -----------------------------------
+detect_src_paths() {
+  local root="$1"; local hint="${2:-}"
+  local -a found=()
+  if [[ -n "$hint" && -d "$root/$hint" ]]; then
+    found+=("$hint")
+  fi
+  if [[ -d "$root/src" ]]; then
+    while IFS= read -r -d '' pkg; do
+      found+=("src/$(basename "$pkg")")
+    done < <(find "$root/src" -mindepth 1 -maxdepth 1 -type d -exec test -e '{}/__init__.py' \; -print0)
+  fi
+  while IFS= read -r -d '' pkg; do
+    base="$(basename "$pkg")"
+    [[ "$base" =~ ^(\.|_|\-)?(venv|.venv|build|dist|tests?)$ ]] && continue
+    found+=("$base")
+  done < <(find "$root" -mindepth 1 -maxdepth 1 -type d -exec test -e '{}/__init__.py' \; -print0)
+  # de-dupe
+  awk -v RS='\0' '!seen[$0]++{print}' < <(printf '%s\0' "${found[@]}") 2>/dev/null || printf '%s\n' "${found[@]}"
+}
 
-# ---- detect sources on this ref ---------------------------------------------
 mapfile -t SRC_PATHS < <(detect_src_paths "$WT_ROOT" "$SRC_HINT")
 [[ ${#SRC_PATHS[@]} -eq 0 ]] && SRC_PATHS=(".")
-
-# Persist traceability *before* running tools
 printf '%s\n' "${SRC_PATHS[@]}" > "$OUT_ABS/src_paths.txt"
-printf '%s\n' "$CUR_SHA"        > "$OUT_ABS/git_sha.txt"
-printf '%s\n' "$CUR_BRANCH"     > "$OUT_ABS/git_branch.txt"
 
-echo "Repo:   $REPO_PATH"
-echo "Label:  $LABEL"
-echo -n "Src(s): "; printf '%s ' "${SRC_PATHS[@]}"; echo
-echo "Out:    $OUT_ABS"
-
-echo "==> Collecting quality metrics"
-echo "Repo:    $WT_ROOT"
-echo "Label:   $LABEL"
-echo -n "Src(s):  "; printf '%s ' "${SRC_PATHS[@]}"; echo
-echo "Out:     $OUT_ABS"
-
-# --- context ------------------------------------------------------------------
-python -V > "$OUT_ABS/python_version.txt" || true
 if [[ $IS_GIT -eq 1 ]]; then
   git -C "$WT_ROOT" rev-parse --short HEAD > "$OUT_ABS/git_sha.txt" || true
   git -C "$WT_ROOT" branch --show-current  > "$OUT_ABS/git_branch.txt" || true
 fi
-uname -a > "$OUT_ABS/uname.txt" 2>/dev/null || true
 
+echo "Repo: $REPO_PATH"
+echo "Worktree: $WT_ROOT  Label: $LABEL"
+echo -n "Sources: "; printf '%s ' "${SRC_PATHS[@]}"; echo
+echo "Out: $OUT_ABS"
 
-# Helper: expand tool args for multiple src paths
-cov_args=()
-radon_targets=()
-vulture_targets=()
-bandit_targets=()
-for p in "${SRC_PATHS[@]}"; do
-  cov_args+=( "--cov=$p" )
-  radon_targets+=( "$p" )
-  vulture_targets+=( "$p" )
-  bandit_targets+=( "$p" )
-done
-
-# --- run tools inside the worktree (or repo path if non-git) -----------------
+# --- Per-run venv (isolation) -------------------------------------------------
 (
   cd "$WT_ROOT"
+  python -m venv .qc-venv
+  # shellcheck disable=SC1091
+  source .qc-venv/bin/activate
+  python -m pip install -U pip wheel
 
-  # Best-effort install of test/dev deps for this repo
-  install_test_deps "$WT_ROOT"
+  # --- Minimal install: project + test plugins --------------------------------
+  # 1) install project (editable)
+  python -m pip install -e .
 
-  # Snapshot the exact Python packages and tool versions used
-  python -m pip freeze > "$OUT_ABS/pip_freeze.txt" 2>/dev/null || true
+  # 1.1) install *all* optional extras if defined (fail loud if it can't resolve)
+  EXTRAS="$(python - <<'PY'
+import tomllib
+try:
+    with open("pyproject.toml","rb") as f:
+        data = tomllib.load(f)
+    opt = (data.get("project",{}) or {}).get("optional-dependencies") or {}
+    extras = sorted(opt.keys())
+    if extras:
+        print(",".join(extras))
+except Exception:
+    pass
+PY
+)"
+  if [[ -n "$EXTRAS" ]]; then
+    echo "Installing extras: [$EXTRAS]"
+    python -m pip install -e ".[${EXTRAS}]"
+  fi
+
+  # 1.2) install PEP 735 dependency-groups commonly used for tests
+  # We intentionally only pull 'tests' (and 'test' if present) to stay general.
+  GROUP_REQS="$(python - <<'PY'
+import sys, tomllib, json
+try:
+    with open("pyproject.toml","rb") as f:
+        data = tomllib.load(f)
+    groups = (data.get("dependency-groups") or {})
+    wanted = []
+    for key in ("tests","test"):
+        if key in groups and isinstance(groups[key], list):
+            wanted.extend(groups[key])
+    if wanted:
+        print(json.dumps(wanted))
+except Exception:
+    pass
+PY
+)"
+  if [[ -n "$GROUP_REQS" ]]; then
+    echo "Installing dependency-groups: tests/test"
+    # shell-safe install of each requirement string
+    python - <<'PY' "$GROUP_REQS"
+import sys, json, subprocess
+reqs = json.loads(sys.argv[1])
+if reqs:
+    cmd = ["python","-m","pip","install", *reqs]
+    print(">>", " ".join(cmd))
+    raise SystemExit(subprocess.call(cmd))
+PY
+  fi
+
+
+
+  # 2) always have the basics we rely on (no guessing, no special cases)
+  python -m pip install \
+    pytest pytest-cov pytest-xdist pytest-timeout \
+    ruff mypy radon vulture bandit pip-audit
+
+  # --- Tool versions snapshot --------------------------------------------------
+  python -m pip freeze > "$OUT_ABS/pip_freeze.txt" || true
   {
-    echo -n "pytest: ";    (pytest --version    2>/dev/null || true)
-    echo -n "ruff: ";      (ruff --version      2>/dev/null || true)
-    echo -n "mypy: ";      (mypy --version      2>/dev/null || true)
-    echo -n "radon: ";     (radon --version     2>/dev/null || true)
-    echo -n "vulture: ";   (vulture --version   2>/dev/null || true)
-    echo -n "bandit: ";    (bandit --version    2>/dev/null || true)
-    echo -n "pip-audit: "; (pip-audit --version 2>/dev/null || true)
+    echo -n "pytest: "; pytest --version    || true
+    echo -n "ruff: ";   ruff --version      || true
+    echo -n "mypy: ";   mypy --version      || true
+    echo -n "radon: ";  radon --version     || true
+    echo -n "vulture: ";vulture --version   || true
+    echo -n "bandit: "; bandit --version    || true
+    echo -n "pip-audit: "; pip-audit --version || true
   } > "$OUT_ABS/tool_versions.txt"
 
-
-  # Avoid watchdog backend issues in containers
+  # --- Pytest (uniform invocation) --------------------------------------------
   export WATCHDOG_FORCE_POLLING=1
+  # ensure in-tree import wins
+  _pp="${PYTHONPATH:-}"
+  export PYTHONPATH=".:${PYTHONPATH:-}"
+  [[ -d "src"  ]] && export PYTHONPATH="src:${PYTHONPATH}"
+  # add common test roots so packages like "res" under tests/ are importable
+  for tdir in tests test t; do
+    [[ -d "$tdir" ]] && export PYTHONPATH="$tdir:${PYTHONPATH}"
+  done
 
-  # Functionality (tests) + coverage XML
-  if command -v pytest >/dev/null 2>&1; then
-    _pp="${PYTHONPATH:-}"
-    [[ -d "src" ]] && export PYTHONPATH="src:${PYTHONPATH:-}"
+  # Disable 3rd-party autoload; enable only the plugins we intentionally use
+  export PYTEST_DISABLE_PLUGIN_AUTOLOAD=1
 
-    test_arg="."
-    [[ -d "tests" ]] && test_arg="tests"
+  TEST_LOG="$OUT_ABS/pytest_full.log"
 
-    # Always capture the full test log so errors don't scroll away
-    TEST_LOG="$OUT_ABS/pytest_full.log"
+  # coverage targets from detected sources
+  cov_args=()
+  for p in "${SRC_PATHS[@]}"; do
+    cov_args+=( "--cov=$p" )
+  done
 
-    # If the repo defines a nox test session, prefer it (projects often rely on it)
-    if [[ -f "noxfile.py" ]] && command -v nox >/dev/null 2>&1; then
-      # Pass through junitxml + coverage options to pytest via nox’ “--” passthrough
-      # Many Pallets-style repos (like Werkzeug) expect to be run this way.
-      nox -s tests -- \
-        -n 0 \
-        -q --disable-warnings \
-        --timeout=20 --timeout-method=thread \
-        --durations=25 \
-        --junitxml "$OUT_ABS/pytest.xml" \
-        "${cov_args[@]}" --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
-        "$test_arg" 2>&1 | tee "$TEST_LOG" || true
+  # Parallelism + timeouts (plugin is installed in this venv)
+  : "${PYTEST_NWORKERS:=auto}"
+  : "${PYTEST_TIMEOUT:=0}"               # 0 -> let project config win
+  # Optional external wall-clock cap (e.g., PYTEST_WALLTIME=10m)
+  wrap_pytest() {
+    if [[ -n "${PYTEST_WALLTIME:-}" ]]; then
+      timeout -k 30s "$PYTEST_WALLTIME" "$@"
     else
-      # Fallback: run pytest directly
-      pytest -q \
-        -n 0 \
-        --disable-warnings \
-        --timeout=20 --timeout-method=thread \
-        --durations=25 \
-        --junitxml "$OUT_ABS/pytest.xml" \
-        "${cov_args[@]}" --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
-        "$test_arg" 2>&1 | tee "$TEST_LOG" || true
+      "$@"
     fi
+  }
 
-    export PYTHONPATH="$_pp"
-  else
-    echo "pytest not found; skipping tests & coverage" >&2
+  # Decide pytest import mode:
+  # - default (prepend) works for most suites (e.g., Jinja)
+  # - switch to importlib only if there are duplicate test basenames
+  IMPORT_MODE="prepend"
+
+  dup_basenames="$(
+  python - <<'PY'
+import os, glob, collections
+c = collections.Counter()
+for root in ("tests", "test", "t"):
+    if os.path.isdir(root):
+        for p in glob.glob(os.path.join(root, "**", "test_*.py"), recursive=True):
+            c[os.path.basename(p)] += 1
+print(1 if any(v > 1 for v in c.values()) else 0)
+PY
+  )"
+
+  if [[ "$dup_basenames" == "1" ]]; then
+    IMPORT_MODE="importlib"
   fi
 
 
-  # Readability / standards (ruff)
-  if command -v ruff >/dev/null 2>&1; then
-    ruff_targets=("${SRC_PATHS[@]}"); [[ ${#ruff_targets[@]} -eq 0 ]] && ruff_targets=(".")
-    ruff check --select ALL --ignore D203,D213 --output-format=json "${ruff_targets[@]}" \
-      | tee "$OUT_ABS/ruff.json" || true
-  else
-    echo "ruff not found; skipping lint" >&2
+  echo "Time for pytest"
+
+  set -o pipefail
+  : "${COV_FAIL_UNDER:=0}"   # default: don't fail the run on project coverage policy
+  wrap_pytest pytest -q \
+    -p pytest_cov -p pytest_timeout -p xdist.plugin \
+    --import-mode="$IMPORT_MODE" \
+    -n "$PYTEST_NWORKERS" --dist=worksteal \
+    --disable-warnings \
+    --timeout="$PYTEST_TIMEOUT" --timeout-method=thread \
+    --durations=25 \
+    --junitxml "$OUT_ABS/pytest.xml" \
+    "${cov_args[@]}" --cov-fail-under="${COV_FAIL_UNDER:-0}" \
+    --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
+    ${PYTEST_ADDOPTS:+$PYTEST_ADDOPTS} \
+    2>&1 | tee "$TEST_LOG" || true
+  PYTEST_RC=${PIPESTATUS[0]}
+  export PYTHONPATH="$_pp"
+  if [[ $PYTEST_RC -ne 0 ]]; then
+    echo "pytest failed with exit code $PYTEST_RC" >&2
+    exit $PYTEST_RC
   fi
 
-  # Types (mypy)
-  if command -v mypy >/dev/null 2>&1; then
-    mypy --hide-error-context --no-error-summary . \
-      | tee "$OUT_ABS/mypy.txt" || true
-  else
-    echo "mypy not found; skipping type check" >&2
+  # --- Static checks (fail loud if nothing to scan) ---------------------------
+  # Build a real list of Python files under the detected sources
+  mapfile -d '' PY_FILES < <(
+    for p in "${SRC_PATHS[@]}"; do
+      # skip obvious non-source dirs even if they slip into SRC_PATHS
+      case "$p" in tests|test|t|docs|doc|build|dist|.venv|venv) continue ;; esac
+      find "$p" -type f -name '*.py' -print0
+    done
+  )
+
+  if ((${#PY_FILES[@]} == 0)); then
+    echo "ERROR: no .py files found under: ${SRC_PATHS[*]}" >&2
+    exit 3
   fi
 
-  # Maintainability
-  if command -v radon >/dev/null 2>&1; then
-    radon cc -j "${radon_targets[@]}" > "$OUT_ABS/radon_cc.json" || true
-    radon mi -j "${radon_targets[@]}" > "$OUT_ABS/radon_mi.json" || true
-  fi
+  echo "Time for Ruff"
+  # Ruff
+  ruff_targets=()
+  for p in "${SRC_PATHS[@]}"; do
+    case "$p" in
+      tests|test|t|docs|doc|build|dist|.venv|venv|.git|.quality) continue ;;
+    esac
+    [[ -d "$p" ]] && ruff_targets+=("$p")
+  done
 
-  # Dead code
-  if command -v vulture >/dev/null 2>&1; then
-    vulture "${vulture_targets[@]}" > "$OUT_ABS/vulture.txt" || true
-  fi
+  # Add an explicit exclude to be extra safe
+  ruff check --output-format=json \
+    --exclude ".git,.qc-venv,.venv,venv,build,dist,tests,test,t,.quality" \
+    "${ruff_targets[@]}" > "$OUT_ABS/ruff.json" || true
 
-  # Security
-  if command -v bandit >/dev/null 2>&1; then
-    bandit -q -r "${bandit_targets[@]}" -f json -o "$OUT_ABS/bandit.json" || true
-  fi
-  if command -v pip-audit >/dev/null 2>&1; then
-    pip-audit -f json -o "$OUT_ABS/pip_audit.json" || true
-  fi
+  echo "Time for Mypy"
+  # Mypy across the repo (keeps it simple)
+  mypy --hide-error-context --no-error-summary . > "$OUT_ABS/mypy.txt" || true
 
-  # PyExamine (Code Quality Analyzer)
+  echo "Time for Radon"
+  # Radon on explicit file list (prevents “0 files” surprises)
+  radon cc -j "${PY_FILES[@]}" > "$OUT_ABS/radon_cc.json"
+  radon mi -j "${PY_FILES[@]}" > "$OUT_ABS/radon_mi.json"
+
+  echo "Time for Vulture"
+  # Vulture: use the same file list (not directories)
+  vulture "${PY_FILES[@]}" > "$OUT_ABS/vulture.txt" || true
+
+  echo "Time for Bandit"
+  # Bandit prefers directories; give it the roots
+  bandit -q -r "${SRC_PATHS[@]}" -f json -o "$OUT_ABS/bandit.json" || true
+
+  echo "Time for Pip-audit"
+  # Pip-audit stays repo-wide
+  pip-audit -f json -o "$OUT_ABS/pip_audit.json" || true
+
+
+  echo "Time for PyExamine"
+  # --- PyExamine (optional; simple wall-time) ---------------------------------
   if command -v analyze_code_quality >/dev/null 2>&1; then
     PYX_DIR="$OUT_ABS/pyexamine"; mkdir -p "$PYX_DIR"
-
-    # 15-minute cap per source root; adjust if you like
-    PYX_TIMEOUT="${PYX_TIMEOUT:-15m}"
-
+    : "${PYX_TIMEOUT:=3m}"   # default 3 minutes per source root
     idx=0
     for p in "${SRC_PATHS[@]}"; do
-      # Skip common non-source dirs defensively
       case "$p" in
-        tests|test|t|docs|doc|build|dist|.venv|venv) continue;;
+        tests|test|t|docs|doc|build|dist|.venv|venv) continue ;;
       esac
-
       base="$PYX_DIR/code_quality_report_${idx}"
-      echo "PyExamine on source root: $p  →  $base"
-      # Run with your default config baked into the image
-      # timeout exits non-zero if it hits the cap; we don’t fail the whole run
+      echo "PyExamine: $p -> $base"
       timeout -k 10s "$PYX_TIMEOUT" \
         analyze_code_quality "$WT_ROOT/$p" \
-        --config "/opt/configs/pyexamine_fast.yaml" \
-        --output "$base" || echo "PyExamine timed out or failed on $p" >&2
+          --config "/opt/configs/pyexamine_fast.yaml" \
+          --output "$base" || echo "PyExamine timed out or failed on $p" >&2
       idx=$((idx+1))
     done
-  else
-    echo "PyExamine (analyze_code_quality) not found; skipping." >&2
   fi
-
-
-
 )
 
 echo "==> Collected metrics in $OUT_ABS"

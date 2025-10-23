@@ -39,18 +39,3 @@ Here is file B:
 
 """
         return clip(self.ask(user))
-
-    def answer_question(self, file_path: str, file_text: str, question: str) -> str:
-        # For follow-ups, include the file again (24B context). Keep it light; model should quote minimally.
-        self.reset()
-        user = f"""File: {file_path}
-
-Question: {question}
-
-Answer with minimal code quotes and line numbers + one-sentence context per quote.
-
-=== BEGIN FILE ===
-{clip(file_text)}
-=== END FILE ===
-"""
-        return self.ask(user)

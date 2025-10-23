@@ -4,16 +4,6 @@ def read_file(path: str) -> str:
     with open(path, "r", encoding="utf-8", errors="ignore") as f:
         return f.read()
 
-#def default_node_to_path(repo_root: str, package_root: str, node: str) -> str:
-#    """
-#    Maps a node like 'connection.py' -> kombu/connection.py
-#                    'transport/__init__.py' -> kombu/transport/__init__.py
-#                    'transport/librabbitmq.py' -> kombu/transport/librabbitmq.py
-#    Adjust `package_root` if your nodes are not rooted at 'kombu'.
-#    """
-#    parts = node.split("/")
-#    return package_root #os.path.join(repo_root, package_root, *parts)
-
 def default_node_to_path(repo_root: str, package_root: str, node: str) -> str:
     """
     Join repo_root + package_root + node, but avoid double-rooting.
