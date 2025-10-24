@@ -14,8 +14,7 @@ Include exactly the sections:
 General explanation
 Impact
 
-Style:
-- Imperative, specific to the given files and edges. Try to keep it short, but not too short so that important context is lost.
+Try to keep it short, but not too short so that important context is lost.
 """
 
 
