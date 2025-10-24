@@ -69,7 +69,7 @@ class Orchestrator:
             )
             dependency_summaries_B[a_path] = (b_path, dep_summary_b)
 
-        # 3) Cycle_Expert -> final prompt
+        # 3) Cycle_Expert
         log_section("Cycle Expert (explain cycle)", "green")
         cycle_expert = CycleExpert("Cycle_Expert", self.client)
         cycle_explanation = cycle_expert.explain(dependency_summaries_A, dependency_summaries_B)

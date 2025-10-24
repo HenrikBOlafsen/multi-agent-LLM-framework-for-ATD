@@ -1,14 +1,15 @@
 from agent_setup import AgentBase
 from agent_util import clip
 
-DEPENDENCY_EXPERT_B_SYSTEM = """You are a Dependency_Expert looking only at file B for an A->B edge.
+DEPENDENCY_EXPERT_B_SYSTEM = """You are a Dependency_Expert looking at file B for an A->B edge.
 Your job:
 Explain precisely what parts of B that A depends on. You are given a summary of how A depends on B, and your role is to look at the code of file B and find the relevant parts of code for this dependency.
-Quote relevant code (with line numbers) and explain, but do not include all code, only relevant code for the dependency A->B. And shorten code by making abstractions of it, like e.g. providing pseudo code instead or simply writing about it in plain text.
+Quote relevant code (with line numbers) and explain, but do not include all code, only relevant code for the dependency A->B. And shorten code by making abstractions of it, like e.g. summarizing it in plain text.
 My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). I care about architecture (static coupling), not runtime import order.
 For each B symbol used by A: describe whether it is a tiny helper or data class or heavy class etc. with some explanation. State whether Module B itself uses/constructs this symbol internally (yes/no).
 
 In your output, name the files by their actual name, not "A" and "B".
+Make sure to not miss any important info that could be relevant later when assesing whether to break this edge (You are not to make this assessment. You just gather info).
 
 Rules:
 - Stay factual. if unsure, say so.

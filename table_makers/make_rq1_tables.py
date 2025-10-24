@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 """
-RQ1 (iterationless): WITH vs WITHOUT explanations, paired by cycle_id per repo.
+RQ1 (iterationless): WITH vs WITHOUT explanations.
 
-Outputs (ONLY):
-  - rq1_per_project.csv
-  - rq1_with_vs_without.csv
+Outputs:
+  - rq1_per_project.csv        # per repo *variant* aggregated rows
+  - rq1_with_vs_without.csv    # two pooled rows (with vs without)
+  - rq1_per_cycle.csv          # NEW: one row per (repo, cycle_id, condition) with cycle_size
 """
 
 from __future__ import annotations
-import argparse, csv, math, sys
+import argparse, csv, sys
 from pathlib import Path
-from typing import Dict, Any, List, Optional, Tuple
+from typing import Dict, Any, List, Optional
 
 from rq_utils import (
-    read_json, read_repos_file,
+    read_repos_file,
     get_tests_pass_percent, get_scc_metrics,
     parse_cycles, branch_for, load_json_any, mean_or_none, safe_sub,
+    cycle_size_from_baseline,
 )
 
 # Relative file locations inside a branch directory
@@ -41,7 +43,9 @@ def main():
     WITH_ID  = args.exp_with
     WO_ID    = args.exp_without
 
-    per_target_rows: List[Dict[str, Any]] = []
+    # every cycle row we collect (now includes unpaired)
+    per_cycle_rows: List[Dict[str, Any]] = []
+    # for project-level aggregation
     per_project_rows: List[Dict[str, Any]] = []
 
     for repo, baseline_branch, _src_rel in repos:
@@ -65,7 +69,7 @@ def main():
         if not cids:
             continue
 
-        def collect_one(dirpath: Path, cid: str, variant_label: str) -> Optional[Dict[str, Any]]:
+        def collect_one(dirpath: Path, cid: str, variant_label: str, condition_out: str) -> Optional[Dict[str, Any]]:
             atd = load_json_any(dirpath, ATD_METRICS)
             qual = load_json_any(dirpath, QUALITY_METRICS)
             if atd is None:
@@ -88,15 +92,21 @@ def main():
                 tests_ok = (base_tests is None) or (tests_pass is None) or (tests_pass >= base_tests)
                 succ = (post_edges < pre_edges) and tests_ok
 
+            size = cycle_size_from_baseline(baseline_dir, cid)
+
             return {
                 "repo": repo,
                 "cycle_id": cid,
-                "variant": variant_label,
+                "cycle_size": size,
+                "variant_label": variant_label,   # e.g., expA / expA_without_explanation
+                "condition": condition_out,       # "with" / "without" (nice for reading)
                 "succ": succ,
+
                 "pre_edges": pre_edges, "post_edges": post_edges, "delta_edges": d_edges,
                 "pre_scc_count": pre_count, "post_scc_count": post_count, "delta_scc_count": d_count,
                 "pre_nodes": pre_nodes, "post_nodes": post_nodes, "delta_nodes": d_nodes,
                 "pre_loc": pre_loc, "post_loc": post_loc, "delta_loc": d_loc,
+
                 "tests_pass_pct": tests_pass, "delta_tests_vs_base": d_tests,
             }
 
@@ -104,16 +114,16 @@ def main():
             with_dir = repo_dir / branch_for(WITH_ID, cid)
             wo_dir   = repo_dir / branch_for(WO_ID,   cid)
 
-            row_with = collect_one(with_dir, cid, WITH_ID)
-            row_wo   = collect_one(wo_dir,   cid, WO_ID)
+            row_with = collect_one(with_dir, cid, WITH_ID, "with")
+            row_wo   = collect_one(wo_dir,   cid, WO_ID,   "without")
 
-            if row_with and row_wo:
-                per_target_rows.append(row_with)
-                per_target_rows.append(row_wo)
+            if row_with: per_cycle_rows.append(row_with)
+            if row_wo:   per_cycle_rows.append(row_wo)
 
-        rows_repo = [r for r in per_target_rows if r["repo"] == repo]
-        with_rows = [r for r in rows_repo if r["variant"] == WITH_ID]
-        wo_rows   = [r for r in rows_repo if r["variant"] == WO_ID]
+        # Project aggregation over all rows we gathered for this repo
+        rows_repo = [r for r in per_cycle_rows if r["repo"] == repo]
+        with_rows = [r for r in rows_repo if r["condition"] == "with"]
+        wo_rows   = [r for r in rows_repo if r["condition"] == "without"]
 
         def agg_project(rows: List[Dict[str, Any]], label_out: str) -> Optional[Dict[str, Any]]:
             if not rows:
@@ -125,7 +135,7 @@ def main():
 
             return {
                 "repo": repo,
-                "variant": label_out,
+                "variant": label_out,  # "with" / "without"
                 "Success%": round(succ_pct, 2) if succ_pct is not None else None,
                 "ΔEdges": mean_or_none(pull("delta_edges")),
                 "ΔSCCcount": mean_or_none(pull("delta_scc_count")),
@@ -139,7 +149,7 @@ def main():
         if row_with_p: per_project_rows.append(row_with_p)
         if row_wo_p:   per_project_rows.append(row_wo_p)
 
-    # Write per-project
+    # ---------- Write per-project ----------
     proj_path = outdir / "rq1_per_project.csv"
     if per_project_rows:
         with proj_path.open("w", newline="", encoding="utf-8") as f:
@@ -151,12 +161,10 @@ def main():
     else:
         print("[WARN] No per-project rows produced", file=sys.stderr)
 
-    # WITH vs WITHOUT pooled
+    # ---------- WITH vs WITHOUT pooled (across all per-cycle rows) ----------
     pool = {"with": [], "without": []}
-    def pool_key(variant_label: str) -> str:
-        return "with" if variant_label == WITH_ID else "without"
-    for r in per_target_rows:
-        pool[pool_key(r["variant"])].append(r)
+    for r in per_cycle_rows:
+        pool[r["condition"]].append(r)
 
     def rate_bool(xs: List[Optional[bool]]) -> Optional[float]:
         vals = [x for x in xs if isinstance(x, bool)]
@@ -204,6 +212,28 @@ def main():
         print(f"Wrote: {wv_path}")
     else:
         print("[WARN] No paired data to write to rq1_with_vs_without.csv", file=sys.stderr)
+
+    # ---------- NEW: per-cycle table ----------
+    if per_cycle_rows:
+        # Choose readable column order
+        fields = [
+            "repo", "cycle_id", "cycle_size", "condition", "succ",
+            "pre_edges","post_edges","delta_edges",
+            "pre_scc_count","post_scc_count","delta_scc_count",
+            "pre_nodes","post_nodes","delta_nodes",
+            "pre_loc","post_loc","delta_loc",
+            "tests_pass_pct","delta_tests_vs_base",
+            "variant_label",  # keep the original label too (exp names)
+        ]
+        pc_path = outdir / "rq1_per_cycle.csv"
+        with pc_path.open("w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=fields)
+            w.writeheader()
+            for r in per_cycle_rows:
+                w.writerow({k: r.get(k) for k in fields})
+        print(f"Wrote: {pc_path}")
+    else:
+        print("[WARN] No per-cycle rows produced", file=sys.stderr)
 
 if __name__ == "__main__":
     main()

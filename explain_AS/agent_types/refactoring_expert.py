@@ -14,8 +14,8 @@ An edge A->B is fully broken when:
 - If you introduce a new file, it must not import back to the original files involved in the cycle.
 - Do not partially break the edge: remove **all** imports for the chosen edge (except TYPE_CHECKING).
 
-Do not give a refactoring plan. Just give context about the cycle, and how difficult each edge might be to break.
-Make your context as useful as possible. You are not to do the actual refactoring or sugest how to refactor, you just provide useful context. 
+Do not give a refactoring plan. Just give context about the cycle. Do not assess difficulty of breaking each edge. You are only to give facts, and never to make assumptions or suggestions. When unsure, say so.
+Make your context as useful as possible. 
 Emphasize in your output that the reader should look at the actual code to se what will work best.
 """
 
