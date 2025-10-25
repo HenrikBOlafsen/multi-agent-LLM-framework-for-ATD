@@ -221,10 +221,11 @@ def build_graph_from_pydeps(pydeps_json: str, repo_root: str) -> nx.DiGraph:
             # Require the source file (outside TYPE_CHECKING) to mention the target's module
             # or one of its package prefixes/suffixes.
             if src_seen:
-                keep = any(
-                    dmod == s or dmod.startswith(s + ".") or s.startswith(dmod + ".")
-                    for s in src_seen
-                )
+                #keep = any(
+                #    dmod == s or dmod.startswith(s + ".") or s.startswith(dmod + ".")
+                #    for s in src_seen
+                #)
+                keep = any(dmod == s or s.startswith(dmod + ".") for s in src_seen)
                 if not keep:
                     continue
 

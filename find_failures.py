@@ -51,7 +51,7 @@ def condition_from_exp(exp_label: str) -> str:
 def classify_outcome(explain_status: Optional[Dict[str, Any]], oh_status: Optional[Dict[str, Any]]) -> Tuple[str, str]:
     """
     outcome ∈ { pushed, explain_llm_error, openhands_llm_error, push_failed, no_changes,
-                openhands_missing_status, missing_both_status }
+                openhands_missing_status, incomplete_status, missing_both_status }
     returns (outcome, detail_reason)
     """
     if explain_status and explain_status.get("outcome") == "llm_error":
@@ -62,6 +62,8 @@ def classify_outcome(explain_status: Optional[Dict[str, Any]], oh_status: Option
         if out == "no_changes":  return "no_changes", reason
         if out == "push_failed": return "push_failed", reason
         if out == "llm_error":   return "openhands_llm_error", reason
+        if out == "started":     return "incomplete_status", reason or "wrapper_did_not_finalize"
+        # Any other unexpected label → bucket as OH error (conservative)
         return "openhands_llm_error", reason
     if explain_status and explain_status.get("outcome") == "ok":
         return "openhands_missing_status", ""

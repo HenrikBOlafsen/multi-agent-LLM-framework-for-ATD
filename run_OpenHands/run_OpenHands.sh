@@ -47,7 +47,7 @@ STATUS_PATH="$LOG_DIR/status.json"
 ts() { date -Iseconds; }
 
 write_status_json () {
-  # $1 outcome, $2 reason, optional extra k:v pairs via env vars
+  # $1 outcome, $2 reason, optional extra k:v pairs via env var _EXTRA_JSON (raw JSON attrs)
   local outcome="$1"; shift || true
   local reason="${1:-}"; shift || true
   {
@@ -61,13 +61,25 @@ write_status_json () {
     echo "  \"trajectory\": \"${TRAJ_PATH}\","
     echo "  \"outcome\": \"${outcome}\","
     echo "  \"reason\": \"${reason}\""
-    # Optionally append extras
     if [ -n "${_EXTRA_JSON:-}" ]; then
       echo "  ,${_EXTRA_JSON}"
     fi
     echo "}"
   } > "$STATUS_PATH"
 }
+
+# ---- fail-safe finalizer (ensures we never leave 'started' hanging) ----
+__OH_FINALIZED=0
+finalize_if_needed () {
+  if [ "$__OH_FINALIZED" -eq 0 ]; then
+    REASON="wrapper_did_not_finalize"
+    if [ -f "$TRAJ_PATH" ]; then
+      REASON="incomplete_status_but_trajectory_present"
+    fi
+    _EXTRA_JSON="\"pushed\": false" write_status_json "incomplete_status" "$REASON"
+  fi
+}
+trap finalize_if_needed EXIT
 
 # Mark start
 _EXTRA_JSON="\"status\":\"started\"" write_status_json "started" ""
@@ -76,10 +88,15 @@ _EXTRA_JSON="\"status\":\"started\"" write_status_json "started" ""
 abs() { python3 -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$1"; }
 PROMPT_ABS="$(abs "$PROMPT_PATH")"; LOG_DIR_ABS="$(abs "$LOG_DIR")"; OH_HOME_ABS="$(abs "$OH_HOME")"
 
+# --- robust, unique workspace per run ---
 WORKBASE="$PWD/.openhands_tmp"
-WORKSPACE="$WORKBASE/$(basename "$REPO_SLUG")"
 mkdir -p "$WORKBASE" "$LOG_DIR" "$OH_HOME"
-trap 'rm -rf "$WORKBASE"' EXIT
+WORKSPACE="$WORKBASE/$(basename "$REPO_SLUG")_$(date +%s%N)"
+# Ensure cleanup on any exit
+trap 'rm -rf "$WORKSPACE" || true' EXIT
+# If, for any reason, the path already exists, clear it
+[ -d "$WORKSPACE" ] && rm -rf "$WORKSPACE"
+mkdir -p "$WORKSPACE"
 
 GIT_URL="https://x-access-token:${GITHUB_TOKEN}@github.com/${REPO_SLUG}.git"
 
@@ -151,6 +168,7 @@ RUN_EXIT=$?
 
 if [ $RUN_EXIT -ne 0 ]; then
   _EXTRA_JSON="\"exit_code\": ${RUN_EXIT}" write_status_json "llm_error" "openhands_exited_nonzero"
+  __OH_FINALIZED=1
   echo "OpenHands exited with status $RUN_EXIT — skipping commit/push."
   exit 10
 fi
@@ -159,6 +177,7 @@ fi
 pushd "$WORKSPACE" >/dev/null
 if [ -z "$(git status --porcelain)" ]; then
   _EXTRA_JSON="\"commit\": null, \"pushed\": false" write_status_json "no_changes" "no_diff_after_llm"
+  __OH_FINALIZED=1
   echo "No changes detected; nothing to commit/push."
 else
   git add -A
@@ -170,6 +189,7 @@ else
   echo "Pushing '$NEW_BRANCH' to origin…"
   if git push -u origin "$NEW_BRANCH"; then
     _EXTRA_JSON="\"commit\": \"${COMMIT_SHA}\", \"pushed\": true" write_status_json "pushed" ""
+    __OH_FINALIZED=1
   else
     # Classify common push errors (best-effort)
     PUSH_REASON="push_failed"
@@ -177,6 +197,7 @@ else
       PUSH_REASON="non_fast_forward_or_protected"
     fi
     _EXTRA_JSON="\"commit\": \"${COMMIT_SHA}\", \"pushed\": false" write_status_json "push_failed" "$PUSH_REASON"
+    __OH_FINALIZED=1
     echo "Push failed."
     popd >/dev/null
     exit 20

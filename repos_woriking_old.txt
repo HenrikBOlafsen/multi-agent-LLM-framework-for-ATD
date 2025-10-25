@@ -1,7 +1,10 @@
 kombu main kombu
 click main src/click
+typer master typer
 werkzeug main src/werkzeug
 rich master rich
+flask main src/flask
 jinja main src/jinja2
 celery main celery
+isort main isort
 lark master lark
