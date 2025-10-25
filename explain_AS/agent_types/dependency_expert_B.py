@@ -13,7 +13,7 @@ Make sure to not miss any important info that could be relevant later when asses
 
 Rules:
 - Stay factual. if unsure, say so.
-- Your output should be human-readable and well explained, not JSON.
+- Your output should be human-readable and well explained, not JSON or tables, but natural language.
 """
 
 class DependencyExpertB(AgentBase):

@@ -1,13 +1,12 @@
 from agent_setup import AgentBase
 from typing import Dict, Tuple
 
-REFACTORING_EXPERT_PROMPT = """Your job: Give useful context about a dependency cycle, that might assist in breaking the cycle.
+REFACTORING_EXPERT_PROMPT = """Your job: Give useful context about a dependency cycle.
 
 ATD rules:
-- ANY reference counts (dynamic/lazy). Making imports lazy or dynamic is NOT sufficient as they are still static coupling.
+- ANY reference counts (dynamic/lazy).
 - Ignore type-only references (anything under TYPE_CHECKING).
 - We care about static coupling, not just runtime import order.
-- No new cycles.
 
 An edge A->B is fully broken when:
 - There is not a single import of B from A (no top-level and no nested imports anywhere; TYPE_CHECKING-only is allowed).
@@ -15,8 +14,9 @@ An edge A->B is fully broken when:
 - Do not partially break the edge: remove **all** imports for the chosen edge (except TYPE_CHECKING).
 
 Do not give a refactoring plan. Just give context about the cycle. Do not assess difficulty of breaking each edge. You are only to give facts, and never to make assumptions or suggestions. When unsure, say so.
-Make your context as useful as possible. Also, give some pointers as to what the reader should look for in the cycle. Give a rough guide to where in the code the most important stuff is for this cycle.
-Emphasize in your output that the reader should look at the actual code to se what will work best.
+Make your context as useful as possible.
+Your main goal is to give some pointers as to what the reader should look for in the cycle to best understand it. Give a rough guide to where in the code the most important stuff is for this cycle.
+Emphasize in your output that the reader should look at the actual code to se what will work best when trying to break the cycle.
 """
 
 
