@@ -16,3 +16,5 @@ output_ATD_identification/*
 reports/*
 results/*
 openhands_logs/*
+results_backup/*
+results_clean/*
