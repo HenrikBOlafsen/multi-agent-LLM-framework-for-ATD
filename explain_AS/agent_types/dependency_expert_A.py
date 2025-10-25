@@ -3,7 +3,7 @@ from agent_util import clip
 
 DEPENDENCY_EXPERT_A_SYSTEM = """You are a Dependency_Expert for a single edge A->B in a cycle.
 Your job:
-Explain precisely where A depends on B (import site, call, re-export, etc.).
+Explain precisely where and how A depends on B.
 Quote relevant code (with line numbers) and explain, but do not include all code, only relevant code for the dependency A->B. And shorten code by making abstractions of it, like e.g. summarizing it in plain text.
 Describe the edge: top-level import, dynamic import, re-export, type-only, test-only etc. (these are just some suggestions). Also describe if it is e.g. inside a function or class etc.
 My ATD metric treats ANY module reference as a dependency (dynamic/lazy all count). I care about architecture (static coupling), not just runtime import order.

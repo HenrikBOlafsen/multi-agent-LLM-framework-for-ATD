@@ -42,6 +42,35 @@ REPO_SLUG="$1"; BASE_BRANCH="$2"; NEW_BRANCH="$3"; PROMPT_PATH="$4"
 mkdir -p "$LOG_DIR" "$OH_HOME"
 RUN_LOG="$LOG_DIR/run_$(date +%Y%m%d_%H%M%S).log"
 TRAJ_PATH="$LOG_DIR/trajectory.json"
+STATUS_PATH="$LOG_DIR/status.json"
+
+ts() { date -Iseconds; }
+
+write_status_json () {
+  # $1 outcome, $2 reason, optional extra k:v pairs via env vars
+  local outcome="$1"; shift || true
+  local reason="${1:-}"; shift || true
+  {
+    echo "{"
+    echo "  \"timestamp\": \"$(ts)\","
+    echo "  \"phase\": \"openhands\","
+    echo "  \"repo\": \"${REPO_SLUG}\","
+    echo "  \"base_branch\": \"${BASE_BRANCH}\","
+    echo "  \"new_branch\": \"${NEW_BRANCH}\","
+    echo "  \"run_log\": \"${RUN_LOG}\","
+    echo "  \"trajectory\": \"${TRAJ_PATH}\","
+    echo "  \"outcome\": \"${outcome}\","
+    echo "  \"reason\": \"${reason}\""
+    # Optionally append extras
+    if [ -n "${_EXTRA_JSON:-}" ]; then
+      echo "  ,${_EXTRA_JSON}"
+    fi
+    echo "}"
+  } > "$STATUS_PATH"
+}
+
+# Mark start
+_EXTRA_JSON="\"status\":\"started\"" write_status_json "started" ""
 
 # Helpers
 abs() { python3 -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$1"; }
@@ -80,15 +109,6 @@ echo "  prompt:  $PROMPT_ABS"
 echo "Logs: $RUN_LOG"
 echo "Trajectory: $TRAJ_PATH"
 
-echo "SANDBOX_VOLUMES: $WORKSPACE:/project:rw,$LOG_DIR:/logs:rw"
-test -f "$WORKSPACE/pyproject.toml" && echo "repo looks good" || echo "repo missing?"
-
-# Paths for mounting
-PROMPT_DIR="$(dirname "$PROMPT_ABS")"
-
-# Run OpenHands headless (prompt as-is)
-set -o pipefail
-
 # TTY flags: avoid '-t' when piping to tee
 TTY_FLAGS=""
 if [ -t 1 ] && [ -t 0 ]; then
@@ -101,13 +121,11 @@ fi
 : "${OPENHANDS_IMAGE:=docker.all-hands.dev/all-hands-ai/openhands:0.59}"
 : "${RUNTIME_IMAGE:=docker.all-hands.dev/all-hands-ai/runtime:0.59-nikolaik}"
 
-echo "Using OpenHands image : $OPENHANDS_IMAGE"
-echo "Using runtime image   : $RUNTIME_IMAGE"
-
-# Mount the repo at /workspace (OpenHands uses this path internally)
-# Mount logs at /logs, and mount the prompt's directory read-only so -f is valid
+# Paths for mounting
 PROMPT_DIR="$(dirname "$PROMPT_ABS")"
 
+# Run OpenHands headless (prompt as-is)
+set -o pipefail
 docker run --rm $TTY_FLAGS \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v "$WORKSPACE:/workspace:rw" \
@@ -131,22 +149,38 @@ docker run --rm $TTY_FLAGS \
     2>&1 | tee "$RUN_LOG"
 RUN_EXIT=$?
 
-
-
 if [ $RUN_EXIT -ne 0 ]; then
+  _EXTRA_JSON="\"exit_code\": ${RUN_EXIT}" write_status_json "llm_error" "openhands_exited_nonzero"
   echo "OpenHands exited with status $RUN_EXIT — skipping commit/push."
-  exit $RUN_EXIT
+  exit 10
 fi
 
 # Commit & push (outside LLM)
 pushd "$WORKSPACE" >/dev/null
 if [ -z "$(git status --porcelain)" ]; then
+  _EXTRA_JSON="\"commit\": null, \"pushed\": false" write_status_json "no_changes" "no_diff_after_llm"
   echo "No changes detected; nothing to commit/push."
 else
   git add -A
-  git commit -m "$COMMIT_MESSAGE" || true
+  if git commit -m "$COMMIT_MESSAGE" >/dev/null 2>&1; then
+    COMMIT_SHA="$(git rev-parse --short HEAD)"
+  else
+    COMMIT_SHA="$(git rev-parse --short HEAD || echo null)"
+  fi
   echo "Pushing '$NEW_BRANCH' to origin…"
-  git push -u origin "$NEW_BRANCH"
+  if git push -u origin "$NEW_BRANCH"; then
+    _EXTRA_JSON="\"commit\": \"${COMMIT_SHA}\", \"pushed\": true" write_status_json "pushed" ""
+  else
+    # Classify common push errors (best-effort)
+    PUSH_REASON="push_failed"
+    if git ls-remote --exit-code --heads "https://github.com/${REPO_SLUG}.git" "$NEW_BRANCH" >/dev/null 2>&1; then
+      PUSH_REASON="non_fast_forward_or_protected"
+    fi
+    _EXTRA_JSON="\"commit\": \"${COMMIT_SHA}\", \"pushed\": false" write_status_json "push_failed" "$PUSH_REASON"
+    echo "Push failed."
+    popd >/dev/null
+    exit 20
+  fi
 fi
 popd >/dev/null
 

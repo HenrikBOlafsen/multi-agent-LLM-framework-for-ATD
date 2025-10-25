@@ -15,7 +15,7 @@ An edge A->B is fully broken when:
 - Do not partially break the edge: remove **all** imports for the chosen edge (except TYPE_CHECKING).
 
 Do not give a refactoring plan. Just give context about the cycle. Do not assess difficulty of breaking each edge. You are only to give facts, and never to make assumptions or suggestions. When unsure, say so.
-Make your context as useful as possible. 
+Make your context as useful as possible. Also, give some pointers as to what the reader should look for in the cycle. Give a rough guide to where in the code the most important stuff is for this cycle.
 Emphasize in your output that the reader should look at the actual code to se what will work best.
 """
 

@@ -14,6 +14,7 @@ Include exactly the sections:
 General explanation
 Impact
 
+You are only to give facts, and never to make assumptions or suggestions. When unsure, say so.
 Try to keep it short, but not too short so that important context is lost.
 """
 
