@@ -39,10 +39,18 @@ REPO_SLUG="$1"; BASE_BRANCH="$2"; NEW_BRANCH="$3"; PROMPT_PATH="$4"
 [ -f "$PROMPT_PATH" ] || { echo "Prompt not found: $PROMPT_PATH"; exit 4; }
 [ -n "$LLM_API_KEY" ] || { echo "LLM_API_KEY is required"; exit 5; }
 
-mkdir -p "$LOG_DIR" "$OH_HOME"
-RUN_LOG="$LOG_DIR/run_$(date +%Y%m%d_%H%M%S).log"
-TRAJ_PATH="$LOG_DIR/trajectory.json"
-STATUS_PATH="$LOG_DIR/status.json"
+# ---- helpers ----
+abs() { python3 -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$1"; }
+
+# Use ABSOLUTE paths for all logs/status to avoid CWD issues
+LOG_DIR_ABS="$(abs "$LOG_DIR")"
+OH_HOME_ABS="$(abs "$OH_HOME")"
+PROMPT_ABS="$(abs "$PROMPT_PATH")"
+mkdir -p "$LOG_DIR_ABS" "$OH_HOME_ABS"
+
+RUN_LOG="$LOG_DIR_ABS/run_$(date +%Y%m%d_%H%M%S).log"
+TRAJ_PATH="$LOG_DIR_ABS/trajectory.json"
+STATUS_PATH="$LOG_DIR_ABS/status.json"
 
 ts() { date -Iseconds; }
 
@@ -50,6 +58,7 @@ write_status_json () {
   # $1 outcome, $2 reason, optional extra k:v pairs via env var _EXTRA_JSON (raw JSON attrs)
   local outcome="$1"; shift || true
   local reason="${1:-}"; shift || true
+  mkdir -p "$(dirname "$STATUS_PATH")"
   {
     echo "{"
     echo "  \"timestamp\": \"$(ts)\","
@@ -70,7 +79,9 @@ write_status_json () {
 
 # ---- fail-safe finalizer (ensures we never leave 'started' hanging) ----
 __OH_FINALIZED=0
-finalize_if_needed () {
+WORKSPACE=""
+finalize_and_cleanup () {
+  # Always try to finalize if no terminal status was written
   if [ "$__OH_FINALIZED" -eq 0 ]; then
     REASON="wrapper_did_not_finalize"
     if [ -f "$TRAJ_PATH" ]; then
@@ -78,23 +89,20 @@ finalize_if_needed () {
     fi
     _EXTRA_JSON="\"pushed\": false" write_status_json "incomplete_status" "$REASON"
   fi
+  # Cleanup workspace if set
+  if [ -n "$WORKSPACE" ] && [ -d "$WORKSPACE" ]; then
+    rm -rf "$WORKSPACE" || true
+  fi
 }
-trap finalize_if_needed EXIT
+trap finalize_and_cleanup EXIT
 
 # Mark start
 _EXTRA_JSON="\"status\":\"started\"" write_status_json "started" ""
 
-# Helpers
-abs() { python3 -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$1"; }
-PROMPT_ABS="$(abs "$PROMPT_PATH")"; LOG_DIR_ABS="$(abs "$LOG_DIR")"; OH_HOME_ABS="$(abs "$OH_HOME")"
-
 # --- robust, unique workspace per run ---
 WORKBASE="$PWD/.openhands_tmp"
-mkdir -p "$WORKBASE" "$LOG_DIR" "$OH_HOME"
+mkdir -p "$WORKBASE"
 WORKSPACE="$WORKBASE/$(basename "$REPO_SLUG")_$(date +%s%N)"
-# Ensure cleanup on any exit
-trap 'rm -rf "$WORKSPACE" || true' EXIT
-# If, for any reason, the path already exists, clear it
 [ -d "$WORKSPACE" ] && rm -rf "$WORKSPACE"
 mkdir -p "$WORKSPACE"
 
