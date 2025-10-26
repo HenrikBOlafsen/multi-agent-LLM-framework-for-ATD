@@ -65,8 +65,8 @@ def main():
     cycles_map = parse_cycles(Path(args.cycles_file))
 
     per_cycle_rows: List[Dict[str, Any]] = []
-    per_project_rows: List[Dict[str, Any]] = []
 
+    # --------- Collect all per-cycle rows across ALL roots/experiments ----------
     for results_root, WITH_ID, WO_ID in cfgs:
         for repo, baseline_branch, _src_rel in repos:
             repo_dir = Path(results_root) / repo
@@ -133,50 +133,53 @@ def main():
                 if row_with: per_cycle_rows.append(row_with)
                 if row_wo:   per_cycle_rows.append(row_wo)
 
-            # Per-project aggregation for this (repo, results_root) pair
-            rows_repo = [r for r in per_cycle_rows if r["repo"] == repo]
+    # ---------- Per-project aggregation (ACROSS ALL EXPERIMENTS/ROOTS) ----------
+    from collections import defaultdict
 
-            def aggregate_rows(rows: List[Dict[str, Any]], condition_label: str) -> Optional[Dict[str, Any]]:
-                rows_c = [r for r in rows if r["condition"] == condition_label]
-                if not rows_c:
-                    return None
-                n_total = len(rows_c)
-                n_success = sum(1 for r in rows_c if isinstance(r.get("succ"), bool) and r["succ"] is True)
-                succ_pct = pct(n_success, n_total)
+    def aggregate_rows(rows: List[Dict[str, Any]], repo_name: str, condition_label: str) -> Optional[Dict[str, Any]]:
+        rows_c = [r for r in rows if r["repo"] == repo_name and r["condition"] == condition_label]
+        if not rows_c:
+            return None
+        n_total = len(rows_c)
+        n_success = sum(1 for r in rows_c if isinstance(r.get("succ"), bool) and r["succ"] is True)
+        succ_pct = pct(n_success, n_total)
 
-                succ_rows = [r for r in rows_c if r.get("succ") is True]
-                de_succ = [r.get("delta_edges") for r in succ_rows]
-                dn_succ = [r.get("delta_nodes") for r in succ_rows]
-                dl_succ = [r.get("delta_loc")   for r in succ_rows]
+        succ_rows = [r for r in rows_c if r.get("succ") is True]
+        de_succ = [r.get("delta_edges") for r in succ_rows]
+        dn_succ = [r.get("delta_nodes") for r in succ_rows]
+        dl_succ = [r.get("delta_loc")   for r in succ_rows]
 
-                valid_edge_pairs = [r for r in rows_c if isinstance(r.get("pre_edges"), (int, float)) and isinstance(r.get("post_edges"), (int, float))]
-                zero_change = [ (r["post_edges"] == r["pre_edges"]) for r in valid_edge_pairs ]
+        valid_edge_pairs = [r for r in rows_c if isinstance(r.get("pre_edges"), (int, float)) and isinstance(r.get("post_edges"), (int, float))]
+        zero_change = [ (r["post_edges"] == r["pre_edges"]) for r in valid_edge_pairs ]
 
-                # New: percent of non-regressions relative to baseline
-                nt_vals = [r.get("delta_tests_vs_base") for r in rows_c if r.get("delta_tests_vs_base") is not None]
-                no_reg = (100.0 * sum(1 for v in nt_vals if v >= 0) / len(nt_vals)) if nt_vals else None
+        # Percent of non-regressions relative to baseline
+        nt_vals = [r.get("delta_tests_vs_base") for r in rows_c if r.get("delta_tests_vs_base") is not None]
+        no_reg = (100.0 * sum(1 for v in nt_vals if v >= 0) / len(nt_vals)) if nt_vals else None
 
-                return {
-                    "repo": repo,
-                    "Condition": condition_label,
-                    "n_total": n_total,
-                    "n_success": n_success,
-                    "Success%": round(succ_pct, 2) if succ_pct is not None else None,
-                    "ΔEdges_success_mean": mean_or_none(de_succ),
-                    "ΔEdges_success_std":  std_or_none(de_succ),
-                    "ΔEdges_success_median": median_or_none(de_succ),
-                    "ΔNodes_success_mean": mean_or_none(dn_succ),
-                    "ΔNodes_success_std":  std_or_none(dn_succ),
-                    "ΔLOC_success_mean": mean_or_none(dl_succ),
-                    "ΔLOC_success_std":  std_or_none(dl_succ),
-                    "ZeroChange%": round(rate_bool(zero_change), 2) if rate_bool(zero_change) is not None else None,
-                    "NoTestRegression%": round(no_reg, 2) if no_reg is not None else None,
-                }
+        return {
+            "repo": repo_name,
+            "Condition": condition_label,
+            "n_total": n_total,
+            "n_success": n_success,
+            "Success%": round(succ_pct, 2) if succ_pct is not None else None,
+            "ΔEdges_success_mean": mean_or_none(de_succ),
+            "ΔEdges_success_std":  std_or_none(de_succ),
+            "ΔEdges_success_median": median_or_none(de_succ),
+            "ΔNodes_success_mean": mean_or_none(dn_succ),
+            "ΔNodes_success_std":  std_or_none(dn_succ),
+            "ΔLOC_success_mean": mean_or_none(dl_succ),
+            "ΔLOC_success_std":  std_or_none(dl_succ),
+            "ZeroChange%": round(rate_bool(zero_change), 2) if rate_bool(zero_change) is not None else None,
+            "NoTestRegression%": round(no_reg, 2) if no_reg is not None else None,
+        }
 
-            row_with_p = aggregate_rows(rows_repo, "with")
-            row_wo_p   = aggregate_rows(rows_repo, "without")
-            if row_with_p: per_project_rows.append(row_with_p)
-            if row_wo_p:   per_project_rows.append(row_wo_p)
+    per_project_rows: List[Dict[str, Any]] = []
+    repo_names = sorted({r["repo"] for r in per_cycle_rows})
+    for repo_name in repo_names:
+        for cond in ("with", "without"):
+            row = aggregate_rows(per_cycle_rows, repo_name, cond)
+            if row:
+                per_project_rows.append(row)
 
     # ---------- Write per-project ----------
     if per_project_rows:
