@@ -1,19 +1,9 @@
 #!/usr/bin/env python3
-"""
-rq_utils.py — shared helpers for RQ1/RQ2/RQ3 table generators.
-
-Conventions / Paths (under each branch dir):
-  ATD_identification/ATD_metrics.json
-  ATD_identification/module_cycles.json
-  code_quality_checks/metrics.json
-  *.diff (optional, for patch statistics)
-"""
-
 from __future__ import annotations
 import json, math, re
 from pathlib import Path
 from typing import Optional, Dict, Any, List, Tuple, Iterable
-from scipy.stats import wilcoxon, binomtest, spearmanr  # noqa: F401 (some used in scripts)
+from scipy.stats import wilcoxon, binomtest
 
 # ---------- constants ----------
 ATD_DIR = "ATD_identification"
@@ -29,7 +19,6 @@ def read_json(p: Path) -> Optional[Dict[str, Any]]:
         return None
 
 def read_repos_file(path: Path) -> List[Tuple[str, str, str]]:
-    """Return list of (repo, baseline_branch, src_rel)."""
     repos = []
     for line in path.read_text(encoding="utf-8").splitlines():
         line = line.strip()
@@ -44,9 +33,8 @@ def read_repos_file(path: Path) -> List[Tuple[str, str, str]]:
         repos.append((repo, baseline, src_rel))
     return repos
 
-# ---------- shared helpers (moved from RQ scripts) ----------
+# ---------- helpers ----------
 def sanitize(s: str) -> str:
-    """Mirror branch-name sanitization from the pipeline."""
     s = s.replace(" ", "-")
     s = re.sub(r"[^A-Za-z0-9._/-]", "-", s)
     s = re.sub(r"-+", "-", s)
@@ -54,14 +42,9 @@ def sanitize(s: str) -> str:
     return s
 
 def branch_for(exp_label: str, cycle_id: str) -> str:
-    """Branch naming used by the pipeline for LLM runs."""
     return sanitize(f"cycle-fix-{exp_label}-{cycle_id}")
 
 def parse_cycles(cycles_file: Path) -> Dict[Tuple[str, str], List[str]]:
-    """
-    Returns {(repo, branch): [cycle_id, ...]} from cycles_to_analyze.txt
-    (ignores comments and blank lines)
-    """
     out: Dict[Tuple[str, str], List[str]] = {}
     for line in cycles_file.read_text(encoding="utf-8").splitlines():
         line = line.strip()
@@ -75,7 +58,6 @@ def parse_cycles(cycles_file: Path) -> Dict[Tuple[str, str], List[str]]:
     return out
 
 def load_json_any(base: Path, candidates: List[str]) -> Optional[Dict[str, Any]]:
-    """Try multiple relative paths under a base directory and return the first JSON found."""
     for rel in candidates:
         p = base / rel
         if p.exists():
@@ -86,21 +68,25 @@ def mean_or_none(vals: List[Optional[float]]) -> Optional[float]:
     xs = [float(v) for v in vals if isinstance(v, (int, float)) and not (isinstance(v, float) and math.isnan(v))]
     return (sum(xs) / len(xs)) if xs else None
 
+def std_or_none(vals: List[Optional[float]]) -> Optional[float]:
+    xs = [float(v) for v in vals if isinstance(v, (int, float)) and not (isinstance(v, float) and math.isnan(v))]
+    if len(xs) < 2:
+        return None
+    m = sum(xs)/len(xs)
+    return (sum((x-m)**2 for x in xs)/(len(xs)-1)) ** 0.5
+
 def safe_sub(a: Optional[float], b: Optional[float]) -> Optional[float]:
     if a is None or b is None:
         return None
     return float(a) - float(b)
 
 def cycle_size_from_baseline(base_repo_branch_dir: Path, cycle_id: str) -> Optional[int]:
-    """
-    Look up cycle length for a representative cycle in the baseline module_cycles.json.
-    """
     mod = read_json(base_repo_branch_dir / ATD_MODULE_CYCLES)
     if not mod:
         return None
     for scc in mod.get("sccs", []):
         for cyc in scc.get("representative_cycles", []):
-            if cyc.get("id") == cycle_id:
+            if str(cyc.get("id")) == str(cycle_id):
                 if "length" in cyc and isinstance(cyc["length"], int):
                     return int(cyc["length"])
                 nodes = cyc.get("nodes") or []
@@ -166,7 +152,6 @@ def count_repr_cycles(module_cycles: Optional[Dict[str, Any]]) -> Optional[int]:
     return (total if has_any else 0)
 
 def extract_quality_metrics(j: Dict[str, Any]) -> Dict[str, Any]:
-    """Subset used in RQ2."""
     junit = j.get("pytest") or {}
     tests    = junit.get("tests") or 0
     failures = junit.get("failures") or 0
@@ -193,19 +178,19 @@ def extract_quality_metrics(j: Dict[str, Any]) -> Dict[str, Any]:
         "bandit_high": bandit_high,
     }
 
-def scan_patch_cost(branch_dir: Path) -> Tuple[Optional[int], Optional[int]]:
-    """Estimate edit cost from any *.diff under this branch dir."""
+def scan_patch_cost(branch_dir: Path):
     diffs = list(branch_dir.rglob("*.diff"))
     if not diffs:
-        return None, None
+        return (None, None)
     loc = 0
     files = 0
+    import re as _re
     for d in diffs:
         try:
             txt = d.read_text(encoding="utf-8", errors="ignore")
         except Exception:
             continue
-        files += len(re.findall(r"^diff --git a/.* b/.*$", txt, flags=re.MULTILINE))
+        files += len(_re.findall(r"^diff --git a/.* b/.*$", txt, flags=_re.MULTILINE))
         for line in txt.splitlines():
             if not line:
                 continue
@@ -219,39 +204,12 @@ def scan_patch_cost(branch_dir: Path) -> Tuple[Optional[int], Optional[int]]:
 def is_num(x) -> bool:
     return isinstance(x, (int, float)) and not (isinstance(x, float) and (math.isnan(x) or math.isinf(x)))
 
-def pct_reduction(baseline: Optional[float], current: Optional[float]) -> Optional[float]:
-    if not is_num(baseline) or not is_num(current) or baseline == 0:
-        return None
-    return 100.0 * (baseline - current) / abs(baseline)
-
-def safe_pct_delta(old, new):
-    if old is None or new is None:
-        return None
-    if old == 0:
-        return None
-    return 100.0 * (new - old) / abs(old)
-
-def fmt(x, nd=2):
-    if x is None or (isinstance(x, float) and (math.isnan(x) or math.isinf(x))):
-        return ""
-    return f"{x:.{nd}f}"
-
-def cohen_h(p1: float, p2: float) -> float:
-    """Cohen's h for proportions."""
-    def _t(p): return 2.0 * math.asin(math.sqrt(max(0.0, min(1.0, p))))
-    return _t(p1) - _t(p2)
-
-def cliffs_delta(xs: List[float], ys: List[float]) -> float:
-    """Cliff's delta (xs vs ys), in [-1, 1]."""
-    nx, ny = len(xs), len(ys)
-    if nx == 0 or ny == 0:
+def mcnemar_p(b: int, c: int) -> float:
+    n = b + c
+    if n == 0:
         return float("nan")
-    gt = lt = 0
-    for x in xs:
-        for y in ys:
-            if x > y: gt += 1
-            elif x < y: lt += 1
-    return (gt - lt) / (nx * ny)
+    res = binomtest(min(b, c), n=n, p=0.5, alternative="two-sided")
+    return float(res.pvalue)
 
 def wilcoxon_paired(xs: List[float], ys: List[float]) -> Optional[float]:
     if len(xs) == len(ys) and len(xs) > 0:
@@ -259,10 +217,20 @@ def wilcoxon_paired(xs: List[float], ys: List[float]) -> Optional[float]:
         return float(p)
     return None
 
-def mcnemar_p(b: int, c: int) -> float:
-    """McNemar with exact binomial on discordant pairs."""
-    n = b + c
-    if n == 0:
-        return float("nan")
-    res = binomtest(min(b, c), n=n, p=0.5, alternative="two-sided")
-    return float(res.pvalue)
+# ---------- new: simple mapping roots <-> exp ids ----------
+def map_roots_exps(results_roots: List[str], exp_ids: List[str]) -> List[Tuple[Path, str, str]]:
+    """
+    Returns a list of (results_root, EXP_WITH, EXP_WITHOUT) by pairing
+    each ROOT with the EXP at the same position. WITHOUT is derived as
+    '<EXP>_without_explanation'.
+    """
+    if not results_roots:
+        raise SystemExit("Missing --results-roots")
+    if not exp_ids:
+        raise SystemExit("Missing --exp-ids")
+    if len(results_roots) != len(exp_ids):
+        raise SystemExit("Expected same number of --results-roots and --exp-ids")
+    out = []
+    for root, exp in zip(results_roots, exp_ids):
+        out.append((Path(root), exp, f"{exp}_without_explanation"))
+    return out
