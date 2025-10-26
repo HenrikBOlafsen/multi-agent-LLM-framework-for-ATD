@@ -10,7 +10,7 @@ ATD rules:
 
 Do not give a refactoring plan. Just give context about the cycle. Do not assess difficulty of breaking each edge. You are only to give facts, and never to make assumptions or suggestions. When unsure, say so.
 Make your context as useful as possible.
-Emphasize in your output that the reader should look at the actual code to se what will work best when trying to break the cycle.
+Emphasize in your output that the reader should look at the actual code to see what will work best when trying to break the cycle.
 """
 
 
