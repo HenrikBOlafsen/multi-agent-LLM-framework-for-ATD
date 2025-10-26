@@ -2,11 +2,15 @@
 """
 RQ2 table generator — multi-root, success-filtered deltas vs baseline.
 
+Marker support:
+- If a branch dir contains `.copied_metrics_marker`, we treat it as "no changes":
+  post metrics are recorded as baseline metrics in the trace (so deltas are 0 downstream).
+
 Outputs:
-  - rq2_trace.csv                 (unchanged: raw tool metrics per variant)
-  - rq2_success_deltas.csv        (NEW: per-run deltas vs baseline for success-only)
-  - rq2_overall.csv               (NEW: aggregated deltas across all projects, WITH vs WITHOUT + p-values)
-  - rq2_per_project.csv           (NEW: aggregated deltas per project, WITH vs WITHOUT)
+  - rq2_trace.csv                 (raw tool metrics per variant; baseline/with/without)
+  - rq2_success_deltas.csv        (per-run deltas vs baseline for success-only)
+  - rq2_overall.csv               (aggregated deltas across all projects, WITH vs WITHOUT + p-values)
+  - rq2_per_project.csv           (aggregated deltas per project, WITH vs WITHOUT)
 """
 from __future__ import annotations
 import argparse, csv, sys, math
@@ -55,12 +59,8 @@ def iqr(xs: List[float]) -> float:
 # -------------- main --------------
 def main():
     ap = argparse.ArgumentParser()
-    
-    
-    
     ap.add_argument("--results-roots", nargs="+", required=True)
     ap.add_argument("--exp-ids", nargs="+", required=True)
-    
     ap.add_argument("--repos-file", required=True)
     ap.add_argument("--cycles-file", required=True)
     ap.add_argument("--outdir", required=True)
@@ -70,7 +70,7 @@ def main():
     cfgs = map_roots_exps(args.results_roots, args.exp_ids)
     outdir = Path(args.outdir); outdir.mkdir(parents=True, exist_ok=True)
 
-    # -------- build trace (same as before) --------
+    # -------- build trace (with marker handling) --------
     repos_list = read_repos_file(Path(args.repos_file))
     cycles_map = parse_cycles(Path(args.cycles_file))
     trace_rows: List[Dict[str, Any]] = []
@@ -82,13 +82,27 @@ def main():
 
             base = read_json(repo_dir / baseline_branch / CQ_METRICS)
             if base:
-                trace_rows.append({"repo": repo, "results_root": str(root), "variant": "baseline", "exp_label": "", "cycle_id": "", **extract_quality_metrics(base)})
+                trace_rows.append({
+                    "repo": repo, "results_root": str(root),
+                    "variant": "baseline", "exp_label": "", "cycle_id": "", **extract_quality_metrics(base)
+                })
+
             for cid in cycles_map.get((repo, baseline_branch), []):
                 for variant_label, exp_label in (("with", with_id), ("without", wo_id)):
                     branch = branch_for(exp_label, cid)
-                    j = read_json(repo_dir / branch / CQ_METRICS)
+                    branch_dir = repo_dir / branch
+                    # If marker exists, reuse baseline metrics.
+                    use_base = (branch_dir / ".copied_metrics_marker").exists()
+                    if use_base and base:
+                        j = base
+                    else:
+                        j = read_json(branch_dir / CQ_METRICS)
                     if j:
-                        trace_rows.append({"repo": repo, "results_root": str(root), "variant": variant_label, "exp_label": exp_label, "cycle_id": str(cid), **extract_quality_metrics(j)})
+                        trace_rows.append({
+                            "repo": repo, "results_root": str(root),
+                            "variant": variant_label, "exp_label": exp_label, "cycle_id": str(cid),
+                            **extract_quality_metrics(j)
+                        })
 
     # write trace
     trace_path = outdir / "rq2_trace.csv"
@@ -102,7 +116,6 @@ def main():
         print("[WARN] No trace rows produced", file=sys.stderr)
 
     # -------- success-filtered deltas vs baseline --------
-    # load rq1_per_cycle to filter success-only and align conditions
     import csv as _csv
     rq1_path = Path(args.rq1_per_cycle) if args.rq1_per_cycle else (outdir / "rq1_per_cycle.csv")
     if not rq1_path.exists():
@@ -133,7 +146,8 @@ def main():
     from collections import defaultdict
     by_key = defaultdict(list)
     for r in trace_rows:
-        key = (r.get("repo"), r.get("results_root"), r.get("variant"), r.get("exp_label",""), str(r.get("cycle_id","")))
+        key = (r.get("repo"), r.get("results_root"), r.get("variant"),
+               r.get("exp_label",""), str(r.get("cycle_id","")))
         by_key[key].append(r)
 
     # baseline per (repo, results_root)
@@ -150,8 +164,8 @@ def main():
             if r_repo != repo or r_cid != cid or r_exp != exp or r_var != cond:
                 continue
             run = rows[0]
-            base = baseline_map.get((repo, r_root)) or baseline_map.get((repo, next(iter(baseline_map.keys()))[1]))  # fall back to any baseline for repo
-            if not base: 
+            base = baseline_map.get((repo, r_root)) or baseline_map.get((repo, next(iter(baseline_map.keys()))[1]))  # fallback
+            if not base:
                 continue
             out = {
                 "repo": repo,
@@ -206,14 +220,13 @@ def main():
 
     # paired p-values (WITH vs WITHOUT), aligning on (repo, cycle_id, exp_label)
     def paired_series(metric: str) -> Tuple[List[float], List[float]]:
-        # map without and with by key
         W = {}; WO = {}
         for r in deltas:
             key = (r["repo"], r["cycle_id"], r["exp_label"])
             v = r.get(DELTA_NAMES[metric])
             try:
                 vf = float(v)
-                if math.isnan(vf) or math.isinf(vf): 
+                if math.isnan(vf) or math.isinf(vf):
                     continue
             except Exception:
                 continue
@@ -235,7 +248,6 @@ def main():
 
     overall_path = outdir / "rq2_overall.csv"
     with overall_path.open("w", newline="", encoding="utf-8") as f:
-        # collect all keys
         keys = []
         for r in overall_rows:
             for k in r.keys():

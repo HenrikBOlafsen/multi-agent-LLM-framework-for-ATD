@@ -2,6 +2,10 @@
 """
 RQ3 (iterationless): Aggregate outcomes by CYCLE SIZE. Multi-root aware.
 
+Marker support:
+- If a branch dir contains `.copied_metrics_marker`, we treat it as "no changes":
+  post metrics = baseline metrics, tests = baseline tests (so deltas are 0, not a success).
+
 - One CSV only: rq3_by_cycle_size.csv
 - Two rows per size: Condition ∈ {"with","without"}
 - Adds std dev columns and McNemar p-value per size (computed on success pairs).
@@ -19,12 +23,8 @@ from rq_utils import (
 
 def main():
     ap = argparse.ArgumentParser()
-    
-    
-    
     ap.add_argument("--results-roots", nargs="+", required=True)
     ap.add_argument("--exp-ids", nargs="+", required=True)
-    
     ap.add_argument("--repos-file", required=True)
     ap.add_argument("--cycles-file", required=True)
     ap.add_argument("--outdir", required=True)
@@ -72,17 +72,24 @@ def main():
                     exp_label = WITH_ID if variant_label == "with" else WO_ID
                     new_dir = repo_dir / branch_for(exp_label, cid)
 
-                    post_qual = read_json(new_dir / CQ_METRICS)
-                    post_atd  = read_json(new_dir / ATD_METRICS)
-                    if post_atd is None:
-                        continue
-
-                    post = get_scc_metrics(post_atd)
-                    post_edges = post.get("total_edges_in_cyclic_sccs")
-                    post_count = post.get("scc_count")
-                    post_nodes = post.get("total_nodes_in_cyclic_sccs")
-                    post_loc   = post.get("total_loc_in_cyclic_sccs")
-                    tests_pass = get_tests_pass_percent(post_qual) if post_qual is not None else None
+                    copied_marker = (new_dir / ".copied_metrics_marker").exists()
+                    if copied_marker:
+                        post_edges = pre_edges
+                        post_count = pre_count
+                        post_nodes = pre_nodes
+                        post_loc   = pre_loc
+                        tests_pass = base_tests
+                    else:
+                        post_qual = read_json(new_dir / CQ_METRICS)
+                        post_atd  = read_json(new_dir / ATD_METRICS)
+                        if post_atd is None:
+                            continue
+                        post = get_scc_metrics(post_atd)
+                        post_edges = post.get("total_edges_in_cyclic_sccs")
+                        post_count = post.get("scc_count")
+                        post_nodes = post.get("total_nodes_in_cyclic_sccs")
+                        post_loc   = post.get("total_loc_in_cyclic_sccs")
+                        tests_pass = get_tests_pass_percent(post_qual) if post_qual is not None else None
 
                     d_edges = safe_sub(post_edges, pre_edges)
                     d_count = safe_sub(post_count, pre_count)

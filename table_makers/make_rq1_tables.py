@@ -2,6 +2,11 @@
 """
 RQ1 (iterationless): WITH vs WITHOUT explanations. Multi-root aware.
 
+Marker support:
+- If a branch dir contains `.copied_metrics_marker`, we treat it as "no changes":
+  post metrics = baseline metrics, test% = baseline test%.
+  (So deltas are 0 and the run is not a success.)
+
 - Accepts multiple results roots + experiment IDs and aggregates across them.
 - Adds std dev columns and p-values:
     * Success_p: McNemar exact p over paired (with vs without) successes per (repo, cycle_id, exp).
@@ -89,15 +94,29 @@ def main():
                 continue
 
             def collect_one(dirpath: Path, cid: str, variant_label: str, condition_out: str) -> Optional[Dict[str, Any]]:
-                atd = load_json_any(dirpath, ATD_METRICS)
-                qual = load_json_any(dirpath, QUALITY_METRICS)
-                if atd is None:
-                    return None
-                post = get_scc_metrics(atd)
-                post_edges = post.get("total_edges_in_cyclic_sccs")
-                post_nodes = post.get("total_nodes_in_cyclic_sccs")
-                post_loc   = post.get("total_loc_in_cyclic_sccs")
-                tests_pass = get_tests_pass_percent(qual) if qual is not None else None
+                """
+                Read branch metrics, respecting `.copied_metrics_marker`:
+                  - if present => use baseline metrics & baseline tests.
+                  - else       => load ATD/CQ from the branch directory.
+                """
+                copied_marker = (dirpath / ".copied_metrics_marker").exists()
+
+                if copied_marker:
+                    # Force post == pre, and tests == baseline.
+                    post_edges = pre_edges
+                    post_nodes = pre_nodes
+                    post_loc   = pre_loc
+                    tests_pass = base_tests
+                else:
+                    atd = load_json_any(dirpath, ATD_METRICS)
+                    qual = load_json_any(dirpath, QUALITY_METRICS)
+                    if atd is None:
+                        return None
+                    post = get_scc_metrics(atd)
+                    post_edges = post.get("total_edges_in_cyclic_sccs")
+                    post_nodes = post.get("total_nodes_in_cyclic_sccs")
+                    post_loc   = post.get("total_loc_in_cyclic_sccs")
+                    tests_pass = get_tests_pass_percent(qual) if qual is not None else None
 
                 d_edges = safe_sub(post_edges, pre_edges)
                 d_nodes = safe_sub(post_nodes, pre_nodes)
@@ -106,6 +125,7 @@ def main():
                 succ: Optional[bool] = None
                 if (pre_edges is not None) and (post_edges is not None):
                     tests_ok = (base_tests is None) or (tests_pass is None) or (tests_pass >= base_tests)
+                    # Success still requires strictly fewer cycle edges than baseline.
                     succ = (post_edges < pre_edges) and tests_ok
 
                 size = cycle_size_from_baseline(baseline_dir, cid)
@@ -134,8 +154,6 @@ def main():
                 if row_wo:   per_cycle_rows.append(row_wo)
 
     # ---------- Per-project aggregation (ACROSS ALL EXPERIMENTS/ROOTS) ----------
-    from collections import defaultdict
-
     def aggregate_rows(rows: List[Dict[str, Any]], repo_name: str, condition_label: str) -> Optional[Dict[str, Any]]:
         rows_c = [r for r in rows if r["repo"] == repo_name and r["condition"] == condition_label]
         if not rows_c:
