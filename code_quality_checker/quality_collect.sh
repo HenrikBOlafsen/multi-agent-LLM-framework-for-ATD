@@ -191,7 +191,7 @@ PY
 
   # Parallelism + timeouts (plugin is installed in this venv)
   : "${PYTEST_NWORKERS:=auto}"
-  : "${PYTEST_TIMEOUT:=0}"               # 0 -> let project config win
+  : "${PYTEST_TIMEOUT:=180}"
   # Optional external wall-clock cap (e.g., PYTEST_WALLTIME=10m)
   wrap_pytest() {
     if [[ -n "${PYTEST_WALLTIME:-}" ]]; then

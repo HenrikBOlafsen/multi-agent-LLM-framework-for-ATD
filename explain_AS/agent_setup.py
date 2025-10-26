@@ -70,7 +70,7 @@ class LLMClient:
             "temperature": self.temperature,
         }
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
-        r = requests.post(self.url, headers=headers, json=payload, timeout=260)
+        r = requests.post(self.url, headers=headers, json=payload, timeout=300)
         r.raise_for_status()
         data = r.json()
         content = data["choices"][0]["message"]["content"]
