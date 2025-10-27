@@ -2,8 +2,8 @@
 from __future__ import annotations
 import json, math, re
 from pathlib import Path
-from typing import Optional, Dict, Any, List, Tuple, Iterable
-from scipy.stats import wilcoxon, binomtest
+from typing import Optional, Dict, Any, List, Tuple
+from scipy.stats import binomtest
 
 # ---------- constants ----------
 ATD_DIR = "ATD_identification"
@@ -135,23 +135,8 @@ def get_scc_metrics(atd: Optional[Dict[str, Any]]) -> Dict[str, Any]:
         "avg_edge_surplus_lb": avg_surplus,
     }
 
-def count_repr_cycles(module_cycles: Optional[Dict[str, Any]]) -> Optional[int]:
-    if not module_cycles:
-        return None
-    sccs = module_cycles.get("sccs")
-    arr: Iterable = sccs if isinstance(sccs, list) else (module_cycles if isinstance(module_cycles, list) else [])
-    total = 0
-    has_any = False
-    for s in arr:
-        if not isinstance(s, dict):
-            continue
-        reps = s.get("representative_cycles") or []
-        if isinstance(reps, list):
-            total += len(reps)
-            has_any = True
-    return (total if has_any else 0)
-
 def extract_quality_metrics(j: Dict[str, Any]) -> Dict[str, Any]:
+    # ---- tests pass % ----
     junit = j.get("pytest") or {}
     tests    = junit.get("tests") or 0
     failures = junit.get("failures") or 0
@@ -160,62 +145,50 @@ def extract_quality_metrics(j: Dict[str, Any]) -> Dict[str, Any]:
     passed   = max(0, tests - failures - errors - skipped)
     pass_pct = (100.0 * passed / tests) if tests else 0.0
 
+    # ---- static tool metrics ----
     ruff_issues = (j.get("ruff") or {}).get("issues")
-    mi_avg = (j.get("radon_mi") or {}).get("avg")
+    mi_avg      = (j.get("radon_mi") or {}).get("avg")
+
+    # Radon CC buckets -> D+E+F (heavy/too complex)
     by_rank = ((j.get("radon_cc") or {}).get("by_rank") or {})
-    d_rank_funcs = by_rank.get("D", 0)
+    d_rank = by_rank.get("D", 0) or 0
+    e_rank = by_rank.get("E", 0) or 0
+    f_rank = by_rank.get("F", 0) or 0
+    cc_dplus_funcs = d_rank + e_rank + f_rank
+
     bandit_high = (j.get("bandit") or {}).get("high")
+
+    # ---- PyExamine by type (split columns) ----
     px = j.get("pyexamine") or {}
-    weighted_by_type = px.get("weighted_by_type") or {}
-    arch_weighted = weighted_by_type.get("Architectural")
+    wbt = (px.get("weighted_by_type") or {})
+    pyexam_arch = wbt.get("Architectural")
+    pyexam_code = wbt.get("Code")
+    pyexam_struct = wbt.get("Structural")
+
+    # Optional extras (you’re using these in RQ2)
+    coverage_line_percent = (j.get("coverage") or {}).get("line_percent")
+    mypy_errors = (j.get("mypy") or {}).get("errors")
 
     return {
         "ruff_issues": ruff_issues,
         "mi_avg": mi_avg,
-        "d_rank_funcs": d_rank_funcs,
-        "pyexam_arch_weighted": arch_weighted,
-        "test_pass_pct": round(pass_pct, 2),
+        "cc_dplus_funcs": cc_dplus_funcs,          # NEW: D+E+F
+        "pyexam_arch": pyexam_arch,                # NEW: Architectural
+        "pyexam_code": pyexam_code,                # NEW: Code
+        "pyexam_struct": pyexam_struct,            # NEW: Structural
         "bandit_high": bandit_high,
+        "test_pass_pct": round(pass_pct, 2),
+        "coverage_line_percent": coverage_line_percent,
+        "mypy_errors": mypy_errors,
     }
 
-def scan_patch_cost(branch_dir: Path):
-    diffs = list(branch_dir.rglob("*.diff"))
-    if not diffs:
-        return (None, None)
-    loc = 0
-    files = 0
-    import re as _re
-    for d in diffs:
-        try:
-            txt = d.read_text(encoding="utf-8", errors="ignore")
-        except Exception:
-            continue
-        files += len(_re.findall(r"^diff --git a/.* b/.*$", txt, flags=_re.MULTILINE))
-        for line in txt.splitlines():
-            if not line:
-                continue
-            if line.startswith(("+++", "---", "diff --git", "@@", "index ")):
-                continue
-            if line.startswith("+") or line.startswith("-"):
-                loc += 1
-    return (loc or None), (files or None)
-
 # ---------- math / stats ----------
-def is_num(x) -> bool:
-    return isinstance(x, (int, float)) and not (isinstance(x, float) and (math.isnan(x) or math.isinf(x)))
-
 def mcnemar_p(b: int, c: int) -> float:
     n = b + c
     if n == 0:
         return float("nan")
     res = binomtest(min(b, c), n=n, p=0.5, alternative="two-sided")
     return float(res.pvalue)
-
-def wilcoxon_paired(xs: List[float], ys: List[float]) -> Optional[float]:
-    if len(xs) == len(ys) and len(xs) > 0:
-        _, p = wilcoxon(xs, ys, zero_method="wilcox", correction=False, alternative="two-sided", mode="auto")
-        return float(p)
-    return None
 
 # ---------- new: simple mapping roots <-> exp ids ----------
 def map_roots_exps(results_roots: List[str], exp_ids: List[str]) -> List[Tuple[Path, str, str]]:
@@ -234,3 +207,65 @@ def map_roots_exps(results_roots: List[str], exp_ids: List[str]) -> List[Tuple[P
     for root, exp in zip(results_roots, exp_ids):
         out.append((Path(root), exp, f"{exp}_without_explanation"))
     return out
+
+# --- experiment labels ---
+def exp_family(exp_label: str) -> str:
+    s = str(exp_label or "")
+    suff = "_without_explanation"
+    return s[:-len(suff)] if s.endswith(suff) else s
+
+# --- stats: convenience ---
+def mean_std(xs: List[float]) -> Tuple[float, float]:
+    if not xs:
+        return (float("nan"), float("nan"))
+    m = sum(xs)/len(xs)
+    if len(xs) < 2:
+        return (m, float("nan"))
+    v = sum((x-m)*(x-m) for x in xs)/(len(xs)-1)
+    return (m, v**0.5)
+
+# --- McNemar (one-sided) ---
+def mcnemar_p_one_sided(b: int, c: int) -> Optional[float]:
+    """H0: P(with win)=P(without win); H1: P(with win) > P(without win)."""
+    try:
+        from scipy.stats import binomtest
+    except Exception:
+        return None
+    n = b + c
+    if n <= 0:
+        return None
+    return float(binomtest(b, n=n, p=0.5, alternative="greater").pvalue)
+
+# --- RQ3 bin helpers ---
+def parse_bins_arg(bins_arg: Optional[str]) -> List[Tuple[str, int, int]]:
+    """
+    Parse --bins like: "Small:2-4,Large:5-8"
+    Returns list of (label, lo, hi), inclusive.
+    """
+    if not bins_arg:
+        return [("Small", 2, 4), ("Large", 5, 8)]
+    out: List[Tuple[str,int,int]] = []
+    for tok in bins_arg.split(","):
+        tok = tok.strip()
+        if not tok:
+            continue
+        if ":" not in tok or "-" not in tok:
+            raise SystemExit(f"Bad --bins token: {tok} (expected Label:lo-hi)")
+        label, rng = tok.split(":", 1)
+        lo_s, hi_s = rng.split("-", 1)
+        try:
+            lo = int(lo_s.strip()); hi = int(hi_s.strip())
+        except ValueError:
+            raise SystemExit(f"Bad range in --bins token: {tok}")
+        if lo > hi:
+            lo, hi = hi, lo
+        out.append((label.strip(), lo, hi))
+    if not out:
+        raise SystemExit("Parsed empty --bins")
+    return out
+
+def size_to_bin(size: int, bins: List[Tuple[str,int,int]]) -> Optional[str]:
+    for label, lo, hi in bins:
+        if lo <= size <= hi:
+            return label
+    return None

@@ -2,15 +2,19 @@
 """
 RQ2 table generator — multi-root, success-filtered deltas vs baseline.
 
+This version:
+- DOES NOT write rq2_success_deltas.csv (deltas stay in memory only).
+- Tests, per condition ("with", "without"), whether median deltas vs baseline differ
+  from zero (Wilcoxon one-sample, two-sided).
+
 Marker support:
 - If a branch dir contains `.copied_metrics_marker`, we treat it as "no changes":
   post metrics are recorded as baseline metrics in the trace (so deltas are 0 downstream).
 
 Outputs:
-  - rq2_trace.csv                 (raw tool metrics per variant; baseline/with/without)
-  - rq2_success_deltas.csv        (per-run deltas vs baseline for success-only)
-  - rq2_overall.csv               (aggregated deltas across all projects, WITH vs WITHOUT + p-values)
-  - rq2_per_project.csv           (aggregated deltas per project, WITH vs WITHOUT)
+  - rq2_trace.csv          (raw tool metrics per variant; baseline/with/without)
+  - rq2_overall.csv        (aggregated deltas across all projects; per-condition means/std + Wilcoxon vs 0)
+  - rq2_per_project.csv    (aggregated deltas per project, per condition)
 """
 from __future__ import annotations
 import argparse, csv, sys, math
@@ -19,42 +23,43 @@ from typing import Dict, Any, List, Tuple
 
 from rq_utils import (
     read_json, read_repos_file, CQ_METRICS, extract_quality_metrics,
-    parse_cycles, branch_for, map_roots_exps
+    parse_cycles, branch_for, map_roots_exps, mean_std
 )
 
-# -------------- helpers --------------
-METRICS = ["ruff_issues","mi_avg","d_rank_funcs","pyexam_arch_weighted","bandit_high","test_pass_pct"]
+# -------------- metrics --------------
+METRICS = [
+    "ruff_issues",
+    "mi_avg",
+    "cc_dplus_funcs",      # Radon CC D+E+F (heavy complexity)
+    "pyexam_arch",         # PyExamine weighted by type
+    "pyexam_code",
+    "pyexam_struct",
+    "bandit_high",
+    "test_pass_pct",
+    "coverage_line_percent",
+    "mypy_errors",
+]
 DELTA_NAMES = {m: f"Δ{m}" for m in METRICS}
 
-def mean_std(xs: List[float]) -> Tuple[float, float]:
-    if not xs:
-        return (float("nan"), float("nan"))
-    m = sum(xs)/len(xs)
-    if len(xs) < 2:
-        return (m, float("nan"))
-    v = sum((x-m)*(x-m) for x in xs)/(len(xs)-1)
-    return (m, v**0.5)
-
-def wilcoxon_signed(x: List[float], y: List[float]) -> float:
+# -------------- helpers --------------
+def safe_wilcoxon_one_sample(xs: List[float]) -> float | None:
+    """
+    One-sample Wilcoxon signed-rank vs 0, robust to degenerate cases.
+    Returns p-value (two-sided), or None if not computable.
+    """
+    xs = [float(v) for v in xs if v is not None and v != ""]
+    xs = [v for v in xs if not (math.isnan(v) or math.isinf(v))]
+    if len(xs) == 0:
+        return None
+    if all(v == 0.0 for v in xs):
+        return 1.0
     try:
         from scipy.stats import wilcoxon
-        if len(x) == len(y) and len(x) > 0:
-            stat, p = wilcoxon(x, y, zero_method="wilcox", correction=False, alternative="two-sided", mode="auto")
-            return float(p)
-        return float("nan")
+        _, p = wilcoxon(xs, zero_method="wilcox", correction=False,
+                        alternative="two-sided", mode="auto")
+        return float(p)
     except Exception:
-        return float("nan")
-
-def iqr(xs: List[float]) -> float:
-    if not xs: return float("nan")
-    xs2 = sorted(xs)
-    n = len(xs2)
-    def pct(p):
-        k = (n-1)*p
-        f = math.floor(k); c = math.ceil(k)
-        if f == c: return xs2[int(k)]
-        return xs2[f] + (xs2[c]-xs2[f])*(k-f)
-    return pct(0.75) - pct(0.25)
+        return None
 
 # -------------- main --------------
 def main():
@@ -91,7 +96,6 @@ def main():
                 for variant_label, exp_label in (("with", with_id), ("without", wo_id)):
                     branch = branch_for(exp_label, cid)
                     branch_dir = repo_dir / branch
-                    # If marker exists, reuse baseline metrics.
                     use_base = (branch_dir / ".copied_metrics_marker").exists()
                     if use_base and base:
                         j = base
@@ -104,7 +108,7 @@ def main():
                             **extract_quality_metrics(j)
                         })
 
-    # write trace
+    # write trace (raw metrics)
     trace_path = outdir / "rq2_trace.csv"
     if trace_rows:
         fields = ["repo","results_root","variant","exp_label","cycle_id"] + METRICS
@@ -115,7 +119,7 @@ def main():
     else:
         print("[WARN] No trace rows produced", file=sys.stderr)
 
-    # -------- success-filtered deltas vs baseline --------
+    # -------- success-filtered deltas vs baseline (in-memory only) --------
     import csv as _csv
     rq1_path = Path(args.rq1_per_cycle) if args.rq1_per_cycle else (outdir / "rq1_per_cycle.csv")
     if not rq1_path.exists():
@@ -128,7 +132,8 @@ def main():
             return [dict(row) for row in reader]
 
     rq1_rows = load_csv_dicts(rq1_path)
-    # success keys: succ == True; condition is 'with' or 'without'
+
+    # Collect success keys (succ == True) per (repo, cycle, exp_label, condition)
     succ_keys = set()
     for r in rq1_rows:
         try:
@@ -136,13 +141,13 @@ def main():
             if not succ: continue
             repo = r.get("repo"); cid = str(r.get("cycle_id"))
             exp = r.get("exp_label") or r.get("variant_label") or ""
-            cond = r.get("condition")  # with/without
+            cond = r.get("condition")
             if repo and cid and cond in ("with","without"):
                 succ_keys.add((repo, cid, exp, cond))
         except Exception:
             continue
 
-    # index trace by (repo, results_root, variant, exp_label, cycle_id)
+    # Index trace by (repo, results_root, variant, exp_label, cycle_id)
     from collections import defaultdict
     by_key = defaultdict(list)
     for r in trace_rows:
@@ -150,21 +155,26 @@ def main():
                r.get("exp_label",""), str(r.get("cycle_id","")))
         by_key[key].append(r)
 
-    # baseline per (repo, results_root)
+    # Baseline per (repo, results_root)
     baseline_map: Dict[Tuple[str, str], Dict[str, Any]] = {}
     for r in trace_rows:
         if r.get("variant") == "baseline":
             baseline_map[(r["repo"], r["results_root"])] = r
 
-    # compute success-only deltas
+    # Compute success-only deltas in memory
     deltas: List[Dict[str, Any]] = []
     for (repo, cid, exp, cond) in succ_keys:
-        # find all roots that have this (repo, cid, exp, cond)
+        # All roots that have this (repo, cid, exp, cond)
         for (r_repo, r_root, r_var, r_exp, r_cid), rows in by_key.items():
             if r_repo != repo or r_cid != cid or r_exp != exp or r_var != cond:
                 continue
             run = rows[0]
-            base = baseline_map.get((repo, r_root)) or baseline_map.get((repo, next(iter(baseline_map.keys()))[1]))  # fallback
+            base = baseline_map.get((repo, r_root))
+            if not base:
+                # fallback: any baseline for this repo (rare)
+                for (rep, rt), b in baseline_map.items():
+                    if rep == repo:
+                        base = b; break
             if not base:
                 continue
             out = {
@@ -185,65 +195,53 @@ def main():
                     out[DELTA_NAMES[m]] = float("nan")
             deltas.append(out)
 
-    # write raw success deltas
-    if deltas:
-        delta_fields = ["repo","results_root","variant","exp_label","cycle_id"] + [DELTA_NAMES[m] for m in METRICS]
-        delta_path = outdir / "rq2_success_deltas.csv"
-        with delta_path.open("w", newline="", encoding="utf-8") as f:
-            w = csv.DictWriter(f, fieldnames=delta_fields); w.writeheader()
-            for r in deltas: w.writerow(r)
-        print(f"Wrote: {delta_path}")
-    else:
+    if not deltas:
         print("[WARN] No success-filtered deltas produced", file=sys.stderr)
         return
 
-    # -------- aggregate: overall (WITH vs WITHOUT) + Wilcoxon --------
-    import math as _math
+    # -------- aggregate: per-condition means/std + one-sample Wilcoxon vs 0 --------
     from collections import defaultdict
-
     by_cond: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
     for r in deltas:
         by_cond[r["variant"]].append(r)
 
     overall_rows: List[Dict[str, Any]] = []
-    # mean±std for each condition
+    # means/std per condition
     for cond in ("without","with"):
         xs = by_cond.get(cond, [])
         row = {"Condition": cond, "n": len(xs)}
         for m in METRICS:
-            vals = [float(r.get(DELTA_NAMES[m])) for r in xs if r.get(DELTA_NAMES[m]) not in (None, "", "nan")]
-            vals = [v for v in vals if not (_math.isnan(v) or _math.isinf(v))]
+            vals = []
+            for r in xs:
+                v = r.get(DELTA_NAMES[m])
+                try:
+                    vf = float(v)
+                    if math.isnan(vf) or math.isinf(vf): continue
+                    vals.append(vf)
+                except Exception:
+                    continue
             mu, sd = mean_std(vals)
-            row[DELTA_NAMES[m] + "_mean"] = (None if _math.isnan(mu) else mu)
-            row[DELTA_NAMES[m] + "_std"]  = (None if _math.isnan(sd) else sd)
+            row[DELTA_NAMES[m] + "_mean"] = (None if math.isnan(mu) else mu)
+            row[DELTA_NAMES[m] + "_std"]  = (None if math.isnan(sd) else sd)
         overall_rows.append(row)
 
-    # paired p-values (WITH vs WITHOUT), aligning on (repo, cycle_id, exp_label)
-    def paired_series(metric: str) -> Tuple[List[float], List[float]]:
-        W = {}; WO = {}
-        for r in deltas:
-            key = (r["repo"], r["cycle_id"], r["exp_label"])
-            v = r.get(DELTA_NAMES[metric])
-            try:
-                vf = float(v)
-                if math.isnan(vf) or math.isinf(vf):
+    # one-sample Wilcoxon vs zero (per condition, per metric)
+    stats_row = {"Condition": "p_vs_zero", "n": None}
+    for cond in ("without","with"):
+        xs_cond = by_cond.get(cond, [])
+        for m in METRICS:
+            xs = []
+            for r in xs_cond:
+                v = r.get(DELTA_NAMES[m])
+                try:
+                    vf = float(v)
+                    if math.isnan(vf) or math.isinf(vf): continue
+                    xs.append(vf)
+                except Exception:
                     continue
-            except Exception:
-                continue
-            if r["variant"] == "with":
-                W[key] = vf
-            elif r["variant"] == "without":
-                WO[key] = vf
-        common = sorted(set(W.keys()).intersection(WO.keys()))
-        x = [W[k] for k in common]
-        y = [WO[k] for k in common]
-        return x, y
-
-    stats_row = {"Condition": "stats", "n": None}
-    for m in METRICS:
-        x, y = paired_series(m)
-        stats_row[DELTA_NAMES[m] + "_wilcoxon_p"] = wilcoxon_signed(x, y)
-        stats_row[DELTA_NAMES[m] + "_pairs"] = len(x)
+            p = safe_wilcoxon_one_sample(xs)
+            stats_row[f"{DELTA_NAMES[m]}_{cond}_wilcoxon_p"] = p
+            stats_row[f"{DELTA_NAMES[m]}_{cond}_n"] = len(xs)
     overall_rows.append(stats_row)
 
     overall_path = outdir / "rq2_overall.csv"

@@ -9,8 +9,10 @@ Marker support:
 
 - Accepts multiple results roots + experiment IDs and aggregates across them.
 - Adds std dev columns and p-values:
-    * Success_p: McNemar exact p over paired (with vs without) successes per (repo, cycle_id, exp).
+    * Success_p (two-sided & one-sided): McNemar tests over paired (with vs without)
+      successes per (repo, cycle_id, exp-family, results_root).
     * ΔEdges_success_wilcoxon_p: Wilcoxon paired over ΔEdges on pairs where both sides are success.
+      (Robust: all-zero diffs -> p=1.0; no pairs -> p=None)
 - Replaces average "Tests%" with a binary **NoTestRegression%**:
     * percent of runs where tests did not regress vs baseline (post >= base).
 
@@ -28,12 +30,13 @@ from typing import Dict, Any, List, Optional, Tuple
 from rq_utils import (
     read_repos_file, get_tests_pass_percent, get_scc_metrics, parse_cycles, branch_for,
     load_json_any, mean_or_none, std_or_none, safe_sub, cycle_size_from_baseline,
-    mcnemar_p, wilcoxon_paired, map_roots_exps
+    mcnemar_p, map_roots_exps, exp_family, mcnemar_p_one_sided
 )
 
 ATD_METRICS = ["ATD_identification/ATD_metrics.json", "ATD_metrics.json"]
 QUALITY_METRICS = ["code_quality_checks/metrics.json", "metrics.json"]
 
+# ----------------- helpers -----------------
 def median_or_none(vals: List[Optional[float]]) -> Optional[float]:
     xs = [float(v) for v in vals if isinstance(v, (int, float))]
     if not xs:
@@ -54,6 +57,49 @@ def pct(a: Optional[int], b: Optional[int]) -> Optional[float]:
         return None
     return 100.0 * a / b
 
+def safe_wilcoxon(x: List[float], y: List[float]) -> Optional[float]:
+    """Wilcoxon signed-rank, robust to degenerate cases.
+       - if all diffs == 0 -> p = 1.0
+       - if no pairs -> None
+    """
+    if len(x) != len(y) or len(x) == 0:
+        return None
+    diffs = []
+    for a, b in zip(x, y):
+        try:
+            da = float(a); db = float(b)
+            if math.isnan(da) or math.isnan(db) or math.isinf(da) or math.isinf(db):
+                continue
+            diffs.append(da - db)
+        except Exception:
+            continue
+    if len(diffs) == 0:
+        return None
+    nonzero = [d for d in diffs if d != 0.0]
+    if len(nonzero) == 0:
+        return 1.0  # identical series
+    try:
+        from scipy.stats import wilcoxon
+        _, p = wilcoxon(x, y, zero_method="wilcox", correction=False,
+                        alternative="two-sided", mode="auto")
+        return float(p)
+    except Exception:
+        return None
+
+def proportion_wilson_ci(k: int, n: int, conf: float = 0.95) -> Tuple[Optional[float], Optional[float]]:
+    """Wilson score CI for p = k/n."""
+    if n <= 0:
+        return (None, None)
+    from math import sqrt
+    # z for 95% CI
+    z = 1.96 if abs(conf - 0.95) < 1e-12 else 1.96
+    phat = k / n
+    denom = 1 + z*z/n
+    center = (phat + z*z/(2*n)) / denom
+    half = z * sqrt((phat*(1-phat) + z*z/(4*n)) / n) / denom
+    return (center - half, center + half)
+
+# ----------------- main -----------------
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--results-roots", nargs="+", required=True)
@@ -125,18 +171,19 @@ def main():
                 succ: Optional[bool] = None
                 if (pre_edges is not None) and (post_edges is not None):
                     tests_ok = (base_tests is None) or (tests_pass is None) or (tests_pass >= base_tests)
-                    # Success still requires strictly fewer cycle edges than baseline.
+                    # Success requires strictly fewer cycle edges than baseline.
                     succ = (post_edges < pre_edges) and tests_ok
 
                 size = cycle_size_from_baseline(baseline_dir, cid)
 
                 return {
                     "repo": repo,
+                    "results_root": str(results_root),
                     "cycle_id": cid,
                     "cycle_size": size,
                     "variant_label": variant_label,
-                    "exp_label": variant_label,
-                    "condition": condition_out,
+                    "exp_label": variant_label,  # family derived via exp_family()
+                    "condition": condition_out,  # with / without
                     "succ": succ,
                     "pre_edges": pre_edges, "post_edges": post_edges, "delta_edges": d_edges,
                     "pre_nodes": pre_nodes, "post_nodes": post_nodes, "delta_nodes": d_nodes,
@@ -256,37 +303,64 @@ def main():
         if agg:
             rows_with_without.append(agg)
 
-    # Add significance tests computed on paired tuples
-    def paired_success_counts() -> Tuple[int,int]:
-        from collections import defaultdict
-        with_map = defaultdict(dict); wo_map = defaultdict(dict)
+    # ---------- Paired significance tests ----------
+    def paired_success_counts() -> Tuple[int,int,int,int,int,int]:
+        """
+        Count pairs for McNemar:
+          b = with succeeded, without failed
+          c = without succeeded, with failed
+
+        Returns:
+          (b, c, total_pairs, matched_pairs, both_success, both_fail)
+        where:
+          total_pairs    = number of distinct (repo, cycle, expfam, root) that had at least one side
+          matched_pairs  = number of those that had both sides
+          both_success   = matched pairs where both succeeded
+          both_fail      = matched pairs where both failed
+        """
+        with_map: Dict[Tuple[str,str,str,str], Dict[str,Any]] = {}
+        wo_map:   Dict[Tuple[str,str,str,str], Dict[str,Any]] = {}
+        keys_seen = set()
+
         for r in per_cycle_rows:
-            key = (r["repo"], r["cycle_id"], r["exp_label"])
+            key = (r["repo"], r["cycle_id"], exp_family(r.get("exp_label")), r.get("results_root"))
+            keys_seen.add(key)
             if r["condition"] == "with":
                 with_map[key] = r
-            else:
+            elif r["condition"] == "without":
                 wo_map[key] = r
+
         b = c = 0
+        matched = 0
+        both_success = 0
+        both_fail = 0
+
         for k in set(with_map.keys()).intersection(wo_map.keys()):
+            matched += 1
             w = with_map[k].get("succ")
             o = wo_map[k].get("succ")
             if isinstance(w, bool) and isinstance(o, bool):
-                if w and not o: b += 1
-                elif o and not w: c += 1
-        return b, c
+                if w and not o:
+                    b += 1
+                elif o and not w:
+                    c += 1
+                elif w and o:
+                    both_success += 1
+                else:
+                    both_fail += 1
 
-    b, c = paired_success_counts()
-    success_p = mcnemar_p(b, c) if (b+c)>0 else None
+        total_pairs = len(keys_seen)
+        return b, c, total_pairs, matched, both_success, both_fail
 
     def paired_delta_edges() -> Tuple[List[float], List[float]]:
-        from collections import defaultdict
-        with_map = defaultdict(dict); wo_map = defaultdict(dict)
+        with_map: Dict[Tuple[str,str,str,str], Dict[str,Any]] = {}
+        wo_map:   Dict[Tuple[str,str,str,str], Dict[str,Any]] = {}
         X, Y = [], []
         for r in per_cycle_rows:
-            key = (r["repo"], r["cycle_id"], r["exp_label"])
+            key = (r["repo"], r["cycle_id"], exp_family(r.get("exp_label")), r.get("results_root"))
             if r["condition"] == "with":
                 with_map[key] = r
-            else:
+            elif r["condition"] == "without":
                 wo_map[key] = r
         for k in set(with_map.keys()).intersection(wo_map.keys()):
             rw = with_map[k]; ro = wo_map[k]
@@ -296,8 +370,21 @@ def main():
                     X.append(float(de_w)); Y.append(float(de_o))
         return X, Y
 
+    b, c, total_pairs, matched, both_success, both_fail = paired_success_counts()
+
+    # Two-sided (kept for completeness) and one-sided (directional: with > without)
+    success_p_two_sided = mcnemar_p(b, c) if (b + c) > 0 else None
+    success_p_one_sided = mcnemar_p_one_sided(b, c)
+
     x, y = paired_delta_edges()
-    wil_p = wilcoxon_paired(x, y) if (len(x)==len(y) and len(x)>0) else None
+    pairs_edges = len(x)
+    nz = [a - b_ for a, b_ in zip(x, y) if (a is not None and b_ is not None and (a - b_) != 0.0)]
+    pairs_edges_nonzero = len(nz)
+    wil_p = (safe_wilcoxon(x, y) if pairs_edges > 0 else None)
+
+    # Effect size on discordant pairs: share of "with" wins among (b+c)
+    p_with_wins = (b / (b + c)) if (b + c) > 0 else None
+    ci_lo, ci_hi = proportion_wilson_ci(b, b + c) if (b + c) > 0 else (None, None)
 
     if rows_with_without:
         rows_with_without.append({
@@ -307,10 +394,29 @@ def main():
             "ΔNodes_success_mean": None, "ΔNodes_success_std": None,
             "ΔLOC_success_mean": None, "ΔLOC_success_std": None,
             "ZeroChange%": None, "NoTestRegression%": None,
-            "Success_p_McNemar": success_p,
+
+            # McNemar results
+            "Success_p_McNemar_two_sided": success_p_two_sided,
+            "Success_p_McNemar_one_sided": success_p_one_sided,
+
+            # Wilcoxon on paired-success ΔEdges
             "ΔEdges_success_wilcoxon_p": wil_p,
-            "pairs_success": b + c,
-            "pairs_edges": len(x),
+
+            # Pair counts
+            "pairs_success": b + c,              # discordant pairs used by McNemar
+            "pairs_edges": pairs_edges,          # paired-success for Wilcoxon
+            "pairs_edges_nonzero": pairs_edges_nonzero,
+            "b_with_better": b,
+            "c_without_better": c,
+            "pairs_total_possible": total_pairs,  # distinct (repo,cycle,expfam,root)
+            "pairs_matched": matched,             # had both with & without
+            "both_success": both_success,
+            "both_fail": both_fail,
+
+            # Effect size on discordant pairs
+            "with_win_share": p_with_wins,       # b / (b + c)
+            "with_win_share_ci_lo": ci_lo,       # Wilson 95% CI
+            "with_win_share_ci_hi": ci_hi,
         })
 
     wv_path = Path(args.outdir) / "rq1_with_vs_without.csv"
@@ -330,7 +436,7 @@ def main():
     # ---------- per-cycle (raw) ----------
     if per_cycle_rows:
         fields = [
-            "repo", "cycle_id", "cycle_size", "condition", "succ",
+            "repo", "results_root", "cycle_id", "cycle_size", "condition", "succ",
             "pre_edges","post_edges","delta_edges",
             "pre_nodes","post_nodes","delta_nodes",
             "pre_loc","post_loc","delta_loc",
