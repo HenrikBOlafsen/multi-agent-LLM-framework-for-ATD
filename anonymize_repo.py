@@ -2,30 +2,37 @@
 """
 anonymize_repo.py
 
-Recursively replace sensitive strings across a directory tree, with safety rails:
-- Skips binary files by heuristic (NUL bytes) and size threshold unless --force-binary
-- Skips common VCS/build/cache directories
+Recursively replace sensitive strings across a directory tree, with safety rails.
+Now supports selecting files by exact name (--names) or glob patterns (--name-glob).
+
+Key features:
+- Target specific filenames (e.g., status.json, pip_freeze.txt) for speed/safety
 - Optional extension whitelist and directory exclude patterns
-- Dry-run support
-- Backup copies (.bak) or in-place rewrite
-- Case-sensitive by default; --ignore-case available
-- Reports a summary with files changed and counts
+- Skips obvious binary/huge files (unless --force-binary)
+- Dry-run, backups, case-insensitive/whole-word matching
+- Clear summary of changes
 
 Examples
 --------
-Dry run, case-sensitive:
-    python anonymize_repo.py --root . --find "HenrikBOlafsen" --replace "Anonymous" --dry-run
+Only edit status.json and pip_freeze.txt:
+    python anonymize_repo.py --root . \
+        --find "HenrikBOlafsen" --replace "Anonymous" \
+        --names status.json pip_freeze.txt --backup
 
-Actually modify files (in-place) and create .bak backups:
-    python anonymize_repo.py --root . --find "HenrikBOlafsen" --replace "Anonymous" --backup
+Use globs instead (all *.json named “status.json” anywhere):
+    python anonymize_repo.py --root . \
+        --find "HenrikBOlafsen" --replace "Anonymous" \
+        --name-glob "status.json" --backup
 
-Only touch specific extensions and ignore images:
-    python anonymize_repo.py --root . --find "HenrikBOlafsen" --replace "Anonymous" \
-        --ext .py .md .txt .json .yml .yaml .sh .ipynb --exclude-dirs .git .venv __pycache__ build dist
+Dry run first:
+    python anonymize_repo.py --root . \
+        --find "HenrikBOlafsen" --replace "Anonymous" \
+        --names status.json pip_freeze.txt --dry-run
 
-Case-insensitive:
-    python anonymize_repo.py --root . --find "henrikbolafsen" --replace "Anonymous" --ignore-case
-
+Case-insensitive + whole-word:
+    python anonymize_repo.py --root . \
+        --find "henrikbolafsen" --replace "Anonymous" \
+        --names status.json pip_freeze.txt --ignore-case --whole-word
 """
 
 from __future__ import annotations
@@ -33,6 +40,8 @@ import argparse
 import os
 import re
 from pathlib import Path
+import fnmatch
+import sys
 
 DEFAULT_EXCLUDE_DIRS = {
     ".git", ".hg", ".svn", ".mypy_cache", "__pycache__", ".venv", "venv",
@@ -48,21 +57,12 @@ BINARY_EXTS = {
     ".pt",".bin",".safetensors"
 }
 
-TEXT_LIKE_EXTS = {
-    ".txt",".md",".rst",".csv",".tsv",".json",".jsonl",".yaml",".yml",".toml",
-    ".ini",".cfg",".conf",".log",".tex",".bib",".html",".xml",".css",
-    ".js",".mjs",".ts",".tsx",".jsx",".py",".ipynb",".sh",".bash",".zsh",
-    ".ps1",".bat",".cmd",".Dockerfile",".make",".mk",".cmake",".java",".c",".h",
-    ".cpp",".hpp",".cc",".go",".rs",".rb",".php",".pl",".lua",".R",".sql"
-}
-
 def is_probably_binary(path: Path, size_limit_mb: int = 50) -> bool:
     if path.suffix.lower() in BINARY_EXTS:
         return True
     try:
         size = path.stat().st_size
         if size > size_limit_mb * 1024 * 1024:
-            # treat huge files as binary for safety
             return True
         with path.open("rb") as f:
             chunk = f.read(4096)
@@ -78,7 +78,6 @@ def build_regex(find: str, ignore_case: bool, whole_word: bool) -> re.Pattern:
         flags |= re.IGNORECASE
     pattern = re.escape(find)
     if whole_word:
-        # word boundaries (\b) are ok for typical latin usernames; disable if not desired
         pattern = r"\b" + pattern + r"\b"
     return re.compile(pattern, flags)
 
@@ -87,15 +86,12 @@ def replacer_in_text(text: str, regex: re.Pattern, replace: str) -> tuple[str, i
     return new_text, n
 
 def process_file(path: Path, regex: re.Pattern, replace: str, dry_run: bool, backup: bool, force_binary: bool) -> int:
-    # Try utf-8 first; fall back to latin-1 with errors='ignore' if needed
-    # We skip clearly binary files unless --force-binary is set
     if not force_binary and is_probably_binary(path):
         return 0
     try:
         raw = path.read_bytes()
     except Exception:
         return 0
-    # Try to decode as UTF-8; if fails, try with errors=ignore
     try:
         text = raw.decode("utf-8")
     except UnicodeDecodeError:
@@ -119,15 +115,30 @@ def should_skip_dir(dirname: str, extra_excludes: set[str]) -> bool:
     base = os.path.basename(dirname)
     return base in DEFAULT_EXCLUDE_DIRS or base in extra_excludes
 
-def walk_files(root: Path, exts: set[str] | None, exclude_dirs: set[str]) -> list[Path]:
+def name_matches(basename: str, names: set[str] | None, name_globs: list[str] | None) -> bool:
+    if names:
+        if basename in names:
+            return True
+    if name_globs:
+        for pat in name_globs:
+            if fnmatch.fnmatch(basename, pat):
+                return True
+        return False
+    # if neither filter is set, accept everything (other filters may still apply)
+    return names is None and name_globs is None
+
+def walk_files(root: Path, exts: set[str] | None, exclude_dirs: set[str],
+               names: set[str] | None, name_globs: list[str] | None) -> list[Path]:
     files = []
     for dirpath, dirnames, filenames in os.walk(root):
-        # prune excluded dirs in-place
         dirnames[:] = [d for d in dirnames if not should_skip_dir(d, exclude_dirs)]
         for fn in filenames:
+            if not name_matches(fn, names, name_globs):
+                continue
             p = Path(dirpath) / fn
             if exts is not None:
-                if p.suffix in exts or (p.name in exts):  # allow "Dockerfile" no suffix
+                # if extensions are also provided, they act as an additional filter
+                if p.suffix in exts or (p.name in exts):  # allow bare names like Dockerfile
                     files.append(p)
             else:
                 files.append(p)
@@ -138,8 +149,10 @@ def main():
     ap.add_argument("--root", type=Path, required=True, help="Root directory to process.")
     ap.add_argument("--find", required=True, help="String to find.")
     ap.add_argument("--replace", required=True, help="Replacement string.")
-    ap.add_argument("--ext", nargs="*", default=None, help="Optional whitelist of file extensions (e.g., .py .md .txt) or filenames (e.g., Dockerfile).")
-    ap.add_argument("--exclude-dirs", nargs="*", default=[], help="Extra directories to exclude (names only, not paths).")
+    ap.add_argument("--ext", nargs="*", default=None, help="Optional whitelist of file extensions or filenames.")
+    ap.add_argument("--names", nargs="*", default=None, help="Exact basenames to process (e.g., status.json pip_freeze.txt).")
+    ap.add_argument("--name-glob", nargs="*", default=None, help="Glob patterns for basenames (e.g., '*.json', 'status.json').")
+    ap.add_argument("--exclude-dirs", nargs="*", default=[], help="Extra directories to exclude (names only).")
     ap.add_argument("--dry-run", action="store_true", help="Show what would change without modifying files.")
     ap.add_argument("--backup", action="store_true", help="Write .bak alongside modified files.")
     ap.add_argument("--ignore-case", action="store_true", help="Case-insensitive match.")
@@ -154,7 +167,6 @@ def main():
 
     exts = None
     if args.ext:
-        # normalize extensions
         norm = set()
         for e in args.ext:
             if not e.startswith(".") and "." in e:
@@ -162,10 +174,13 @@ def main():
             norm.add(e if e.startswith(".") else e)  # keep bare filenames like Dockerfile
         exts = norm
 
-    exclude_dirs = set(args.exclude_dirs)
+    names_set = set(args.names) if args.names else None
+    name_globs = args.name_glob  # list[str] | None
 
+    exclude_dirs = set(args.exclude_dirs)
     regex = build_regex(args.find, args.ignore_case, args.whole_word)
-    files = walk_files(root, exts, exclude_dirs)
+
+    files = walk_files(root, exts, exclude_dirs, names_set, name_globs)
 
     total_files = 0
     total_hits = 0

@@ -1,7 +1,0 @@
-kombu main kombu
-click main src/click
-werkzeug main src/werkzeug
-rich master rich
-jinja main src/jinja2
-celery main celery
-lark master lark
