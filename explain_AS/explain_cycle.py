@@ -105,7 +105,7 @@ if __name__ == "__main__":
     from typing import Dict
 
     # Defaults (can still be overridden via args or env)
-    DEFAULT_LLM_URL = os.environ.get("LLM_URL", "http://host.docker.internal:8012/v1/chat/completions")
+    DEFAULT_LLM_URL = os.environ.get("LLM_URL", "http://host.docker.internal:8000/v1/chat/completions")
     DEFAULT_API_KEY = os.environ.get("API_KEY", "token")
     DEFAULT_MODEL = os.environ.get("MODEL", "Qwen/Qwen3-Coder-30B-A3B-Instruct")
 

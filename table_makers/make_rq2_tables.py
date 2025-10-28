@@ -161,7 +161,6 @@ def main():
         if r.get("variant") == "baseline":
             baseline_map[(r["repo"], r["results_root"])] = r
 
-    # Compute success-only deltas in memory
     deltas: List[Dict[str, Any]] = []
     for (repo, cid, exp, cond) in succ_keys:
         # All roots that have this (repo, cid, exp, cond)

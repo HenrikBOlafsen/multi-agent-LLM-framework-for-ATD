@@ -116,6 +116,34 @@ OPENHANDS_SH="${SCRIPT_DIR}/run_OpenHands/run_OpenHands.sh"
 [[ -f "$EXPLAIN_MIN_PY" ]] || err "Missing explain_cycle_minimal.py: $EXPLAIN_MIN_PY"
 [[ -f "$OPENHANDS_SH"   ]] || err "Missing OpenHands runner: $OPENHANDS_SH"
 
+# ---- LLM env wiring (defaults + optional .env) ----
+# Load .env (same folder) if present; it only fills blanks.
+ENV_FILE="${ENV_FILE:-$SCRIPT_DIR/.env}"
+if [ -f "$ENV_FILE" ]; then
+  set -a
+  # shellcheck disable=SC1090
+  . "$ENV_FILE"
+  set +a
+fi
+
+# Provide safe defaults if still unset:
+: "${LLM_MODEL:=openai/Qwen/Qwen3-Coder-30B-A3B-Instruct}"
+: "${LLM_BASE_URL:=http://host.docker.internal:8000/v1}"
+: "${LLM_API_KEY:=placeholder}"
+
+# Explain step (Python) expects a full /chat/completions endpoint in LLM_URL.
+# Respect an explicit LLM_URL if already set; otherwise derive from LLM_BASE_URL.
+if [ -z "${LLM_URL:-}" ]; then
+  export LLM_URL="${LLM_BASE_URL%/}/chat/completions"
+fi
+
+# Export for children (both the Python explainer and OpenHands step may use these)
+export LLM_MODEL LLM_BASE_URL LLM_API_KEY
+
+echo "LLM_BASE_URL = $LLM_BASE_URL"
+echo "LLM_MODEL    = $LLM_MODEL"
+echo "LLM_URL      = $LLM_URL"
+
 # ---- Output dirs (baseline branch outputs) ----
 ATD_DIR="$OUTPUT_DIR/ATD_identification"
 QC_DIR="$OUTPUT_DIR/code_quality_checks"

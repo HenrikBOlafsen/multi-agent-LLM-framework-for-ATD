@@ -16,13 +16,5 @@ output_ATD_identification/*
 reports/*
 results/*
 openhands_logs/*
-results_backup/*
-results_clean/*
-results_FFF/*
-results_GGG/*
-results_HHH/*
-results_III/*
-results_JJJ/*
-results_KKK/*
-results_LLL/*
-results_NNN/*
+results_clean_baseline/*
+all_experiment_results/*

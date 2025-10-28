@@ -272,8 +272,6 @@ def main():
             "ΔLOC_success_std":  std_or_none(dl_succ),
             "ZeroChange%": round(rate_bool(zero_change), 2) if rate_bool(zero_change) is not None else None,
             "NoTestRegression%": round(no_reg, 2) if no_reg is not None else None,
-
-            # NEW: explicit outcome breakdown percentages
             "BehaviorRegressed%": pct_cat("behavior_regressed"),
             "StructureNotImproved%": pct_cat("structure_not_improved"),
             "BothFailed%": pct_cat("both_failed"),
@@ -345,8 +343,6 @@ def main():
             "ΔLOC_success_std":  std_or_none(dl_succ),
             "ZeroChange%": round(rate_bool(zero_change), 2) if rate_bool(zero_change) is not None else None,
             "NoTestRegression%": round(no_reg, 2) if no_reg is not None else None,
-
-            # NEW: explicit outcome breakdown percentages
             "BehaviorRegressed%": pct_cat("behavior_regressed"),
             "StructureNotImproved%": pct_cat("structure_not_improved"),
             "BothFailed%": pct_cat("both_failed"),
