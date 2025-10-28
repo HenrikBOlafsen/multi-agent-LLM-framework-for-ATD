@@ -99,6 +99,34 @@ def proportion_wilson_ci(k: int, n: int, conf: float = 0.95) -> Tuple[Optional[f
     half = z * sqrt((phat*(1-phat) + z*z/(4*n)) / n) / denom
     return (center - half, center + half)
 
+# ---- NEW: outcome classifier for breakdown table ----
+def classify_outcome(row: Dict[str, Any]) -> str:
+    """
+    Returns one of: 'success', 'behavior_regressed', 'structure_not_improved', 'both_failed', 'other_error'
+    based on:
+      - structural improvement: post_edges < pre_edges
+      - test non-regression: delta_tests_vs_base >= 0  (None => unknown)
+    """
+    pre = row.get("pre_edges"); post = row.get("post_edges")
+    if not isinstance(pre, (int, float)) or not isinstance(post, (int, float)):
+        return "other_error"
+
+    dtests = row.get("delta_tests_vs_base")
+    tests_ok = None if (dtests is None) else (dtests >= 0)
+
+    struct_improved = post < pre
+    struct_not_improved = post >= pre
+
+    if tests_ok is True and struct_improved:
+        return "success"
+    if tests_ok is False and struct_improved:
+        return "behavior_regressed"
+    if tests_ok is True and struct_not_improved:
+        return "structure_not_improved"
+    if tests_ok is False and struct_not_improved:
+        return "both_failed"
+    return "other_error"
+
 # ----------------- main -----------------
 def main():
     ap = argparse.ArgumentParser()
@@ -221,6 +249,14 @@ def main():
         nt_vals = [r.get("delta_tests_vs_base") for r in rows_c if r.get("delta_tests_vs_base") is not None]
         no_reg = (100.0 * sum(1 for v in nt_vals if v >= 0) / len(nt_vals)) if nt_vals else None
 
+        # ---- Outcome breakdown ----
+        cats = {"success":0, "behavior_regressed":0, "structure_not_improved":0, "both_failed":0, "other_error":0}
+        for r in rows_c:
+            cats[classify_outcome(r)] += 1
+
+        def pct_cat(k: str) -> Optional[float]:
+            return round(100.0 * cats[k] / n_total, 2) if n_total > 0 else None
+
         return {
             "repo": repo_name,
             "Condition": condition_label,
@@ -236,6 +272,12 @@ def main():
             "ΔLOC_success_std":  std_or_none(dl_succ),
             "ZeroChange%": round(rate_bool(zero_change), 2) if rate_bool(zero_change) is not None else None,
             "NoTestRegression%": round(no_reg, 2) if no_reg is not None else None,
+
+            # NEW: explicit outcome breakdown percentages
+            "BehaviorRegressed%": pct_cat("behavior_regressed"),
+            "StructureNotImproved%": pct_cat("structure_not_improved"),
+            "BothFailed%": pct_cat("both_failed"),
+            "OtherError%": pct_cat("other_error"),
         }
 
     per_project_rows: List[Dict[str, Any]] = []
@@ -281,6 +323,14 @@ def main():
         nt_vals = [r.get("delta_tests_vs_base") for r in rows if r.get("delta_tests_vs_base") is not None]
         no_reg = (100.0 * sum(1 for v in nt_vals if v >= 0) / len(nt_vals)) if nt_vals else None
 
+        # ---- Outcome breakdown ----
+        cats = {"success":0, "behavior_regressed":0, "structure_not_improved":0, "both_failed":0, "other_error":0}
+        for r in rows:
+            cats[classify_outcome(r)] += 1
+
+        def pct_cat(k: str) -> Optional[float]:
+            return round(100.0 * cats[k] / n_total, 2) if n_total > 0 else None
+
         return {
             "Condition": condition_label,
             "n_total": n_total,
@@ -295,6 +345,12 @@ def main():
             "ΔLOC_success_std":  std_or_none(dl_succ),
             "ZeroChange%": round(rate_bool(zero_change), 2) if rate_bool(zero_change) is not None else None,
             "NoTestRegression%": round(no_reg, 2) if no_reg is not None else None,
+
+            # NEW: explicit outcome breakdown percentages
+            "BehaviorRegressed%": pct_cat("behavior_regressed"),
+            "StructureNotImproved%": pct_cat("structure_not_improved"),
+            "BothFailed%": pct_cat("both_failed"),
+            "OtherError%": pct_cat("other_error"),
         }
 
     rows_with_without: List[Dict[str, Any]] = []
@@ -442,13 +498,19 @@ def main():
             "pre_loc","post_loc","delta_loc",
             "tests_pass_pct","delta_tests_vs_base",
             "variant_label","exp_label",
+            "struct_improved","tests_nonregressed",
         ]
         pc_path = Path(args.outdir) / "rq1_per_cycle.csv"
         with pc_path.open("w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=fields)
             w.writeheader()
             for r in per_cycle_rows:
-                w.writerow({k: r.get(k) for k in fields})
+                row_out = {k: r.get(k) for k in fields if k not in ("struct_improved","tests_nonregressed")}
+                pre = r.get("pre_edges"); post = r.get("post_edges")
+                row_out["struct_improved"] = (isinstance(pre,(int,float)) and isinstance(post,(int,float)) and (post < pre))
+                dt = r.get("delta_tests_vs_base")
+                row_out["tests_nonregressed"] = (None if dt is None else (dt >= 0))
+                w.writerow(row_out)
         print(f"Wrote: {pc_path}")
     else:
         print("[WARN] No per-cycle rows produced", file=sys.stderr)

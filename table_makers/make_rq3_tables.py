@@ -19,6 +19,10 @@ Outputs:
     Two rows per bin: Condition ∈ {"with","without"}.
     On the "with" row we report McNemar two-sided and one-sided (with > without),
     plus discordant counts and matched-pair diagnostics.
+
+    Additionally, we append ONE summary row that tests the **scalability interaction**:
+      H1: (succ_with,Large - succ_without,Large) > (succ_with,Small - succ_without,Small)
+    using a one-sided z-test for a difference-in-differences of independent proportions.
 """
 from __future__ import annotations
 import argparse, csv, math, sys
@@ -28,7 +32,8 @@ from typing import Dict, Any, List, Optional, Tuple
 from rq_utils import (
     read_json, read_repos_file, get_tests_pass_percent, get_scc_metrics,
     ATD_METRICS, CQ_METRICS, parse_cycles, branch_for, cycle_size_from_baseline,
-    safe_sub, mcnemar_p, map_roots_exps, exp_family, mcnemar_p_one_sided, parse_bins_arg, size_to_bin
+    safe_sub, mcnemar_p, map_roots_exps, exp_family, mcnemar_p_one_sided,
+    parse_bins_arg, size_to_bin
 )
 
 # ---------- main ----------
@@ -150,6 +155,13 @@ def main():
         if not vals: return None
         return 100.0 * sum(1 for v in vals if v) / len(vals)
 
+    def success_count(rows: List[Dict[str, Any]]) -> Tuple[int, int]:
+        vals = [r["succ"] for r in rows if isinstance(r.get("succ"), bool)]
+        if not vals:
+            return (0, 0)
+        s = sum(1 for v in vals if v)
+        return (s, len(vals))
+
     # ---- Success-only Δ metrics ----
     def mean_of_success(rows: List[Dict[str, Any]], key: str) -> Optional[float]:
         succ_rows = [r for r in rows if r.get("succ") is True]
@@ -212,6 +224,7 @@ def main():
     for (bin_label, cond) in sorted(groups.keys(), key=lambda t: (t[0], t[1] != "with")):
         rows = groups[(bin_label, cond)]
         stats = mcnemar_by_bin(bin_label) if cond == "with" else {}
+        s_count, s_total = success_count(rows)
         out_rows.append({
             "CycleBin": bin_label,
             "Condition": cond,
@@ -227,7 +240,10 @@ def main():
             "ΔLOC_std":  std_of_success(rows, "delta_loc"),
             # Safety (all runs):
             "NoTestRegression%": round(non_regression_rate(rows), 2) if non_regression_rate(rows) is not None else None,
-            # Count of runs in bin (all runs):
+            # Counts used for interaction test:
+            "n_success": s_count,
+            "n_total": s_total,
+            # For convenience, also store raw n (same as n_total if every row had succ bool):
             "n": len(rows),
             # McNemar (only on the 'with' row to avoid duplicates)
             **({
@@ -241,10 +257,94 @@ def main():
             } if cond == "with" else {})
         })
 
+    # ---- Scalability interaction: does "with" help more on Large than on Small? ----
+    # H1: (p_with_L - p_without_L) > (p_with_S - p_without_S)
+    # Use one-sided z-test for diff-of-diffs of independent proportions.
+    def prop(nsucc: int, ntot: int) -> Tuple[Optional[float], Optional[float]]:
+        if ntot <= 0:
+            return (None, None)
+        p = nsucc / ntot
+        var = p * (1 - p) / ntot
+        return (p, var)
+
+    # Build quick index for counts
+    idx: Dict[Tuple[str, str], Dict[str, Any]] = {}
+    for r in out_rows:
+        idx[(str(r["CycleBin"]), str(r["Condition"]))] = r
+
+    def interaction_row() -> Optional[Dict[str, Any]]:
+        need = [("Large","with"),("Large","without"),("Small","with"),("Small","without")]
+        if any(k not in idx for k in need):
+            return None
+        Lw = idx[("Large","with")]
+        Lx = idx[("Large","without")]
+        Sw = idx[("Small","with")]
+        Sx = idx[("Small","without")]
+
+        succ_Lw, tot_Lw = int(Lw.get("n_success") or 0), int(Lw.get("n_total") or 0)
+        succ_Lx, tot_Lx = int(Lx.get("n_success") or 0), int(Lx.get("n_total") or 0)
+        succ_Sw, tot_Sw = int(Sw.get("n_success") or 0), int(Sw.get("n_total") or 0)
+        succ_Sx, tot_Sx = int(Sx.get("n_success") or 0), int(Sx.get("n_total") or 0)
+
+        p_Lw, v_Lw = prop(succ_Lw, tot_Lw)
+        p_Lx, v_Lx = prop(succ_Lx, tot_Lx)
+        p_Sw, v_Sw = prop(succ_Sw, tot_Sw)
+        p_Sx, v_Sx = prop(succ_Sx, tot_Sx)
+
+        if None in (p_Lw, p_Lx, p_Sw, p_Sx, v_Lw, v_Lx, v_Sw, v_Sx):
+            pval = None
+            diff_diffs = None
+            d_large = None
+            d_small = None
+        else:
+            d_large = p_Lw - p_Lx
+            d_small = p_Sw - p_Sx
+            diff_diffs = d_large - d_small
+            se = math.sqrt(v_Lw + v_Lx + v_Sw + v_Sx)
+            if se <= 0:
+                pval = None
+            else:
+                z = diff_diffs / se
+                # one-sided: H1: diff_diffs > 0
+                try:
+                    from math import erf, sqrt
+                    # 1 - Phi(z) = 0.5 * erfc(z / sqrt(2))
+                    pval = 0.5 * (1 - erf(z / math.sqrt(2)))
+                except Exception:
+                    pval = None
+
+        return {
+            "CycleBin": "Interaction",
+            "Condition": "with_vs_without",
+            "Success%_with_Large": (100.0 * p_Lw) if p_Lw is not None else None,
+            "Success%_without_Large": (100.0 * p_Lx) if p_Lx is not None else None,
+            "Success%_with_Small": (100.0 * p_Sw) if p_Sw is not None else None,
+            "Success%_without_Small": (100.0 * p_Sx) if p_Sx is not None else None,
+            "Delta_with_minus_without_Large": d_large,
+            "Delta_with_minus_without_Small": d_small,
+            "Diff_of_diffs": diff_diffs,
+            "p_interaction_one_sided": pval,
+            "n_success_with_Large": succ_Lw, "n_total_with_Large": tot_Lw,
+            "n_success_without_Large": succ_Lx, "n_total_without_Large": tot_Lx,
+            "n_success_with_Small": succ_Sw, "n_total_with_Small": tot_Sw,
+            "n_success_without_Small": succ_Sx, "n_total_without_Small": tot_Sx,
+        }
+
+    inter = interaction_row()
+    if inter is not None:
+        out_rows.append(inter)
+
+    # ---- Write CSV ----
     out_path = Path(args.outdir) / "rq3_by_cycle_bin.csv"
     if out_rows:
+        # Collect union of keys to preserve existing + new columns
+        keys: List[str] = []
+        for r in out_rows:
+            for k in r.keys():
+                if k not in keys:
+                    keys.append(k)
         with out_path.open("w", newline="", encoding="utf-8") as f:
-            w = csv.DictWriter(f, fieldnames=list(out_rows[0].keys()))
+            w = csv.DictWriter(f, fieldnames=keys)
             w.writeheader()
             for r in out_rows:
                 w.writerow(r)
