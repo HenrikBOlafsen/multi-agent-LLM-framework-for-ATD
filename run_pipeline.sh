@@ -116,6 +116,8 @@ OPENHANDS_SH="${SCRIPT_DIR}/run_OpenHands/run_OpenHands.sh"
 [[ -f "$EXPLAIN_MIN_PY" ]] || err "Missing explain_cycle_minimal.py: $EXPLAIN_MIN_PY"
 [[ -f "$OPENHANDS_SH"   ]] || err "Missing OpenHands runner: $OPENHANDS_SH"
 
+source "${SCRIPT_DIR}/timing.sh"
+
 # ---- LLM env wiring (defaults + optional .env) ----
 # Load .env (same folder) if present; it only fills blanks.
 ENV_FILE="${ENV_FILE:-$SCRIPT_DIR/.env}"
@@ -182,16 +184,26 @@ git -C "$REPO_PATH" reset --hard -q "origin/$BRANCH_NAME" || true
 echo "==> On $(git -C "$REPO_PATH" rev-parse --abbrev-ref HEAD) @ $(git -C "$REPO_PATH" rev-parse --short HEAD)"
 REPO_NAME="$(basename "$REPO_PATH")"
 
+export TIMING_REPO="$REPO_NAME"
+export TIMING_BRANCH="$BRANCH_NAME"
+export TIMING_EXPERIMENT_ID="$EXPERIMENT_ID"
+
+
 # ---- Non-LLM phase ----
 if [[ $LLM_ACTIVE -eq 0 ]]; then
+  export TIMING_PHASE="non_llm"
+
   echo "== Step 1: Identify cyclic dependencies =="
+  timing_mark "start_cyclicDependencyIdentification"
   export LANGUAGE=python
   bash "$ANALYZE_SH" "$REPO_PATH" "$SRC_REL_PATH" "$ATD_DIR"
 
   CYCLES_JSON="$ATD_DIR/module_cycles.json"
   [[ -f "$CYCLES_JSON" ]] || err "Expected cycles JSON not found: $CYCLES_JSON"
+  timing_mark "end_cyclicDependencyIdentification"
 
   echo "== Step 2: Collect code quality metrics =="
+  timing_mark "start_codeQualityMetricsCollection"
   OUT_DIR="$QC_DIR" bash "$QUALITY_SH" "$REPO_PATH" "$BRANCH_NAME" "$SRC_REL_PATH" || true
 
   SINGLE_SUMMARIZER="${SCRIPT_DIR}/code_quality_checker/quality_single_summary.py"
@@ -202,6 +214,7 @@ if [[ $LLM_ACTIVE -eq 0 ]]; then
     python3 "$SINGLE_SUMMARIZER" "$QC_DIR" "$METRICS_JSON" || true
     echo "Metrics summary: $METRICS_JSON"
   fi
+  timing_mark "end_codeQualityMetricsCollection"
   echo "Non-LLM phase complete."
   exit 0
 fi
@@ -229,6 +242,9 @@ fi
 echo "== LLM: cycles to process for ${REPO_NAME}@${BRANCH_NAME}: ${CYCLE_IDS[*]} =="
 
 for CYCLE_ID in "${CYCLE_IDS[@]}"; do
+  export TIMING_PHASE="llm"
+  export TIMING_CYCLE_ID="$CYCLE_ID"
+
   echo
   echo "== LLM Step 1: Generate refactoring prompt for $CYCLE_ID =="
 
@@ -275,6 +291,7 @@ PY
   FULL_LOG="$EXPLAIN_SUBDIR/full.log"
   FINAL_PROMPT="$EXPLAIN_SUBDIR/prompt.txt"
 
+  timing_mark "start_generateRefactoringPrompt"
   # Run explain step but don't let failures kill the loop
   set +e
   if [[ $NO_EXPLAIN -eq 1 ]]; then
@@ -297,6 +314,8 @@ PY
   EXPLAIN_EXIT=$?
   set -e
 
+  timing_mark "end_generateRefactoringPrompt"
+
   # Treat nonzero exit OR empty prompt as failure
   if [[ $EXPLAIN_EXIT -ne 0 || ! -s "$FINAL_PROMPT" ]]; then
     write_explain_status "$EXPLAIN_SUBDIR" "llm_error" "explain_step_failed_or_empty_prompt"
@@ -309,6 +328,7 @@ PY
   PROMPT_TO_USE="${PROMPT_PATH:-$FINAL_PROMPT}"
 
   echo "== LLM Step 2: Perform refactoring with OpenHands for $CYCLE_ID =="
+  timing_mark "start_runOpenHands"
   SLUG="$(derive_slug)" || err "Could not derive owner/repo from 'origin' remote."
 
   echo "Repo slug   : $SLUG"
@@ -322,6 +342,8 @@ PY
   LOG_DIR="$OPENHANDS_SUBDIR" bash "$OPENHANDS_SH" "$SLUG" "$BRANCH_NAME" "$NEW_BRANCH" "$PROMPT_TO_USE"
   OH_EXIT=$?
   set -e
+
+  timing_mark "end_runOpenHands"
 
   if [[ $OH_EXIT -ne 0 ]]; then
     echo "OpenHands failed for $CYCLE_ID (exit=$OH_EXIT). See $OPENHANDS_SUBDIR/status.json"

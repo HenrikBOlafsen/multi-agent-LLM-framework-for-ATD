@@ -20,7 +20,7 @@ GITHUB_TOKEN="${GITHUB_TOKEN:-}"
 OPENHANDS_IMAGE="${OPENHANDS_IMAGE:-docker.all-hands.dev/all-hands-ai/openhands:0.59}"
 RUNTIME_IMAGE="${RUNTIME_IMAGE:-docker.all-hands.dev/all-hands-ai/runtime:0.59-nikolaik}"
 
-MAX_ITERS="${MAX_ITERS:-150}"
+MAX_ITERS="${MAX_ITERS:-100}"
 COMMIT_MESSAGE="${COMMIT_MESSAGE:-Refactor: break dependency cycle}"
 GIT_USER_NAME="${GIT_USER_NAME:-}"
 GIT_USER_EMAIL="${GIT_USER_EMAIL:-}"

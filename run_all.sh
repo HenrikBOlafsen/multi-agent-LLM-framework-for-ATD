@@ -28,6 +28,9 @@ REPOS_FILE="$2"
 EXPERIMENT_ID="$3"
 OUTPUT_ROOT="${4:-results}"
 
+mkdir -p "$OUTPUT_ROOT"
+export TIMING_LOG="$(realpath "${OUTPUT_ROOT%/}")/timings_${EXPERIMENT_ID}.jsonl"
+
 # Optional 5th positional: cycles_to_analyze.txt (must not be a flag)
 CYCLES_FILE=""
 if [[ -n "${5:-}" && "${5:0:2}" != "--" && -f "${5}" ]]; then

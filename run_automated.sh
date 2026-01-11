@@ -2,7 +2,7 @@
 # Usage:
 #   ./run_automated.sh PROJECTS_DIR REPOS_FILE EXPERIMENT_ID OUTPUT_ROOT CYCLES_FILE
 #
-# What it does (Option A):
+# What it does:
 #   2) WITH explanations:
 #        ./run_all.sh PROJECTS_DIR REPOS_FILE EXPERIMENT_ID OUTPUT_ROOT CYCLES_FILE --LLM-active
 #   3) WITHOUT explanations:
@@ -28,6 +28,9 @@ EXPERIMENT_ID="$3"
 OUTPUT_ROOT="${4%/}"
 CYCLES_FILE="$5"
 
+mkdir -p "$OUTPUT_ROOT"
+export TIMING_LOG="$(realpath "${OUTPUT_ROOT%/}")/timings_${EXPERIMENT_ID}.jsonl"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 RUN_ALL="${SCRIPT_DIR}/run_all.sh"
 RUN_METRICS_LLMBR="${SCRIPT_DIR}/run_metrics_for_llm_branches.sh"
@@ -38,7 +41,7 @@ RUN_METRICS_LLMBR="${SCRIPT_DIR}/run_metrics_for_llm_branches.sh"
 [[ -f "$CYCLES_FILE" ]] || { echo "Cycles file not found: $CYCLES_FILE" >&2; exit 6; }
 mkdir -p "$OUTPUT_ROOT"
 
-echo "### Automated (Option A) — START"
+echo "### Automated — START"
 echo "Projects dir : $PROJECTS_DIR"
 echo "Repos file   : $REPOS_FILE"
 echo "Experiment   : $EXPERIMENT_ID"

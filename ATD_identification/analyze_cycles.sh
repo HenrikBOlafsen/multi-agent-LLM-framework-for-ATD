@@ -41,9 +41,17 @@ export REPO_ROOT="$(realpath "$REPO_PATH")"
 # Absolute output path to avoid cwd issues
 PYDEPS_JSON="$(realpath "$OUTPUT_DIR")/pydeps.json"
 
+SCRIPT_DIR_SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR_SELF}/../timing.sh"   # adjust path as needed
+export TIMING_PHASE="analyze_cycles"
+export TIMING_REPO="$(basename "$REPO_PATH")"
+
+
 echo "Running pydeps on directory: $PKG_DIR"
 export PACKAGE_NAME="$PKG_NAME"
+timing_mark "start_pydeps"
 pydeps "$PKG_DIR" --noshow --no-output --show-deps --deps-output "$PYDEPS_JSON" --max-bacon=0 --only "$PKG_NAME"
+timing_mark "end_pydeps"
 
 if [ ! -f "$PYDEPS_JSON" ]; then
   echo "ERROR: pydeps did not produce $PYDEPS_JSON"
@@ -54,10 +62,14 @@ echo "pydeps output: $PYDEPS_JSON"
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
 
 echo "Parsing module-level SCCs and representative cycles..."
+timing_mark "start_parseModuleCycles"
 python "$SCRIPT_DIR/parse_module_cycles.py" "$PYDEPS_JSON" "${OUTPUT_DIR}/module_cycles.json"
+timing_mark "end_parseModuleCycles"
 
 echo "Computing SCC metrics..."
+timing_mark "start_computeSCCMetrics"
 python "$SCRIPT_DIR/compute_global_metrics.py" "$PYDEPS_JSON" "${OUTPUT_DIR}/ATD_metrics.json"
+timing_mark "end_computeSCCMetrics"
 
 echo "✅ Outputs:"
 echo "  - ${PYDEPS_JSON}"
