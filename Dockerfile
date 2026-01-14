@@ -58,6 +58,11 @@ ENV PATH="/opt/depends/bin:/opt/depends:/opt/app/.venv/bin:${PATH}"
 
 # ----- dev shell -----
 WORKDIR /workspace
-# auto-activate the uv virtualenv in interactive shells
-RUN printf 'source /opt/app/.venv/bin/activate\n' >> /root/.bashrc
+# auto-activate the uv virtualenv in interactive shells (all users)
+RUN printf '\n# Auto-activate project venv\nsource /opt/app/.venv/bin/activate\n' >> /etc/bash.bashrc
+
+# optional but nice: make sure non-root users have a writable HOME
+ENV HOME=/tmp
+
 CMD ["bash", "-l"]
+

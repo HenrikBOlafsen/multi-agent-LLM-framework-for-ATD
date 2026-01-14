@@ -33,16 +33,14 @@ echo "Package name: $PKG_NAME"
 echo "PYTHONPATH  : $PKG_PARENT"
 echo "Output dir  : $OUTPUT_DIR"
 
-# Make sources importable if needed; not strictly required when calling pydeps on a directory
 export PYTHONPATH="$PKG_PARENT${PYTHONPATH:+:$PYTHONPATH}"
-# For loaders’ repo filtering
 export REPO_ROOT="$(realpath "$REPO_PATH")"
 
 # Absolute output path to avoid cwd issues
 PYDEPS_JSON="$(realpath "$OUTPUT_DIR")/pydeps.json"
 
 SCRIPT_DIR_SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR_SELF}/../timing.sh"   # adjust path as needed
+source "${SCRIPT_DIR_SELF}/../timing.sh"
 export TIMING_PHASE="analyze_cycles"
 export TIMING_REPO="$(basename "$REPO_PATH")"
 
