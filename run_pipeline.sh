@@ -136,7 +136,7 @@ fi
 # Explain step (Python) expects a full /chat/completions endpoint in LLM_URL.
 # Respect an explicit LLM_URL if already set; otherwise derive from LLM_BASE_URL.
 if [ -z "${LLM_URL:-}" ]; then
-  export LLM_URL="${LLM_BASE_URL%/}/chat/completions"
+  export LLM_URL="${LLM_BASE_URL%/}/v1/chat/completions"
 fi
 
 # Export for children (both the Python explainer and OpenHands step may use these)

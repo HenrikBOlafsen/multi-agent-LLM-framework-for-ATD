@@ -1,1 +1,1 @@
-kombu main scc_0_cycle_0
+kombu main scc_0_cycle_1

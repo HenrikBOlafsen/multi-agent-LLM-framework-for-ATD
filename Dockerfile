@@ -4,7 +4,7 @@ FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS dev
 # add docker CLI so OpenHands can talk to /var/run/docker.sock
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates openjdk-17-jre-headless unzip git \
-    docker.io \
+    docker.io rsync \
  && rm -rf /var/lib/apt/lists/*
 
 # ----- your existing Python deps via uv (OpenHands must be in uv.lock) -----

@@ -106,8 +106,8 @@ if __name__ == "__main__":
 
     # Defaults (can still be overridden via args or env)
     DEFAULT_LLM_URL = os.environ.get("LLM_URL", "http://host.docker.internal:8000/v1/chat/completions")
-    DEFAULT_API_KEY = os.environ.get("API_KEY", "token")
-    DEFAULT_MODEL = os.environ.get("MODEL", "Qwen/Qwen3-Coder-30B-A3B-Instruct")
+    DEFAULT_API_KEY = os.environ.get("LLM_API_KEY", "token")
+    DEFAULT_MODEL   = os.environ.get("LLM_MODEL", "Qwen/Qwen3-Coder-30B-A3B-Instruct")
 
     parser = argparse.ArgumentParser(description="Explain a dependency cycle and propose a refactoring prompt.")
     parser.add_argument("--repo-root", type=str, help="Absolute or relative path to the repository root.")
@@ -116,8 +116,8 @@ if __name__ == "__main__":
     parser.add_argument("--cycle-id", type=str, help="ID of the representative cycle to explain (e.g., 'scc_0_cycle_0').")
     parser.add_argument("--out-prompt", type=str, default=None, help="If set, write the final refactoring prompt to this file.")
     parser.add_argument("--llm-url", type=str, default=DEFAULT_LLM_URL, help="LLM API URL (overrides env LLM_URL).")
-    parser.add_argument("--api-key", type=str, default=DEFAULT_API_KEY, help="LLM API key (overrides env API_KEY).")
-    parser.add_argument("--model", type=str, default=DEFAULT_MODEL, help="Model name or id (overrides env MODEL).")
+    parser.add_argument("--api-key", type=str, default=DEFAULT_API_KEY, help="LLM API key (overrides env LLM_API_KEY).")
+    parser.add_argument("--model", type=str, default=DEFAULT_MODEL, help="Model name or id (overrides env LLM_MODEL).")
 
     args = parser.parse_args()
 
