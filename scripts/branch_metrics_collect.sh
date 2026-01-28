@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Contract:
+#   branch_metrics_collect.sh <repo_dir> <target_branch> <entry> <out_dir> <baseline_branch>
+
+if [[ $# -ne 5 ]]; then
+  echo "Usage: $0 <repo_dir> <target_branch> <entry> <out_dir> <baseline_branch>" >&2
+  exit 2
+fi
+
+REPO_DIR="$(cd "$1" && pwd)"
+TARGET_BRANCH="$2"
+ENTRY="$3"
+OUT_DIR="$(mkdir -p "$4" && cd "$4" && pwd)"
+BASELINE_BRANCH="$5"
+
+ATD_DIR="$OUT_DIR/ATD_identification"
+QC_DIR="$OUT_DIR/code_quality_checks"
+mkdir -p "$ATD_DIR" "$QC_DIR"
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ANALYZE_SH="$ROOT/ATD_identification/analyze_cycles.sh"
+QUALITY_SH="$ROOT/code_quality_checker/quality_collect.sh"
+
+[[ -f "$ANALYZE_SH" ]] || { echo "Missing: $ANALYZE_SH" >&2; exit 3; }
+[[ -f "$QUALITY_SH" ]] || { echo "Missing: $QUALITY_SH" >&2; exit 3; }
+
+branch_exists () {
+  local b="$1"
+  git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$b"
+}
+
+# Offline: no fetch.
+if ! branch_exists "$TARGET_BRANCH"; then
+  echo "== Metrics collect: missing local branch, skipping: $(basename "$REPO_DIR")@$TARGET_BRANCH =="
+  cat > "$OUT_DIR/_status_missing_branch.json" <<JSON
+{
+  "phase": "metrics",
+  "outcome": "skipped_missing_branch",
+  "target_branch": "$(printf '%s' "$TARGET_BRANCH")",
+  "baseline_branch": "$(printf '%s' "$BASELINE_BRANCH")"
+}
+JSON
+  exit 0
+fi
+
+git -C "$REPO_DIR" checkout -q "$TARGET_BRANCH"
+
+echo "== Metrics collect: $(basename "$REPO_DIR")@$TARGET_BRANCH =="
+echo "Entry: $ENTRY"
+echo "Out  : $OUT_DIR"
+
+echo "== Step: dependency cycles =="
+bash "$ANALYZE_SH" "$REPO_DIR" "$ENTRY" "$ATD_DIR"
+
+echo "== Step: code quality =="
+OUT_DIR="$QC_DIR" bash "$QUALITY_SH" "$REPO_DIR" "$TARGET_BRANCH" "$ENTRY" || true
+
+SUM="$ROOT/code_quality_checker/quality_single_summary.py"
+[[ -f "$SUM" ]] || SUM="$ROOT/quality_single_summary.py"
+if [[ -f "$SUM" ]]; then
+  python3 "$SUM" "$QC_DIR" "$QC_DIR/metrics.json" || true
+fi
+
+cat > "$OUT_DIR/meta.json" <<JSON
+{
+  "repo": "$(basename "$REPO_DIR")",
+  "branch": "$(printf '%s' "$TARGET_BRANCH")",
+  "baseline_branch": "$(printf '%s' "$BASELINE_BRANCH")",
+  "entry": "$(printf '%s' "$ENTRY")",
+  "collected_at_utc": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+}
+JSON
+
+echo "✅ Metrics collected: $OUT_DIR"

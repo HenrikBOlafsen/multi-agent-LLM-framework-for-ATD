@@ -36,7 +36,11 @@ date -u +'%Y-%m-%dT%H:%M:%SZ' > "$OUT_ABS/run_started_utc.txt" || true
 WT_DIR=""
 WT_ROOT="$REPO_PATH"
 if [[ $IS_GIT -eq 1 ]]; then
-  git -C "$REPO_PATH" fetch --all --quiet || true
+  # Offline-by-default: only fetch if explicitly allowed.
+  if [[ "${QC_ALLOW_FETCH:-0}" == "1" ]]; then
+    git -C "$REPO_PATH" fetch --all --quiet || true
+  fi
+
   if ! git -C "$REPO_PATH" rev-parse --verify --quiet "${LABEL}^{commit}" >/dev/null; then
     echo "Ref '$LABEL' not found in $REPO_PATH" >&2
     exit 1
@@ -128,7 +132,6 @@ export TIMING_BRANCH="$LABEL"
   fi
 
   # --- Default install: intentionally minimal & predictable -------------------
-  # Key idea: install the project + likely test deps. Tooling installed best-effort.
   default_install() {
     python -m pip install -e . || true
 
@@ -278,7 +281,6 @@ PY
       fi
     }
 
-
     echo "Time for pytest"
     set -o pipefail
 
@@ -293,7 +295,6 @@ PY
     --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
     ${PYTEST_ADDOPTS:+$PYTEST_ADDOPTS} \
     2>&1 | tee "$TEST_LOG" || true
-
 
     PYTEST_RC=${PIPESTATUS[0]}
     export PYTHONPATH="$_pp"

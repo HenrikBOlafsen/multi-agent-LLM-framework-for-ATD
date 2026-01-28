@@ -2,74 +2,109 @@
 set -euo pipefail
 
 # Usage:
-#   ./analyze_cycles.sh REPO_PATH SRC_SUBDIR [OUTPUT_DIR]
+#   ./ATD_identification/analyze_cycles.sh <REPO_PATH> <ENTRY_SUBDIR> <OUTPUT_DIR>
 #
-# Examples:
-#   ./analyze_cycles.sh projects_to_analyze/kombu kombu
-#   ./analyze_cycles.sh projects_to_analyze/click src/click
-#   ./ATD_identification/cycle_extractor/analyze_cycles.sh projects_to_analyze/kombu kombu
+# Example:
+#   ./ATD_identification/analyze_cycles.sh projects_to_analyze/kombu kombu results/kombu/main/ATD_identification
+#
+# Produces:
+#   <OUTPUT_DIR>/pydeps.json
+#   <OUTPUT_DIR>/dependency_graph.json
+#   <OUTPUT_DIR>/scc_report.json
 
-if [[ $# -lt 2 || $# -gt 3 ]]; then
-  echo "Usage: $0 REPO_PATH SRC_SUBDIR [OUTPUT_DIR]"
+if [[ $# -ne 3 ]]; then
+  echo "Usage: $0 <REPO_PATH> <ENTRY_SUBDIR> <OUTPUT_DIR>" >&2
   exit 2
 fi
 
-REPO_PATH="${1%/}"
-SRC_SUBDIR="${2%/}"
-OUTPUT_DIR="${3:-output_ATD_identification}"
+REPO_PATH="$(cd "$1" && pwd)"
+ENTRY_SUBDIR="${2%/}"
+OUTPUT_DIR="$(mkdir -p "$3" && cd "$3" && pwd)"
 
 [[ -d "$REPO_PATH" ]] || { echo "ERROR: repo path not found: $REPO_PATH" >&2; exit 1; }
+[[ -d "$REPO_PATH/$ENTRY_SUBDIR" ]] || { echo "ERROR: entry subdir not found: $REPO_PATH/$ENTRY_SUBDIR" >&2; exit 1; }
 
-PKG_DIR="$(realpath "$REPO_PATH/$SRC_SUBDIR")"   # e.g., /work/repo/src/twisted
-PKG_NAME="$(basename "$PKG_DIR")"                # e.g., twisted
-PKG_PARENT="$(dirname "$PKG_DIR")"               # e.g., /work/repo/src
+# ---- tool checks ----
+command -v pydeps >/dev/null 2>&1 || { echo "ERROR: pydeps not found in PATH" >&2; exit 3; }
+command -v python3 >/dev/null 2>&1 || { echo "ERROR: python3 not found in PATH" >&2; exit 3; }
 
-[[ -d "$PKG_DIR" ]] || { echo "ERROR: package dir not found: $PKG_DIR" >&2; exit 1; }
-mkdir -p "$OUTPUT_DIR"
+# ---- locations ----
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BUILD_GRAPH_PY="$SCRIPT_DIR/build_dependency_graph_pydeps.py"
+EXTRACT_SCCS_PY="$SCRIPT_DIR/extract_sccs.py"
 
-echo "Repo path   : $REPO_PATH"
-echo "Package dir : $PKG_DIR"
-echo "Package name: $PKG_NAME"
-echo "PYTHONPATH  : $PKG_PARENT"
-echo "Output dir  : $OUTPUT_DIR"
+[[ -f "$BUILD_GRAPH_PY" ]] || { echo "ERROR: missing: $BUILD_GRAPH_PY" >&2; exit 4; }
+[[ -f "$EXTRACT_SCCS_PY" ]] || { echo "ERROR: missing: $EXTRACT_SCCS_PY" >&2; exit 4; }
 
-export PYTHONPATH="$PKG_PARENT${PYTHONPATH:+:$PYTHONPATH}"
-export REPO_ROOT="$(realpath "$REPO_PATH")"
+# ---- outputs ----
+PYDEPS_JSON="$OUTPUT_DIR/pydeps.json"
+GRAPH_JSON="$OUTPUT_DIR/dependency_graph.json"
+SCC_REPORT_JSON="$OUTPUT_DIR/scc_report.json"
 
-# Absolute output path to avoid cwd issues
-PYDEPS_JSON="$(realpath "$OUTPUT_DIR")/pydeps.json"
-
-SCRIPT_DIR_SELF="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "${SCRIPT_DIR_SELF}/../timing.sh"
-export TIMING_PHASE="analyze_cycles"
-export TIMING_REPO="$(basename "$REPO_PATH")"
-
-
-echo "Running pydeps on directory: $PKG_DIR"
-export PACKAGE_NAME="$PKG_NAME"
-timing_mark "start_pydeps"
-pydeps "$PKG_DIR" --noshow --no-output --show-deps --deps-output "$PYDEPS_JSON" --max-bacon=0 --only "$PKG_NAME"
-timing_mark "end_pydeps"
-
-if [ ! -f "$PYDEPS_JSON" ]; then
-  echo "ERROR: pydeps did not produce $PYDEPS_JSON"
-  exit 1
+# ---- env for timing logger ----
+# (optional; safe if timing.sh isn't used elsewhere)
+if [[ -f "$SCRIPT_DIR/../timing.sh" ]]; then
+  # shellcheck disable=SC1091
+  source "$SCRIPT_DIR/../timing.sh"
+  export TIMING_PHASE="analyze_cycles"
+  export TIMING_REPO="$(basename "$REPO_PATH")"
 fi
-echo "pydeps output: $PYDEPS_JSON"
 
-SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" >/dev/null 2>&1 && pwd)"
+echo "== Analyze cycles =="
+echo "Repo    : $REPO_PATH"
+echo "Entry   : $ENTRY_SUBDIR"
+echo "Out dir : $OUTPUT_DIR"
+echo
 
-echo "Parsing module-level SCCs and representative cycles..."
-timing_mark "start_parseModuleCycles"
-python "$SCRIPT_DIR/parse_module_cycles.py" "$PYDEPS_JSON" "${OUTPUT_DIR}/module_cycles.json"
-timing_mark "end_parseModuleCycles"
+# 1) pydeps
+echo "== Step 1: pydeps → $PYDEPS_JSON =="
+if declare -F timing_mark >/dev/null 2>&1; then timing_mark "start_pydeps"; fi
 
-echo "Computing SCC metrics..."
-timing_mark "start_computeSCCMetrics"
-python "$SCRIPT_DIR/compute_global_metrics.py" "$PYDEPS_JSON" "${OUTPUT_DIR}/ATD_metrics.json"
-timing_mark "end_computeSCCMetrics"
+PKG_DIR="$REPO_PATH/$ENTRY_SUBDIR"
+PKG_NAME="$(basename "$PKG_DIR")"
+PKG_PARENT="$(dirname "$PKG_DIR")"
+export PYTHONPATH="$PKG_PARENT${PYTHONPATH:+:$PYTHONPATH}"
+export PACKAGE_NAME="$PKG_NAME"
+export REPO_ROOT="$REPO_PATH"
 
-echo "✅ Outputs:"
-echo "  - ${PYDEPS_JSON}"
-echo "  - ${OUTPUT_DIR}/module_cycles.json"
-echo "  - ${OUTPUT_DIR}/ATD_metrics.json"
+pydeps "$PKG_DIR" \
+  --noshow --no-output \
+  --show-deps \
+  --deps-output "$PYDEPS_JSON" \
+  --max-bacon=0 \
+  --only "$PKG_NAME"
+
+if declare -F timing_mark >/dev/null 2>&1; then timing_mark "end_pydeps"; fi
+
+
+[[ -s "$PYDEPS_JSON" ]] || { echo "ERROR: pydeps did not produce $PYDEPS_JSON" >&2; exit 10; }
+
+# 2) canonical graph
+echo
+echo "== Step 2: build canonical dependency graph → $GRAPH_JSON =="
+if declare -F timing_mark >/dev/null 2>&1; then timing_mark "start_buildDependencyGraph"; fi
+
+python3 "$BUILD_GRAPH_PY" "$PYDEPS_JSON" \
+  --repo-root "$REPO_PATH" \
+  --entry "$ENTRY_SUBDIR" \
+  --out "$GRAPH_JSON" \
+  --language "python"
+
+if declare -F timing_mark >/dev/null 2>&1; then timing_mark "end_buildDependencyGraph"; fi
+[[ -s "$GRAPH_JSON" ]] || { echo "ERROR: graph builder did not produce $GRAPH_JSON" >&2; exit 11; }
+
+# 3) SCC + cycles + metrics (one pass)
+echo
+echo "== Step 3: SCCs + representative cycles + metrics → $SCC_REPORT_JSON =="
+if declare -F timing_mark >/dev/null 2>&1; then timing_mark "start_extractSCCs"; fi
+
+python3 "$EXTRACT_SCCS_PY" "$GRAPH_JSON" --out "$SCC_REPORT_JSON"
+
+if declare -F timing_mark >/dev/null 2>&1; then timing_mark "end_extractSCCs"; fi
+[[ -s "$SCC_REPORT_JSON" ]] || { echo "ERROR: SCC extractor did not produce $SCC_REPORT_JSON" >&2; exit 12; }
+
+echo
+echo "✅ Done. Outputs:"
+echo "  - $PYDEPS_JSON"
+echo "  - $GRAPH_JSON"
+echo "  - $SCC_REPORT_JSON"

@@ -1501,11 +1501,13 @@ dependencies = [
     { name = "pydeps" },
     { name = "pytest" },
     { name = "pytest-cov" },
+    { name = "pyyaml" },
     { name = "radon" },
     { name = "requests" },
     { name = "ruff" },
     { name = "scipy" },
     { name = "tox-uv" },
+    { name = "typer" },
     { name = "vulture" },
 ]
 
@@ -1520,11 +1522,13 @@ requires-dist = [
     { name = "pydeps", specifier = ">=3.0.1" },
     { name = "pytest", specifier = ">=8.4.2" },
     { name = "pytest-cov", specifier = ">=7.0.0" },
+    { name = "pyyaml", specifier = ">=6.0.3" },
     { name = "radon", specifier = ">=6.0.1" },
     { name = "requests", specifier = ">=2.32.5" },
     { name = "ruff", specifier = ">=0.14.0" },
     { name = "scipy", specifier = ">=1.16.2" },
     { name = "tox-uv", specifier = ">=1.29.0" },
+    { name = "typer", specifier = ">=0.19.2" },
     { name = "vulture", specifier = ">=2.14" },
 ]
 
