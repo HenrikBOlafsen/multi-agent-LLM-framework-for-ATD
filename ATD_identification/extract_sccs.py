@@ -170,11 +170,15 @@ def main() -> None:
     language = data.get("language", "")
     repo_root = data.get("repo_root", "")
     entry = data.get("entry", "")
-    relation = "import"
 
     # Build graph
     nodes = data.get("nodes") or []
     edges = data.get("edges") or []
+    
+    # Use the graph's relation if present; otherwise default to "import"
+    relation = "import"
+    if edges and isinstance(edges, list) and isinstance(edges[0], dict):
+        relation = edges[0].get("relation", relation) or relation
 
     abs_by_id: Dict[str, str] = {n["id"]: n.get("abs_path", "") for n in nodes if "id" in n}
 

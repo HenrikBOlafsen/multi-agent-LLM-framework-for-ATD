@@ -327,6 +327,7 @@ def run_metrics_phase(pipeline_config: PipelineConfig, experiment_units: list) -
             repo_spec.entry,
             str(unit_run.branch_results_dir),
             repo_spec.base_branch,
+            repo_spec.language,
         ]
 
     def validate_unit_outputs(unit_run):
@@ -376,6 +377,7 @@ def baseline(
             baseline_branch,
             repo_spec.entry,
             str(branch_results_dir),
+            repo_spec.language,
         ]
 
         meta_dir = branch_results_dir / "meta"
