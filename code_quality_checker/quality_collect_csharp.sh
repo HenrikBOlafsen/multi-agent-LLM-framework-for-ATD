@@ -1,6 +1,22 @@
 #!/usr/bin/env bash
+# quality_collect_csharp.sh
+#
+# Ultra-simple + "honest" runner (with optional per-repo overrides):
+# - Default: run `dotnet test` from repo root (no heuristics).
+# - Optional per-repo setup file can specify:
+#     - DOTNET_WORKDIR: directory (relative to repo root) to run from (e.g. "src")
+#     - DOTNET_TEST_TARGET: .sln/.csproj path (relative to DOTNET_WORKDIR if set,
+#                          else relative to repo root), passed to `dotnet test`.
+#
+# This keeps the default behavior strict, but lets you onboard repos where the
+# solution/project isn't in the repo root (e.g. src/MyRepo.sln).
+#
 # Usage:
 #   ./quality_collect_csharp.sh <REPO_PATH> [LABEL]
+#
+# Per-repo setup discovery (external folder, not inside repo):
+#   REPO_SETUP_DIR="${REPO_SETUP_DIR:-<script_dir>/repo-test-setups-dotnet}"
+#   Setup file name: <repo-name>-test-setup.sh
 #
 # Writes to: OUT_DIR if set, else .quality/<repo>/<label>
 set -euo pipefail
@@ -69,33 +85,31 @@ cd "$WT_ROOT"
 
 dotnet --info > "$OUT_ABS/dotnet_info.txt" 2>&1 || true
 
-pick_test_target() {
-  local root="$1"
+# -----------------------------------------------------------------------------
+# Per-repo setup discovery (external folder, not inside repo)
+# -----------------------------------------------------------------------------
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_SETUP_DIR="${REPO_SETUP_DIR:-$SCRIPT_DIR/repo-test-setups-dotnet}"
+REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
 
-  # 1) Prefer a solution (shortest path).
-  local sln
-  sln="$(find "$root" -name '*.sln' -not -path '*/.git/*' \
-    | awk '{ print length, $0 }' | sort -n | head -n1 | cut -d' ' -f2- || true)"
-  if [[ -n "${sln:-}" ]]; then
-    echo "$sln"
-    return 0
-  fi
+# Defaults (can be overridden by per-repo setup)
+DOTNET_WORKDIR="${DOTNET_WORKDIR:-}"         # e.g. "src"
+DOTNET_TEST_TARGET="${DOTNET_TEST_TARGET:-}" # e.g. "src/SharpYaml.sln" or "SharpYaml.sln" if WORKDIR=src
 
-  # 2) Otherwise, try a test project.
-  local csproj
-  csproj="$(find "$root" \( -name '*Tests*.csproj' -o -name '*.Tests.csproj' \) -not -path '*/.git/*' \
-    | awk '{ print length, $0 }' | sort -n | head -n1 | cut -d' ' -f2- || true)"
-  if [[ -n "${csproj:-}" ]]; then
-    echo "$csproj"
-    return 0
-  fi
+if [[ -f "$REPO_SETUP_FILE" ]]; then
+  echo "Using per-repo test setup: $REPO_SETUP_FILE"
+  # shellcheck disable=SC1090
+  source "$REPO_SETUP_FILE"
+else
+  echo "No per-repo setup found at: $REPO_SETUP_FILE (using defaults)"
+fi
 
-  echo ""
-  return 0
-}
-
-TARGET="$(pick_test_target "$WT_ROOT")"
-printf '%s\n' "$TARGET" > "$OUT_ABS/test_target.txt"
+# Record override info for debugging / reproducibility
+{
+  echo "DOTNET_WORKDIR=${DOTNET_WORKDIR:-}"
+  echo "DOTNET_TEST_TARGET=${DOTNET_TEST_TARGET:-}"
+  echo "REPO_SETUP_FILE=${REPO_SETUP_FILE:-}"
+} > "$OUT_ABS/dotnet_targeting.txt" || true
 
 LOG="$OUT_ABS/dotnet_test.log"
 RC_FILE="$OUT_ABS/dotnet_test_exit_code.txt"
@@ -104,33 +118,61 @@ mkdir -p "$TRX_DIR"
 
 : "${DOTNET_TEST_TIMEOUT:=20m}"
 
+# -----------------------------------------------------------------------------
+# Run dotnet test (strict default; optional explicit target/workdir override)
+# -----------------------------------------------------------------------------
+RUN_ROOT="$WT_ROOT"
+if [[ -n "${DOTNET_WORKDIR:-}" ]]; then
+  if [[ ! -d "$WT_ROOT/$DOTNET_WORKDIR" ]]; then
+    echo "DOTNET_WORKDIR '$DOTNET_WORKDIR' does not exist under repo root." | tee -a "$LOG" >&2
+    echo "dotnet test failed due to invalid DOTNET_WORKDIR" >&2
+    echo "2" > "$RC_FILE"
+    exit 2
+  fi
+  RUN_ROOT="$WT_ROOT/$DOTNET_WORKDIR"
+fi
+
+cd "$RUN_ROOT"
+
 set +e
-if [[ -n "${TARGET:-}" ]]; then
-  echo "Running: dotnet test $TARGET"
+if [[ -n "${DOTNET_TEST_TARGET:-}" ]]; then
+  echo "Running: dotnet test ${DOTNET_TEST_TARGET}  (workdir: $(pwd))" | tee "$LOG"
   timeout -k 30s "$DOTNET_TEST_TIMEOUT" \
-    dotnet test "$TARGET" \
+    dotnet test "${DOTNET_TEST_TARGET}" \
       --nologo \
       /p:CollectCoverage=false \
       --logger "trx" \
       --results-directory "$TRX_DIR" \
-      2>&1 | tee "$LOG"
+      2>&1 | tee -a "$LOG"
+  RC=${PIPESTATUS[0]}
+  echo "explicit_target" > "$OUT_ABS/test_strategy.txt"
+  echo "${DOTNET_TEST_TARGET}" > "$OUT_ABS/test_target.txt"
 else
-  echo "No .sln or test csproj found; trying dotnet test from repo root"
+  echo "Running: dotnet test  (workdir: $(pwd))" | tee "$LOG"
   timeout -k 30s "$DOTNET_TEST_TIMEOUT" \
     dotnet test \
       --nologo \
       /p:CollectCoverage=false \
       --logger "trx" \
       --results-directory "$TRX_DIR" \
-      2>&1 | tee "$LOG"
+      2>&1 | tee -a "$LOG"
+  RC=${PIPESTATUS[0]}
+  echo "workdir_only" > "$OUT_ABS/test_strategy.txt"
+  echo "" > "$OUT_ABS/test_target.txt"
 fi
-RC=${PIPESTATUS[0]}
 set -e
 
 echo "$RC" > "$RC_FILE"
+
+if [[ -n "${DOTNET_WORKDIR:-}" ]]; then
+  echo "${DOTNET_WORKDIR}" > "$OUT_ABS/test_workdir.txt" || true
+else
+  echo "" > "$OUT_ABS/test_workdir.txt" || true
+fi
+
 if [[ $RC -ne 0 ]]; then
   echo "dotnet test failed with exit code $RC" >&2
-  exit $RC
+  exit "$RC"
 fi
 
 echo "==> Collected test results in $OUT_ABS"

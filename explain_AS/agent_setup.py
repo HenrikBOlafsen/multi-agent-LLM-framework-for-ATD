@@ -1,7 +1,7 @@
 import os
 import requests
 from dataclasses import dataclass, field
-from typing import Dict, List
+from typing import Dict, List, Optional
 from agent_util import clip
 
 # When false, the system prompt is merged with the user prompt and just given to the LLM as a user prompt
@@ -49,10 +49,11 @@ def log_section(title: str, tone: str = "blue"):
         print(f"\n=== {title} ===")
 
 def log_line(text: str, code: str = Ansi.GRAY):
-    if PRINT_WITH_COLORS:
+    if PRINT_WITH_COLORS and code is not None:
         print(color(text, code))
     else:
         print(text)
+
 
 # ---------- LLM client ----------
 class LLMClient:
@@ -62,6 +63,24 @@ class LLMClient:
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
+
+        # accumulate token usage across calls
+        self._acc_prompt_tokens: int = 0
+        self._acc_completion_tokens: int = 0
+        self._acc_total_tokens: int = 0
+
+        # optional: remember last raw usage
+        self._last_usage: Optional[Dict[str, int]] = None
+
+    def get_accumulated_usage(self) -> Dict[str, int]:
+        return {
+            "prompt_tokens": int(self._acc_prompt_tokens),
+            "completion_tokens": int(self._acc_completion_tokens),
+            "total_tokens": int(self._acc_total_tokens),
+        }
+
+    def get_last_usage(self) -> Optional[Dict[str, int]]:
+        return self._last_usage
 
     def chat(self, messages: List[Dict[str, str]]) -> str:
         payload = {
@@ -73,9 +92,25 @@ class LLMClient:
         r = requests.post(self.url, headers=headers, json=payload, timeout=300)
         r.raise_for_status()
         data = r.json()
+
+        # capture usage if present (OpenAI-compatible servers provide this)
+        usage = data.get("usage") if isinstance(data, dict) else None
+        if isinstance(usage, dict):
+            p = usage.get("prompt_tokens")
+            c = usage.get("completion_tokens")
+            t = usage.get("total_tokens")
+            # tolerate servers that omit total_tokens
+            if isinstance(p, int) and isinstance(c, int):
+                if not isinstance(t, int):
+                    t = p + c
+                self._acc_prompt_tokens += p
+                self._acc_completion_tokens += c
+                self._acc_total_tokens += t
+                self._last_usage = {"prompt_tokens": p, "completion_tokens": c, "total_tokens": t}
+
         content = data["choices"][0]["message"]["content"]
         return content
-    
+
 
 # -------------------------
 # Agent base
@@ -98,6 +133,7 @@ class AgentBase:
         if not USE_SYSTEM_PROMPT and self.system_prompt:
             # Emulate a system prompt by inlining it at the top of the user message
             user_text = f"{self.system_prompt}\n\n---------\n\n{user_text}"
+
         # Avoid dumping file contents: only show a tiny preview.
         if SHOW_USER_PREVIEW:
             preview = truncate_for_console(user_text.strip(), USER_PREVIEW_MAX_CHARS)

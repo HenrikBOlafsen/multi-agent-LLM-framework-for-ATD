@@ -25,6 +25,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 ENV NUGET_PACKAGES=/opt/nuget/packages
 RUN mkdir -p /opt/nuget/packages && chmod -R 0777 /opt/nuget
 
+# Mono (needed for running .NET Framework tests like net48 via dotnet test)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    mono-runtime \
+    ca-certificates-mono \
+ && rm -rf /var/lib/apt/lists/*
+ 
 
 # ----- your existing Python deps via uv (OpenHands must be in uv.lock) -----
 WORKDIR /opt/app

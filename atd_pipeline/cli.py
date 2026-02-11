@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Set, Tuple, Any
 
 import typer
 
@@ -47,6 +47,15 @@ def baseline_scc_report_path_for_repo(
     return baseline_results_dir / "ATD_identification" / "scc_report.json"
 
 
+def baseline_cycle_catalog_path_for_repo(
+    pipeline_config: PipelineConfig,
+    repo_name: str,
+    baseline_branch: str,
+) -> Path:
+    baseline_results_dir = results_dir_for_branch(pipeline_config.results_root, repo_name, baseline_branch)
+    return baseline_results_dir / "ATD_identification" / "cycle_catalog.json"
+
+
 def assert_baseline_exists_for_experiment_units(
     pipeline_config: PipelineConfig,
     experiment_units,
@@ -70,17 +79,44 @@ def assert_baseline_exists_for_experiment_units(
         )
 
 
+def assert_cycle_catalogs_exist_for_experiment_units(
+    pipeline_config: PipelineConfig,
+    experiment_units,
+) -> None:
+    required_pairs: Set[Tuple[str, str]] = {
+        (repo_spec.repo, repo_spec.base_branch) for (repo_spec, _cycle_spec, _mode_spec) in experiment_units
+    }
+
+    missing_lines: List[str] = []
+    for repo_name, baseline_branch in sorted(required_pairs):
+        cat_path = baseline_cycle_catalog_path_for_repo(pipeline_config, repo_name, baseline_branch)
+        if not cat_path.exists():
+            missing_lines.append(f"- {repo_name}@{baseline_branch}: missing {cat_path}")
+
+    if missing_lines:
+        raise typer.BadParameter(
+            "Cycle catalogs are missing for one or more repos.\n\n"
+            "Generate them (and cycles_to_analyze.txt) using:\n"
+            "  scripts/build_cycles_to_analyze.sh -c <your_config.yaml> --max-per-size <N> --out cycles_to_analyze.txt\n\n"
+            "Missing:\n" + "\n".join(missing_lines)
+        )
+
+
 def _load_config_and_tasks(
     config: Path,
     modes: Optional[List[str]],
     *,
     require_baseline: bool,
+    require_cycle_catalogs: bool,
 ) -> tuple[PipelineConfig, list]:
     pipeline_config = load_pipeline_config(config)
     experiment_units = build_tasks(pipeline_config, modes)
 
     if require_baseline:
         assert_baseline_exists_for_experiment_units(pipeline_config, experiment_units)
+
+    if require_cycle_catalogs:
+        assert_cycle_catalogs_exist_for_experiment_units(pipeline_config, experiment_units)
 
     return pipeline_config, experiment_units
 
@@ -111,15 +147,100 @@ def scc_report_path_for_unit_run(pipeline_config: PipelineConfig, unit_run) -> P
     )
 
 
+def cycle_catalog_path_for_unit_run(pipeline_config: PipelineConfig, unit_run) -> Path:
+    return baseline_cycle_catalog_path_for_repo(
+        pipeline_config,
+        unit_run.repo_spec.repo,
+        unit_run.repo_spec.base_branch,
+    )
+
+
 def _write_phase_meta_json(meta_dir: Path, phase: str, payload: dict) -> None:
     meta_dir.mkdir(parents=True, exist_ok=True)
     write_json(meta_dir / f"{phase}.json", payload)
 
 
+# ---------------- OpenHands trajectory helpers ----------------
+
+def _read_event_count(trajectory_path: Path) -> Optional[int]:
+    """
+    Simple proxy: number of trajectory events (list length).
+    This counts condense events too, but that's OK as a consistent effort proxy.
+    """
+    try:
+        if not trajectory_path.exists():
+            return None
+        data = read_json(trajectory_path)
+        if not isinstance(data, list):
+            return None
+        return int(len(data))
+    except Exception:
+        return None
+
+
+def _read_accumulated_token_usage(trajectory_path: Path) -> Dict[str, Optional[int]]:
+    """
+    Extract accumulated token usage from last event that has llm_metrics.accumulated_token_usage.
+    Returns dict with prompt/completion/total or None values.
+    """
+    result: Dict[str, Optional[int]] = {
+        "acc_prompt_tokens": None,
+        "acc_completion_tokens": None,
+        "acc_total_tokens": None,
+    }
+
+    try:
+        if not trajectory_path.exists():
+            return result
+
+        data = read_json(trajectory_path)
+        if not isinstance(data, list):
+            return result
+
+        for ev in reversed(data):
+            if not isinstance(ev, dict):
+                continue
+            lm = ev.get("llm_metrics")
+            if not isinstance(lm, dict):
+                continue
+            acc = lm.get("accumulated_token_usage")
+            if not isinstance(acc, dict):
+                continue
+
+            p = acc.get("prompt_tokens")
+            c = acc.get("completion_tokens")
+            if p is None or c is None:
+                continue
+
+            result["acc_prompt_tokens"] = int(p)
+            result["acc_completion_tokens"] = int(c)
+            result["acc_total_tokens"] = int(p) + int(c)
+            return result
+
+        return result
+    except Exception:
+        return result
+
+
 # ---------------- Core phase runners ----------------
 
 def run_explain_phase(pipeline_config: PipelineConfig, experiment_units: list) -> None:
-    def validate_unit_inputs(_unit_run):
+    def validate_unit_inputs(unit_run):
+        scc_report_path = scc_report_path_for_unit_run(pipeline_config, unit_run)
+        catalog_path = cycle_catalog_path_for_unit_run(pipeline_config, unit_run)
+
+        missing: List[str] = []
+        if not scc_report_path.exists():
+            missing.append(str(scc_report_path))
+        if not catalog_path.exists():
+            missing.append(str(catalog_path))
+
+        if missing:
+            return (
+                "failed",
+                "missing baseline artifacts (run baseline + build_cycles_to_analyze): " + ", ".join(missing),
+                {"missing": ", ".join(missing)},
+            )
         return ("ok", "", {})
 
     def build_unit_command(unit_run) -> List[str]:
@@ -128,6 +249,7 @@ def run_explain_phase(pipeline_config: PipelineConfig, experiment_units: list) -
         mode_spec = unit_run.mode_spec
 
         scc_report_path = scc_report_path_for_unit_run(pipeline_config, unit_run)
+        cycle_catalog_path = cycle_catalog_path_for_unit_run(pipeline_config, unit_run)
 
         explain_output_dir = explain_output_dir_for_unit_run(unit_run)
         meta_output_dir = meta_output_dir_for_unit_run(unit_run)
@@ -154,6 +276,7 @@ def run_explain_phase(pipeline_config: PipelineConfig, experiment_units: list) -
                 "mode_params": mode_spec.params,
                 "inputs": {
                     "scc_report": str(scc_report_path),
+                    "cycle_catalog": str(cycle_catalog_path),
                 },
                 "outputs": {
                     "prompt_txt": str(prompt_output_path),
@@ -170,6 +293,8 @@ def run_explain_phase(pipeline_config: PipelineConfig, experiment_units: list) -
             str(repo_spec.entry),
             "--scc-report",
             str(scc_report_path),
+            "--cycle-catalog",
+            str(cycle_catalog_path),
             "--cycle-id",
             cycle_spec.cycle_id,
             "--out-prompt",
@@ -255,9 +380,12 @@ def run_openhands_phase(pipeline_config: PipelineConfig, experiment_units: list)
     def validate_unit_outputs(unit_run):
         out_dir = openhands_output_dir_for_unit_run(unit_run)
         status_latest = out_dir / "status_latest.json"
-        artifacts = {
+        traj_latest = out_dir / "trajectory_latest.json"
+
+        artifacts: Dict[str, Any] = {
             "openhands_dir": str(out_dir),
             "openhands_status": str(status_latest),
+            "trajectory": str(traj_latest),
         }
 
         if not status_latest.exists():
@@ -266,6 +394,10 @@ def run_openhands_phase(pipeline_config: PipelineConfig, experiment_units: list)
         status = read_json(status_latest)
         oh_outcome = str(status.get("outcome", "")).strip()
         artifacts["openhands_outcome"] = oh_outcome
+
+        # proxies & costs (best-effort)
+        artifacts["event_count"] = _read_event_count(traj_latest)
+        artifacts.update(_read_accumulated_token_usage(traj_latest))
 
         if oh_outcome in {"committed", "no_changes"}:
             return ("ok", f"openhands_{oh_outcome}", artifacts)
@@ -404,8 +536,8 @@ def baseline(
             cmd=command,
         )
 
-        return_code = run_subprocess_command(command, cwd=REPO_ROOT_DIR)
-        if return_code != 0:
+        rc = run_subprocess_command(command, cwd=REPO_ROOT_DIR)
+        if rc != 0:
             write_phase_status_json(
                 out_dir=branch_results_dir,
                 phase="baseline",
@@ -413,7 +545,7 @@ def baseline(
                 unit=experiment_unit,
                 outcome="failed",
                 reason="baseline exited nonzero",
-                returncode=return_code,
+                returncode=rc,
                 cmd=command,
             )
             continue
@@ -434,7 +566,12 @@ def explain(
     config: Path = typer.Option(..., "-c", "--config", exists=True, dir_okay=False),
     modes: Optional[List[str]] = typer.Option(None, "--modes"),
 ):
-    pipeline_config, experiment_units = _load_config_and_tasks(config, modes, require_baseline=True)
+    pipeline_config, experiment_units = _load_config_and_tasks(
+        config,
+        modes,
+        require_baseline=True,
+        require_cycle_catalogs=True,
+    )
     run_explain_phase(pipeline_config, experiment_units)
 
 
@@ -443,7 +580,12 @@ def openhands(
     config: Path = typer.Option(..., "-c", "--config", exists=True, dir_okay=False),
     modes: Optional[List[str]] = typer.Option(None, "--modes"),
 ):
-    pipeline_config, experiment_units = _load_config_and_tasks(config, modes, require_baseline=True)
+    pipeline_config, experiment_units = _load_config_and_tasks(
+        config,
+        modes,
+        require_baseline=True,
+        require_cycle_catalogs=True,
+    )
     run_openhands_phase(pipeline_config, experiment_units)
 
 
@@ -452,7 +594,12 @@ def metrics(
     config: Path = typer.Option(..., "-c", "--config", exists=True, dir_okay=False),
     modes: Optional[List[str]] = typer.Option(None, "--modes"),
 ):
-    pipeline_config, experiment_units = _load_config_and_tasks(config, modes, require_baseline=False)
+    pipeline_config, experiment_units = _load_config_and_tasks(
+        config,
+        modes,
+        require_baseline=False,
+        require_cycle_catalogs=False,
+    )
     run_metrics_phase(pipeline_config, experiment_units)
 
 
@@ -461,7 +608,12 @@ def llm(
     config: Path = typer.Option(..., "-c", "--config", exists=True, dir_okay=False),
     modes: Optional[List[str]] = typer.Option(None, "--modes"),
 ):
-    pipeline_config, experiment_units = _load_config_and_tasks(config, modes, require_baseline=True)
+    pipeline_config, experiment_units = _load_config_and_tasks(
+        config,
+        modes,
+        require_baseline=True,
+        require_cycle_catalogs=True,
+    )
     run_explain_phase(pipeline_config, experiment_units)
     run_openhands_phase(pipeline_config, experiment_units)
 

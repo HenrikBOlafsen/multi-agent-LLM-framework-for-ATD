@@ -17,12 +17,11 @@ def _load_json(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def _find_cycle(report: dict, cycle_id: str) -> dict:
-    for scc in (report.get("sccs") or []):
-        for cyc in (scc.get("representative_cycles") or []):
-            if str(cyc.get("id")) == str(cycle_id):
-                return cyc
-    raise KeyError(f"cycle_id '{cycle_id}' not found in scc_report.json")
+def _find_cycle_in_catalog(catalog: dict, cycle_id: str) -> dict:
+    for cyc in (catalog.get("cycles") or []):
+        if str(cyc.get("id")) == str(cycle_id):
+            return cyc
+    raise KeyError(f"cycle_id '{cycle_id}' not found in cycle_catalog.json")
 
 
 def _mode_params(params_json: Optional[str]) -> Dict[str, Any]:
@@ -46,12 +45,18 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo-root", required=True)
     ap.add_argument("--src-root", required=True)
+
+    # kept for interface compatibility + meta logging, but no longer used for cycle lookup
     ap.add_argument("--scc-report", required=True)
+
     ap.add_argument("--cycle-id", required=True)
     ap.add_argument("--out-prompt", required=True)
     ap.add_argument("--params-json", default=None)
-    args = ap.parse_args()
 
+    # REQUIRED now (or inferred next to scc_report)
+    ap.add_argument("--cycle-catalog", default=None, help="Path to cycle_catalog.json (required; preferred source)")
+
+    args = ap.parse_args()
     params = _mode_params(args.params_json)
 
     orch_id = str(params.get("orchestrator", "v1_four_agents"))
@@ -72,10 +77,25 @@ def main() -> None:
     report_path = Path(args.scc_report).resolve()
     out_prompt = Path(args.out_prompt).resolve()
 
-    report = _load_json(report_path)
-    cycle = _find_cycle(report, args.cycle_id)
+    # Require cycle_catalog.json (explicit or inferred next to scc_report)
+    catalog_path = Path(args.cycle_catalog).resolve() if args.cycle_catalog else None
+    if catalog_path is None:
+        inferred = report_path.parent / "cycle_catalog.json"
+        catalog_path = inferred.resolve()
+
+    if not catalog_path.exists():
+        raise SystemExit(
+            f"Missing cycle_catalog.json at: {catalog_path}\n"
+            "Provide it via --cycle-catalog or generate it in baseline results."
+        )
+
+    catalog = _load_json(catalog_path)
+    cycle = _find_cycle_in_catalog(catalog, args.cycle_id)
 
     nodes = [str(n) for n in (cycle.get("nodes") or [])]
+    if not nodes:
+        raise SystemExit(f"Cycle '{args.cycle_id}' has no nodes in cycle_catalog.json")
+
     size = int(cycle.get("length") or len(nodes))
     chain = cycle_chain_str(nodes)
     base = BASE_TEMPLATE.format(size=size, chain=chain)
@@ -83,9 +103,14 @@ def main() -> None:
     log_section("Explain entry", "cyan")
     log_line(f"orchestrator           : {orch_id}", Ansi.DIM)
     log_line(f"refactor_prompt_variant: {prompt_variant}", Ansi.DIM)
+    log_line(f"cycle_catalog          : {str(catalog_path)}", Ansi.DIM)
+
+    explain_dir = out_prompt.parent
+    usage_path = explain_dir / "llm_usage.json"
 
     if orch_cls is None:
         final = build_minimal_prompt(cycle).rstrip() + "\n"
+        # minimal => no LLM calls => no usage json
     else:
         llm_url = _need_env("LLM_URL")
         api_key = _need_env("LLM_API_KEY")
@@ -96,6 +121,13 @@ def main() -> None:
         ctx = CycleContext(repo_root=str(repo_root), src_root=str(args.src_root), cycle=cycle)
         refactor_part = orch.run(ctx, refactor_prompt_variant=prompt_variant)
         final = (f"{base}\n\n{refactor_part}".strip() + "\n")
+
+        payload = {
+            "model": model,
+            "accumulated_usage": client.get_accumulated_usage(),
+            "last_call_usage": client.get_last_usage(),
+        }
+        usage_path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
 
     out_prompt.parent.mkdir(parents=True, exist_ok=True)
     out_prompt.write_text(final, encoding="utf-8")

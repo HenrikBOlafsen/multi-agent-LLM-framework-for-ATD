@@ -4,6 +4,7 @@ import json
 import os
 import re
 import subprocess
+import time
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -104,6 +105,7 @@ def write_phase_status_json(
     returncode: Optional[int] = None,
     cmd: Optional[List[str]] = None,
     artifacts: Optional[Dict[str, str]] = None,
+    duration_sec: Optional[float] = None,
 ) -> None:
     payload: Dict[str, Any] = {
         "ts_utc": utc_timestamp_now(),
@@ -112,6 +114,7 @@ def write_phase_status_json(
         "outcome": outcome,
         "reason": reason,
         "returncode": returncode,
+        "duration_sec": duration_sec,
         "unit": {
             "repo": unit.repo,
             "base_branch": unit.base_branch,
@@ -209,6 +212,7 @@ def execute_phase_for_all_experiment_units(
                 reason=reason,
                 returncode=0 if outcome == "skipped" else 2,
                 artifacts=artifacts,
+                duration_sec=None,
             )
             continue
 
@@ -225,6 +229,7 @@ def execute_phase_for_all_experiment_units(
                 outcome="failed",
                 reason=f"build error: {exc}",
                 returncode=2,
+                duration_sec=None,
             )
             continue
 
@@ -236,10 +241,14 @@ def execute_phase_for_all_experiment_units(
             unit=unit_info,
             outcome="started",
             cmd=cmd,
+            duration_sec=None,
         )
 
         # 4) run
+        t0 = time.time()
         rc = run_subprocess_command(cmd, cwd=cwd, env=env)
+        duration = float(time.time() - t0)
+
         if rc != 0:
             write_phase_status_json(
                 out_dir=branch_results_dir,
@@ -250,6 +259,7 @@ def execute_phase_for_all_experiment_units(
                 reason=f"{phase} exited nonzero",
                 returncode=rc,
                 cmd=cmd,
+                duration_sec=duration,
             )
             continue
 
@@ -265,4 +275,5 @@ def execute_phase_for_all_experiment_units(
             returncode=0 if outcome != "failed" else 3,
             cmd=cmd,
             artifacts=artifacts,
+            duration_sec=duration,
         )

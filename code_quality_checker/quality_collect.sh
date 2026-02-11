@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
+# quality_collect.sh
+#
+# Simplified Python collector (keeps PyExamine + radon/vulture/bandit).
+# Main simplifications vs your previous version:
+# - Much simpler default_install(): try a small set of common install patterns only
+#   (still allows per-repo QUALITY_INSTALL overrides).
+# - Remove pytest-benchmark auto-detection and xdist support (keep plain pytest).
+# - Keep venv isolation, source detection, PYTHONPATH setup, coverage+junit outputs.
+#
 # Usage:
 #   ./quality_collect.sh <REPO_PATH> [LABEL] [SRC_HINT]
-# Example:
-#   ./quality_collect.sh projects/pydantic main pydantic
 #
 # Writes to: OUT_DIR if set, else .quality/<repo>/<label>
 set -euo pipefail
@@ -45,11 +52,13 @@ if [[ $IS_GIT -eq 1 ]]; then
     echo "Ref '$LABEL' not found in $REPO_PATH" >&2
     exit 1
   fi
+
   shortsha="$(git -C "$REPO_PATH" rev-parse --short "${LABEL}^{commit}" 2>/dev/null || echo ???)"
   echo "Preparing worktree (detached HEAD $shortsha)"
   WT_DIR="$(mktemp -d -t qcwt.XXXXXX)"
   git -C "$REPO_PATH" worktree add --detach "$WT_DIR" "$LABEL" >/dev/null
   WT_ROOT="$WT_DIR"
+
   cleanup() {
     git -C "$REPO_PATH" worktree remove --force "$WT_DIR" 2>/dev/null || true
     rm -rf "$WT_DIR" 2>/dev/null || true
@@ -131,72 +140,31 @@ export TIMING_BRANCH="$LABEL"
     echo "No per-repo setup found at: $REPO_SETUP_FILE (using defaults)"
   fi
 
-  # --- Default install: intentionally minimal & predictable -------------------
+  # --- Default install: simplified -------------------------------------------
   default_install() {
-    python -m pip install -e . || true
+    echo "Default install (simplified): trying common patterns"
 
-    # install all optional extras if listed (helps many repos)
-    EXTRAS="$(
-      python - <<'PY' || true
-import tomllib
-try:
-    with open("pyproject.toml","rb") as f:
-        data = tomllib.load(f)
-    opt = (data.get("project") or {}).get("optional-dependencies") or {}
-    keys = sorted(opt.keys())
-    if keys:
-        print(",".join(keys))
-except Exception:
-    pass
-PY
-    )"
-    if [[ -n "${EXTRAS:-}" ]]; then
-      echo "Installing extras from pyproject.toml: [${EXTRAS}]"
-      python -m pip install -e ".[${EXTRAS}]" || true
-    fi
-
-    # PEP 735 dependency-groups: install tests/test groups if present
-    GROUP_REQS="$(
-      python - <<'PY' || true
-import json, tomllib
-try:
-    with open("pyproject.toml","rb") as f:
-        data = tomllib.load(f)
-    groups = data.get("dependency-groups") or {}
-    wanted = []
-    for key in ("tests","test"):
-        v = groups.get(key)
-        if isinstance(v, list):
-            wanted.extend(v)
-    if wanted:
-        print(json.dumps(wanted))
-except Exception:
-    pass
-PY
-    )"
-    if [[ -n "${GROUP_REQS:-}" ]]; then
-      echo "Installing dependency-groups: tests/test"
-      python - <<'PY' "$GROUP_REQS" || true
-import sys, json, subprocess
-reqs = json.loads(sys.argv[1])
-if reqs:
-    cmd = [sys.executable, "-m", "pip", "install", *reqs]
-    print(">>", " ".join(cmd))
-    raise SystemExit(subprocess.call(cmd))
-PY
-    fi
-
-    # legacy extras (best-effort)
+    # 1) Prefer common test extras if present
     for extra in test tests dev ci; do
-      python -m pip install -e ".[${extra}]" >/dev/null 2>&1 || true
+      echo ">> pip install -e .[${extra}] (best-effort)"
+      python -m pip install -e ".[${extra}]" >/dev/null 2>&1 && {
+        echo "Installed editable with extras: [${extra}]"
+        break
+      } || true
     done
 
-    # requirements-dev.txt (best-effort)
+    # 2) If editable install didn't happen above, at least install base package
+    echo ">> pip install -e . (best-effort)"
+    python -m pip install -e . >/dev/null 2>&1 || true
+
+    # 3) requirements-dev.txt is a common convention
     if [[ -f "requirements-dev.txt" ]]; then
+      echo ">> pip install -r requirements-dev.txt (best-effort)"
       python -m pip install -r requirements-dev.txt || true
     fi
 
-    # baseline pytest tooling that is broadly useful
+    # 4) Ensure pytest tooling exists
+    echo ">> pip install pytest pytest-cov pytest-timeout"
     python -m pip install pytest pytest-cov pytest-timeout || true
   }
 
@@ -209,31 +177,11 @@ PY
 
   timing_mark "end_qualityCollectVenvSetup"
 
-  # ---- Helper: detect repo pytest addopts & needed plugins -------------------
-  detect_pytest_needs() {
-    python - <<'PY' 2>/dev/null || true
-from pathlib import Path
-import tomllib
-
-needs = {"benchmark": False}
-
-p = Path("pyproject.toml")
-if p.exists():
-    data = tomllib.loads(p.read_bytes())
-    ini = (((data.get("tool") or {}).get("pytest") or {}).get("ini_options") or {})
-    addopts = ini.get("addopts") or ""
-    if isinstance(addopts, str) and "--benchmark" in addopts:
-        needs["benchmark"] = True
-
-print("BENCH=1" if needs["benchmark"] else "BENCH=0")
-PY
-  }
-
-  # --- Pytest runner (new approach: conditional plugins) ----------------------
+  # --- Pytest runner (simplified: no benchmark/xdist auto-magic) --------------
   default_pytest_run() {
     export WATCHDOG_FORCE_POLLING=1
 
-    # Ensure in-tree import wins
+    # Ensure in-tree import wins (kept, because many repos assume this)
     _pp="${PYTHONPATH:-}"
     export PYTHONPATH=".:${PYTHONPATH:-}"
     [[ -d "src" ]] && export PYTHONPATH="src:${PYTHONPATH:-}"
@@ -244,35 +192,14 @@ PY
     : "${PYTEST_TIMEOUT:=180}"
     : "${COV_FAIL_UNDER:=0}"
     : "${PYTEST_WALLTIME:=}"          # optional: e.g. 15m
-    : "${USE_PYTEST_XDIST:=0}"        # default OFF; enable per-repo if desired
 
     TEST_LOG="$OUT_ABS/pytest_full.log"
 
-    # coverage targets from detected sources
     cov_args=()
     for p in "${SRC_PATHS[@]}"; do
       cov_args+=( "--cov=$p" )
     done
 
-    # Determine if repo needs pytest-benchmark
-    bench_args=()
-    needs="$(detect_pytest_needs || true)"
-    if echo "$needs" | grep -q "BENCH=1"; then
-      python -c "import pytest_benchmark" >/dev/null 2>&1 || {
-        echo "Repo addopts use --benchmark*; installing pytest-benchmark..."
-        python -m pip install pytest-benchmark || true
-      }
-      python -c "import pytest_benchmark" >/dev/null 2>&1 && bench_args=(-p pytest_benchmark)
-    fi
-
-    # xdist optional
-    xdist_args=()
-    if [[ "${USE_PYTEST_XDIST}" != "0" ]] && python -c "import xdist" >/dev/null 2>&1; then
-      : "${PYTEST_NWORKERS:=auto}"
-      xdist_args=(-p xdist.plugin -n "$PYTEST_NWORKERS" --dist=worksteal)
-    fi
-
-    # Optional walltime wrapper
     wrap_pytest() {
       if [[ -n "${PYTEST_WALLTIME}" ]]; then
         timeout -k 30s "$PYTEST_WALLTIME" "$@"
@@ -285,16 +212,14 @@ PY
     set -o pipefail
 
     wrap_pytest pytest -q \
-    "${bench_args[@]}" \
-    "${xdist_args[@]}" \
-    --disable-warnings \
-    --timeout="$PYTEST_TIMEOUT" --timeout-method=thread \
-    --durations=25 \
-    --junitxml "$OUT_ABS/pytest.xml" \
-    "${cov_args[@]}" --cov-fail-under="$COV_FAIL_UNDER" \
-    --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
-    ${PYTEST_ADDOPTS:+$PYTEST_ADDOPTS} \
-    2>&1 | tee "$TEST_LOG" || true
+      --disable-warnings \
+      --timeout="$PYTEST_TIMEOUT" --timeout-method=thread \
+      --durations=25 \
+      --junitxml "$OUT_ABS/pytest.xml" \
+      "${cov_args[@]}" --cov-fail-under="$COV_FAIL_UNDER" \
+      --cov-report=xml:"$OUT_ABS/coverage.xml" --cov-report=term \
+      ${PYTEST_ADDOPTS:+$PYTEST_ADDOPTS} \
+      2>&1 | tee "$TEST_LOG" || true
 
     PYTEST_RC=${PIPESTATUS[0]}
     export PYTHONPATH="$_pp"
@@ -314,7 +239,7 @@ PY
   timing_mark "end_pytest"
 
   # --- Install analysis tooling best-effort (don’t break the run) -------------
-  # These are intentionally after tests so test failures stay “pure”.
+  # Intentionally after tests so test failures stay “pure”.
   python -m pip install ruff radon vulture bandit pip-audit requests pyyaml mando >/dev/null 2>&1 || true
   python -m pip install mypy >/dev/null 2>&1 || true
 

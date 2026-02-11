@@ -1,0 +1,27 @@
+kombu main kombu python
+click main src/click python
+werkzeug main src/werkzeug python
+rich master rich python
+jinja main src/jinja2 python
+lark master lark python
+rope master rope python
+pydantic main pydantic python
+alembic main alembic python
+omegaconf master omegaconf python
+FluentValidation main src/FluentValidation csharp
+Polly main src/Polly csharp
+MediatR main src/MediatR csharp
+LiteDB master LiteDB csharp
+FakeItEasy master src/FakeItEasy csharp
+MemoryPack main src/MemoryPack.Core csharp
+SharpYaml master src/SharpYaml csharp
+Bogus master Source/Bogus csharp
+AngleSharp devel src/AngleSharp csharp
+markdig master src/Markdig csharp
+refit main Refit csharp                             (Bare 4354 LOC)
+superpower dev src/Superpower csharp                  (Bare 2676 LOC)
+ncalc master src/NCalc.Core csharp                  (Bare 2144 LOC)
+CliWrap master CliWrap csharp                   (Bare 2067 LOC)
+
+NOT WORKING ANYMORE:
+BenchmarkDotNet master src/BenchmarkDotNet csharp

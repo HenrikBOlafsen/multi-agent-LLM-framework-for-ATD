@@ -45,6 +45,25 @@ def exists_with_exact_case(p: str) -> bool:
     except Exception:
         return False
 
+def is_in_vendor_dir(path: str, repo_root: str) -> bool:
+    """
+    Return True if path is inside any directory named 'vendor' or 'vendors'
+    (case-insensitive), relative to repo_root.
+    """
+    try:
+        rel = os.path.relpath(os.path.realpath(path), os.path.realpath(repo_root))
+    except Exception:
+        return False
+
+    parts = rel.replace("\\", "/").split("/")
+
+    for p in parts:
+        if p.lower() in ("vendor", "vendors"):
+            return True
+
+    return False
+
+
 
 # ---------- TYPE_CHECKING-aware import filter ----------
 
@@ -131,15 +150,27 @@ def main() -> None:
     for mod, obj in raw.items():
         if not isinstance(obj, dict):
             continue
+
         p = obj.get("path")
         if not p or not isinstance(p, str):
             continue
+
         rp = os.path.realpath(p)
+
+        # Must be inside repo
         if not rp.startswith(repo_root):
             continue
+
+        # Skip vendor / vendors directories
+        if is_in_vendor_dir(rp, repo_root):
+            continue
+
+        # Case-sensitive existence check
         if not exists_with_exact_case(rp):
             continue
+
         mod_abs[mod] = rp
+
 
     # module -> repo-rel node id (file path)
     mod_id: Dict[str, str] = {m: repo_rel(p, repo_root) for m, p in mod_abs.items()}
