@@ -1,2 +1,0 @@
-ToyPythonRepo main src python
-ToyDotnetRepo main src csharp

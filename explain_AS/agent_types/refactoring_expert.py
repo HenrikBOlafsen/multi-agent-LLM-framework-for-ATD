@@ -5,7 +5,7 @@ from typing import Dict, Tuple, Optional
 from agent_setup import AgentBase
 
 
-REFACTORING_EXPERT_PROMPT = """Your job: Give useful context about a dependency cycle.
+DEFAULT_REFACTORING_EXPERT_PROMPT = """Your job: Give useful context about a dependency cycle.
 
 ATD rules:
 - ANY reference counts (dynamic/lazy).

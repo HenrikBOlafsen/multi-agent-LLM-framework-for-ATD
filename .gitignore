@@ -15,6 +15,8 @@ output_ATD_identification/*
 .quality/*
 reports/*
 results/*
+results_all_backup/*
+test_runs/cases/ok_smoke_realish/results/*
 openhands_logs/*
 results_clean_baseline/*
 all_experiment_results/*

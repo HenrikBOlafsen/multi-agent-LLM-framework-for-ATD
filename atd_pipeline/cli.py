@@ -221,6 +221,23 @@ def _read_accumulated_token_usage(trajectory_path: Path) -> Dict[str, Optional[i
     except Exception:
         return result
 
+# ---------------- helper for the test-runs ----------------
+def apply_test_llm_overrides(env: Dict[str, str]) -> Dict[str, str]:
+    """
+    Optional smoke-test overrides (do nothing unless env vars are set).
+    - ATD_LLM_URL: full chat-completions endpoint used by explain_AS (e.g. http://127.0.0.1:8012/v1/chat/completions)
+    - ATD_LLM_BASE_URL: base /v1 URL used by OpenHands wrapper (e.g. http://172.17.0.1:8012/v1)
+    """
+    llm_url = (env.get("ATD_LLM_URL") or "").strip()
+    if llm_url:
+        env["LLM_URL"] = llm_url
+
+    llm_base = (env.get("ATD_LLM_BASE_URL") or "").strip()
+    if llm_base:
+        env["LLM_BASE_URL"] = llm_base
+
+    return env
+
 
 # ---------------- Core phase runners ----------------
 
@@ -304,7 +321,7 @@ def run_explain_phase(pipeline_config: PipelineConfig, experiment_units: list) -
     def build_unit_environment(unit_run) -> Dict[str, str]:
         environment = dict(make_llm_environment(pipeline_config))
         environment["ATD_MODE_PARAMS_JSON"] = json.dumps(unit_run.mode_spec.params)
-        return environment
+        return apply_test_llm_overrides(environment)
 
     def validate_unit_outputs(unit_run):
         prompt_output_path = prompt_text_path_for_unit_run(unit_run)
@@ -375,7 +392,8 @@ def run_openhands_phase(pipeline_config: PipelineConfig, experiment_units: list)
         ]
 
     def build_unit_environment(unit_run):
-        return dict(make_llm_environment(pipeline_config))
+        environment = dict(make_llm_environment(pipeline_config))
+        return apply_test_llm_overrides(environment)
 
     def validate_unit_outputs(unit_run):
         out_dir = openhands_output_dir_for_unit_run(unit_run)

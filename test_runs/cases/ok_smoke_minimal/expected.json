@@ -1,5 +1,0 @@
-{
-  "expect_repos": ["mock_py", "mock_cs"],
-  "expect_modes": ["no_explain"],
-  "expect_explain_prompt_nonempty": true
-}

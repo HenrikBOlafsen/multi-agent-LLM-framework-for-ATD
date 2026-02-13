@@ -18,9 +18,11 @@ def _load_json(path: Path) -> dict:
 
 
 def _find_cycle_in_catalog(catalog: dict, cycle_id: str) -> dict:
-    for cyc in (catalog.get("cycles") or []):
-        if str(cyc.get("id")) == str(cycle_id):
-            return cyc
+    # Format: {"sccs": [{"cycles": [{"id": ...}, ...]}, ...]}
+    for scc in (catalog.get("sccs") or []):
+        for cyc in (scc.get("cycles") or []):
+            if str(cyc.get("id")) == str(cycle_id):
+                return cyc
     raise KeyError(f"cycle_id '{cycle_id}' not found in cycle_catalog.json")
 
 

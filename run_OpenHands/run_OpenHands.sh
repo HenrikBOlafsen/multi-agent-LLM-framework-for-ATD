@@ -150,9 +150,15 @@ fi
 
 _EXTRA_JSON="\"status\":\"started\"" write_status_json "started" ""
 
+NETWORK_FLAGS=()
+if [ -n "${ATD_OPENHANDS_NETWORK_CONTAINER:-}" ]; then
+  NETWORK_FLAGS+=( "--network" "container:${ATD_OPENHANDS_NETWORK_CONTAINER}" )
+fi
+
 set -o pipefail
 docker run --rm $TTY_FLAGS \
   "${GROUP_FLAGS[@]}" \
+  "${NETWORK_FLAGS[@]}" \
   -v /var/run/docker.sock:/var/run/docker.sock \
   -v "$WT_HOST:/workspace:rw" \
   -v "$OUT_DIR_HOST:/logs:rw" \
