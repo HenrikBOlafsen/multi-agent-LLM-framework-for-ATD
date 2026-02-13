@@ -4,8 +4,33 @@ FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS dev
 # add docker CLI so OpenHands can talk to /var/run/docker.sock
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl ca-certificates openjdk-17-jre-headless unzip git \
-    docker.io \
+    docker.io rsync \
  && rm -rf /var/lib/apt/lists/*
+
+# ---- install .NET SDKs ----
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    wget gnupg \
+ && wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /etc/apt/trusted.gpg.d/microsoft.gpg \
+ && . /etc/os-release && wget -q https://packages.microsoft.com/config/debian/$VERSION_ID/packages-microsoft-prod.deb \
+ && dpkg -i packages-microsoft-prod.deb \
+ && rm packages-microsoft-prod.deb \
+ && apt-get update && apt-get install -y --no-install-recommends \
+    dotnet-sdk-6.0 \
+    dotnet-sdk-8.0 \
+    dotnet-sdk-9.0 \
+    dotnet-sdk-10.0 \
+ && rm -rf /var/lib/apt/lists/*
+
+
+ENV NUGET_PACKAGES=/opt/nuget/packages
+RUN mkdir -p /opt/nuget/packages && chmod -R 0777 /opt/nuget
+
+# Mono (needed for running .NET Framework tests like net48 via dotnet test)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    mono-runtime \
+    ca-certificates-mono \
+ && rm -rf /var/lib/apt/lists/*
+ 
 
 # ----- your existing Python deps via uv (OpenHands must be in uv.lock) -----
 WORKDIR /opt/app
@@ -58,6 +83,11 @@ ENV PATH="/opt/depends/bin:/opt/depends:/opt/app/.venv/bin:${PATH}"
 
 # ----- dev shell -----
 WORKDIR /workspace
-# auto-activate the uv virtualenv in interactive shells
-RUN printf 'source /opt/app/.venv/bin/activate\n' >> /root/.bashrc
+# auto-activate the uv virtualenv in interactive shells (all users)
+RUN printf '\n# Auto-activate project venv\nsource /opt/app/.venv/bin/activate\n' >> /etc/bash.bashrc
+
+# optional but nice: make sure non-root users have a writable HOME
+ENV HOME=/tmp
+
 CMD ["bash", "-l"]
+

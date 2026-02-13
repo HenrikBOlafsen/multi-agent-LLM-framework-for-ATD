@@ -1,0 +1,37 @@
+{
+  "modes": [
+    "explain_multiAgent"
+  ],
+
+  "baseline": {
+    "nonempty": [
+      "{results_root}/{repo}/branches/{base_branch}/ATD_identification/dependency_graph.json",
+      "{results_root}/{repo}/branches/{base_branch}/ATD_identification/scc_report.json",
+      "{results_root}/{repo}/branches/{base_branch}/code_quality_checks/metrics.json",
+      "{results_root}/{repo}/branches/{base_branch}/status_baseline_latest.json"
+    ]
+  },
+
+  "llm": {
+    "nonempty": [
+      "{results_root}/{repo}/branches/{branch}/explain/prompt.txt",
+      "{results_root}/{repo}/branches/{branch}/openhands/status_latest.json"
+    ],
+
+    "json_assert": [
+      {
+        "path": "{results_root}/{repo}/branches/{branch}/openhands/status_latest.json",
+        "key": "outcome",
+        "in": ["committed", "no_changes"]
+      }
+    ],
+
+    "git_branch_exists": true
+  },
+
+  "metrics": {
+    "status_latest": "{results_root}/{repo}/branches/{branch}/status_metrics_latest.json",
+    "if_openhands_outcome_committed": "ok",
+    "otherwise": "skipped"
+  }
+}

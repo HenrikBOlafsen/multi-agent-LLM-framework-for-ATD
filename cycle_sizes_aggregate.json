@@ -1,122 +1,25 @@
 {
   "summary": {
-    "total_repos_listed": 7,
-    "repos_with_data": 7,
-    "total_cycles_counted": 26,
+    "total_repos_listed": 1,
+    "repos_with_data": 1,
+    "total_cycles_counted": 2,
     "mode": "representative_cycles_only"
   },
   "by_cycle_size": {
     "2": {
-      "count": 10,
+      "count": 1,
       "repos": [
-        {
-          "repo": "click",
-          "count": 3
-        },
-        {
-          "repo": "rich",
-          "count": 2
-        },
         {
           "repo": "kombu",
-          "count": 1
-        },
-        {
-          "repo": "werkzeug",
-          "count": 1
-        },
-        {
-          "repo": "jinja",
-          "count": 1
-        },
-        {
-          "repo": "celery",
-          "count": 1
-        },
-        {
-          "repo": "lark",
-          "count": 1
-        }
-      ]
-    },
-    "3": {
-      "count": 2,
-      "repos": [
-        {
-          "repo": "rich",
-          "count": 1
-        },
-        {
-          "repo": "jinja",
-          "count": 1
-        }
-      ]
-    },
-    "4": {
-      "count": 2,
-      "repos": [
-        {
-          "repo": "click",
-          "count": 1
-        },
-        {
-          "repo": "jinja",
           "count": 1
         }
       ]
     },
     "5": {
-      "count": 4,
+      "count": 1,
       "repos": [
-        {
-          "repo": "rich",
-          "count": 2
-        },
         {
           "repo": "kombu",
-          "count": 1
-        },
-        {
-          "repo": "werkzeug",
-          "count": 1
-        }
-      ]
-    },
-    "6": {
-      "count": 3,
-      "repos": [
-        {
-          "repo": "rich",
-          "count": 2
-        },
-        {
-          "repo": "werkzeug",
-          "count": 1
-        }
-      ]
-    },
-    "7": {
-      "count": 2,
-      "repos": [
-        {
-          "repo": "rich",
-          "count": 1
-        },
-        {
-          "repo": "jinja",
-          "count": 1
-        }
-      ]
-    },
-    "8": {
-      "count": 3,
-      "repos": [
-        {
-          "repo": "rich",
-          "count": 2
-        },
-        {
-          "repo": "jinja",
           "count": 1
         }
       ]
@@ -131,71 +34,11 @@
         "5": 1
       },
       "source_mode": "representative_cycles_only"
-    },
-    "click": {
-      "branch": "main",
-      "total_cycles": 4,
-      "by_cycle_size": {
-        "2": 3,
-        "4": 1
-      },
-      "source_mode": "representative_cycles_only"
-    },
-    "werkzeug": {
-      "branch": "main",
-      "total_cycles": 3,
-      "by_cycle_size": {
-        "2": 1,
-        "5": 1,
-        "6": 1
-      },
-      "source_mode": "representative_cycles_only"
-    },
-    "rich": {
-      "branch": "master",
-      "total_cycles": 10,
-      "by_cycle_size": {
-        "2": 2,
-        "3": 1,
-        "5": 2,
-        "6": 2,
-        "7": 1,
-        "8": 2
-      },
-      "source_mode": "representative_cycles_only"
-    },
-    "jinja": {
-      "branch": "main",
-      "total_cycles": 5,
-      "by_cycle_size": {
-        "2": 1,
-        "3": 1,
-        "4": 1,
-        "7": 1,
-        "8": 1
-      },
-      "source_mode": "representative_cycles_only"
-    },
-    "celery": {
-      "branch": "main",
-      "total_cycles": 1,
-      "by_cycle_size": {
-        "2": 1
-      },
-      "source_mode": "representative_cycles_only"
-    },
-    "lark": {
-      "branch": "master",
-      "total_cycles": 1,
-      "by_cycle_size": {
-        "2": 1
-      },
-      "source_mode": "representative_cycles_only"
     }
   },
   "meta": {
-    "repos_file": "/c/Users/olafs/Documents/StudieGreier/Master/multi-agent-LLM-framework-for-ATD/repos.txt",
-    "results_root": "/c/Users/olafs/Documents/StudieGreier/Master/multi-agent-LLM-framework-for-ATD/results",
+    "repos_file": "/workspace/repos.txt",
+    "results_root": "/workspace/results",
     "note": "Strict mode: fails if representative cycles are missing/empty/malformed."
   }
 }
