@@ -35,6 +35,7 @@ QUALITY_CS_SH="$ROOT/code_quality_checker/quality_collect_csharp.sh"
 SUM_PY="$ROOT/code_quality_checker/quality_single_summary.py"
 SUM_CS="$ROOT/code_quality_checker/quality_single_summary_csharp.py"
 
+[[ -d "$REPO_DIR/.git" ]] || { echo "Not a git repo: $REPO_DIR" >&2; exit 3; }
 [[ -f "$EXTRACT_SCCS_PY" ]] || { echo "Missing: $EXTRACT_SCCS_PY" >&2; exit 3; }
 
 if [[ "$LANGUAGE" != "python" && "$LANGUAGE" != "csharp" ]]; then
@@ -72,7 +73,31 @@ JSON
   exit 0
 fi
 
+# ---- Safety guard for reset/clean ----
+PIPELINE_ROOT="$ROOT"
+REPO_REAL="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$REPO_DIR")"
+PIPELINE_REAL="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$PIPELINE_ROOT")"
+
+if [[ "$REPO_REAL" == "$PIPELINE_REAL" ]]; then
+  echo "ERROR: refusing to reset/clean the pipeline repo itself: $REPO_DIR" >&2
+  exit 4
+fi
+
+case "$REPO_REAL" in
+  "$PIPELINE_REAL"/*) : ;;
+  *)
+    echo "ERROR: refusing to reset/clean repo outside pipeline root." >&2
+    echo "  pipeline_root: $PIPELINE_REAL" >&2
+    echo "  repo_dir     : $REPO_REAL" >&2
+    exit 4
+    ;;
+esac
+
 git -C "$REPO_DIR" checkout -q "$TARGET_BRANCH"
+
+# Ensure the checkout is pristine (avoid cross-run contamination)
+git -C "$REPO_DIR" reset --hard -q
+git -C "$REPO_DIR" clean -fdx >/dev/null 2>&1 || true
 
 echo "== Metrics collect: $(basename "$REPO_DIR")@$TARGET_BRANCH =="
 echo "Entry    : $ENTRY"

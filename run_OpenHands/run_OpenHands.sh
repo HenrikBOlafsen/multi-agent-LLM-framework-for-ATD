@@ -3,6 +3,14 @@ set -euo pipefail
 
 # Usage (offline/local-only):
 #   run_OpenHands.sh <repo_dir> <base_branch> <new_branch> <prompt_path> <out_dir>
+#
+# Goals:
+# - Create a fresh git worktree (no reuse) for each run
+# - Run OpenHands in that worktree
+# - If changes exist, commit them locally (no pushing)
+# - Always write a git diff patch into the results folder (if changes exist)
+# - Always remove the worktree checkout afterward to avoid accidental reuse
+#   (but keep the local branch so metrics can check it out)
 
 usage() { echo "usage: $0 <repo_dir> <base_branch> <new_branch> <prompt_path> <out_dir>"; exit 1; }
 [ $# -eq 5 ] || usage
@@ -24,6 +32,13 @@ OPENHANDS_IMAGE="${OPENHANDS_IMAGE:-docker.all-hands.dev/all-hands-ai/openhands:
 RUNTIME_IMAGE="${RUNTIME_IMAGE:-docker.all-hands.dev/all-hands-ai/runtime:0.59-nikolaik}"
 MAX_ITERS="${MAX_ITERS:-100}"
 COMMIT_MESSAGE="${COMMIT_MESSAGE:-Refactor: break dependency cycle}"
+
+# Identity used for *local-only* commits.
+# (These do not affect pushing; they just allow commits to be created.)
+GIT_AUTHOR_NAME="${GIT_AUTHOR_NAME:-atd-bot}"
+GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL:-atd-bot@local}"
+GIT_COMMITTER_NAME="${GIT_COMMITTER_NAME:-$GIT_AUTHOR_NAME}"
+GIT_COMMITTER_EMAIL="${GIT_COMMITTER_EMAIL:-$GIT_AUTHOR_EMAIL}"
 
 [ -n "$LLM_API_KEY" ] || { echo "LLM_API_KEY is required"; exit 5; }
 [ -n "$LLM_BASE_URL" ] || { echo "LLM_BASE_URL is required"; exit 6; }
@@ -74,6 +89,9 @@ TRAJ_LATEST="$OUT_DIR/trajectory_latest.json"
 STATUS_PATH="$OUT_DIR/status_${RUN_TS}.json"
 STATUS_LATEST="$OUT_DIR/status_latest.json"
 
+DIFF_PATH="$OUT_DIR/git_diff_${RUN_TS}.patch"
+DIFF_LATEST="$OUT_DIR/git_diff_latest.patch"
+
 write_status_json () {
   local outcome="$1"; shift || true
   local reason="${1:-}"; shift || true
@@ -86,6 +104,7 @@ write_status_json () {
     echo "  \"new_branch\": \"${NEW_BRANCH}\","
     echo "  \"run_log\": \"${RUN_LOG}\","
     echo "  \"trajectory\": \"${TRAJ_PATH}\","
+    echo "  \"diff\": \"${DIFF_PATH}\","
     echo "  \"outcome\": \"${outcome}\","
     echo "  \"reason\": \"${reason}\""
     if [ -n "${_EXTRA_JSON:-}" ]; then
@@ -102,25 +121,54 @@ WT_ROOT="$REPO_DIR/.atd_worktrees"
 WT_PATH="$WT_ROOT/$NEW_BRANCH"
 mkdir -p "$WT_ROOT"
 
+# ---- Worktree cleanup helpers (simple + safe) ----
+is_under_wt_root () {
+  local p="$1"
+  local root="$2"
+  p="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$p")"
+  root="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$root")"
+  [[ "$p" == "$root"* ]]
+}
+
+cleanup_worktree () {
+  # Always try to remove the OpenHands worktree so there is no accidental reuse.
+  # Keep the branch intact (we do NOT delete refs/heads/$NEW_BRANCH) so metrics can check it out.
+  if [[ -n "${WT_PATH:-}" ]] && [[ -d "$WT_ROOT" ]] && is_under_wt_root "$WT_PATH" "$WT_ROOT"; then
+    git -C "$REPO_DIR" worktree remove --force "$WT_PATH" >/dev/null 2>&1 || true
+    rm -rf "$WT_PATH" >/dev/null 2>&1 || true
+    git -C "$REPO_DIR" worktree prune >/dev/null 2>&1 || true
+  fi
+}
+
+trap cleanup_worktree EXIT
+
+# Validate base branch exists locally (offline/local-only).
 git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$BASE_BRANCH" || {
   _EXTRA_JSON="\"pushed\": false" write_status_json "config_error" "base_branch_missing_locally"
   exit 10
 }
 
-if [ -d "$WT_PATH/.git" ] || [ -f "$WT_PATH/.git" ]; then
-  echo "Reusing existing worktree: $WT_PATH"
-else
-  echo "Creating worktree: $WT_PATH"
-  if git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$NEW_BRANCH"; then
-    git -C "$REPO_DIR" worktree add "$WT_PATH" "$NEW_BRANCH" >/dev/null
-  else
-    git -C "$REPO_DIR" worktree add -b "$NEW_BRANCH" "$WT_PATH" "$BASE_BRANCH" >/dev/null
-  fi
+# ---- No-reuse policy: remove any existing worktree dir for this run ----
+if [[ -e "$WT_PATH" ]]; then
+  echo "Removing existing worktree (no reuse policy): $WT_PATH"
+  git -C "$REPO_DIR" worktree remove --force "$WT_PATH" >/dev/null 2>&1 || true
+  rm -rf "$WT_PATH" >/dev/null 2>&1 || true
+  git -C "$REPO_DIR" worktree prune >/dev/null 2>&1 || true
 fi
 
+echo "Creating worktree: $WT_PATH"
+if git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$NEW_BRANCH"; then
+  echo "Preparing worktree (checking out '$NEW_BRANCH')"
+  git -C "$REPO_DIR" worktree add "$WT_PATH" "$NEW_BRANCH" >/dev/null
+else
+  echo "Preparing worktree (new branch '$NEW_BRANCH')"
+  git -C "$REPO_DIR" worktree add -b "$NEW_BRANCH" "$WT_PATH" "$BASE_BRANCH" >/dev/null
+fi
+
+# Ensure worktree is clean before OpenHands.
 pushd "$WT_PATH" >/dev/null
 git reset --hard -q HEAD
-git clean -fdx
+git clean -fdx >/dev/null 2>&1 || true
 popd >/dev/null
 
 to_host_path () {
@@ -148,13 +196,14 @@ elif [ -t 0 ]; then
   TTY_FLAGS="-i"
 fi
 
-_EXTRA_JSON="\"status\":\"started\"" write_status_json "started" ""
-
 NETWORK_FLAGS=()
 if [ -n "${ATD_OPENHANDS_NETWORK_CONTAINER:-}" ]; then
   NETWORK_FLAGS+=( "--network" "container:${ATD_OPENHANDS_NETWORK_CONTAINER}" )
 fi
 
+_EXTRA_JSON="\"status\":\"started\"" write_status_json "started" ""
+
+echo "Starting OpenHands..."
 set -o pipefail
 docker run --rm $TTY_FLAGS \
   "${GROUP_FLAGS[@]}" \
@@ -186,25 +235,49 @@ cp -f "$RUN_LOG" "$RUN_LOG_LATEST" >/dev/null 2>&1 || true
 cp -f "$TRAJ_PATH" "$TRAJ_LATEST" >/dev/null 2>&1 || true
 
 if [ $RUN_EXIT -ne 0 ]; then
+  : > "$DIFF_PATH" || true
+  cp -f "$DIFF_PATH" "$DIFF_LATEST" >/dev/null 2>&1 || true
   _EXTRA_JSON="\"exit_code\": ${RUN_EXIT}" write_status_json "llm_error" "openhands_exited_nonzero"
   exit 20
 fi
 
+# ---- Post-run: commit + diff patch into results ----
 pushd "$WT_PATH" >/dev/null
+
+# Ensure git identity exists (local config only).
+git config user.name "$GIT_AUTHOR_NAME"
+git config user.email "$GIT_AUTHOR_EMAIL"
+
+# If no changes, still write an empty patch file (explicitly) so downstream tooling is stable.
 if [ -z "$(git status --porcelain)" ]; then
+  : > "$DIFF_PATH"
+  cp -f "$DIFF_PATH" "$DIFF_LATEST" >/dev/null 2>&1 || true
   _EXTRA_JSON="\"commit\": null" write_status_json "no_changes" "no_diff_after_llm"
   popd >/dev/null
   exit 0
 fi
 
 git add -A
-if git commit -m "$COMMIT_MESSAGE" >/dev/null 2>&1; then
+
+# Commit locally. If commit fails for any reason, we still want a diff patch.
+COMMIT_SHA=""
+if GIT_AUTHOR_NAME="$GIT_AUTHOR_NAME" \
+   GIT_AUTHOR_EMAIL="$GIT_AUTHOR_EMAIL" \
+   GIT_COMMITTER_NAME="$GIT_COMMITTER_NAME" \
+   GIT_COMMITTER_EMAIL="$GIT_COMMITTER_EMAIL" \
+   git commit -m "$COMMIT_MESSAGE" >/dev/null 2>&1; then
   COMMIT_SHA="$(git rev-parse --short HEAD)"
 else
-  COMMIT_SHA="$(git rev-parse --short HEAD || echo null)"
+  COMMIT_SHA="$(git rev-parse --short HEAD 2>/dev/null || true)"
 fi
 
-_EXTRA_JSON="\"commit\": \"${COMMIT_SHA}\"" write_status_json "committed" ""
+# Write patch of changes introduced on NEW_BRANCH relative to BASE_BRANCH.
+# Use triple-dot so it captures the branch’s changes since merge-base with BASE_BRANCH.
+# This avoids the “empty diff” issue when you accidentally diff a merge commit etc.
+git diff --binary "$BASE_BRANCH...$NEW_BRANCH" > "$DIFF_PATH" || true
+cp -f "$DIFF_PATH" "$DIFF_LATEST" >/dev/null 2>&1 || true
+
+_EXTRA_JSON="\"commit\": \"${COMMIT_SHA:-null}\"" write_status_json "committed" ""
 popd >/dev/null
 
 echo "✅ OpenHands done (local)."
@@ -212,4 +285,8 @@ echo "  • status:   $STATUS_PATH"
 echo "  • latest:   $STATUS_LATEST"
 echo "  • log:      $RUN_LOG"
 echo "  • traj:     $TRAJ_PATH"
+echo "  • diff:     $DIFF_PATH"
 echo "  • branch:   $NEW_BRANCH"
+echo ""
+echo "NOTE: worktree cleanup happens automatically via the EXIT trap."
+echo "      The branch is kept locally for metrics; the checkout is removed to prevent reuse."

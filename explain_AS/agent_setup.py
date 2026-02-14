@@ -1,4 +1,6 @@
 import os
+import json
+import time
 import requests
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
@@ -31,11 +33,28 @@ def truncate_for_console(text: str, max_chars: int) -> str:
     tail = text[-max_chars // 2 :]
     return f"{head}\n{color('... [snip for console] ...', Ansi.GRAY)}\n{tail}"
 
-# Tunables via env (all printing is optional/tweakable)
 PRINT_WITH_COLORS = os.getenv("PRINT_WITH_COLORS", "1") == "1"
-AGENT_REPLY_MAX_CHARS = int(os.getenv("AGENT_REPLY_MAX_CHARS", "200000"))  # usually don't truncate replies
-USER_PREVIEW_MAX_CHARS = int(os.getenv("USER_PREVIEW_MAX_CHARS", "300"))   # show tiny preview only
-SHOW_USER_PREVIEW = os.getenv("SHOW_USER_PREVIEW", "1") == "1"             # set 0 to hide even previews
+AGENT_REPLY_MAX_CHARS = int(os.getenv("AGENT_REPLY_MAX_CHARS", "200000"))
+USER_PREVIEW_MAX_CHARS = int(os.getenv("USER_PREVIEW_MAX_CHARS", "300"))
+SHOW_USER_PREVIEW = os.getenv("SHOW_USER_PREVIEW", "1") == "1"
+
+# If set, we will append JSONL events here (one event per prompt and per reply)
+ATD_TRACE_PATH = os.getenv("ATD_TRACE_PATH", "").strip()
+
+def _append_trace_event(event: Dict) -> None:
+    if not ATD_TRACE_PATH:
+        return
+    try:
+        os.makedirs(os.path.dirname(ATD_TRACE_PATH), exist_ok=True)
+        with open(ATD_TRACE_PATH, "a", encoding="utf-8") as f:
+            f.write(json.dumps(event, ensure_ascii=False) + "\n")
+    except Exception:
+        # Tracing should never break experiments
+        pass
+
+def _utc_ts() -> str:
+    # ISO-like, simple, stable
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 def log_section(title: str, tone: str = "blue"):
     tone_map = {
@@ -64,12 +83,9 @@ class LLMClient:
         self.temperature = temperature
         self.max_tokens = max_tokens
 
-        # accumulate token usage across calls
         self._acc_prompt_tokens: int = 0
         self._acc_completion_tokens: int = 0
         self._acc_total_tokens: int = 0
-
-        # optional: remember last raw usage
         self._last_usage: Optional[Dict[str, int]] = None
 
     def get_accumulated_usage(self) -> Dict[str, int]:
@@ -93,13 +109,11 @@ class LLMClient:
         r.raise_for_status()
         data = r.json()
 
-        # capture usage if present (OpenAI-compatible servers provide this)
         usage = data.get("usage") if isinstance(data, dict) else None
         if isinstance(usage, dict):
             p = usage.get("prompt_tokens")
             c = usage.get("completion_tokens")
             t = usage.get("total_tokens")
-            # tolerate servers that omit total_tokens
             if isinstance(p, int) and isinstance(c, int):
                 if not isinstance(t, int):
                     t = p + c
@@ -111,10 +125,6 @@ class LLMClient:
         content = data["choices"][0]["message"]["content"]
         return content
 
-
-# -------------------------
-# Agent base
-# -------------------------
 
 @dataclass
 class AgentBase:
@@ -130,11 +140,11 @@ class AgentBase:
             self.history = []
 
     def ask(self, user_text: str) -> str:
+        original_user_text = user_text
+
         if not USE_SYSTEM_PROMPT and self.system_prompt:
-            # Emulate a system prompt by inlining it at the top of the user message
             user_text = f"{self.system_prompt}\n\n---------\n\n{user_text}"
 
-        # Avoid dumping file contents: only show a tiny preview.
         if SHOW_USER_PREVIEW:
             preview = truncate_for_console(user_text.strip(), USER_PREVIEW_MAX_CHARS)
             log_line(f"▶ {self.name} sending prompt (chars={len(user_text)}):", Ansi.CYAN if PRINT_WITH_COLORS else None)
@@ -142,10 +152,27 @@ class AgentBase:
         else:
             log_line(f"▶ {self.name} sending prompt (chars={len(user_text)})", Ansi.CYAN if PRINT_WITH_COLORS else None)
 
+        # Trace the prompt we *actually* sent (post system-prompt-inlining)
+        _append_trace_event({
+            "ts_utc": _utc_ts(),
+            "agent": self.name,
+            "event": "prompt",
+            "use_system_prompt": bool(USE_SYSTEM_PROMPT),
+            "prompt": user_text,
+            "prompt_original": original_user_text if original_user_text != user_text else None,
+        })
+
         self.history.append({"role": "user", "content": user_text})
         reply = self.client.chat(self.history).strip()
         reply = clip(reply, 15000)
         self.history.append({"role": "assistant", "content": reply})
+
+        _append_trace_event({
+            "ts_utc": _utc_ts(),
+            "agent": self.name,
+            "event": "reply",
+            "reply": reply,
+        })
 
         log_line(f"◀ {self.name} reply:", Ansi.GREEN if PRINT_WITH_COLORS else None)
         log_line(truncate_for_console(reply, AGENT_REPLY_MAX_CHARS), Ansi.GREEN if PRINT_WITH_COLORS else None)

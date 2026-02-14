@@ -18,7 +18,6 @@ def _load_json(path: Path) -> dict:
 
 
 def _find_cycle_in_catalog(catalog: dict, cycle_id: str) -> dict:
-    # Format: {"sccs": [{"cycles": [{"id": ...}, ...]}, ...]}
     for scc in (catalog.get("sccs") or []):
         for cyc in (scc.get("cycles") or []):
             if str(cyc.get("id")) == str(cycle_id):
@@ -47,18 +46,13 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--repo-root", required=True)
     ap.add_argument("--src-root", required=True)
-
-    # kept for interface compatibility + meta logging, but no longer used for cycle lookup
     ap.add_argument("--scc-report", required=True)
-
     ap.add_argument("--cycle-id", required=True)
     ap.add_argument("--out-prompt", required=True)
     ap.add_argument("--params-json", default=None)
-
-    # REQUIRED now (or inferred next to scc_report)
     ap.add_argument("--cycle-catalog", default=None, help="Path to cycle_catalog.json (required; preferred source)")
-
     args = ap.parse_args()
+
     params = _mode_params(args.params_json)
 
     orch_id = str(params.get("orchestrator", "v1_four_agents"))
@@ -79,11 +73,9 @@ def main() -> None:
     report_path = Path(args.scc_report).resolve()
     out_prompt = Path(args.out_prompt).resolve()
 
-    # Require cycle_catalog.json (explicit or inferred next to scc_report)
     catalog_path = Path(args.cycle_catalog).resolve() if args.cycle_catalog else None
     if catalog_path is None:
-        inferred = report_path.parent / "cycle_catalog.json"
-        catalog_path = inferred.resolve()
+        catalog_path = (report_path.parent / "cycle_catalog.json").resolve()
 
     if not catalog_path.exists():
         raise SystemExit(
@@ -108,11 +100,17 @@ def main() -> None:
     log_line(f"cycle_catalog          : {str(catalog_path)}", Ansi.DIM)
 
     explain_dir = out_prompt.parent
+    explain_dir.mkdir(parents=True, exist_ok=True)
+
     usage_path = explain_dir / "llm_usage.json"
+    trace_path = explain_dir / "transcript.jsonl"
+
+    # Enable transcript logging for multi-agent orchestrators
+    if orch_cls is not None:
+        os.environ["ATD_TRACE_PATH"] = str(trace_path)
 
     if orch_cls is None:
         final = build_minimal_prompt(cycle).rstrip() + "\n"
-        # minimal => no LLM calls => no usage json
     else:
         llm_url = _need_env("LLM_URL")
         api_key = _need_env("LLM_API_KEY")
@@ -121,6 +119,7 @@ def main() -> None:
         client = LLMClient(llm_url, api_key, model, temperature=temperature, max_tokens=max_tokens)
         orch = orch_cls(client)
         ctx = CycleContext(repo_root=str(repo_root), src_root=str(args.src_root), cycle=cycle)
+
         refactor_part = orch.run(ctx, refactor_prompt_variant=prompt_variant)
         final = (f"{base}\n\n{refactor_part}".strip() + "\n")
 
@@ -131,7 +130,6 @@ def main() -> None:
         }
         usage_path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
 
-    out_prompt.parent.mkdir(parents=True, exist_ok=True)
     out_prompt.write_text(final, encoding="utf-8")
     print(final)
 
