@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+import hashlib
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from typing import Any, Dict
 
@@ -13,7 +14,16 @@ DEFAULT_REPLY = (
     "Reply with a short confirmation that you made no changes.\n"
 )
 
-FINISH_MESSAGE = "No changes made (smoke test)."
+# IMPORTANT: In smoke-test mode we *do* write a marker file so the pipeline sees a commit.
+FINISH_MESSAGE = "Marker written (commit-smoke-test); no refactor performed."
+
+# Marker edit for commit-smoke-test
+COMMIT_SMOKE_FILE_PATH = "/workspace/ATD_SMOKE_EDIT.txt"
+COMMIT_SMOKE_LINE = "ATD smoke test: touched by fake_llm_server.py to force a commit."
+
+# In-memory per-task state:
+# key -> number of OpenHands tool-call responses we have served so far
+_OPENHANDS_STEP_BY_KEY: Dict[str, int] = {}
 
 
 def _read_json(handler: BaseHTTPRequestHandler) -> Dict[str, Any]:
@@ -35,17 +45,14 @@ def _write_json(handler: BaseHTTPRequestHandler, code: int, payload: Dict[str, A
 
 
 def _is_openhands(req: Dict[str, Any]) -> bool:
-    # 1) Standard tool payload
     tools = req.get("tools")
     if isinstance(tools, list) and tools:
         return True
 
-    # 2) Some clients use legacy "functions"
     funcs = req.get("functions")
     if isinstance(funcs, list) and funcs:
         return True
 
-    # 3) Heuristic: OpenHands system prompt text is present in messages
     msgs = req.get("messages")
     if isinstance(msgs, list):
         for m in msgs:
@@ -58,9 +65,36 @@ def _is_openhands(req: Dict[str, Any]) -> bool:
     return False
 
 
+def _first_user_message_text(req: Dict[str, Any]) -> str:
+    msgs = req.get("messages")
+    if not isinstance(msgs, list):
+        return ""
+    for m in msgs:
+        if not isinstance(m, dict):
+            continue
+        if m.get("role") == "user":
+            c = m.get("content")
+            if isinstance(c, str):
+                return c
+            try:
+                return json.dumps(c, ensure_ascii=False)
+            except Exception:
+                return ""
+    return ""
+
+
+def _openhands_session_key(req: Dict[str, Any]) -> str:
+    txt = _first_user_message_text(req).strip()
+    if not txt:
+        try:
+            txt = json.dumps(req, sort_keys=True, ensure_ascii=False)
+        except Exception:
+            txt = str(time.time())
+    h = hashlib.sha256(txt.encode("utf-8")).hexdigest()[:16]
+    return f"oh_{h}"
+
 
 def _build_finish_tool_call() -> Dict[str, Any]:
-    # OpenAI tool-calling style
     return {
         "id": "call_finish_1",
         "type": "function",
@@ -71,27 +105,44 @@ def _build_finish_tool_call() -> Dict[str, Any]:
     }
 
 
+def _build_execute_bash_append_marker_tool_call() -> Dict[str, Any]:
+    """
+    Smoke-test marker write.
+
+    IMPORTANT: Keep quoting simple and robust:
+    - No nested sh -lc "..."
+    - Use single-quoted literal message
+    - Chain with && so failures propagate
+    """
+    # Note: message has no single quotes; if you ever add them, you'll need escaping.
+    cmd = (
+        "mkdir -p /workspace && "
+        f"printf '%s\\n' '{COMMIT_SMOKE_LINE}' >> '{COMMIT_SMOKE_FILE_PATH}' && "
+        f"echo wrote-marker:{COMMIT_SMOKE_FILE_PATH}"
+    )
+    args = {"command": cmd, "security_risk": "LOW"}
+    return {
+        "id": "call_bash_1",
+        "type": "function",
+        "function": {"name": "execute_bash", "arguments": json.dumps(args, ensure_ascii=False)},
+    }
+
+
 def _write_sse(handler: BaseHTTPRequestHandler, obj: Dict[str, Any]) -> None:
-    # SSE event format
     line = f"data: {json.dumps(obj, ensure_ascii=False)}\n\n".encode("utf-8")
     handler.wfile.write(line)
     handler.wfile.flush()
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "fake-llm/0.3"
+    server_version = "fake-llm/0.7"
 
     def log_message(self, fmt: str, *args: Any) -> None:
-        # keep logs short but useful
         print("%s - - [%s] %s" % (self.address_string(), self.log_date_time_string(), fmt % args))
 
     def do_GET(self) -> None:
         if self.path.rstrip("/") in ("/v1/models", "/models"):
-            _write_json(
-                self,
-                200,
-                {"object": "list", "data": [{"id": "dummy", "object": "model"}]},
-            )
+            _write_json(self, 200, {"object": "list", "data": [{"id": "dummy", "object": "model"}]})
             return
         _write_json(self, 404, {"error": {"message": f"not found: {self.path}"}})
 
@@ -105,17 +156,23 @@ class Handler(BaseHTTPRequestHandler):
         stream = bool(req.get("stream", False))
         model = req.get("model", "dummy")
 
-        # If the client supports tools (OpenHands), return a finish tool call so it exits cleanly.
         if _is_openhands(req):
+            key = _openhands_session_key(req)
+            step = int(_OPENHANDS_STEP_BY_KEY.get(key, 0))
+
+            if step <= 0:
+                tool_call = _build_execute_bash_append_marker_tool_call()
+                _OPENHANDS_STEP_BY_KEY[key] = 1
+            else:
+                tool_call = _build_finish_tool_call()
+                _OPENHANDS_STEP_BY_KEY[key] = step + 1
+
             if stream:
-                # Best-effort streaming tool call. (Some clients only accept tool calls non-streaming,
-                # but OpenHands usually works fine either way.)
                 self.send_response(200)
                 self.send_header("Content-Type", "text/event-stream")
                 self.send_header("Cache-Control", "no-cache")
                 self.end_headers()
 
-                # One chunk with the tool_call, then finish_reason=tool_calls, then [DONE]
                 _write_sse(
                     self,
                     {
@@ -131,11 +188,11 @@ class Handler(BaseHTTPRequestHandler):
                                     "tool_calls": [
                                         {
                                             "index": 0,
-                                            "id": "call_finish_1",
+                                            "id": tool_call["id"],
                                             "type": "function",
                                             "function": {
-                                                "name": "finish",
-                                                "arguments": json.dumps({"message": FINISH_MESSAGE}, ensure_ascii=False),
+                                                "name": tool_call["function"]["name"],
+                                                "arguments": tool_call["function"]["arguments"],
                                             },
                                         }
                                     ],
@@ -170,11 +227,7 @@ class Handler(BaseHTTPRequestHandler):
                     "choices": [
                         {
                             "index": 0,
-                            "message": {
-                                "role": "assistant",
-                                "content": "",
-                                "tool_calls": [_build_finish_tool_call()],
-                            },
+                            "message": {"role": "assistant", "content": "", "tool_calls": [tool_call]},
                             "finish_reason": "tool_calls",
                         }
                     ],
@@ -183,7 +236,7 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
 
-        # Default behavior for non-tool clients (e.g., explain_AS).
+        # Non-tool clients
         content = DEFAULT_REPLY
 
         if not stream:
@@ -195,19 +248,12 @@ class Handler(BaseHTTPRequestHandler):
                     "object": "chat.completion",
                     "created": int(time.time()),
                     "model": model,
-                    "choices": [
-                        {
-                            "index": 0,
-                            "message": {"role": "assistant", "content": content},
-                            "finish_reason": "stop",
-                        }
-                    ],
+                    "choices": [{"index": 0, "message": {"role": "assistant", "content": content}, "finish_reason": "stop"}],
                     "usage": {"prompt_tokens": 1, "completion_tokens": 1, "total_tokens": 2},
                 },
             )
             return
 
-        # Minimal SSE streaming response for non-tool clients
         self.send_response(200)
         self.send_header("Content-Type", "text/event-stream")
         self.send_header("Cache-Control", "no-cache")
@@ -220,9 +266,7 @@ class Handler(BaseHTTPRequestHandler):
                 "object": "chat.completion.chunk",
                 "created": int(time.time()),
                 "model": model,
-                "choices": [
-                    {"index": 0, "delta": {"role": "assistant", "content": content}, "finish_reason": None}
-                ],
+                "choices": [{"index": 0, "delta": {"role": "assistant", "content": content}, "finish_reason": None}],
             },
         )
         _write_sse(
