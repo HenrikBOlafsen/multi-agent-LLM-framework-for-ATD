@@ -58,7 +58,6 @@ else
 fi
 
 # ---- Safety guard for reset/clean ----
-# We assume pipeline runs from repo root and should only mutate checkouts under it.
 PIPELINE_ROOT="$ROOT"
 REPO_REAL="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$REPO_DIR")"
 PIPELINE_REAL="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$PIPELINE_ROOT")"
@@ -118,19 +117,5 @@ if [[ "$LANGUAGE" == "csharp" ]]; then
 else
   python3 "$SUM_PY" "$QC_DIR" "$QC_DIR/metrics.json" || true
 fi
-
-cat > "$OUT_DIR/meta.json" <<JSON
-{
-  "repo": "$(basename "$REPO_DIR")",
-  "branch": "$(printf '%s' "$BASE_BRANCH")",
-  "entry": "$(printf '%s' "$ENTRY")",
-  "language": "$(printf '%s' "$LANGUAGE")",
-  "collected_at_utc": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
-  "artifacts": {
-    "dependency_graph": "$(printf '%s' "$GRAPH_JSON")",
-    "scc_report": "$(printf '%s' "$SCC_REPORT")"
-  }
-}
-JSON
 
 echo "✅ Baseline collected: $OUT_DIR"

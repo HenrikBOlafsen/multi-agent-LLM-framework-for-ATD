@@ -7,10 +7,14 @@ import os
 from pathlib import Path
 from typing import Any, Dict, Optional
 
+import requests
+
 from agent_setup import LLMClient, log_section, log_line, Ansi
 from explain_cycle_minimal import build_minimal_prompt, cycle_chain_str, TEMPLATE as BASE_TEMPLATE
 from orchestrators import ORCHESTRATORS
 from orchestrators.base import CycleContext
+
+LLM_BLOCKED_EXIT_CODE = 42
 
 
 def _load_json(path: Path) -> dict:
@@ -35,10 +39,18 @@ def _mode_params(params_json: Optional[str]) -> Dict[str, Any]:
 def _need_env(name: str) -> str:
     v = os.environ.get(name, "").strip()
     if not v:
-        raise SystemExit(
-            f"Missing required env var {name}. "
-            f"This should be provided by the pipeline (from pipeline.yaml)."
-        )
+        raise SystemExit(f"Missing required env var {name}. This should be provided by the pipeline.")
+    return v
+
+
+def _need_env_int(name: str) -> int:
+    s = _need_env(name)
+    try:
+        v = int(s)
+    except Exception:
+        raise SystemExit(f"Env var {name} must be an int (got: {s!r})")
+    if v <= 0:
+        raise SystemExit(f"Env var {name} must be > 0 (got: {v})")
     return v
 
 
@@ -50,38 +62,26 @@ def main() -> None:
     ap.add_argument("--cycle-id", required=True)
     ap.add_argument("--out-prompt", required=True)
     ap.add_argument("--params-json", default=None)
-    ap.add_argument("--cycle-catalog", default=None, help="Path to cycle_catalog.json (required; preferred source)")
+    ap.add_argument("--cycle-catalog", default=None)
     args = ap.parse_args()
 
     params = _mode_params(args.params_json)
-
     orch_id = str(params.get("orchestrator", "v1_four_agents"))
     prompt_variant = str(params.get("refactor_prompt_variant", "default"))
     temperature = float(params.get("temperature", 0.1))
     max_tokens = int(params.get("max_tokens", 16384))
 
-    if orch_id == "minimal":
-        orch_cls = None
-    else:
-        orch_cls = ORCHESTRATORS.get(orch_id)
-        if orch_cls is None:
-            raise SystemExit(
-                f"Unknown orchestrator '{orch_id}'. Known: {sorted(ORCHESTRATORS.keys())} or 'minimal'."
-            )
+    orch_cls = None if orch_id == "minimal" else ORCHESTRATORS.get(orch_id)
+    if orch_id != "minimal" and orch_cls is None:
+        raise SystemExit(f"Unknown orchestrator '{orch_id}'. Known: {sorted(ORCHESTRATORS.keys())} or 'minimal'.")
 
     repo_root = Path(args.repo_root).resolve()
     report_path = Path(args.scc_report).resolve()
     out_prompt = Path(args.out_prompt).resolve()
 
-    catalog_path = Path(args.cycle_catalog).resolve() if args.cycle_catalog else None
-    if catalog_path is None:
-        catalog_path = (report_path.parent / "cycle_catalog.json").resolve()
-
+    catalog_path = Path(args.cycle_catalog).resolve() if args.cycle_catalog else (report_path.parent / "cycle_catalog.json").resolve()
     if not catalog_path.exists():
-        raise SystemExit(
-            f"Missing cycle_catalog.json at: {catalog_path}\n"
-            "Provide it via --cycle-catalog or generate it in baseline results."
-        )
+        raise SystemExit(f"Missing cycle_catalog.json at: {catalog_path}")
 
     catalog = _load_json(catalog_path)
     cycle = _find_cycle_in_catalog(catalog, args.cycle_id)
@@ -99,39 +99,67 @@ def main() -> None:
     log_line(f"refactor_prompt_variant: {prompt_variant}", Ansi.DIM)
     log_line(f"cycle_catalog          : {str(catalog_path)}", Ansi.DIM)
 
-    explain_dir = out_prompt.parent
-    explain_dir.mkdir(parents=True, exist_ok=True)
+    out_prompt.parent.mkdir(parents=True, exist_ok=True)
 
-    usage_path = explain_dir / "llm_usage.json"
-    trace_path = explain_dir / "transcript.jsonl"
+    try:
+        if orch_cls is None:
+            final = build_minimal_prompt(cycle).rstrip() + "\n"
+        else:
+            llm_url = _need_env("LLM_URL")
+            api_key = _need_env("LLM_API_KEY")
+            model = _need_env("LLM_MODEL")
+            context_length = _need_env_int("LLM_CONTEXT_LENGTH")
 
-    # Enable transcript logging for multi-agent orchestrators
-    if orch_cls is not None:
-        os.environ["ATD_TRACE_PATH"] = str(trace_path)
+            os.environ["ATD_TRACE_PATH"] = str(out_prompt.parent / "transcript.jsonl")
 
-    if orch_cls is None:
-        final = build_minimal_prompt(cycle).rstrip() + "\n"
-    else:
-        llm_url = _need_env("LLM_URL")
-        api_key = _need_env("LLM_API_KEY")
-        model = _need_env("LLM_MODEL")
+            client = LLMClient(
+                llm_url,
+                api_key,
+                model,
+                context_length=context_length,
+                temperature=temperature,
+                max_tokens=max_tokens,
+            )
+            orch = orch_cls(client)
+            ctx = CycleContext(repo_root=str(repo_root), src_root=str(args.src_root), cycle=cycle)
 
-        client = LLMClient(llm_url, api_key, model, temperature=temperature, max_tokens=max_tokens)
-        orch = orch_cls(client)
-        ctx = CycleContext(repo_root=str(repo_root), src_root=str(args.src_root), cycle=cycle)
+            refactor_part = orch.run(ctx, refactor_prompt_variant=prompt_variant)
+            final = (f"{base}\n\n{refactor_part}".strip() + "\n")
 
-        refactor_part = orch.run(ctx, refactor_prompt_variant=prompt_variant)
-        final = (f"{base}\n\n{refactor_part}".strip() + "\n")
+            (out_prompt.parent / "llm_usage.json").write_text(
+                json.dumps(
+                    {
+                        "model": model,
+                        "context_length": context_length,
+                        "accumulated_usage": client.get_accumulated_usage(),
+                        "last_call_usage": client.get_last_usage(),
+                    },
+                    indent=2,
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
 
-        payload = {
-            "model": model,
-            "accumulated_usage": client.get_accumulated_usage(),
-            "last_call_usage": client.get_last_usage(),
-        }
-        usage_path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+        out_prompt.write_text(final, encoding="utf-8")
+        print(final)
 
-    out_prompt.write_text(final, encoding="utf-8")
-    print(final)
+    except requests.HTTPError as e:
+        status = getattr(e.response, "status_code", None)
+
+        # Context / request too large: FAIL (not "blocked")
+        if status in (400, 413, 422):
+            raise SystemExit(1)
+
+        # Permanent client errors → fail
+        if status in (401, 403, 404):
+            raise SystemExit(1)
+
+        # Everything else → blocked
+        raise SystemExit(LLM_BLOCKED_EXIT_CODE)
+
+    except requests.RequestException:
+        # timeout, connection, DNS, etc.
+        raise SystemExit(LLM_BLOCKED_EXIT_CODE)
 
 
 if __name__ == "__main__":

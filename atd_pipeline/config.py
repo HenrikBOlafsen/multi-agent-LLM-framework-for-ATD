@@ -2,9 +2,55 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import yaml
+
+
+def _die(msg: str) -> None:
+    raise ValueError(msg)
+
+
+def _need(d: Dict[str, Any], key: str, where: str) -> Any:
+    if key not in d:
+        _die(f"Missing required config field: {where}.{key}")
+    return d[key]
+
+
+def _need_int(d: Dict[str, Any], key: str, where: str) -> int:
+    v = _need(d, key, where)
+    if not isinstance(v, int):
+        _die(f"Config field must be int: {where}.{key} (got {type(v).__name__})")
+    return int(v)
+
+
+def _need_str(d: Dict[str, Any], key: str, where: str) -> str:
+    v = _need(d, key, where)
+    if not isinstance(v, str) or not v.strip():
+        _die(f"Config field must be non-empty string: {where}.{key}")
+    return v.strip()
+
+
+def _opt_int(d: Dict[str, Any], key: str, where: str) -> Optional[int]:
+    if key not in d:
+        return None
+    v = d[key]
+    if v is None:
+        return None
+    if not isinstance(v, int):
+        _die(f"Config field must be int: {where}.{key} (got {type(v).__name__})")
+    return int(v)
+
+
+def _opt_str(d: Dict[str, Any], key: str, where: str) -> Optional[str]:
+    if key not in d:
+        return None
+    v = d[key]
+    if v is None:
+        return None
+    if not isinstance(v, str):
+        _die(f"Config field must be string: {where}.{key} (got {type(v).__name__})")
+    return v.strip()
 
 
 @dataclass(frozen=True)
@@ -12,7 +58,7 @@ class RepoSpec:
     repo: str
     base_branch: str
     entry: str
-    language: str = "unknown"
+    language: str
 
 
 @dataclass(frozen=True)
@@ -22,46 +68,23 @@ class CycleSpec:
     cycle_id: str
 
 
-def read_repos(repos_file_path: Path) -> List[RepoSpec]:
-    repo_specs: List[RepoSpec] = []
-    for raw_line in repos_file_path.read_text(encoding="utf-8").splitlines():
-        stripped = raw_line.strip()
-        if not stripped or stripped.startswith("#"):
-            continue
-        parts = stripped.split()
-        if len(parts) < 3:
-            raise ValueError(f"Bad repos.txt line (need >=3 cols): {raw_line}")
-        repo_name, base_branch, entry_subdir = parts[0], parts[1], parts[2]
-        language = parts[3] if len(parts) >= 4 else "unknown"
-        repo_specs.append(RepoSpec(repo=repo_name, base_branch=base_branch, entry=entry_subdir, language=language))
-    return repo_specs
+@dataclass(frozen=True)
+class ModeSpec:
+    id: str
+    params: Dict[str, Any]
 
 
-def read_cycles(cycles_file_path: Path) -> List[CycleSpec]:
-    cycle_specs: List[CycleSpec] = []
-    for raw_line in cycles_file_path.read_text(encoding="utf-8").splitlines():
-        stripped = raw_line.strip()
-        if not stripped or stripped.startswith("#"):
-            continue
-        parts = stripped.split()
-        if len(parts) < 3:
-            raise ValueError(f"Bad cycles file line (need >=3 cols): {raw_line}")
-        cycle_specs.append(CycleSpec(repo=parts[0], base_branch=parts[1], cycle_id=parts[2]))
-    return cycle_specs
-
-
-def group_cycles_by_repo_and_branch(cycle_specs: List[CycleSpec]) -> Dict[Tuple[str, str], List[CycleSpec]]:
-    grouped: Dict[Tuple[str, str], List[CycleSpec]] = {}
-    for cycle_spec in cycle_specs:
-        grouped.setdefault((cycle_spec.repo, cycle_spec.base_branch), []).append(cycle_spec)
-    return grouped
+@dataclass(frozen=True)
+class PolicyConfig:
+    delete_refactor_branches_after_metrics: bool
 
 
 @dataclass(frozen=True)
 class LLMConfig:
-    base_url: str  # must end with /v1
+    base_url: str
     api_key: str
     model_raw: str
+    context_length: int  # REQUIRED, no default, no backwards-compat
 
 
 @dataclass(frozen=True)
@@ -73,12 +96,6 @@ class OpenHandsConfig:
 
 
 @dataclass(frozen=True)
-class ModeSpec:
-    id: str
-    params: Dict[str, Any]
-
-
-@dataclass(frozen=True)
 class PipelineConfig:
     projects_dir: Path
     repos_file: Path
@@ -86,80 +103,131 @@ class PipelineConfig:
     results_root: Path
     experiment_id: str
 
+    policy: PolicyConfig
     llm: LLMConfig
     openhands: OpenHandsConfig
+
     modes: List[ModeSpec]
 
     @staticmethod
-    def load(config_file_path: Path, *, repo_root: Path) -> "PipelineConfig":
-        raw = yaml.safe_load(config_file_path.read_text(encoding="utf-8"))
+    def load(config_path: Path, *, repo_root: Path) -> "PipelineConfig":
+        raw = yaml.safe_load(config_path.read_text(encoding="utf-8")) or {}
+        if not isinstance(raw, dict):
+            _die(f"Bad YAML root in {config_path}: expected mapping")
 
-        def resolve_repo_root_relative(path_str: str) -> Path:
-            return (repo_root / path_str).resolve()
+        projects_dir = (repo_root / Path(_need_str(raw, "projects_dir", "root"))).resolve()
+        repos_file = (repo_root / Path(_need_str(raw, "repos_file", "root"))).resolve()
+        cycles_file = (repo_root / Path(_need_str(raw, "cycles_file", "root"))).resolve()
+        results_root = (repo_root / Path(_need_str(raw, "results_root", "root"))).resolve()
+        experiment_id = _need_str(raw, "experiment_id", "root")
 
-        llm_raw = raw.get("llm") or {}
-        openhands_raw = raw.get("openhands") or {}
+        # policy
+        policy_raw = raw.get("policy")
+        if not isinstance(policy_raw, dict):
+            _die("Missing required config field: policy (mapping)")
+        delete_branches = policy_raw.get("delete_refactor_branches_after_metrics")
+        if not isinstance(delete_branches, bool):
+            _die("Config field must be bool: policy.delete_refactor_branches_after_metrics")
+        policy = PolicyConfig(delete_refactor_branches_after_metrics=delete_branches)
 
-        mode_specs: List[ModeSpec] = []
-        for mode_raw in (raw.get("modes") or []):
-            mode_specs.append(ModeSpec(id=str(mode_raw["id"]), params=dict(mode_raw.get("params") or {})))
+        # llm
+        llm_raw = raw.get("llm")
+        if not isinstance(llm_raw, dict):
+            _die("Missing required config field: llm (mapping)")
+        llm = LLMConfig(
+            base_url=_need_str(llm_raw, "base_url", "llm"),
+            api_key=_need_str(llm_raw, "api_key", "llm"),
+            model_raw=_need_str(llm_raw, "model_raw", "llm"),
+            context_length=_need_int(llm_raw, "context_length", "llm"),
+        )
+
+        # openhands
+        oh_raw = raw.get("openhands")
+        if not isinstance(oh_raw, dict):
+            _die("Missing required config field: openhands (mapping)")
+        openhands = OpenHandsConfig(
+            image=_need_str(oh_raw, "image", "openhands"),
+            runtime_image=_need_str(oh_raw, "runtime_image", "openhands"),
+            max_iters=_need_int(oh_raw, "max_iters", "openhands"),
+            commit_message=_need_str(oh_raw, "commit_message", "openhands"),
+        )
+
+        # modes
+        modes_raw = raw.get("modes")
+        if not isinstance(modes_raw, list) or not modes_raw:
+            _die("Missing required config field: modes (non-empty list)")
+        modes: List[ModeSpec] = []
+        for i, m in enumerate(modes_raw):
+            if not isinstance(m, dict):
+                _die(f"Bad modes[{i}]: expected mapping")
+            mid = _need_str(m, "id", f"modes[{i}]")
+            params = m.get("params") or {}
+            if not isinstance(params, dict):
+                _die(f"Bad modes[{i}].params: expected mapping")
+            modes.append(ModeSpec(id=mid, params=params))
 
         return PipelineConfig(
-            projects_dir=resolve_repo_root_relative(str(raw["projects_dir"])),
-            repos_file=resolve_repo_root_relative(str(raw["repos_file"])),
-            cycles_file=resolve_repo_root_relative(str(raw["cycles_file"])),
-            results_root=resolve_repo_root_relative(str(raw["results_root"])),
-            experiment_id=str(raw["experiment_id"]),
-            llm=LLMConfig(
-                base_url=str(llm_raw["base_url"]),
-                api_key=str(llm_raw.get("api_key", "placeholder")),
-                model_raw=str(llm_raw["model_raw"]),
-            ),
-            openhands=OpenHandsConfig(
-                image=str(openhands_raw.get("image", "docker.all-hands.dev/all-hands-ai/openhands:0.59")),
-                runtime_image=str(openhands_raw.get("runtime_image", "docker.all-hands.dev/all-hands-ai/runtime:0.59-nikolaik")),
-                max_iters=int(openhands_raw.get("max_iters", 100)),
-                commit_message=str(openhands_raw.get("commit_message", "Refactor: break dependency cycle")),
-            ),
-            modes=mode_specs,
+            projects_dir=projects_dir,
+            repos_file=repos_file,
+            cycles_file=cycles_file,
+            results_root=results_root,
+            experiment_id=experiment_id,
+            policy=policy,
+            llm=llm,
+            openhands=openhands,
+            modes=modes,
         )
 
-    def select_modes(self, requested_mode_ids: Optional[List[str]]) -> List[ModeSpec]:
-        if not requested_mode_ids:
-            return list(self.modes)
 
-        requested_set = set(requested_mode_ids)
-        selected = [mode for mode in self.modes if mode.id in requested_set]
-        missing = sorted(requested_set - {mode.id for mode in selected})
-        if missing:
-            raise ValueError(f"Unknown mode(s): {missing}. Known: {[m.id for m in self.modes]}")
-        return selected
+def read_repos(repos_file: Path) -> List[RepoSpec]:
+    lines = repos_file.read_text(encoding="utf-8").splitlines()
+    out: List[RepoSpec] = []
+    for ln in lines:
+        ln = ln.strip()
+        if not ln or ln.startswith("#"):
+            continue
+        parts = ln.split()
+        if len(parts) < 4:
+            _die(f"Bad repos.txt line (expected 4 columns): {ln}")
+        out.append(RepoSpec(repo=parts[0], base_branch=parts[1], entry=parts[2], language=parts[3]))
+    return out
 
 
-Task = Tuple[RepoSpec, CycleSpec, ModeSpec]
+def read_cycles(cycles_file: Path) -> List[CycleSpec]:
+    lines = cycles_file.read_text(encoding="utf-8").splitlines()
+    out: List[CycleSpec] = []
+    for ln in lines:
+        ln = ln.strip()
+        if not ln or ln.startswith("#"):
+            continue
+        parts = ln.split()
+        if len(parts) < 3:
+            _die(f"Bad cycles file line (expected 3 columns): {ln}")
+        out.append(CycleSpec(repo=parts[0], base_branch=parts[1], cycle_id=parts[2]))
+    return out
 
 
-def build_tasks(pipeline_config: PipelineConfig, requested_mode_ids: Optional[List[str]] = None) -> List[Task]:
-    repo_specs = read_repos(pipeline_config.repos_file)
-    repo_by_name_and_branch = {(repo.repo, repo.base_branch): repo for repo in repo_specs}
-
+def build_tasks(pipeline_config: PipelineConfig, modes: Optional[Sequence[str]]) -> List[Tuple[RepoSpec, CycleSpec, ModeSpec]]:
+    repo_specs = {r.repo: r for r in read_repos(pipeline_config.repos_file)}
     cycle_specs = read_cycles(pipeline_config.cycles_file)
-    cycles_grouped = group_cycles_by_repo_and_branch(cycle_specs)
 
-    missing_pairs = sorted([pair for pair in cycles_grouped.keys() if pair not in repo_by_name_and_branch])
-    if missing_pairs:
-        raise ValueError(
-            "cycles_to_analyze.txt contains repo/base pairs not present in repos.txt: "
-            + ", ".join([f"{repo}@{branch}" for repo, branch in missing_pairs])
-        )
+    selected_modes: List[ModeSpec]
+    if modes is None:
+        selected_modes = list(pipeline_config.modes)
+    else:
+        want = set(modes)
+        selected_modes = [m for m in pipeline_config.modes if m.id in want]
+        if not selected_modes:
+            _die(f"No modes matched --modes {sorted(want)} (available: {[m.id for m in pipeline_config.modes]})")
 
-    selected_modes = pipeline_config.select_modes(requested_mode_ids)
-
-    experiment_units: List[Task] = []
-    for (repo_name, base_branch), cycles_for_repo in cycles_grouped.items():
-        repo_spec = repo_by_name_and_branch[(repo_name, base_branch)]
-        for cycle_spec in cycles_for_repo:
-            for mode_spec in selected_modes:
-                experiment_units.append((repo_spec, cycle_spec, mode_spec))
-
-    return experiment_units
+    tasks: List[Tuple[RepoSpec, CycleSpec, ModeSpec]] = []
+    for cyc in cycle_specs:
+        repo = repo_specs.get(cyc.repo)
+        if repo is None:
+            _die(f"cycles_file references unknown repo '{cyc.repo}' (not present in repos_file)")
+        # sanity: base branch should match between files
+        if repo.base_branch != cyc.base_branch:
+            _die(f"Base branch mismatch for repo {cyc.repo}: repos_file has {repo.base_branch}, cycles_file has {cyc.base_branch}")
+        for mode in selected_modes:
+            tasks.append((repo, cyc, mode))
+    return tasks

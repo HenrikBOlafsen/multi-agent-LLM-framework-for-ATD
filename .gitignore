@@ -17,6 +17,9 @@ reports/*
 results/*
 results_all_backup/*
 test_runs/cases/ok_smoke_realish/results/*
+test_runs/cases/ok_smoke_realish/results_old/*
+test_runs/cases/ok_smoke_resume_openhands_llm/results/*
+test_runs/cases/ok_smoke_resume_explain_llm/results/*
 openhands_logs/*
 results_clean_baseline/*
 all_experiment_results/*

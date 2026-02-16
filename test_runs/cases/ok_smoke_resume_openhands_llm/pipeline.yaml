@@ -1,8 +1,8 @@
 projects_dir: projects_to_analyze
-repos_file: test_runs/cases/ok_smoke_realish/repos.txt
-cycles_file: test_runs/cases/ok_smoke_realish/cycles_to_analyze.txt
-results_root: test_runs/cases/ok_smoke_realish/results
-experiment_id: sim_ok_smoke_realish
+repos_file: test_runs/cases/ok_smoke_openhands_resume_llm/repos.txt
+cycles_file: test_runs/cases/ok_smoke_openhands_resume_llm/cycles_to_analyze.txt
+results_root: test_runs/cases/ok_smoke_openhands_resume_llm/results
+experiment_id: sim_ok_smoke_resume_openhands_llm
 
 policy:
   delete_refactor_branches_after_metrics: true

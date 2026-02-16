@@ -29,6 +29,48 @@ def read_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+# ---------------- Resume / skipping ----------------
+
+def _maybe_skip_completed_phase(
+    *,
+    branch_results_dir: Path,
+    phase: str,
+    validate_unit_inputs,
+    validate_unit_outputs,
+    unit_run,
+) -> bool:
+    """
+    Skip rerun if phase already completed successfully
+    and inputs/outputs still validate.
+    """
+    status_path = branch_results_dir / f"status_{phase}.json"
+
+    if not status_path.exists():
+        return False
+
+    try:
+        status = read_json(status_path)
+    except Exception:
+        return False
+
+    if str(status.get("outcome", "")).strip() != "ok":
+        return False
+
+    # Re-check inputs/outputs
+    in_outcome, _, _ = validate_unit_inputs(unit_run)
+    if in_outcome != "ok":
+        return False
+
+    out_outcome, _, _ = validate_unit_outputs(unit_run)
+    if out_outcome != "ok":
+        return False
+
+    print(f"[resume] Skipping {unit_run.repo_spec.repo}:{unit_run.refactor_branch} phase={phase}")
+    return True
+
+
+# ---------------- Branch naming ----------------
+
 def sanitize_git_branch_name(candidate: str) -> str:
     candidate = candidate.strip().replace(" ", "-")
     candidate = re.sub(r"[^A-Za-z0-9._/-]+", "-", candidate)
@@ -47,6 +89,8 @@ def results_dir_for_branch(results_root: Path, repo_name: str, branch_name: str)
     return results_root / repo_name / "branches" / branch_name
 
 
+# ---------------- Subprocess ----------------
+
 def run_subprocess_command(
     command: List[str],
     *,
@@ -61,6 +105,8 @@ def run_subprocess_command(
     return int(process.returncode)
 
 
+# ---------------- LLM env ----------------
+
 def make_llm_environment(pipeline_config) -> Dict[str, str]:
     base_url = pipeline_config.llm.base_url.rstrip("/")
     if not base_url.endswith("/v1"):
@@ -68,17 +114,79 @@ def make_llm_environment(pipeline_config) -> Dict[str, str]:
             f"llm.base_url must end with '/v1' (got: {pipeline_config.llm.base_url}). "
             "Example: http://host.docker.internal:8012/v1"
         )
+
+    # REQUIRED: no default, no backwards-compat
+    if not hasattr(pipeline_config.llm, "context_length"):
+        raise ValueError(
+            "Missing required config field: llm.context_length. "
+            "Add it to your pipeline.yaml under llm: { context_length: <int> }"
+        )
+
     return {
         "LLM_BASE_URL": base_url,
         "LLM_URL": f"{base_url}/chat/completions",
         "LLM_MODEL": pipeline_config.llm.model_raw,
         "LLM_API_KEY": pipeline_config.llm.api_key,
+
+        # NEW: explain step reads this
+        "LLM_CONTEXT_LENGTH": str(int(pipeline_config.llm.context_length)),
+
         "OPENHANDS_IMAGE": pipeline_config.openhands.image,
         "RUNTIME_IMAGE": pipeline_config.openhands.runtime_image,
         "MAX_ITERS": str(pipeline_config.openhands.max_iters),
         "COMMIT_MESSAGE": pipeline_config.openhands.commit_message,
     }
 
+
+# ---------------- Branch cleanup helpers ----------------
+
+def _git(repo_dir: Path, args: List[str]) -> subprocess.CompletedProcess:
+    return subprocess.run(
+        ["git", "-C", str(repo_dir)] + args,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+
+
+def maybe_delete_refactor_branch(
+    *,
+    enabled: bool,
+    repo_dir: Path,
+    experiment_id: str,
+    base_branch: str,
+    refactor_branch: str,
+) -> None:
+    if not enabled:
+        return
+
+    prefix = f"atd-{experiment_id}-"
+    if not refactor_branch.startswith(prefix):
+        return
+    if refactor_branch == base_branch:
+        return
+
+    if _git(repo_dir, ["show-ref", "--verify", "--quiet", f"refs/heads/{refactor_branch}"]).returncode != 0:
+        return
+
+    cur = subprocess.run(
+        ["git", "-C", str(repo_dir), "rev-parse", "--abbrev-ref", "HEAD"],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.DEVNULL,
+        text=True,
+    )
+    cur_branch = (cur.stdout or "").strip()
+    if cur_branch == refactor_branch:
+        if _git(repo_dir, ["show-ref", "--verify", "--quiet", f"refs/heads/{base_branch}"]).returncode == 0:
+            _git(repo_dir, ["checkout", "-q", base_branch])
+        else:
+            _git(repo_dir, ["checkout", "-q", "--detach"])
+
+    _git(repo_dir, ["branch", "-D", refactor_branch])
+    _git(repo_dir, ["worktree", "prune"])
+
+
+# ---------------- Status json ----------------
 
 @dataclass(frozen=True)
 class ExperimentUnitInfo:
@@ -90,17 +198,13 @@ class ExperimentUnitInfo:
     mode_id: Optional[str] = None
 
 
-def _status_filename(phase: str, rid: str) -> str:
-    return f"status_{phase}_{rid}.json"
-
-
 def write_phase_status_json(
     *,
     out_dir: Path,
     phase: str,
     rid: str,
     unit: ExperimentUnitInfo,
-    outcome: str,  # "started" | "ok" | "failed" | "skipped"
+    outcome: str,  # "started" | "ok" | "failed" | "skipped" | "blocked"
     reason: str = "",
     returncode: Optional[int] = None,
     cmd: Optional[List[str]] = None,
@@ -127,8 +231,7 @@ def write_phase_status_json(
         "artifacts": artifacts or {},
     }
     out_dir.mkdir(parents=True, exist_ok=True)
-    write_json(out_dir / _status_filename(phase, rid), payload)
-    write_json(out_dir / f"status_{phase}_latest.json", payload)
+    write_json(out_dir / f"status_{phase}.json", payload)
 
 
 @dataclass(frozen=True)
@@ -146,13 +249,16 @@ class ExperimentUnitRun:
     execution_id: str
 
 
-# Return: ("ok"|"skipped"|"failed", reason, artifacts)
 Decision = Tuple[str, str, Dict[str, str]]
 
 ValidateInputs = Callable[[ExperimentUnitRun], Decision]
 BuildCommand = Callable[[ExperimentUnitRun], List[str]]
 BuildEnvironment = Callable[[ExperimentUnitRun], Optional[Dict[str, str]]]
 ValidateOutputs = Callable[[ExperimentUnitRun], Decision]
+
+
+# Convention: tools that cannot reach the LLM should exit 42.
+LLM_BLOCKED_EXIT_CODE = 42
 
 
 def execute_phase_for_all_experiment_units(
@@ -166,11 +272,6 @@ def execute_phase_for_all_experiment_units(
     build_unit_environment: BuildEnvironment,
     validate_unit_outputs: ValidateOutputs,
 ) -> None:
-    """
-    Simple semantics:
-    - per-unit failures are logged and we continue
-    - only Ctrl+C etc. will stop the run
-    """
     for repo_spec, cycle_spec, mode_spec in experiment_units:
         repo_checkout_dir = (pipeline_config.projects_dir / repo_spec.repo).resolve()
         refactor_branch = make_refactor_branch_name(pipeline_config.experiment_id, mode_spec.id, cycle_spec.cycle_id)
@@ -200,7 +301,16 @@ def execute_phase_for_all_experiment_units(
             execution_id=rid,
         )
 
-        # 1) inputs
+        # Resume support: skip if already completed successfully
+        if _maybe_skip_completed_phase(
+            branch_results_dir=branch_results_dir,
+            phase=phase,
+            validate_unit_inputs=validate_unit_inputs,
+            validate_unit_outputs=validate_unit_outputs,
+            unit_run=unit_run,
+        ):
+            continue
+
         outcome, reason, artifacts = validate_unit_inputs(unit_run)
         if outcome != "ok":
             write_phase_status_json(
@@ -210,13 +320,11 @@ def execute_phase_for_all_experiment_units(
                 unit=unit_info,
                 outcome=outcome,
                 reason=reason,
-                returncode=0 if outcome == "skipped" else 2,
+                returncode=0 if outcome in {"skipped", "blocked"} else 2,
                 artifacts=artifacts,
-                duration_sec=None,
             )
             continue
 
-        # 2) command/env
         try:
             cmd = build_unit_command(unit_run)
             env = build_unit_environment(unit_run)
@@ -229,11 +337,9 @@ def execute_phase_for_all_experiment_units(
                 outcome="failed",
                 reason=f"build error: {exc}",
                 returncode=2,
-                duration_sec=None,
             )
             continue
 
-        # 3) started
         write_phase_status_json(
             out_dir=branch_results_dir,
             phase=phase,
@@ -241,13 +347,26 @@ def execute_phase_for_all_experiment_units(
             unit=unit_info,
             outcome="started",
             cmd=cmd,
-            duration_sec=None,
         )
 
-        # 4) run
         t0 = time.time()
         rc = run_subprocess_command(cmd, cwd=cwd, env=env)
         duration = float(time.time() - t0)
+
+        # Special case: LLM unavailable → blocked (for ANY phase)
+        if rc == LLM_BLOCKED_EXIT_CODE:
+            write_phase_status_json(
+                out_dir=branch_results_dir,
+                phase=phase,
+                rid=rid,
+                unit=unit_info,
+                outcome="blocked",
+                reason="llm_unavailable",
+                returncode=rc,
+                cmd=cmd,
+                duration_sec=duration,
+            )
+            continue
 
         if rc != 0:
             write_phase_status_json(
@@ -263,7 +382,6 @@ def execute_phase_for_all_experiment_units(
             )
             continue
 
-        # 5) outputs
         outcome, reason, artifacts = validate_unit_outputs(unit_run)
         write_phase_status_json(
             out_dir=branch_results_dir,

@@ -133,19 +133,4 @@ else
   python3 "$SUM_PY" "$QC_DIR" "$QC_DIR/metrics.json" || true
 fi
 
-cat > "$OUT_DIR/meta.json" <<JSON
-{
-  "repo": "$(basename "$REPO_DIR")",
-  "branch": "$(printf '%s' "$TARGET_BRANCH")",
-  "baseline_branch": "$(printf '%s' "$BASELINE_BRANCH")",
-  "entry": "$(printf '%s' "$ENTRY")",
-  "language": "$(printf '%s' "$LANGUAGE")",
-  "collected_at_utc": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')",
-  "artifacts": {
-    "dependency_graph": "$(printf '%s' "$GRAPH_JSON")",
-    "scc_report": "$(printf '%s' "$SCC_REPORT")"
-  }
-}
-JSON
-
 echo "✅ Metrics collected: $OUT_DIR"

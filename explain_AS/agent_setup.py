@@ -1,10 +1,11 @@
 import os
 import json
 import time
+import math
 import requests
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional
-from agent_util import clip
+from agent_util import clip_middle, clip
 
 # When false, the system prompt is merged with the user prompt and just given to the LLM as a user prompt
 USE_SYSTEM_PROMPT = False
@@ -38,22 +39,23 @@ AGENT_REPLY_MAX_CHARS = int(os.getenv("AGENT_REPLY_MAX_CHARS", "200000"))
 USER_PREVIEW_MAX_CHARS = int(os.getenv("USER_PREVIEW_MAX_CHARS", "300"))
 SHOW_USER_PREVIEW = os.getenv("SHOW_USER_PREVIEW", "1") == "1"
 
-# If set, we will append JSONL events here (one event per prompt and per reply)
-ATD_TRACE_PATH = os.getenv("ATD_TRACE_PATH", "").strip()
+def _trace_path() -> str:
+    # IMPORTANT: read dynamically (env may be set after import)
+    return (os.getenv("ATD_TRACE_PATH", "") or "").strip()
 
 def _append_trace_event(event: Dict) -> None:
-    if not ATD_TRACE_PATH:
+    path = _trace_path()
+    if not path:
         return
     try:
-        os.makedirs(os.path.dirname(ATD_TRACE_PATH), exist_ok=True)
-        with open(ATD_TRACE_PATH, "a", encoding="utf-8") as f:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "a", encoding="utf-8") as f:
             f.write(json.dumps(event, ensure_ascii=False) + "\n")
     except Exception:
         # Tracing should never break experiments
         pass
 
 def _utc_ts() -> str:
-    # ISO-like, simple, stable
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
 def log_section(title: str, tone: str = "blue"):
@@ -74,14 +76,90 @@ def log_line(text: str, code: str = Ansi.GRAY):
         print(text)
 
 
+# ---------- Context budget helpers ----------
+def _estimate_tokens_from_chars(n_chars: int) -> int:
+    # Conservative-ish rule of thumb: ~3 chars per token in English/code mixes.
+    return int(math.ceil(n_chars / 3.0))
+
+def _estimate_message_tokens(messages: List[Dict[str, str]]) -> int:
+    # Rough estimate: sum content tokens + small overhead per message.
+    overhead_per_msg = 8
+    total_chars = 0
+    for m in messages:
+        total_chars += len(str(m.get("role", ""))) + len(str(m.get("content", "")))
+    return _estimate_tokens_from_chars(total_chars) + overhead_per_msg * len(messages)
+
+def _trim_user_text_to_fit(
+    *,
+    system_prompt: str,
+    user_text: str,
+    use_system_prompt: bool,
+    context_length: int,
+    max_completion_tokens: int,
+    safety_tokens: int = 512,
+) -> str:
+    """
+    Ensure prompt fits: estimated_prompt_tokens + max_completion_tokens + safety <= context_length.
+    If not, clip the user_text in the middle.
+    """
+    if context_length <= 0:
+        raise SystemExit("LLM_CONTEXT_LENGTH must be a positive integer.")
+
+    # Build messages as they will be sent
+    if use_system_prompt and system_prompt:
+        msgs = [{"role": "system", "content": system_prompt}, {"role": "user", "content": user_text}]
+    else:
+        # system prompt is merged into user text by AgentBase.ask
+        msgs = [{"role": "user", "content": user_text}]
+
+    need_budget = max_completion_tokens + safety_tokens
+    prompt_tokens = _estimate_message_tokens(msgs)
+
+    if prompt_tokens + need_budget <= context_length:
+        return user_text
+
+    # How many prompt tokens may we spend?
+    allowed_prompt_tokens = max(1, context_length - need_budget)
+
+    # Convert allowed tokens -> allowed chars (inverse of estimate)
+    allowed_prompt_chars = allowed_prompt_tokens * 4
+
+    # Estimate how many chars are "non-user-content overhead" inside prompt
+    # We’ll just clip user_text to fit inside allowed_prompt_chars total content.
+    # (Simple and effective; we already re-estimate after clip below.)
+    clipped = clip_middle(user_text, max_chars=max(1, allowed_prompt_chars))
+
+    # Final sanity: if still too big, clip harder.
+    for _ in range(3):
+        if use_system_prompt and system_prompt:
+            msgs2 = [{"role": "system", "content": system_prompt}, {"role": "user", "content": clipped}]
+        else:
+            msgs2 = [{"role": "user", "content": clipped}]
+        if _estimate_message_tokens(msgs2) + need_budget <= context_length:
+            return clipped
+        clipped = clip_middle(clipped, max_chars=max(1, int(len(clipped) * 0.8)))
+
+    return clipped
+
+
 # ---------- LLM client ----------
 class LLMClient:
-    def __init__(self, url: str, api_key: str, model: str, temperature: float = 0.2, max_tokens: int = 16384):
+    def __init__(
+        self,
+        url: str,
+        api_key: str,
+        model: str,
+        *,
+        context_length: int,
+        temperature: float = 0.2,
+        max_tokens: int = 16384,
+    ):
         self.url = url
         self.api_key = api_key
         self.model = model
         self.temperature = temperature
         self.max_tokens = max_tokens
+        self.context_length = int(context_length)
 
         self._acc_prompt_tokens: int = 0
         self._acc_completion_tokens: int = 0
@@ -103,6 +181,7 @@ class LLMClient:
             "model": self.model,
             "messages": messages,
             "temperature": self.temperature,
+            "max_tokens": int(self.max_tokens),
         }
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
         r = requests.post(self.url, headers=headers, json=payload, timeout=300)
@@ -145,6 +224,16 @@ class AgentBase:
         if not USE_SYSTEM_PROMPT and self.system_prompt:
             user_text = f"{self.system_prompt}\n\n---------\n\n{user_text}"
 
+        # Enforce context budget BEFORE sending
+        user_text = _trim_user_text_to_fit(
+            system_prompt=self.system_prompt,
+            user_text=user_text,
+            use_system_prompt=bool(USE_SYSTEM_PROMPT),
+            context_length=int(self.client.context_length),
+            max_completion_tokens=int(self.client.max_tokens),
+            safety_tokens=512,
+        )
+
         if SHOW_USER_PREVIEW:
             preview = truncate_for_console(user_text.strip(), USER_PREVIEW_MAX_CHARS)
             log_line(f"▶ {self.name} sending prompt (chars={len(user_text)}):", Ansi.CYAN if PRINT_WITH_COLORS else None)
@@ -152,7 +241,6 @@ class AgentBase:
         else:
             log_line(f"▶ {self.name} sending prompt (chars={len(user_text)})", Ansi.CYAN if PRINT_WITH_COLORS else None)
 
-        # Trace the prompt we *actually* sent (post system-prompt-inlining)
         _append_trace_event({
             "ts_utc": _utc_ts(),
             "agent": self.name,

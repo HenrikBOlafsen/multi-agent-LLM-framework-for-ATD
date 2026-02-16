@@ -2,11 +2,12 @@
 from __future__ import annotations
 
 import argparse
-import json
-import time
 import hashlib
+import json
+import sys
+import time
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from typing import Any, Dict
+from typing import Any, Dict, Set
 
 DEFAULT_REPLY = (
     "You are a refactoring assistant.\n"
@@ -14,16 +15,26 @@ DEFAULT_REPLY = (
     "Reply with a short confirmation that you made no changes.\n"
 )
 
-# IMPORTANT: In smoke-test mode we *do* write a marker file so the pipeline sees a commit.
 FINISH_MESSAGE = "Marker written (commit-smoke-test); no refactor performed."
 
-# Marker edit for commit-smoke-test
 COMMIT_SMOKE_FILE_PATH = "/workspace/ATD_SMOKE_EDIT.txt"
 COMMIT_SMOKE_LINE = "ATD smoke test: touched by fake_llm_server.py to force a commit."
 
-# In-memory per-task state:
-# key -> number of OpenHands tool-call responses we have served so far
 _OPENHANDS_STEP_BY_KEY: Dict[str, int] = {}
+
+# Existing OpenHands failure injection
+_FAIL_AFTER_SESSIONS: int = 0
+_FAIL_TIMES: int = 0
+_FAIL_MODE: str = "http_503"
+_SEEN_OPENHANDS_SESSIONS: Set[str] = set()
+_FAILS_USED: int = 0
+
+# NEW: explain failure injection (non-OpenHands POSTs)
+_FAIL_EXPLAIN_TIMES: int = 0   # 0 = never, -1 = forever, N = fail N times
+_FAIL_EXPLAIN_MODE: str = "http_503"
+
+SERVER_VERSION_STR = "fake-llm/0.11"
+_START_TS = int(time.time())
 
 
 def _read_json(handler: BaseHTTPRequestHandler) -> Dict[str, Any]:
@@ -106,15 +117,6 @@ def _build_finish_tool_call() -> Dict[str, Any]:
 
 
 def _build_execute_bash_append_marker_tool_call() -> Dict[str, Any]:
-    """
-    Smoke-test marker write.
-
-    IMPORTANT: Keep quoting simple and robust:
-    - No nested sh -lc "..."
-    - Use single-quoted literal message
-    - Chain with && so failures propagate
-    """
-    # Note: message has no single quotes; if you ever add them, you'll need escaping.
     cmd = (
         "mkdir -p /workspace && "
         f"printf '%s\\n' '{COMMIT_SMOKE_LINE}' >> '{COMMIT_SMOKE_FILE_PATH}' && "
@@ -134,15 +136,91 @@ def _write_sse(handler: BaseHTTPRequestHandler, obj: Dict[str, Any]) -> None:
     handler.wfile.flush()
 
 
+def _should_fail_openhands_for_session(session_key: str) -> bool:
+    global _FAILS_USED
+
+    if _FAIL_AFTER_SESSIONS <= 0:
+        return False
+
+    is_new = session_key not in _SEEN_OPENHANDS_SESSIONS
+    if is_new:
+        _SEEN_OPENHANDS_SESSIONS.add(session_key)
+
+    session_index = len(_SEEN_OPENHANDS_SESSIONS)  # 1-based
+    if session_index <= _FAIL_AFTER_SESSIONS:
+        return False
+
+    if _FAIL_TIMES == 0:
+        return False
+    if _FAIL_TIMES > 0 and _FAILS_USED >= _FAIL_TIMES:
+        return False
+
+    if is_new:
+        _FAILS_USED += 1
+
+    return True
+
+
+def _fail(handler: BaseHTTPRequestHandler, mode: str) -> None:
+    if mode == "hang":
+        time.sleep(10**9)
+        return
+
+    if mode == "close":
+        try:
+            handler.connection.shutdown(2)
+        except Exception:
+            pass
+        try:
+            handler.connection.close()
+        except Exception:
+            pass
+        return
+
+    # http_503
+    _write_json(
+        handler,
+        503,
+        {"error": {"message": "LLM not responding (injected by fake_llm_server.py)", "type": "service_unavailable"}},
+    )
+
+
+def _should_fail_explain() -> bool:
+    global _FAIL_EXPLAIN_TIMES
+    if _FAIL_EXPLAIN_TIMES == 0:
+        return False
+    if _FAIL_EXPLAIN_TIMES > 0:
+        _FAIL_EXPLAIN_TIMES -= 1
+        return True
+    # -1 or any negative => forever
+    return True
+
+
 class Handler(BaseHTTPRequestHandler):
-    server_version = "fake-llm/0.7"
+    server_version = SERVER_VERSION_STR
 
     def log_message(self, fmt: str, *args: Any) -> None:
-        print("%s - - [%s] %s" % (self.address_string(), self.log_date_time_string(), fmt % args))
+        print("%s - - [%s] %s" % (self.address_string(), self.log_date_time_string(), fmt % args), flush=True)
 
     def do_GET(self) -> None:
         if self.path.rstrip("/") in ("/v1/models", "/models"):
-            _write_json(self, 200, {"object": "list", "data": [{"id": "dummy", "object": "model"}]})
+            _write_json(
+                self,
+                200,
+                {
+                    "object": "list",
+                    "data": [{"id": "dummy", "object": "model"}],
+                    "_fake_llm": {
+                        "server_version": SERVER_VERSION_STR,
+                        "started_at": _START_TS,
+                        "fail_openhands_after_sessions": _FAIL_AFTER_SESSIONS,
+                        "fail_openhands_times": _FAIL_TIMES,
+                        "fail_openhands_mode": _FAIL_MODE,
+                        "fail_explain_times": _FAIL_EXPLAIN_TIMES,
+                        "fail_explain_mode": _FAIL_EXPLAIN_MODE,
+                    },
+                },
+            )
             return
         _write_json(self, 404, {"error": {"message": f"not found: {self.path}"}})
 
@@ -158,8 +236,12 @@ class Handler(BaseHTTPRequestHandler):
 
         if _is_openhands(req):
             key = _openhands_session_key(req)
-            step = int(_OPENHANDS_STEP_BY_KEY.get(key, 0))
 
+            if _should_fail_openhands_for_session(key):
+                _fail(self, _FAIL_MODE)
+                return
+
+            step = int(_OPENHANDS_STEP_BY_KEY.get(key, 0))
             if step <= 0:
                 tool_call = _build_execute_bash_append_marker_tool_call()
                 _OPENHANDS_STEP_BY_KEY[key] = 1
@@ -236,7 +318,11 @@ class Handler(BaseHTTPRequestHandler):
             )
             return
 
-        # Non-tool clients
+        # Non-OpenHands: used by explain phase
+        if _should_fail_explain():
+            _fail(self, _FAIL_EXPLAIN_MODE)
+            return
+
         content = DEFAULT_REPLY
 
         if not stream:
@@ -283,14 +369,53 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.flush()
 
 
+class ReuseHTTPServer(HTTPServer):
+    allow_reuse_address = True
+
+
 def main() -> None:
+    global _FAIL_AFTER_SESSIONS, _FAIL_TIMES, _FAIL_MODE
+    global _FAIL_EXPLAIN_TIMES, _FAIL_EXPLAIN_MODE
+
+    try:
+        sys.stdout.reconfigure(line_buffering=True)
+    except Exception:
+        pass
+
     ap = argparse.ArgumentParser()
     ap.add_argument("--host", default="0.0.0.0")
     ap.add_argument("--port", type=int, default=8012)
+
+    # Existing OpenHands knobs
+    ap.add_argument("--fail_openhands_after_sessions", type=int, default=0)
+    ap.add_argument("--fail_openhands_times", type=int, default=0)
+    ap.add_argument("--fail_openhands_mode", choices=["http_503", "close", "hang"], default="http_503")
+
+    # NEW explain knobs (minimal)
+    ap.add_argument("--fail_explain_times", type=int, default=0, help="0=never, -1=forever, N=fail N non-OpenHands calls")
+    ap.add_argument("--fail_explain_mode", choices=["http_503", "close", "hang"], default="http_503")
+
     args = ap.parse_args()
 
-    httpd = HTTPServer((args.host, args.port), Handler)
-    print(f"Fake LLM listening on http://{args.host}:{args.port} (OpenAI-ish /v1)")
+    _FAIL_AFTER_SESSIONS = int(args.fail_openhands_after_sessions)
+    _FAIL_TIMES = int(args.fail_openhands_times)
+    _FAIL_MODE = str(args.fail_openhands_mode)
+
+    _FAIL_EXPLAIN_TIMES = int(args.fail_explain_times)
+    _FAIL_EXPLAIN_MODE = str(args.fail_explain_mode)
+
+    httpd = ReuseHTTPServer((args.host, args.port), Handler)
+    print(f"Fake LLM listening on http://{args.host}:{args.port} ({SERVER_VERSION_STR})", flush=True)
+    print(
+        "OpenHands failure injection: "
+        f"after_sessions={_FAIL_AFTER_SESSIONS}, times={_FAIL_TIMES}, mode={_FAIL_MODE}",
+        flush=True,
+    )
+    print(
+        "Explain failure injection: "
+        f"times={_FAIL_EXPLAIN_TIMES}, mode={_FAIL_EXPLAIN_MODE}",
+        flush=True,
+    )
     httpd.serve_forever()
 
 
