@@ -115,22 +115,13 @@ def make_llm_environment(pipeline_config) -> Dict[str, str]:
             "Example: http://host.docker.internal:8012/v1"
         )
 
-    # REQUIRED: no default, no backwards-compat
-    if not hasattr(pipeline_config.llm, "context_length"):
-        raise ValueError(
-            "Missing required config field: llm.context_length. "
-            "Add it to your pipeline.yaml under llm: { context_length: <int> }"
-        )
-
     return {
         "LLM_BASE_URL": base_url,
         "LLM_URL": f"{base_url}/chat/completions",
         "LLM_MODEL": pipeline_config.llm.model_raw,
         "LLM_API_KEY": pipeline_config.llm.api_key,
-
-        # NEW: explain step reads this
+        # explain step reads this
         "LLM_CONTEXT_LENGTH": str(int(pipeline_config.llm.context_length)),
-
         "OPENHANDS_IMAGE": pipeline_config.openhands.image,
         "RUNTIME_IMAGE": pipeline_config.openhands.runtime_image,
         "MAX_ITERS": str(pipeline_config.openhands.max_iters),
@@ -271,6 +262,7 @@ def execute_phase_for_all_experiment_units(
     build_unit_command: BuildCommand,
     build_unit_environment: BuildEnvironment,
     validate_unit_outputs: ValidateOutputs,
+    stop_on_llm_blocked: bool = False,
 ) -> None:
     for repo_spec, cycle_spec, mode_spec in experiment_units:
         repo_checkout_dir = (pipeline_config.projects_dir / repo_spec.repo).resolve()
@@ -323,6 +315,11 @@ def execute_phase_for_all_experiment_units(
                 returncode=0 if outcome in {"skipped", "blocked"} else 2,
                 artifacts=artifacts,
             )
+
+            if stop_on_llm_blocked and outcome == "blocked" and reason == "llm_unavailable":
+                print(f"[fail-fast] LLM unavailable during phase={phase}; stopping remaining units.")
+                return
+
             continue
 
         try:
@@ -353,7 +350,6 @@ def execute_phase_for_all_experiment_units(
         rc = run_subprocess_command(cmd, cwd=cwd, env=env)
         duration = float(time.time() - t0)
 
-        # Special case: LLM unavailable → blocked (for ANY phase)
         if rc == LLM_BLOCKED_EXIT_CODE:
             write_phase_status_json(
                 out_dir=branch_results_dir,
@@ -366,6 +362,11 @@ def execute_phase_for_all_experiment_units(
                 cmd=cmd,
                 duration_sec=duration,
             )
+
+            if stop_on_llm_blocked:
+                print(f"[fail-fast] LLM unavailable during phase={phase}; stopping remaining units.")
+                return
+
             continue
 
         if rc != 0:
@@ -395,3 +396,7 @@ def execute_phase_for_all_experiment_units(
             artifacts=artifacts,
             duration_sec=duration,
         )
+
+        if stop_on_llm_blocked and outcome == "blocked" and reason == "llm_unavailable":
+            print(f"[fail-fast] LLM unavailable during phase={phase}; stopping remaining units.")
+            return

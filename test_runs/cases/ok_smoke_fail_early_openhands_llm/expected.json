@@ -1,0 +1,78 @@
+{
+  "modes": ["explain_multiAgent"],
+
+  "baseline": {
+    "nonempty": [
+      "{results_root}/{repo}/branches/{base_branch}/ATD_identification/dependency_graph.json",
+      "{results_root}/{repo}/branches/{base_branch}/ATD_identification/scc_report.json",
+      "{results_root}/{repo}/branches/{base_branch}/code_quality_checks/metrics.json",
+      "{results_root}/{repo}/branches/{base_branch}/status_baseline.json"
+    ],
+    "json_assert": [
+      {
+        "path": "{results_root}/{repo}/branches/{base_branch}/status_baseline.json",
+        "key": "outcome",
+        "equals": "ok"
+      },
+      {
+        "path": "{results_root}/{repo}/branches/{base_branch}/status_baseline.json",
+        "key": "phase",
+        "equals": "baseline"
+      }
+    ]
+  },
+
+  "llm": {
+    "nonempty": [
+      "{results_root}/{repo}/branches/{branch}/status_explain.json",
+      "{results_root}/{repo}/branches/{branch}/explain/prompt.txt",
+      "{results_root}/{repo}/branches/{branch}/explain/llm_usage.json",
+      "{results_root}/{repo}/branches/{branch}/explain/transcript.jsonl",
+
+      "{results_root}/{repo}/branches/{branch}/status_openhands.json",
+      "{results_root}/{repo}/branches/{branch}/openhands/status.json",
+      "{results_root}/{repo}/branches/{branch}/openhands/trajectory.json",
+      "{results_root}/{repo}/branches/{branch}/openhands/git_diff.patch",
+      "{results_root}/{repo}/branches/{branch}/openhands/run.log"
+    ],
+    "json_assert": [
+      {
+        "path": "{results_root}/{repo}/branches/{branch}/status_explain.json",
+        "key": "outcome",
+        "equals": "ok"
+      },
+      {
+        "path": "{results_root}/{repo}/branches/{branch}/status_openhands.json",
+        "key": "outcome",
+        "equals": "ok"
+      },
+      {
+        "path": "{results_root}/{repo}/branches/{branch}/openhands/status.json",
+        "key": "outcome",
+        "in": ["committed", "no_changes"]
+      }
+    ],
+    "git_branch_exists": false
+  },
+
+  "metrics": {
+    "nonempty": [
+      "{results_root}/{repo}/branches/{branch}/status_metrics.json",
+      "{results_root}/{repo}/branches/{branch}/ATD_identification/dependency_graph.json",
+      "{results_root}/{repo}/branches/{branch}/ATD_identification/scc_report.json",
+      "{results_root}/{repo}/branches/{branch}/code_quality_checks/metrics.json"
+    ],
+    "json_assert": [
+      {
+        "path": "{results_root}/{repo}/branches/{branch}/status_metrics.json",
+        "key": "outcome",
+        "in": ["ok", "skipped"]
+      },
+      {
+        "path": "{results_root}/{repo}/branches/{branch}/status_metrics.json",
+        "key": "phase",
+        "equals": "metrics"
+      }
+    ]
+  }
+}

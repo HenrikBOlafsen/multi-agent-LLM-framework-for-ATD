@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Set, Tuple, Any
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 import typer
 
@@ -18,7 +18,6 @@ from .runner import (
     generate_execution_id,
     run_subprocess_command,
     ExperimentUnitInfo,
-    utc_timestamp_now,
     maybe_delete_refactor_branch,
 )
 
@@ -133,10 +132,6 @@ def openhands_output_dir_for_unit_run(unit_run) -> Path:
     return unit_run.branch_results_dir / "openhands"
 
 
-def meta_output_dir_for_unit_run(unit_run) -> Path:
-    return unit_run.branch_results_dir / "meta"
-
-
 def scc_report_path_for_unit_run(pipeline_config: PipelineConfig, unit_run) -> Path:
     return baseline_scc_report_path_for_repo(
         pipeline_config,
@@ -235,6 +230,7 @@ def run_explain_phase(pipeline_config: PipelineConfig, experiment_units: list) -
         build_unit_command=build_unit_command,
         build_unit_environment=build_unit_environment,
         validate_unit_outputs=validate_unit_outputs,
+        stop_on_llm_blocked=True,  # fail-fast only when runner marks llm_unavailable
     )
 
 
@@ -243,7 +239,7 @@ def run_openhands_phase(pipeline_config: PipelineConfig, experiment_units: list)
         prompt_output_path = prompt_text_path_for_unit_run(unit_run)
         if not prompt_output_path.exists() or prompt_output_path.stat().st_size == 0:
             # IMPORTANT: If explain was blocked, OpenHands should be SKIPPED, not FAILED.
-            return ("skipped", f"skipped_missing_explain_prompt", {"prompt": str(prompt_output_path)})
+            return ("skipped", "skipped_missing_explain_prompt", {"prompt": str(prompt_output_path)})
         return ("ok", "", {})
 
     def build_unit_command(unit_run) -> List[str]:
@@ -275,14 +271,18 @@ def run_openhands_phase(pipeline_config: PipelineConfig, experiment_units: list)
 
         status = read_json(status_path)
         oh_outcome = str(status.get("outcome", "")).strip()
+        oh_reason = str(status.get("reason", "")).strip()
+
         artifacts["openhands_outcome"] = oh_outcome
+        artifacts["openhands_reason"] = oh_reason
 
         if oh_outcome in {"committed", "no_changes"}:
             return ("ok", f"openhands_{oh_outcome}", artifacts)
 
         if oh_outcome == "blocked":
-            oh_reason = str(status.get("reason", "")).strip()
-            artifacts["openhands_reason"] = oh_reason
+            # IMPORTANT: strict classification; no fuzzy matching.
+            if oh_reason == "llm_unavailable":
+                return ("blocked", "llm_unavailable", artifacts)
             return ("blocked", f"openhands_blocked_{oh_reason or 'unknown'}", artifacts)
 
         return ("failed", f"openhands failed: {oh_outcome}", artifacts)
@@ -296,6 +296,7 @@ def run_openhands_phase(pipeline_config: PipelineConfig, experiment_units: list)
         build_unit_command=build_unit_command,
         build_unit_environment=build_unit_environment,
         validate_unit_outputs=validate_unit_outputs,
+        stop_on_llm_blocked=True,
     )
 
 

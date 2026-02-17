@@ -14,10 +14,14 @@ Resume smoke testing helpers:
   - --assert-resume <snapshot_path>
   - --assert-has-blocked
       Assert that at least one unit is blocked due to LLM unavailability.
+  - --assert-has-midrun-edit
+      Assert that at least one OpenHands run performed the "edit" tool call,
+      by checking result artifacts (run.log or git_diff.patch).
+  - --assert-fail-fast-phase <phase>
+      Assert that fail-fast stopped iteration after the first blocked unit for that phase.
 
-Blocked now means (rigorous, no heuristics):
-  - status_explain.json or status_openhands.json has outcome="blocked"
-    (optionally reason="llm_unavailable" if you want to enforce that)
+Blocked means:
+  - status_<phase>.json has outcome="blocked"
 """
 
 from __future__ import annotations
@@ -77,6 +81,15 @@ def mtime_or_none(p: Path) -> Optional[float]:
         return p.stat().st_mtime
     except Exception:
         return None
+
+
+def read_text_safe(p: Path) -> str:
+    try:
+        if not p.exists() or p.stat().st_size == 0:
+            return ""
+        return p.read_text(encoding="utf-8", errors="ignore")
+    except Exception:
+        return ""
 
 
 # ------------------------------------------------------------
@@ -236,13 +249,10 @@ def apply_block(block: Dict, ctx: Dict, label: str) -> None:
 
 
 # ------------------------------------------------------------
-# Status helpers (simplified)
+# Status helpers
 # ------------------------------------------------------------
 
 def read_status(path: Path) -> Tuple[Optional[str], Optional[str]]:
-    """
-    Returns (outcome, reason) from a status_*.json file if possible.
-    """
     data = safe_load_json(path)
     if not isinstance(data, dict):
         return (None, None)
@@ -269,7 +279,7 @@ def is_openhands_success(outcome: Optional[str]) -> bool:
 
 
 # ------------------------------------------------------------
-# Snapshot / Resume helpers (simplified)
+# Snapshot / Resume helpers
 # ------------------------------------------------------------
 
 def unit_key(repo: str, base_branch: str, cycle_id: str, mode: str, branch: str) -> str:
@@ -306,7 +316,11 @@ def write_snapshot(out_path: Path, cfg: Dict[str, Any], exp: Dict[str, Any]) -> 
             oh_phase_out, oh_phase_reason = read_status(p_openhands)
 
             oh_data = safe_load_json(p_oh_status)
-            oh_outcome = str(oh_data.get("outcome")) if isinstance(oh_data, dict) and oh_data.get("outcome") is not None else None
+            oh_outcome = (
+                str(oh_data.get("outcome"))
+                if isinstance(oh_data, dict) and oh_data.get("outcome") is not None
+                else None
+            )
 
             snap["units"][unit_key(c["repo"], c["base_branch"], c["cycle_id"], mode, branch)] = {
                 "repo": c["repo"],
@@ -337,9 +351,6 @@ def write_snapshot(out_path: Path, cfg: Dict[str, Any], exp: Dict[str, Any]) -> 
 
 
 def assert_has_blocked(case_dir: Path, cfg: Dict[str, Any], exp: Dict[str, Any]) -> None:
-    """
-    Assert at least one unit is blocked (now strict: pipeline status says blocked).
-    """
     results_root = Path(cfg["results_root"]).resolve()
     cycles_file = Path(cfg["cycles_file"]).resolve()
     experiment_id = str(cfg["experiment_id"])
@@ -372,6 +383,108 @@ def assert_has_blocked(case_dir: Path, cfg: Dict[str, Any], exp: Dict[str, Any])
     print("✅ found blocked unit(s):")
     for x in found:
         print(" - " + x)
+
+
+def assert_has_midrun_edit(case_dir: Path, cfg: Dict[str, Any], exp: Dict[str, Any]) -> None:
+    """
+    Verify OpenHands got far enough to run the marker-writing tool call.
+    We check result artifacts (not worktrees):
+      - openhands/run.log contains marker filenames OR
+      - openhands/git_diff.patch contains marker filenames
+    """
+    results_root = Path(cfg["results_root"]).resolve()
+    cycles_file = Path(cfg["cycles_file"]).resolve()
+    experiment_id = str(cfg["experiment_id"])
+    cycles = read_cycles(cycles_file)
+
+    modes = exp.get("modes")
+    if not isinstance(modes, list) or not modes:
+        die("expected.json must contain modes: []")
+
+    needle1 = "_smoke_midrun_edit_marker.txt"
+    needle2 = "ATD_SMOKE_EDIT.txt"
+
+    hits: List[str] = []
+    for c in cycles:
+        for mode in modes:
+            branch = make_branch(experiment_id, mode, c["cycle_id"])
+            base = results_root / c["repo"] / "branches" / branch
+            p_log = base / "openhands" / "run.log"
+            p_patch = base / "openhands" / "git_diff.patch"
+
+            log_txt = read_text_safe(p_log)
+            patch_txt = read_text_safe(p_patch)
+
+            if (needle1 in log_txt and needle2 in log_txt) or (needle1 in patch_txt and needle2 in patch_txt):
+                hits.append(f"{c['repo']} {mode} {c['cycle_id']}: {p_log if p_log.exists() else p_patch}")
+
+    if not hits:
+        die(
+            "Expected mid-run OpenHands edit evidence, but found none.\n"
+            f"Looked for both '{needle1}' and '{needle2}' in openhands/run.log or openhands/git_diff.patch"
+        )
+
+    print("✅ found mid-run edit evidence:")
+    for x in hits:
+        print(" - " + x)
+
+
+def assert_fail_fast_phase(case_dir: Path, cfg: Dict[str, Any], exp: Dict[str, Any], phase: str) -> None:
+    """
+    Fail-fast means: after the first blocked unit in a phase, the pipeline should stop
+    attempting remaining units for that phase (so later units shouldn't have status_<phase>.json written).
+    """
+    results_root = Path(cfg["results_root"]).resolve()
+    cycles_file = Path(cfg["cycles_file"]).resolve()
+    experiment_id = str(cfg["experiment_id"])
+    cycles = read_cycles(cycles_file)
+
+    modes = exp.get("modes")
+    if not isinstance(modes, list) or not modes:
+        die("expected.json must contain modes: []")
+
+    status_name = f"status_{phase}.json"
+    statuses: List[Tuple[int, str, Path, Optional[str], Optional[str]]] = []
+
+    idx = 0
+    for c in cycles:
+        for mode in modes:
+            branch = make_branch(experiment_id, mode, c["cycle_id"])
+            base = results_root / c["repo"] / "branches" / branch
+            p = base / status_name
+            out, rea = read_status(p)
+            statuses.append((idx, f"{c['repo']} {mode} {c['cycle_id']}", p, out, rea))
+            idx += 1
+
+    first_blocked_idx: Optional[int] = None
+    first_blocked_label: Optional[str] = None
+
+    for i, label, p, out, rea in statuses:
+        if is_blocked(out):
+            first_blocked_idx = i
+            first_blocked_label = f"{label} ({out}/{rea})"
+            break
+
+    if first_blocked_idx is None:
+        die(f"Expected at least one blocked unit for phase={phase}, but found none.")
+
+    # After first blocked, later statuses should NOT exist (or be empty)
+    bad: List[str] = []
+    for i, label, p, out, rea in statuses:
+        if i <= first_blocked_idx:
+            continue
+        if p.exists() and p.stat().st_size > 0:
+            # If the pipeline proceeded, we'd see outcome values
+            bad.append(f"unit index {i} has {status_name} written: {label} ({out}/{rea}) at {p}")
+
+    if bad:
+        die(
+            f"Fail-fast assertion failed for phase={phase}.\n"
+            f"First blocked at index={first_blocked_idx}: {first_blocked_label}\n"
+            "But later units still wrote status files:\n" + "\n".join(" - " + x for x in bad)
+        )
+
+    print(f"✅ fail-fast OK for phase={phase} (first blocked index={first_blocked_idx})")
 
 
 def assert_resume(snapshot_path: Path, cfg: Dict[str, Any], exp: Dict[str, Any]) -> None:
@@ -428,7 +541,11 @@ def assert_resume(snapshot_path: Path, cfg: Dict[str, Any], exp: Dict[str, Any])
         c_oh_phase_out, c_oh_phase_reason = read_status(p_openhands)
 
         c_oh_data = safe_load_json(p_oh_status)
-        c_oh_outcome = str(c_oh_data.get("outcome")) if isinstance(c_oh_data, dict) and c_oh_data.get("outcome") is not None else None
+        c_oh_outcome = (
+            str(c_oh_data.get("outcome"))
+            if isinstance(c_oh_data, dict) and c_oh_data.get("outcome") is not None
+            else None
+        )
 
         c_m_ex = mtime_or_none(p_explain)
         c_m_ohp = mtime_or_none(p_openhands)
@@ -485,6 +602,8 @@ def main() -> None:
     ap.add_argument("--write-snapshot", dest="write_snapshot", default=None)
     ap.add_argument("--assert-resume", dest="assert_resume", default=None)
     ap.add_argument("--assert-has-blocked", dest="assert_has_blocked", action="store_true")
+    ap.add_argument("--assert-has-midrun-edit", dest="assert_has_midrun_edit", action="store_true")
+    ap.add_argument("--assert-fail-fast-phase", dest="assert_fail_fast_phase", default=None)
     args = ap.parse_args()
 
     case_dir = Path(args.case_dir).resolve()
@@ -501,6 +620,14 @@ def main() -> None:
 
     if args.assert_has_blocked:
         assert_has_blocked(case_dir, cfg, exp)
+        return
+
+    if args.assert_has_midrun_edit:
+        assert_has_midrun_edit(case_dir, cfg, exp)
+        return
+
+    if args.assert_fail_fast_phase:
+        assert_fail_fast_phase(case_dir, cfg, exp, args.assert_fail_fast_phase.strip())
         return
 
     if args.write_snapshot:

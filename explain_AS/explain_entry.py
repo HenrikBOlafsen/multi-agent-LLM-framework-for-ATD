@@ -79,7 +79,11 @@ def main() -> None:
     report_path = Path(args.scc_report).resolve()
     out_prompt = Path(args.out_prompt).resolve()
 
-    catalog_path = Path(args.cycle_catalog).resolve() if args.cycle_catalog else (report_path.parent / "cycle_catalog.json").resolve()
+    catalog_path = (
+        Path(args.cycle_catalog).resolve()
+        if args.cycle_catalog
+        else (report_path.parent / "cycle_catalog.json").resolve()
+    )
     if not catalog_path.exists():
         raise SystemExit(f"Missing cycle_catalog.json at: {catalog_path}")
 
@@ -144,21 +148,21 @@ def main() -> None:
         print(final)
 
     except requests.HTTPError as e:
-        status = getattr(e.response, "status_code", None)
+        status = getattr(getattr(e, "response", None), "status_code", None)
 
-        # Context / request too large: FAIL (not "blocked")
+        # "Request rejected" class: includes token/context too large.
         if status in (400, 413, 422):
             raise SystemExit(1)
 
-        # Permanent client errors → fail
+        # misconfig / auth / wrong endpoint -> fail
         if status in (401, 403, 404):
             raise SystemExit(1)
 
-        # Everything else → blocked
+        # anything else (usually 5xx) -> blocked
         raise SystemExit(LLM_BLOCKED_EXIT_CODE)
 
     except requests.RequestException:
-        # timeout, connection, DNS, etc.
+        # timeout, connection refused, DNS, etc. => blocked
         raise SystemExit(LLM_BLOCKED_EXIT_CODE)
 
 

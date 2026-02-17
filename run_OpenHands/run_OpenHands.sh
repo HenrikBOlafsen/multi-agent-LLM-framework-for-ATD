@@ -48,6 +48,10 @@ GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL:-atd-bot@local}"
 [ -n "$LLM_MODEL" ] || { echo "LLM_MODEL is required"; exit 7; }
 [ -n "$OPENHANDS_IMAGE" ] || { echo "OPENHANDS_IMAGE is empty"; exit 8; }
 
+# Host UID/GID (the user running this script inside the devcontainer)
+HOST_UID="$(id -u)"
+HOST_GID="$(id -g)"
+
 ts() { date -Iseconds; }
 abs() { python3 -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$1"; }
 
@@ -92,10 +96,36 @@ write_status_json () {
   } > "$STATUS_PATH"
 }
 
-# Worktree setup
+to_host_path () {
+  local p="$1"
+  case "$p" in
+    /workspace/*) printf "%s/%s" "$HOST_PWD" "${p#/workspace/}" ;;
+    /workspace)   printf "%s" "$HOST_PWD" ;;
+    *) echo "ERROR: path is not under /workspace: $p" >&2; exit 11 ;;
+  esac
+}
+
+normalize_ownership_hostpath () {
+  local host_path="$1"
+  [[ -n "${host_path:-}" ]] || return 0
+  docker run --rm \
+    -v "$host_path:/target:rw" \
+    alpine:3.20 \
+    sh -lc "chown -R ${HOST_UID}:${HOST_GID} /target >/dev/null 2>&1 || true"
+}
+
+ensure_worktree_dir_writable () {
+  local repo_host
+  repo_host="$(to_host_path "$REPO_DIR")"
+  docker run --rm \
+    -v "$repo_host:/repo:rw" \
+    alpine:3.20 \
+    sh -lc "mkdir -p /repo/.atd_worktrees && chown -R ${HOST_UID}:${HOST_GID} /repo/.atd_worktrees >/dev/null 2>&1 || true"
+}
+
 WT_ROOT="$REPO_DIR/.atd_worktrees"
 WT_PATH="$WT_ROOT/$NEW_BRANCH"
-mkdir -p "$WT_ROOT"
+mkdir -p "$WT_ROOT" || true
 
 cleanup_worktree () {
   git -C "$REPO_DIR" worktree remove --force "$WT_PATH" >/dev/null 2>&1 || true
@@ -110,42 +140,88 @@ cleanup_openhands_store () {
   rm -rf "$OUT_DIR/openhands_store" >/dev/null 2>&1 || true
 }
 
-trap 'cleanup_openhands_store; cleanup_worktree' EXIT
+WT_HOST=""
+OUT_DIR_HOST=""
+PROMPT_DIR_HOST=""
+POST_RUN_NORMALIZED="0"
+
+final_cleanup () {
+  local rc="${1:-0}"
+
+  if [[ "$POST_RUN_NORMALIZED" != "1" ]]; then
+    [[ -n "${WT_HOST:-}" ]] && normalize_ownership_hostpath "$WT_HOST"
+    [[ -n "${OUT_DIR_HOST:-}" ]] && normalize_ownership_hostpath "$OUT_DIR_HOST"
+  fi
+
+  cleanup_openhands_store
+  cleanup_worktree
+
+  exit "$rc"
+}
+trap 'final_cleanup $?' EXIT
 
 git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$BASE_BRANCH" || {
   write_status_json "config_error" "base_branch_missing_locally"
   exit 10
 }
 
-# No-reuse policy
+OUT_DIR_HOST="$(to_host_path "$OUT_DIR")"
+PROMPT_DIR_HOST="$(to_host_path "$PROMPT_DIR")"
+
+normalize_ownership_hostpath "$OUT_DIR_HOST"
+ensure_worktree_dir_writable
+
 if [[ -e "$WT_PATH" ]]; then
   cleanup_worktree
 fi
 
-echo "Creating worktree: $WT_PATH"
-if git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$NEW_BRANCH"; then
-  git -C "$REPO_DIR" worktree add "$WT_PATH" "$NEW_BRANCH" >/dev/null
-else
-  git -C "$REPO_DIR" worktree add -b "$NEW_BRANCH" "$WT_PATH" "$BASE_BRANCH" >/dev/null
+cur_branch="$(git -C "$REPO_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")"
+if [[ "$cur_branch" == "$NEW_BRANCH" ]]; then
+  if git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$BASE_BRANCH"; then
+    git -C "$REPO_DIR" checkout -q "$BASE_BRANCH" >/dev/null 2>&1 || true
+  else
+    git -C "$REPO_DIR" checkout -q --detach >/dev/null 2>&1 || true
+  fi
 fi
+
+echo "Creating worktree: $WT_PATH"
+
+create_worktree_once () {
+  if git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$NEW_BRANCH"; then
+    git -C "$REPO_DIR" worktree add "$WT_PATH" "$NEW_BRANCH" >/dev/null
+  else
+    git -C "$REPO_DIR" worktree add -b "$NEW_BRANCH" "$WT_PATH" "$BASE_BRANCH" >/dev/null
+  fi
+}
+
+set +e
+create_worktree_once
+WT_RC=$?
+set -e
+
+if [[ "$WT_RC" -ne 0 ]]; then
+  ensure_worktree_dir_writable
+
+  set +e
+  create_worktree_once
+  WT_RC2=$?
+  set -e
+
+  if [[ "$WT_RC2" -ne 0 ]]; then
+    : > "$DIFF_PATH" || true
+    touch "$RUN_LOG" >/dev/null 2>&1 || true
+    write_status_json "failed" "worktree_create_failed"
+    exit 20
+  fi
+fi
+
+WT_HOST="$(to_host_path "$WT_PATH")"
+normalize_ownership_hostpath "$WT_HOST"
 
 pushd "$WT_PATH" >/dev/null
 git reset --hard -q HEAD
 git clean -fdx >/dev/null 2>&1 || true
 popd >/dev/null
-
-to_host_path () {
-  local p="$1"
-  case "$p" in
-    /workspace/*) printf "%s/%s" "$HOST_PWD" "${p#/workspace/}" ;;
-    /workspace)   printf "%s" "$HOST_PWD" ;;
-    *) echo "ERROR: path is not under /workspace: $p" >&2; exit 11 ;;
-  esac
-}
-
-WT_HOST="$(to_host_path "$WT_PATH")"
-OUT_DIR_HOST="$(to_host_path "$OUT_DIR")"
-PROMPT_DIR_HOST="$(to_host_path "$PROMPT_DIR")"
 
 TTY_FLAGS=()
 if [ -t 1 ] && [ -t 0 ]; then
@@ -174,12 +250,11 @@ run_docker() {
     -v "$OUT_DIR_HOST:/logs:rw"
     -v "$PROMPT_DIR_HOST:/prompts:ro"
 
-    # IMPORTANT: keep file store inside /logs so jwt secret doesn't try "/.openhands"
     -e FILE_STORE=local
     -e FILE_STORE_PATH=/logs/openhands_store
 
     -e SANDBOX_RUNTIME_CONTAINER_IMAGE="$RUNTIME_IMAGE"
-    -e SANDBOX_USER_ID="$(id -u)"
+    -e SANDBOX_USER_ID="$HOST_UID"
     -e SANDBOX_VOLUMES="$WT_HOST:/workspace:rw,$OUT_DIR_HOST:/logs:rw"
     -e LOG_ALL_EVENTS=true
     -e SAVE_TRAJECTORY_PATH="/logs/trajectory.json"
@@ -210,21 +285,23 @@ else
   RUN_EXIT=$?
 fi
 
+normalize_ownership_hostpath "$WT_HOST"
+normalize_ownership_hostpath "$OUT_DIR_HOST"
+POST_RUN_NORMALIZED="1"
+
 if [[ "$RUN_EXIT" -eq 124 ]]; then
   : > "$DIFF_PATH" || true
   write_status_json "blocked" "walltime_timeout"
   exit 42
 fi
 
-# LLM unavailable heuristic (must catch litellm + OpenAI client variants too)
-if grep -Eqi \
-  "connection refused|connect\(\) failed|timed out|read timed out|502 bad gateway|503 service unavailable|504 gateway timeout|connection reset by peer|service_unavailable|serviceunavailableerror|error code: 503|llm not responding" \
-  "$RUN_LOG"; then
+# Minimal, non-guessy LLM-unavailable detection:
+# You said this signature is specific to "LLM not responding" in your setup.
+if grep -Fqi "OpenAIException - Connection error" "$RUN_LOG"; then
   : > "$DIFF_PATH" || true
   write_status_json "blocked" "llm_unavailable"
   exit 42
 fi
-
 
 if [[ "$RUN_EXIT" -ne 0 ]]; then
   : > "$DIFF_PATH" || true
@@ -232,7 +309,6 @@ if [[ "$RUN_EXIT" -ne 0 ]]; then
   exit 20
 fi
 
-# Post-run: commit + diff patch
 pushd "$WT_PATH" >/dev/null
 git config user.name "$GIT_AUTHOR_NAME"
 git config user.email "$GIT_AUTHOR_EMAIL"

@@ -16,10 +16,12 @@ output_ATD_identification/*
 reports/*
 results/*
 results_all_backup/*
-test_runs/cases/ok_smoke_realish/results/*
 test_runs/cases/ok_smoke_realish/results_old/*
-test_runs/cases/ok_smoke_resume_openhands_llm/results/*
-test_runs/cases/ok_smoke_resume_explain_llm/results/*
+test_runs/cases/**/results/
+# Ignore these per-case files anywhere under test_runs/cases/
+test_runs/cases/**/snapshot.json
+test_runs/cases/**/models.json
+test_runs/cases/**/fake_llm.log
 openhands_logs/*
 results_clean_baseline/*
 all_experiment_results/*

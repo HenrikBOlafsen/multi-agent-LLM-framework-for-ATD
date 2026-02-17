@@ -1,3 +1,4 @@
+### test_runs/cases/ok_smoke_realish/run.sh
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -6,72 +7,89 @@ cd "$ROOT"
 
 CASE="test_runs/cases/ok_smoke_realish"
 CFG="$CASE/pipeline.yaml"
-
 RESULTS_DIR="$CASE/results"
+PIDFILE="$CASE/fake_llm.pid"
 
 FAKE_PORT=8012
 FAKE_HOST="0.0.0.0"
+
+stop_fake_llm() {
+  if [[ -f "$PIDFILE" ]]; then
+    old_pid="$(cat "$PIDFILE" || true)"
+    if [[ -n "${old_pid:-}" ]] && kill -0 "$old_pid" >/dev/null 2>&1; then
+      kill "$old_pid" >/dev/null 2>&1 || true
+      sleep 0.2
+      kill -9 "$old_pid" >/dev/null 2>&1 || true
+    fi
+    rm -f "$PIDFILE"
+  fi
+}
+
+start_fake_llm() {
+  local extra_args=("$@")
+  stop_fake_llm
+
+  python3 -u test_runs/fake_llm_server.py \
+    --host "$FAKE_HOST" \
+    --port "$FAKE_PORT" \
+    "${extra_args[@]}" \
+    > "$CASE/fake_llm.log" 2>&1 &
+
+  local pid=$!
+  echo "$pid" > "$PIDFILE"
+
+  # Wait until it responds and identifies as fake.
+  # NOTE: We probe 127.0.0.1 because both explain_AS and OpenHands are configured
+  # to use 127.0.0.1 (OpenHands via ATD_OPENHANDS_NETWORK_CONTAINER namespace share).
+  for i in {1..120}; do
+    if ! kill -0 "$pid" >/dev/null 2>&1; then
+      echo "ERROR: fake LLM crashed. Log:"
+      sed -n '1,200p' "$CASE/fake_llm.log" || true
+      exit 1
+    fi
+
+    if curl -fsS "http://127.0.0.1:$FAKE_PORT/v1/models" -o "$CASE/models.json" >/dev/null 2>&1; then
+      if grep -q '"_fake_llm"[[:space:]]*:[[:space:]]*true' "$CASE/models.json"; then
+        return 0
+      fi
+    fi
+    sleep 0.1
+  done
+
+  echo "ERROR: fake LLM did not become ready / did not look like fake_llm_server.py"
+  echo "--- fake_llm.log head ---"
+  sed -n '1,160p' "$CASE/fake_llm.log" || true
+  echo "--- /v1/models response ---"
+  cat "$CASE/models.json" 2>/dev/null || true
+  exit 1
+}
+
+cleanup() {
+  echo "== Stopping fake LLM =="
+  stop_fake_llm
+}
+trap cleanup EXIT
 
 echo "== Cleaning old results =="
 [[ "$RESULTS_DIR" == *"test_runs/cases/"* ]] || {
   echo "Refusing to delete unsafe path: $RESULTS_DIR"
   exit 1
 }
+# Repair ownership in case previous run died mid-OpenHands (reboot, crash, ctrl-c)
+docker run --rm \
+  -v "$ROOT/$RESULTS_DIR:/target:rw" \
+  alpine:3.20 \
+  sh -lc "chown -R $(id -u):$(id -g) /target >/dev/null 2>&1 || true"
 rm -rf "$RESULTS_DIR"
 mkdir -p "$RESULTS_DIR"
 
 # explain_AS runs inside this devcontainer:
 export ATD_LLM_URL="http://127.0.0.1:$FAKE_PORT/v1/chat/completions"
-
-# OpenHands runs inside a docker container; it must reach the host running fake_llm_server.py.
-# No `ip` binary here, so read default gateway from /proc/net/route (hex -> dotted).
-get_docker_gateway() {
-  local gw_hex
-  gw_hex="$(awk '$2=="00000000" {print $3; exit}' /proc/net/route 2>/dev/null || true)"
-  if [[ -n "${gw_hex:-}" && "$gw_hex" != "00000000" ]]; then
-    python3 - <<'PY' "$gw_hex"
-import sys, socket, struct
-h = sys.argv[1].strip()
-gw = socket.inet_ntoa(struct.pack("<L", int(h, 16)))
-print(gw)
-PY
-    return 0
-  fi
-  # common default for docker0 on Linux
-  echo "172.17.0.1"
-}
-
-DOCKER_GATEWAY="$(get_docker_gateway)"
-export ATD_LLM_BASE_URL="http://$DOCKER_GATEWAY:$FAKE_PORT/v1"
-
-echo "== Using OpenHands host gateway: $DOCKER_GATEWAY =="
+# OpenHands will also reach it on 127.0.0.1 because we share network namespace below:
+export ATD_LLM_BASE_URL="http://127.0.0.1:$FAKE_PORT/v1"
 
 echo "== Starting fake LLM =="
-
-# Kill old server if somehow still running
-pkill -f "fake_llm_server.py.*--port[[:space:]]*$FAKE_PORT" >/dev/null 2>&1 || true
-pkill -f "fake_llm_server.py.*$FAKE_PORT" >/dev/null 2>&1 || true
-
-python3 test_runs/fake_llm_server.py \
-  --host "$FAKE_HOST" \
-  --port "$FAKE_PORT" \
-  > "$CASE/fake_llm.log" 2>&1 &
-
-FAKE_PID=$!
-
-cleanup() {
-  echo "== Stopping fake LLM =="
-  kill "$FAKE_PID" >/dev/null 2>&1 || true
-}
-trap cleanup EXIT
-
-# Wait until it responds
-for i in {1..50}; do
-  if curl -fsS "http://127.0.0.1:$FAKE_PORT/v1/models" >/dev/null 2>&1; then
-    break
-  fi
-  sleep 0.1
-done
+start_fake_llm
 
 echo "== Running baseline =="
 scripts/run_baseline.sh -c "$CFG"
@@ -84,14 +102,10 @@ scripts/build_cycles_to_analyze.sh -c "$CFG" \
 echo "== Running LLM =="
 # Make OpenHands share the devcontainer network namespace, so 127.0.0.1 works inside OpenHands too.
 export ATD_OPENHANDS_NETWORK_CONTAINER="${HOSTNAME}"
-scripts/run_llm.sh \
-  -c "$CFG" \
-  --modes explain_multiAgent
+scripts/run_llm.sh -c "$CFG" --modes explain_multiAgent
 
 echo "== Running metrics =="
-scripts/run_metrics.sh \
-  -c "$CFG" \
-  --modes explain_multiAgent
+scripts/run_metrics.sh -c "$CFG" --modes explain_multiAgent
 
 echo "== Checking =="
 python3 test_runs/check_case.py "$CASE"

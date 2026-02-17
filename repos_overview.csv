@@ -1,8 +1,0 @@
-id,label,loc_k,modules,deps,sccs,nodes_in_cycles,edges_in_cycles,loc_in_cycles_k,pct_modules_in_cycles,pct_deps_in_cycles,max_scc_size,avg_scc_size,rep_cycle_len_med
-P1,Message Queue Library,18.2,79,374,1,6,9,2.8,7.6,2.4,6,6.0,
-P2,CLI Framework,8.9,17,63,3,9,12,5.9,52.9,19.0,5,3.0,
-P3,Web Server Utility,19.4,57,240,2,8,14,3.7,14.0,5.8,6,4.0,
-P4,Terminal UI Library,23.5,78,424,1,36,153,12.6,46.2,36.1,36,36.0,
-P5,Template Engine,11.7,25,99,1,17,48,10.0,68.0,48.5,17,17.0,
-P6,Task Queue Framework,35.4,164,864,1,2,2,1.6,1.2,0.2,2,2.0,
-P7,Parsing Toolkit,8.0,36,162,1,2,2,0.8,5.6,1.2,2,2.0,

@@ -182,11 +182,23 @@ These artifacts make it possible to inspect, reproduce, and audit each individua
 
 ---
 
-## Smoke Testing with a Fake LLM
+## Smoke Testing and Resume Validation
 
-For testing and validation, the repository includes a fake OpenAI-compatible server that produces deterministic edits and immediate termination.
+The repository includes an automated smoke test suite for validating fault tolerance and resume behavior under realistic LLM failure conditions.
 
-This mode can be used to verify the correctness of the pipeline infrastructure, Git handling, and metrics collection without relying on a real LLM endpoint.
+These tests use a controlled fake OpenAI-compatible server to simulate LLM unavailability and verify that:
+
+* Incomplete phases are detected
+* Partial results are discarded safely
+* Completed work is not recomputed
+* Interrupted experiments can be resumed correctly
+
+Detailed documentation and test scenarios are provided in:
+
+```
+test_runs/README.md
+```
+
 
 ---
 

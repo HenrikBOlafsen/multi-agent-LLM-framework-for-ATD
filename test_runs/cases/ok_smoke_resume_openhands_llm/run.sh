@@ -1,3 +1,4 @@
+### test_runs/cases/ok_smoke_resume_openhands_llm/run.sh
 #!/usr/bin/env bash
 set -euo pipefail
 
@@ -35,23 +36,18 @@ start_fake_llm() {
     "${extra_args[@]}" \
     > "$CASE/fake_llm.log" 2>&1 &
 
-  FAKE_PID=$!
-  echo "$FAKE_PID" > "$PIDFILE"
+  local pid=$!
+  echo "$pid" > "$PIDFILE"
 
   for i in {1..120}; do
-    if ! kill -0 "$FAKE_PID" >/dev/null 2>&1; then
+    if ! kill -0 "$pid" >/dev/null 2>&1; then
       echo "ERROR: fake LLM crashed. Log:"
       sed -n '1,200p' "$CASE/fake_llm.log" || true
       exit 1
     fi
 
     if curl -fsS "http://127.0.0.1:$FAKE_PORT/v1/models" -o "$CASE/models.json" >/dev/null 2>&1; then
-      if python3 - <<'PY' "$CASE/models.json"
-import json, sys
-d = json.load(open(sys.argv[1], "r", encoding="utf-8"))
-sys.exit(0 if isinstance(d, dict) and "_fake_llm" in d else 2)
-PY
-      then
+      if grep -q '"_fake_llm"[[:space:]]*:[[:space:]]*true' "$CASE/models.json"; then
         return 0
       fi
     fi
@@ -74,15 +70,23 @@ trap cleanup EXIT
 
 echo "== Cleaning old results =="
 [[ "$RESULTS_DIR" == *"test_runs/cases/"* ]] || { echo "Refusing to delete unsafe path: $RESULTS_DIR"; exit 1; }
+docker run --rm \
+  -v "$ROOT/$RESULTS_DIR:/target:rw" \
+  alpine:3.20 \
+  sh -lc "chown -R $(id -u):$(id -g) /target >/dev/null 2>&1 || true"
 rm -rf "$RESULTS_DIR" "$SNAPSHOT"
 mkdir -p "$RESULTS_DIR"
 
 export ATD_LLM_URL="http://127.0.0.1:$FAKE_PORT/v1/chat/completions"
-export ATD_OPENHANDS_NETWORK_CONTAINER="${HOSTNAME}"
 export ATD_LLM_BASE_URL="http://127.0.0.1:$FAKE_PORT/v1"
+export ATD_OPENHANDS_NETWORK_CONTAINER="${HOSTNAME}"
 
-echo "== Starting fake LLM (allow 1 OpenHands session, then fail forever) =="
-start_fake_llm --fail_openhands_after_sessions 1 --fail_openhands_times -1 --fail_openhands_mode http_503
+echo "== Starting fake LLM (fail during repo #2 OpenHands) =="
+# IMPORTANT:
+# - openhands_finish_tool defaults to 1 => first OpenHands response writes markers AND finishes
+#   the agent in the same LLM turn, so repo #1 uses exactly 1 OpenHands LLM request.
+# - exit_after_openhands_chat=1 => server dies before serving repo #2 OpenHands request.
+start_fake_llm --exit_after_openhands_chat 1
 
 echo "== Running baseline =="
 scripts/run_baseline.sh -c "$CFG"
@@ -92,10 +96,11 @@ scripts/build_cycles_to_analyze.sh -c "$CFG" \
   --total 2 --min-size 2 --max-size 8 \
   --out "$CASE/cycles_to_analyze.txt"
 
-echo "== Running LLM (expect: at least one blocked-equivalent due to LLM unavailable) =="
+echo "== Running LLM (expect blocked during openhands) =="
 scripts/run_llm.sh -c "$CFG" --modes explain_multiAgent
 
 python3 test_runs/check_case.py "$CASE" --assert-has-blocked
+python3 test_runs/check_case.py "$CASE" --assert-has-midrun-edit
 python3 test_runs/check_case.py "$CASE" --write-snapshot "$SNAPSHOT"
 
 echo "== Restarting fake LLM (healthy) =="
@@ -112,4 +117,4 @@ scripts/run_metrics.sh -c "$CFG" --modes explain_multiAgent
 echo "== Final strict check =="
 python3 test_runs/check_case.py "$CASE"
 
-echo "✅ Smoke resume test finished"
+echo "✅ Smoke resume (openhands) test finished"

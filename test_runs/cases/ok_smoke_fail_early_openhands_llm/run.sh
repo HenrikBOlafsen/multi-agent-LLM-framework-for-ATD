@@ -1,11 +1,11 @@
-### test_runs/cases/ok_smoke_resume_explain_llm/run.sh
+### test_runs/cases/ok_smoke_fail_early_openhands_llm/run.sh
 #!/usr/bin/env bash
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/../../.." && pwd)"
 cd "$ROOT"
 
-CASE="test_runs/cases/ok_smoke_resume_explain_llm"
+CASE="test_runs/cases/ok_smoke_fail_early_openhands_llm"
 CFG="$CASE/pipeline.yaml"
 RESULTS_DIR="$CASE/results"
 SNAPSHOT="$CASE/snapshot.json"
@@ -39,7 +39,6 @@ start_fake_llm() {
   local pid=$!
   echo "$pid" > "$PIDFILE"
 
-  # Wait until it responds and identifies as fake
   for i in {1..120}; do
     if ! kill -0 "$pid" >/dev/null 2>&1; then
       echo "ERROR: fake LLM crashed. Log:"
@@ -78,14 +77,17 @@ docker run --rm \
 rm -rf "$RESULTS_DIR" "$SNAPSHOT"
 mkdir -p "$RESULTS_DIR"
 
-# explain_AS runs in devcontainer; OpenHands shares network namespace with devcontainer.
 export ATD_LLM_URL="http://127.0.0.1:$FAKE_PORT/v1/chat/completions"
 export ATD_LLM_BASE_URL="http://127.0.0.1:$FAKE_PORT/v1"
 export ATD_OPENHANDS_NETWORK_CONTAINER="${HOSTNAME}"
 
-echo "== Starting fake LLM (die immediately on first EXPLAIN chat) =="
-# This simulates "LLM unavailable" during explain by dropping the server before serving.
-start_fake_llm --exit_after_explain_chat 0
+echo "== Starting fake LLM (fail early during repo #1 OpenHands) =="
+# IMPORTANT:
+# - openhands_finish_tool=0 => first OpenHands response ONLY writes markers (no finish tool)
+#   so OpenHands makes a second LLM call inside the same repo.
+# - exit_after_openhands_chat=1 => after serving that first OpenHands response, the server dies
+#   before the second OpenHands call, causing repo #1 to fail.
+start_fake_llm --openhands_finish_tool 0 --exit_after_openhands_chat 1
 
 echo "== Running baseline =="
 scripts/run_baseline.sh -c "$CFG"
@@ -95,16 +97,22 @@ scripts/build_cycles_to_analyze.sh -c "$CFG" \
   --total 2 --min-size 2 --max-size 8 \
   --out "$CASE/cycles_to_analyze.txt"
 
-echo "== Running LLM (expect blocked during explain) =="
+echo "== Running LLM (expect: blocked during openhands; fail-fast stops remaining units) =="
+set +e
 scripts/run_llm.sh -c "$CFG" --modes explain_multiAgent
+LLM_RC=$?
+set -e
+echo "LLM exit code: $LLM_RC (nonzero is OK/expected for this smoke test)"
 
 python3 test_runs/check_case.py "$CASE" --assert-has-blocked
+python3 test_runs/check_case.py "$CASE" --assert-has-midrun-edit
+python3 test_runs/check_case.py "$CASE" --assert-fail-fast-phase openhands
 python3 test_runs/check_case.py "$CASE" --write-snapshot "$SNAPSHOT"
 
 echo "== Restarting fake LLM (healthy) =="
 start_fake_llm
 
-echo "== Running LLM again (should resume explain+openhands only where needed) =="
+echo "== Running LLM again (should resume only missing/blocked work) =="
 scripts/run_llm.sh -c "$CFG" --modes explain_multiAgent
 
 python3 test_runs/check_case.py "$CASE" --assert-resume "$SNAPSHOT"
@@ -115,4 +123,4 @@ scripts/run_metrics.sh -c "$CFG" --modes explain_multiAgent
 echo "== Final strict check =="
 python3 test_runs/check_case.py "$CASE"
 
-echo "✅ Smoke resume (explain) test finished"
+echo "✅ Smoke fail-fast (openhands) test finished"
