@@ -65,15 +65,19 @@ modes:
     params:
       orchestrator: minimal
 
-  - id: explain_multiAgent1
+  - id: explain_E0_S0_noaux
     params:
-      orchestrator: v1_four_agents
-      refactor_prompt_variant: default
+      orchestrator: multi_agent
+      edge_variant: E0
+      synthesizer_variant: S0
+      auxiliary_agent: none
 
-  - id: explain_multiAgent2
+  - id: explain_E1_S0_boundary
     params:
-      orchestrator: agent_tree
-      refactor_prompt_variant: vague
+      orchestrator: multi_agent
+      edge_variant: E1
+      synthesizer_variant: S0
+      auxiliary_agent: boundary
 ```
 
 Users must provide their own OpenAI-compatible LLM endpoint. The endpoint must be reachable from inside the Docker container and support the `/v1/chat/completions` API.
