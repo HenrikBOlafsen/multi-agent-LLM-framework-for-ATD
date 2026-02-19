@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from __future__ import annotations
 
 import argparse
@@ -9,24 +8,16 @@ from typing import Any, Dict, Optional
 
 import requests
 
-from agent_setup import LLMClient, log_section, log_line, Ansi
-from explain_cycle_minimal import build_minimal_prompt, cycle_chain_str, TEMPLATE as BASE_TEMPLATE
-from orchestrators import ORCHESTRATORS
-from orchestrators.base import CycleContext
+from engine import run_explain_engine
+from llm import LLMClient
+from context import require_language
+
 
 LLM_BLOCKED_EXIT_CODE = 42
 
 
-def _load_json(path: Path) -> dict:
+def _load_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
-
-
-def _find_cycle_in_catalog(catalog: dict, cycle_id: str) -> dict:
-    for scc in (catalog.get("sccs") or []):
-        for cyc in (scc.get("cycles") or []):
-            if str(cyc.get("id")) == str(cycle_id):
-                return cyc
-    raise KeyError(f"cycle_id '{cycle_id}' not found in cycle_catalog.json")
 
 
 def _mode_params(params_json: Optional[str]) -> Dict[str, Any]:
@@ -54,115 +45,125 @@ def _need_env_int(name: str) -> int:
     return v
 
 
+def _find_cycle_in_catalog(catalog: Dict[str, Any], cycle_id: str) -> Dict[str, Any]:
+    for scc in (catalog.get("sccs") or []):
+        for cyc in (scc.get("cycles") or []):
+            if str(cyc.get("id")) == str(cycle_id):
+                return cyc
+    raise KeyError(f"cycle_id {cycle_id!r} not found in cycle_catalog.json")
+
+
+def _language_from_scc_report(scc_report: Dict[str, Any]) -> str:
+    lang = str(((scc_report.get("input") or {}).get("language") or "")).strip()
+    return require_language(lang)
+
+
 def main() -> None:
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--repo-root", required=True)
-    ap.add_argument("--src-root", required=True)
-    ap.add_argument("--scc-report", required=True)
-    ap.add_argument("--cycle-id", required=True)
-    ap.add_argument("--out-prompt", required=True)
-    ap.add_argument("--params-json", default=None)
-    ap.add_argument("--cycle-catalog", default=None)
-    args = ap.parse_args()
+    argument_parser = argparse.ArgumentParser()
+    argument_parser.add_argument("--repo-root", required=True)
+    argument_parser.add_argument("--src-root", required=True)  # kept for compatibility; not used here
+    argument_parser.add_argument("--scc-report", required=True)
+    argument_parser.add_argument("--cycle-catalog", required=True)
+    argument_parser.add_argument("--cycle-id", required=True)
+    argument_parser.add_argument("--out-prompt", required=True)
+    argument_parser.add_argument("--params-json", default=None)
+    args = argument_parser.parse_args()
 
-    params = _mode_params(args.params_json)
-    orch_id = str(params.get("orchestrator", "v1_four_agents"))
-    prompt_variant = str(params.get("refactor_prompt_variant", "default"))
-    temperature = float(params.get("temperature", 0.1))
-    max_tokens = int(params.get("max_tokens", 16384))
+    repo_root = str(Path(args.repo_root).resolve())
+    scc_report_path = Path(args.scc_report).resolve()
+    cycle_catalog_path = Path(args.cycle_catalog).resolve()
+    out_prompt_path = Path(args.out_prompt).resolve()
+    out_prompt_path.parent.mkdir(parents=True, exist_ok=True)
 
-    orch_cls = None if orch_id == "minimal" else ORCHESTRATORS.get(orch_id)
-    if orch_id != "minimal" and orch_cls is None:
-        raise SystemExit(f"Unknown orchestrator '{orch_id}'. Known: {sorted(ORCHESTRATORS.keys())} or 'minimal'.")
+    mode_params = _mode_params(args.params_json)
 
-    repo_root = Path(args.repo_root).resolve()
-    report_path = Path(args.scc_report).resolve()
-    out_prompt = Path(args.out_prompt).resolve()
+    scc_report = _load_json(scc_report_path)
+    cycle_catalog = _load_json(cycle_catalog_path)
+    cycle = _find_cycle_in_catalog(cycle_catalog, args.cycle_id)
 
-    catalog_path = (
-        Path(args.cycle_catalog).resolve()
-        if args.cycle_catalog
-        else (report_path.parent / "cycle_catalog.json").resolve()
-    )
-    if not catalog_path.exists():
-        raise SystemExit(f"Missing cycle_catalog.json at: {catalog_path}")
+    language = _language_from_scc_report(scc_report)
 
-    catalog = _load_json(catalog_path)
-    cycle = _find_cycle_in_catalog(catalog, args.cycle_id)
+    transcript_path = str(out_prompt_path.parent / "transcript.jsonl")
+    llm_usage_path = out_prompt_path.parent / "llm_usage.json"
 
-    nodes = [str(n) for n in (cycle.get("nodes") or [])]
-    if not nodes:
-        raise SystemExit(f"Cycle '{args.cycle_id}' has no nodes in cycle_catalog.json")
+    orchestrator_id = str(mode_params.get("orchestrator") or "multi_agent").strip()
+    temperature = float(mode_params.get("temperature", 0.1))
 
-    size = int(cycle.get("length") or len(nodes))
-    chain = cycle_chain_str(nodes)
-    base = BASE_TEMPLATE.format(size=size, chain=chain)
+    should_call_llm = orchestrator_id != "minimal"
 
-    log_section("Explain entry", "cyan")
-    log_line(f"orchestrator           : {orch_id}", Ansi.DIM)
-    log_line(f"refactor_prompt_variant: {prompt_variant}", Ansi.DIM)
-    log_line(f"cycle_catalog          : {str(catalog_path)}", Ansi.DIM)
-
-    out_prompt.parent.mkdir(parents=True, exist_ok=True)
+    # Print early header so blocked runs still show useful context in logs
+    try:
+        print("=== Explain entry ===")
+        print(f"repo_root     : {repo_root}")
+        print(f"cycle_id      : {args.cycle_id}")
+        print(f"language      : {language}")
+        print(f"orchestrator  : {orchestrator_id}")
+        print(f"edge_variant  : {mode_params.get('edge_variant', 'E0')}")
+        print(f"synth_variant : {mode_params.get('synthesizer_variant', 'S0')}")
+        print(f"aux_agent     : {mode_params.get('auxiliary_agent', 'none')}")
+        print(f"out_prompt    : {str(out_prompt_path)}")
+        print("")
+    except Exception:
+        pass
 
     try:
-        if orch_cls is None:
-            final = build_minimal_prompt(cycle).rstrip() + "\n"
-        else:
+        if should_call_llm:
             llm_url = _need_env("LLM_URL")
             api_key = _need_env("LLM_API_KEY")
             model = _need_env("LLM_MODEL")
             context_length = _need_env_int("LLM_CONTEXT_LENGTH")
 
-            os.environ["ATD_TRACE_PATH"] = str(out_prompt.parent / "transcript.jsonl")
-
             client = LLMClient(
-                llm_url,
-                api_key,
-                model,
+                url=llm_url,
+                api_key=api_key,
+                model=model,
                 context_length=context_length,
                 temperature=temperature,
-                max_tokens=max_tokens,
             )
-            orch = orch_cls(client)
-            ctx = CycleContext(repo_root=str(repo_root), src_root=str(args.src_root), cycle=cycle)
-
-            refactor_part = orch.run(ctx, refactor_prompt_variant=prompt_variant)
-            final = (f"{base}\n\n{refactor_part}".strip() + "\n")
-
-            (out_prompt.parent / "llm_usage.json").write_text(
-                json.dumps(
-                    {
-                        "model": model,
-                        "context_length": context_length,
-                        "accumulated_usage": client.get_accumulated_usage(),
-                        "last_call_usage": client.get_last_usage(),
-                    },
-                    indent=2,
-                    sort_keys=True,
-                ),
-                encoding="utf-8",
+        else:
+            # Dummy client (never used).
+            client = LLMClient(
+                url="http://localhost/unused",
+                api_key="unused",
+                model="unused",
+                context_length=8192,
+                temperature=0.0,
             )
 
-        out_prompt.write_text(final, encoding="utf-8")
-        print(final)
+        result = run_explain_engine(
+            client=client,
+            transcript_path=transcript_path,
+            repo_root=repo_root,
+            language=language,
+            cycle=cycle,
+            scc_report=scc_report,
+            params=mode_params,
+        )
+
+        out_prompt_path.write_text(result.final_prompt_text, encoding="utf-8")
+
+        llm_usage_payload = {
+            "language": language,
+            "orchestrator": orchestrator_id,
+            "model": getattr(client, "model", ""),
+            "context_length": getattr(client, "context_length", 0),
+            "temperature": getattr(client, "temperature", 0.0),
+            "accumulated_usage": client.usage.as_dict(),
+            "last_call_usage": client.last_usage,
+        }
+        llm_usage_path.write_text(json.dumps(llm_usage_payload, indent=2, sort_keys=True), encoding="utf-8")
+
+        print(result.final_prompt_text)
 
     except requests.HTTPError as e:
         status = getattr(getattr(e, "response", None), "status_code", None)
-
-        # "Request rejected" class: includes token/context too large.
         if status in (400, 413, 422):
             raise SystemExit(1)
-
-        # misconfig / auth / wrong endpoint -> fail
         if status in (401, 403, 404):
             raise SystemExit(1)
-
-        # anything else (usually 5xx) -> blocked
         raise SystemExit(LLM_BLOCKED_EXIT_CODE)
 
     except requests.RequestException:
-        # timeout, connection refused, DNS, etc. => blocked
         raise SystemExit(LLM_BLOCKED_EXIT_CODE)
 
 

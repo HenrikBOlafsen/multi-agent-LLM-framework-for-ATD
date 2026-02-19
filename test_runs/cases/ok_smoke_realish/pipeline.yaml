@@ -22,5 +22,7 @@ openhands:
 modes:
   - id: explain_multiAgent
     params:
-      orchestrator: v1_four_agents
-      refactor_prompt_variant: default
+      orchestrator: multi_agent
+      edge_variant: E0
+      synthesizer_variant: S0
+      auxiliary_agent: none

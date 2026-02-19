@@ -1,3 +1,4 @@
+# atd_pipeline/config.py
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -29,17 +30,6 @@ def _need_str(d: Dict[str, Any], key: str, where: str) -> str:
     if not isinstance(v, str) or not v.strip():
         _die(f"Config field must be non-empty string: {where}.{key}")
     return v.strip()
-
-
-def _opt_int(d: Dict[str, Any], key: str, where: str) -> Optional[int]:
-    if key not in d:
-        return None
-    v = d[key]
-    if v is None:
-        return None
-    if not isinstance(v, int):
-        _die(f"Config field must be int: {where}.{key} (got {type(v).__name__})")
-    return int(v)
 
 
 def _opt_str(d: Dict[str, Any], key: str, where: str) -> Optional[str]:
@@ -84,7 +74,7 @@ class LLMConfig:
     base_url: str
     api_key: str
     model_raw: str
-    context_length: int  # REQUIRED, no default, no backwards-compat
+    context_length: int  # REQUIRED
 
 
 @dataclass(frozen=True)
@@ -164,6 +154,9 @@ class PipelineConfig:
             params = m.get("params") or {}
             if not isinstance(params, dict):
                 _die(f"Bad modes[{i}].params: expected mapping")
+
+            params = _validate_and_normalize_mode_params(params, where=f"modes[{i}].params")
+
             modes.append(ModeSpec(id=mid, params=params))
 
         return PipelineConfig(
@@ -177,6 +170,50 @@ class PipelineConfig:
             openhands=openhands,
             modes=modes,
         )
+
+
+def _validate_and_normalize_mode_params(params: Dict[str, Any], *, where: str) -> Dict[str, Any]:
+    """
+    Enforces the *new* params schema:
+      - orchestrator: "minimal" | "multi_agent" (optional, default "multi_agent")
+      - edge_variant: "E0" | "E1" | "E2" (optional; required iff orchestrator != minimal)
+      - synthesizer_variant: "S0" | "S1" | "S2" (optional; required iff orchestrator != minimal)
+      - auxiliary_agent: "none" | "boundary" | "graph" | "review" (optional, default "none")
+    """
+    out = dict(params)
+
+    orchestrator = str(out.get("orchestrator") or "multi_agent").strip()
+    if orchestrator not in {"minimal", "multi_agent"}:
+        _die(f"{where}.orchestrator must be 'minimal' or 'multi_agent' (got {orchestrator!r})")
+    out["orchestrator"] = orchestrator
+
+    aux = out.get("auxiliary_agent", "none")
+    if isinstance(aux, list):
+        _die(f"{where}.auxiliary_agent must be a single string (max 1 auxiliary agent), not a list")
+    aux = str(aux or "none").strip()
+    if aux not in {"none", "boundary", "graph", "review"}:
+        _die(
+            f"{where}.auxiliary_agent must be one of "
+            f"['none','boundary','graph','review'] (got {aux!r})"
+        )
+    out["auxiliary_agent"] = aux
+
+    # Only meaningful for multi_agent runs
+    if orchestrator != "minimal":
+        edge_variant = str(out.get("edge_variant") or "E0").strip()
+        if edge_variant not in {"E0", "E1", "E2"}:
+            _die(f"{where}.edge_variant must be one of ['E0','E1','E2'] (got {edge_variant!r})")
+        out["edge_variant"] = edge_variant
+
+        synthesizer_variant = str(out.get("synthesizer_variant") or "S0").strip()
+        if synthesizer_variant not in {"S0", "S1", "S2"}:
+            _die(
+                f"{where}.synthesizer_variant must be one of ['S0','S1','S2'] "
+                f"(got {synthesizer_variant!r})"
+            )
+        out["synthesizer_variant"] = synthesizer_variant
+
+    return out
 
 
 def read_repos(repos_file: Path) -> List[RepoSpec]:
@@ -207,7 +244,10 @@ def read_cycles(cycles_file: Path) -> List[CycleSpec]:
     return out
 
 
-def build_tasks(pipeline_config: PipelineConfig, modes: Optional[Sequence[str]]) -> List[Tuple[RepoSpec, CycleSpec, ModeSpec]]:
+def build_tasks(
+    pipeline_config: PipelineConfig,
+    modes: Optional[Sequence[str]],
+) -> List[Tuple[RepoSpec, CycleSpec, ModeSpec]]:
     repo_specs = {r.repo: r for r in read_repos(pipeline_config.repos_file)}
     cycle_specs = read_cycles(pipeline_config.cycles_file)
 
@@ -225,9 +265,11 @@ def build_tasks(pipeline_config: PipelineConfig, modes: Optional[Sequence[str]])
         repo = repo_specs.get(cyc.repo)
         if repo is None:
             _die(f"cycles_file references unknown repo '{cyc.repo}' (not present in repos_file)")
-        # sanity: base branch should match between files
         if repo.base_branch != cyc.base_branch:
-            _die(f"Base branch mismatch for repo {cyc.repo}: repos_file has {repo.base_branch}, cycles_file has {cyc.base_branch}")
+            _die(
+                f"Base branch mismatch for repo {cyc.repo}: "
+                f"repos_file has {repo.base_branch}, cycles_file has {cyc.base_branch}"
+            )
         for mode in selected_modes:
             tasks.append((repo, cyc, mode))
     return tasks
