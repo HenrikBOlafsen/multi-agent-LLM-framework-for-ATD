@@ -2,46 +2,26 @@ projects_dir: projects_to_analyze
 repos_file: repos.txt
 cycles_file: cycles_to_analyze.txt
 results_root: results
-experiment_id: expA
+experiment_id: expTestAAA
 
 policy:
   delete_refactor_branches_after_metrics: true
 
 llm:
-  base_url: "http://host.docker.internal:8012/v1"
+  base_url: "http://host.docker.internal:8013/v1"
   api_key: "placeholder"
-  model_raw: "/cluster/work/projects/ec12/ec-henrikbo/model-cache/hf/models--Qwen--Qwen3-Coder-30B-A3B-Instruct/snapshots/b2cff646eb4bb1d68355c01b18ae02e7cf42d120"
+  model_raw: "Qwen3-Coder-30B-A3B-Instruct"
   context_length: 32768
 
 openhands:
-  image: "docker.all-hands.dev/all-hands-ai/openhands:0.59"
-  runtime_image: "docker.all-hands.dev/all-hands-ai/runtime:0.59-nikolaik"
-  max_iters: 100
+  runtime_image: "docker.openhands.dev/openhands/runtime:1.4-nikolaik"
+  max_iters: 150
   commit_message: "Refactor: break dependency cycle"
 
 modes:
-  - id: no_explain
-    params:
-      orchestrator: minimal
-
   - id: explain_E0_S0_noaux
     params:
       orchestrator: multi_agent
       edge_variant: E0
       synthesizer_variant: S0
       auxiliary_agent: none
-
-  - id: explain_E1_S0_boundary
-    params:
-      orchestrator: multi_agent
-      edge_variant: E1
-      synthesizer_variant: S0
-      auxiliary_agent: boundary
-
-  - id: explain_E0_S2_review
-    params:
-      orchestrator: multi_agent
-      edge_variant: E0
-      synthesizer_variant: S2
-      auxiliary_agent: review
-

@@ -16,14 +16,18 @@ OUT_DIR="$(mkdir -p "$5" && cd "$5" && pwd)"
 [ -d "$REPO_DIR/.git" ] || { echo "Not a git repo: $REPO_DIR" >&2; exit 2; }
 [ -f "$PROMPT_PATH" ] || { echo "Prompt not found: $PROMPT_PATH" >&2; exit 3; }
 
-# Required env (pipeline provides)
+# ---- required env (pipeline provides) ----
 LLM_MODEL="${LLM_MODEL:-}"
 LLM_BASE_URL="${LLM_BASE_URL:-}"
 LLM_API_KEY="${LLM_API_KEY:-}"
 
-OPENHANDS_IMAGE="${OPENHANDS_IMAGE:-docker.all-hands.dev/all-hands-ai/openhands:0.59}"
-RUNTIME_IMAGE="${RUNTIME_IMAGE:-docker.all-hands.dev/all-hands-ai/runtime:0.59-nikolaik}"
-MAX_ITERS="${MAX_ITERS:-100}"
+# Controller image (full OpenHands)
+OPENHANDS_IMAGE="${OPENHANDS_IMAGE:-docker.openhands.dev/openhands/openhands:1.4}"
+
+# Sandbox runtime image (agent-server)
+RUNTIME_IMAGE="${RUNTIME_IMAGE:-}"
+
+MAX_ITERS="${MAX_ITERS:-150}"
 COMMIT_MESSAGE="${COMMIT_MESSAGE:-Refactor: break dependency cycle}"
 
 # Optional walltime (seconds). If set, OpenHands is killed and we exit 42.
@@ -46,11 +50,11 @@ GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL:-atd-bot@local}"
 [ -n "$LLM_API_KEY" ] || { echo "LLM_API_KEY is required"; exit 5; }
 [ -n "$LLM_BASE_URL" ] || { echo "LLM_BASE_URL is required"; exit 6; }
 [ -n "$LLM_MODEL" ] || { echo "LLM_MODEL is required"; exit 7; }
-[ -n "$OPENHANDS_IMAGE" ] || { echo "OPENHANDS_IMAGE is empty"; exit 8; }
-
-# Host UID/GID (the user running this script inside the devcontainer)
-HOST_UID="$(id -u)"
-HOST_GID="$(id -g)"
+[ -n "$RUNTIME_IMAGE" ] || {
+  echo "ERROR: RUNTIME_IMAGE is required (sandbox/agent-server image)."
+  echo "Set it in configs/pipeline.yaml openhands.runtime_image and let the pipeline pass it through."
+  exit 8
+}
 
 ts() { date -Iseconds; }
 abs() { python3 -c 'import os,sys; print(os.path.abspath(sys.argv[1]))' "$1"; }
@@ -62,23 +66,20 @@ if [ -z "$HOST_PWD" ]; then
 fi
 HOST_PWD="${HOST_PWD%/}"
 
+# Normalize LLM base URL
 LLM_BASE_URL="${LLM_BASE_URL%/}"
 LLM_BASE_URL_OH="$LLM_BASE_URL"
 if [[ "$LLM_BASE_URL_OH" != */v1 ]]; then
   LLM_BASE_URL_OH="${LLM_BASE_URL_OH}/v1"
 fi
 
+# Keep your existing model normalization behavior
 MODEL_FOR_OH="$LLM_MODEL"
 if [[ "$MODEL_FOR_OH" == /* ]]; then
   MODEL_FOR_OH="openai/${MODEL_FOR_OH}"
 elif [[ "$MODEL_FOR_OH" != openai/* ]]; then
   MODEL_FOR_OH="openai/${MODEL_FOR_OH}"
 fi
-
-PROMPT_ABS="$(abs "$PROMPT_PATH")"
-PROMPT_DIR="$(dirname "$PROMPT_ABS")"
-PROMPT_BASENAME="$(basename "$PROMPT_ABS")"
-PROMPT_IN_CONTAINER="/prompts/$PROMPT_BASENAME"
 
 write_status_json () {
   local outcome="$1"; shift || true
@@ -111,7 +112,7 @@ normalize_ownership_hostpath () {
   docker run --rm \
     -v "$host_path:/target:rw" \
     alpine:3.20 \
-    sh -lc "chown -R ${HOST_UID}:${HOST_GID} /target >/dev/null 2>&1 || true"
+    sh -lc "chown -R $(id -u):$(id -g) /target >/dev/null 2>&1 || true"
 }
 
 ensure_worktree_dir_writable () {
@@ -120,7 +121,7 @@ ensure_worktree_dir_writable () {
   docker run --rm \
     -v "$repo_host:/repo:rw" \
     alpine:3.20 \
-    sh -lc "mkdir -p /repo/.atd_worktrees && chown -R ${HOST_UID}:${HOST_GID} /repo/.atd_worktrees >/dev/null 2>&1 || true"
+    sh -lc "mkdir -p /repo/.atd_worktrees && chown -R $(id -u):$(id -g) /repo/.atd_worktrees >/dev/null 2>&1 || true"
 }
 
 WT_ROOT="$REPO_DIR/.atd_worktrees"
@@ -155,7 +156,6 @@ final_cleanup () {
 
   cleanup_openhands_store
   cleanup_worktree
-
   exit "$rc"
 }
 trap 'final_cleanup $?' EXIT
@@ -166,7 +166,11 @@ git -C "$REPO_DIR" show-ref --verify --quiet "refs/heads/$BASE_BRANCH" || {
 }
 
 OUT_DIR_HOST="$(to_host_path "$OUT_DIR")"
+PROMPT_ABS="$(abs "$PROMPT_PATH")"
+PROMPT_DIR="$(dirname "$PROMPT_ABS")"
 PROMPT_DIR_HOST="$(to_host_path "$PROMPT_DIR")"
+PROMPT_BASENAME="$(basename "$PROMPT_ABS")"
+PROMPT_IN_CONTAINER="/prompts/$PROMPT_BASENAME"
 
 normalize_ownership_hostpath "$OUT_DIR_HOST"
 ensure_worktree_dir_writable
@@ -198,15 +202,12 @@ set +e
 create_worktree_once
 WT_RC=$?
 set -e
-
 if [[ "$WT_RC" -ne 0 ]]; then
   ensure_worktree_dir_writable
-
   set +e
   create_worktree_once
   WT_RC2=$?
   set -e
-
   if [[ "$WT_RC2" -ne 0 ]]; then
     : > "$DIFF_PATH" || true
     touch "$RUN_LOG" >/dev/null 2>&1 || true
@@ -223,6 +224,17 @@ git reset --hard -q HEAD
 git clean -fdx >/dev/null 2>&1 || true
 popd >/dev/null
 
+mkdir -p "$OUT_DIR/openhands_store"
+touch "$RUN_LOG" "$DIFF_PATH" >/dev/null 2>&1 || true
+
+# Runtime image split into repo/tag for newer OpenHands versions
+RUNTIME_REPO="$RUNTIME_IMAGE"
+RUNTIME_TAG="latest"
+if [[ "$RUNTIME_IMAGE" == *":"* ]]; then
+  RUNTIME_REPO="${RUNTIME_IMAGE%:*}"
+  RUNTIME_TAG="${RUNTIME_IMAGE##*:}"
+fi
+
 TTY_FLAGS=()
 if [ -t 1 ] && [ -t 0 ]; then
   TTY_FLAGS+=("-it")
@@ -235,42 +247,36 @@ if [ -n "${ATD_OPENHANDS_NETWORK_CONTAINER:-}" ]; then
   NETWORK_FLAGS+=( "--network" "container:${ATD_OPENHANDS_NETWORK_CONTAINER}" )
 fi
 
-mkdir -p "$OUT_DIR/openhands_store"
-touch "$RUN_LOG" "$DIFF_PATH" >/dev/null 2>&1 || true
+# Pre-pull once (fast on subsequent runs)
+docker image inspect "$OPENHANDS_IMAGE" >/dev/null 2>&1 || docker pull "$OPENHANDS_IMAGE" >/dev/null
+docker image inspect "$RUNTIME_IMAGE"  >/dev/null 2>&1 || docker pull "$RUNTIME_IMAGE"  >/dev/null
 
-run_docker() {
-  local -a cmd
-  cmd=(docker run --rm)
-  cmd+=("${TTY_FLAGS[@]}")
-  cmd+=("${NETWORK_FLAGS[@]}")
-
-  cmd+=(
-    -v /var/run/docker.sock:/var/run/docker.sock
-    -v "$WT_HOST:/workspace:rw"
-    -v "$OUT_DIR_HOST:/logs:rw"
-    -v "$PROMPT_DIR_HOST:/prompts:ro"
-
-    -e FILE_STORE=local
-    -e FILE_STORE_PATH=/logs/openhands_store
-
-    -e SANDBOX_RUNTIME_CONTAINER_IMAGE="$RUNTIME_IMAGE"
-    -e SANDBOX_USER_ID="$HOST_UID"
-    -e SANDBOX_VOLUMES="$WT_HOST:/workspace:rw,$OUT_DIR_HOST:/logs:rw"
-    -e LOG_ALL_EVENTS=true
-    -e SAVE_TRAJECTORY_PATH="/logs/trajectory.json"
-
-    -e LLM_API_KEY="$LLM_API_KEY"
-    -e LLM_BASE_URL="$LLM_BASE_URL_OH"
-    -e LLM_MODEL="$MODEL_FOR_OH"
-
-    "$OPENHANDS_IMAGE"
-    python -m openhands.core.main
-      -d "/workspace"
-      -f "$PROMPT_IN_CONTAINER"
-      -i "$MAX_ITERS"
-  )
-
-  "${cmd[@]}"
+run_controller_docker() {
+  docker run --rm \
+    "${TTY_FLAGS[@]}" \
+    "${NETWORK_FLAGS[@]}" \
+    --add-host host.docker.internal:host-gateway \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    -v "$WT_HOST:/workspace:rw" \
+    -v "$OUT_DIR_HOST:/logs:rw" \
+    -v "$PROMPT_DIR_HOST:/prompts:ro" \
+    -e FILE_STORE=local \
+    -e FILE_STORE_PATH=/logs/openhands_store \
+    -e LOG_ALL_EVENTS=true \
+    -e SAVE_TRAJECTORY_PATH="/logs/trajectory.json" \
+    -e LLM_API_KEY="$LLM_API_KEY" \
+    -e LLM_BASE_URL="$LLM_BASE_URL_OH" \
+    -e LLM_MODEL="$MODEL_FOR_OH" \
+    -e AGENT_SERVER_IMAGE_REPOSITORY="$RUNTIME_REPO" \
+    -e AGENT_SERVER_IMAGE_TAG="$RUNTIME_TAG" \
+    -e SANDBOX_RUNTIME_CONTAINER_IMAGE="$RUNTIME_IMAGE" \
+    -e SANDBOX_VOLUMES="${WT_HOST}:/workspace:rw,${OUT_DIR_HOST}:/logs:rw" \
+    --entrypoint python \
+    "$OPENHANDS_IMAGE" \
+      -u -m openhands.core.main \
+        -d "/workspace" \
+        -f "$PROMPT_IN_CONTAINER" \
+        -i "$MAX_ITERS"
 }
 
 echo "Starting OpenHands..."
@@ -278,10 +284,10 @@ set -o pipefail
 
 if [[ "$ATD_WALLTIME_SEC" -gt 0 ]]; then
   timeout --signal=TERM --kill-after="${ATD_GRACE_SEC}s" "${ATD_WALLTIME_SEC}s" \
-    run_docker 2>&1 | tee "$RUN_LOG"
+    run_controller_docker 2>&1 | tee "$RUN_LOG"
   RUN_EXIT=$?
 else
-  run_docker 2>&1 | tee "$RUN_LOG"
+  run_controller_docker 2>&1 | tee "$RUN_LOG"
   RUN_EXIT=$?
 fi
 
@@ -295,9 +301,9 @@ if [[ "$RUN_EXIT" -eq 124 ]]; then
   exit 42
 fi
 
-# Minimal, non-guessy LLM-unavailable detection:
-# You said this signature is specific to "LLM not responding" in your setup.
-if grep -Fqi "OpenAIException - Connection error" "$RUN_LOG"; then
+if grep -Fqi "OpenAIException - Connection error" "$RUN_LOG" \
+  || grep -Fqi "ConnectionError" "$RUN_LOG" \
+  || grep -Fqi "Failed to establish a new connection" "$RUN_LOG"; then
   : > "$DIFF_PATH" || true
   write_status_json "blocked" "llm_unavailable"
   exit 42

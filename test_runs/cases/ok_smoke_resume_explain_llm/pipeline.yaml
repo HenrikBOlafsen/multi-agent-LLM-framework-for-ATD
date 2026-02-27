@@ -14,8 +14,7 @@ llm:
   context_length: 32768
 
 openhands:
-  image: "docker.all-hands.dev/all-hands-ai/openhands:0.59"
-  runtime_image: "docker.all-hands.dev/all-hands-ai/runtime:0.59-nikolaik"
+  runtime_image: "docker.openhands.dev/openhands/runtime:1.4-nikolaik"
   max_iters: 3
   commit_message: "Refactor: break dependency cycle"
 

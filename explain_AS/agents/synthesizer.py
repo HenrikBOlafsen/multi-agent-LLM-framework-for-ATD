@@ -32,7 +32,11 @@ def build_synthesizer_user_prompt(
     semantics = edge_semantics_text(language)
     cycle_chain = cycle_chain_str(cycle_nodes)
 
-    prompt_prefix = f"""{semantics}
+    prompt_prefix = f"""{synthesizer_prompt_variant.preamble}
+
+---
+
+{semantics}
 
 Cycle:
 {cycle_chain}
@@ -87,7 +91,7 @@ Edge reports (in cycle order, may be truncated):
     )
 
     edges_section = "\n\n".join(rendered_edge_blocks).strip() or "N/A"
-    return prompt_prefix + edges_section + aux_separator + aux_block + prompt_suffix
+    return (prompt_prefix + edges_section + aux_separator + aux_block + prompt_suffix).strip() + "\n"
 
 
 def run_synthesizer_agent(
@@ -101,9 +105,8 @@ def run_synthesizer_agent(
     synthesizer_variant_id: str = "S0",
 ) -> str:
     language = require_language(language)
-    synthesizer_prompt_variant = require_synthesizer_variant(synthesizer_variant_id)
 
-    synthesizer_agent = Agent(name="synthesizer", system_prompt=synthesizer_prompt_variant.system_prompt)
+    synthesizer_agent = Agent(name="synthesizer")
 
     user_prompt = build_synthesizer_user_prompt(
         client=client,
@@ -114,7 +117,6 @@ def run_synthesizer_agent(
         synthesizer_variant_id=synthesizer_variant_id,
     )
 
-    # No arbitrary output cap: Agent.ask derives soft limit from reserved tokens by default.
     return synthesizer_agent.ask(
         client=client,
         transcript_path=transcript_path,

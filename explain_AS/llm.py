@@ -130,7 +130,6 @@ def _print_agent_event(
     reply_text: str,
     prompt_tokens_estimate: int,
     available_completion_tokens: int,
-    completion_tokens_floor: int,
     reserved_min_output_tokens: int,
     max_tokens_for_call: int,
     usage: Optional[Dict[str, int]],
@@ -182,7 +181,6 @@ def _print_agent_event(
     meta = (
         f"  └─ meta prompt_tokens_est~{prompt_tokens_estimate} "
         f"avail_completion~{available_completion_tokens} "
-        f"floor={completion_tokens_floor} "
         f"reserved_min={reserved_min_output_tokens} "
         f"max_tokens_call={max_tokens_for_call}"
     )
@@ -237,25 +235,41 @@ class LLMClient:
         model: str,
         context_length: int,
         temperature: float = 0.2,
+        top_p: float = 0.9,
+        top_k: int = 0,
+        seed: Optional[int] = None,
         timeout_sec: int = 300,
     ):
         self.url = url
         self.api_key = api_key
         self.model = model
         self.context_length = int(context_length)
+
         self.temperature = float(temperature)
+        self.top_p = float(top_p)
+        self.top_k = int(top_k)
+        self.seed = int(seed) if seed is not None else None
+
         self.timeout_sec = int(timeout_sec)
 
         self.usage = UsageAccumulator()
         self.last_usage: Optional[Dict[str, int]] = None
 
     def chat(self, user_prompt: str, *, max_tokens: int) -> str:
-        payload = {
+        payload: Dict[str, Any] = {
             "model": self.model,
             "messages": [{"role": "user", "content": user_prompt}],
-            "temperature": self.temperature,
+            "temperature": float(self.temperature),
+            "top_p": float(self.top_p),
             "max_tokens": int(max_tokens),
         }
+
+        # vLLM supports these OpenAI-style sampling fields
+        if self.top_k is not None:
+            payload["top_k"] = int(self.top_k)
+        if self.seed is not None:
+            payload["seed"] = int(self.seed)
+
         headers = {"Authorization": f"Bearer {self.api_key}", "Content-Type": "application/json"}
 
         r = requests.post(self.url, headers=headers, json=payload, timeout=self.timeout_sec)
@@ -283,10 +297,9 @@ class LLMClient:
 @dataclass(frozen=True)
 class Agent:
     """
-    Immutable agent: name + system_prompt are fixed.
+    Immutable agent: name only. All prompt content is passed as a single user prompt.
     """
     name: str
-    system_prompt: str
 
     def ask(
         self,
@@ -295,7 +308,6 @@ class Agent:
         transcript_path: str,
         user_prompt: str,
         min_output_tokens_reserved: int,
-        completion_tokens_floor: int = 4000,
         safety_margin_tokens: int = 1000,
         max_output_chars_soft: Optional[int] = None,
         edge: Optional[str] = None,
@@ -304,14 +316,13 @@ class Agent:
         Policy:
         - Estimate tokens with chars/3 approximation.
         - Guarantee completion room:
-              minimum_completion_tokens_required = max(min_output_tokens_reserved, completion_tokens_floor)
+              minimum_completion_tokens_required = min_output_tokens_reserved
           by truncating the PROMPT (bottom-only) at most once.
         - Set per-call max_tokens to "whatever is left" after prompt + safety margin.
         """
-        system_prompt_text = (self.system_prompt or "").strip()
-        merged_prompt_text = f"{system_prompt_text}\n\n---\n\n{user_prompt}" if system_prompt_text else (user_prompt or "")
+        prompt_text = (user_prompt or "").strip()
 
-        minimum_completion_tokens_required = max(int(min_output_tokens_reserved), int(completion_tokens_floor))
+        minimum_completion_tokens_required = max(1, int(min_output_tokens_reserved))
         if client.context_length - int(safety_margin_tokens) <= minimum_completion_tokens_required:
             raise ValueError(
                 "LLM context_length is too small for the configured completion budgets. "
@@ -322,7 +333,7 @@ class Agent:
         truncation_marker = "\n\n...[TRUNCATED: prompt reduced to preserve completion budget]...\n"
         truncation_marker_tokens_estimate = estimate_tokens_from_text(truncation_marker)
 
-        prompt_tokens_estimate = estimate_tokens_from_text(merged_prompt_text)
+        prompt_tokens_estimate = estimate_tokens_from_text(prompt_text)
         available_completion_tokens = client.context_length - int(safety_margin_tokens) - int(prompt_tokens_estimate)
 
         if available_completion_tokens < minimum_completion_tokens_required:
@@ -335,7 +346,7 @@ class Agent:
             target_prompt_tokens = max(1, target_prompt_tokens)
             target_prompt_chars = tokens_to_chars(target_prompt_tokens)
 
-            trimmed_prompt_text, trim_info = trim_text_bottom_with_info(merged_prompt_text, target_prompt_chars)
+            trimmed_prompt_text, trim_info = trim_text_bottom_with_info(prompt_text, target_prompt_chars)
             if not trim_info.truncated:
                 raise ValueError(
                     "Prompt could not be truncated enough to satisfy minimum completion tokens. "
@@ -344,10 +355,10 @@ class Agent:
                     f"minimum_completion_tokens_required={minimum_completion_tokens_required}."
                 )
 
-            merged_prompt_text = trimmed_prompt_text + truncation_marker
+            prompt_text = trimmed_prompt_text + truncation_marker
 
             # Recompute after truncation (must now fit, or we fail loudly)
-            prompt_tokens_estimate = estimate_tokens_from_text(merged_prompt_text)
+            prompt_tokens_estimate = estimate_tokens_from_text(prompt_text)
             available_completion_tokens = client.context_length - int(safety_margin_tokens) - int(prompt_tokens_estimate)
             if available_completion_tokens < minimum_completion_tokens_required:
                 raise ValueError(
@@ -365,18 +376,21 @@ class Agent:
                 "event": "prompt",
                 "agent": self.name,
                 "edge": edge,
-                "text": merged_prompt_text,
+                "text": prompt_text,
                 "max_tokens": int(max_tokens_for_call),
                 "min_reserved_output_tokens": int(min_output_tokens_reserved),
-                "completion_tokens_floor": int(completion_tokens_floor),
                 "minimum_completion_tokens_required": int(minimum_completion_tokens_required),
                 "safety_margin_tokens": int(safety_margin_tokens),
                 "prompt_tokens_estimate": int(prompt_tokens_estimate),
                 "available_completion_tokens": int(available_completion_tokens),
+                "temperature": float(getattr(client, "temperature", 0.0)),
+                "top_p": float(getattr(client, "top_p", 1.0)),
+                "top_k": int(getattr(client, "top_k", 0)),
+                "seed": getattr(client, "seed", None),
             },
         )
 
-        reply_text = client.chat(merged_prompt_text, max_tokens=max_tokens_for_call)
+        reply_text = client.chat(prompt_text, max_tokens=max_tokens_for_call)
 
         if max_output_chars_soft is not None and max_output_chars_soft > 0 and len(reply_text) > int(max_output_chars_soft):
             trimmed_reply_text, _ = trim_text_bottom_with_info(reply_text, int(max_output_chars_soft))
@@ -408,11 +422,10 @@ class Agent:
         _print_agent_event(
             agent_name=self.name,
             edge_id=edge,
-            prompt_text=merged_prompt_text,
+            prompt_text=prompt_text,
             reply_text=reply_text,
             prompt_tokens_estimate=int(prompt_tokens_estimate),
             available_completion_tokens=int(available_completion_tokens),
-            completion_tokens_floor=int(completion_tokens_floor),
             reserved_min_output_tokens=int(min_output_tokens_reserved),
             max_tokens_for_call=int(max_tokens_for_call),
             usage=client.last_usage,

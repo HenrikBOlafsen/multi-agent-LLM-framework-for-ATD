@@ -79,7 +79,6 @@ class LLMConfig:
 
 @dataclass(frozen=True)
 class OpenHandsConfig:
-    image: str
     runtime_image: str
     max_iters: int
     commit_message: str
@@ -136,7 +135,6 @@ class PipelineConfig:
         if not isinstance(oh_raw, dict):
             _die("Missing required config field: openhands (mapping)")
         openhands = OpenHandsConfig(
-            image=_need_str(oh_raw, "image", "openhands"),
             runtime_image=_need_str(oh_raw, "runtime_image", "openhands"),
             max_iters=_need_int(oh_raw, "max_iters", "openhands"),
             commit_message=_need_str(oh_raw, "commit_message", "openhands"),

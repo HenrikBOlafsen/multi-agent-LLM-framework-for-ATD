@@ -3,28 +3,29 @@ from __future__ import annotations
 from typing import List, Sequence
 
 from budgeting import (
+    allocate_token_budgets_even_share_with_redistribution,
     estimate_tokens_from_text,
     tokens_to_chars,
-    allocate_token_budgets_even_share_with_redistribution,
 )
-from context import format_block_for_prompt, cycle_chain_str, require_language
+from context import cycle_chain_str, format_block_for_prompt, require_language
 from language import edge_semantics_text
 from llm import Agent, LLMClient
 
 
-REVIEW_MIN_OUTPUT_TOKENS_RESERVED = 3667  # previously ~11k chars at 3 chars/token
+REVIEW_MIN_OUTPUT_TOKENS_RESERVED = 3667
 REVIEW_SAFETY_MARGIN_TOKENS = 1000
 
 
-REVIEW_SYSTEM_PROMPT = """You are the Reviewer Agent.
-You review the synthesizer output for clarity and internal consistency.
+REVIEW_PROMPT_PREAMBLE = """You are the Reviewer Agent.
+You are a finalizer: rewrite the synthesizer output to be clearer and internally consistent.
 
-Rules:
-- Do not add new facts.
-- If unclear or contradictory, say so and suggest improvements.
+Hard rules:
+- Do NOT add new facts.
+- Do NOT include meta commentary, critiques, or headings like "Issues found" or "Suggested revisions".
+- Output ONLY the final revised cycle explanation, in the requested output format.
 - No tables, no JSON.
 - If you see truncation notes, assume some context may be missing.
-"""
+""".strip()
 
 
 def build_review_user_prompt(
@@ -39,20 +40,28 @@ def build_review_user_prompt(
     semantics = edge_semantics_text(language)
     cycle_chain = cycle_chain_str(cycle_nodes)
 
-    prompt_prefix = f"""{semantics}
+    prompt_prefix = f"""{REVIEW_PROMPT_PREAMBLE}
+
+---
+
+{semantics}
 
 Cycle:
 {cycle_chain}
 
-Synthesizer output to review:
-"""
+Synthesizer output (rewrite for clarity/consistency; do not add facts):
+""".rstrip() + "\n"
+
     evidence_separator = "\n\nAdditional evidence (edge reports and aux context, may be truncated):\n"
+
     prompt_suffix = """
 
-Output format (MUST follow exactly these headings):
-Issues found (if any)
-Suggested revisions
-Revised explanation (this should replace the synthesizer output)
+Output format (MUST follow exactly these headings, in this order):
+Cycle summary
+How the cycle is formed
+Why this coupling exists (cautious interpretation)
+Impact / maintainability notes
+Reminders / constraints
 """.lstrip()
 
     normalized_synthesizer_text = (synthesizer_text or "").strip() or "N/A"
@@ -69,14 +78,16 @@ Revised explanation (this should replace the synthesizer output)
     )
     total_input_tokens_budget = max(0, int(total_input_tokens_budget))
 
-    # Reviewer priority:
-    # 1) allocate as much as possible to synthesizer output (preferably all of it)
-    # 2) remaining budget shared across edge reports + aux context (even + redistribution)
+    # Priority:
+    # 1) allocate as much as possible to synthesizer output
+    # 2) remaining shared across edge reports + aux context
     synthesizer_tokens_needed = estimate_tokens_from_text(normalized_synthesizer_text)
     synthesizer_tokens_allocated = min(int(synthesizer_tokens_needed), int(total_input_tokens_budget))
     remaining_tokens_for_evidence = max(0, int(total_input_tokens_budget) - int(synthesizer_tokens_allocated))
 
-    synthesizer_chars_budget = max(1, tokens_to_chars(int(synthesizer_tokens_allocated))) if synthesizer_tokens_allocated > 0 else 1
+    synthesizer_chars_budget = (
+        max(1, tokens_to_chars(int(synthesizer_tokens_allocated))) if synthesizer_tokens_allocated > 0 else 1
+    )
     synthesizer_block, _synth_truncated = format_block_for_prompt(
         label="Synthesizer output",
         repo_rel_path="SYNTHESIZER_OUTPUT.txt",
@@ -114,7 +125,7 @@ Revised explanation (this should replace the synthesizer output)
     )
 
     evidence_section = "\n\n".join([b for b in (rendered_edge_blocks + [aux_block]) if b.strip()]).strip() or "N/A"
-    return prompt_prefix + synthesizer_block + evidence_separator + evidence_section + "\n" + prompt_suffix
+    return (prompt_prefix + synthesizer_block + evidence_separator + evidence_section + "\n" + prompt_suffix).strip() + "\n"
 
 
 def run_review_agent(
@@ -128,7 +139,7 @@ def run_review_agent(
     aux_context: str = "",
 ) -> str:
     language = require_language(language)
-    review_agent = Agent(name="review", system_prompt=REVIEW_SYSTEM_PROMPT)
+    review_agent = Agent(name="review")
 
     user_prompt = build_review_user_prompt(
         language=language,
@@ -139,7 +150,6 @@ def run_review_agent(
         context_length=int(client.context_length),
     )
 
-    # No arbitrary output cap: Agent.ask derives soft limit from reserved tokens by default.
     return review_agent.ask(
         client=client,
         transcript_path=transcript_path,

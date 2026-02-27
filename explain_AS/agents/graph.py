@@ -12,7 +12,7 @@ GRAPH_MIN_OUTPUT_TOKENS_RESERVED = 2000
 GRAPH_SAFETY_MARGIN_TOKENS = 1000
 
 
-GRAPH_SYSTEM_PROMPT = """You are the Structural Context Agent.
+GRAPH_PROMPT_PREAMBLE = """You are the Structural Context Agent.
 You receive the cycle plus SCC graph context as plain text (nodes and edges).
 Your job is to summarize how the cycle sits within the SCC.
 
@@ -21,7 +21,7 @@ Rules:
 - No tables, no JSON.
 - Keep it short and focused.
 - If you see truncation notes, assume some context may be missing.
-"""
+""".strip()
 
 
 def build_graph_user_prompt(
@@ -35,7 +35,11 @@ def build_graph_user_prompt(
     chain = cycle_chain_str(cycle_nodes)
     normalized_scc_text = scc_text.strip() or "N/A"
 
-    prompt_prefix = f"""{semantics}
+    prompt_prefix = f"""{GRAPH_PROMPT_PREAMBLE}
+
+---
+
+{semantics}
 
 Cycle:
 {chain}
@@ -69,7 +73,7 @@ Notes / uncertainty
         max_chars=int(scc_block_char_budget),
     )
 
-    return prompt_prefix + scc_block + "\n" + prompt_suffix
+    return (prompt_prefix + scc_block + "\n" + prompt_suffix).strip() + "\n"
 
 
 def run_graph_agent(
@@ -81,7 +85,7 @@ def run_graph_agent(
     scc_text: str,
 ) -> str:
     language = require_language(language)
-    graph_agent = Agent(name="graph", system_prompt=GRAPH_SYSTEM_PROMPT)
+    graph_agent = Agent(name="graph")
 
     user_prompt = build_graph_user_prompt(
         language=language,

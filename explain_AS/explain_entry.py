@@ -87,7 +87,7 @@ def main() -> None:
     llm_usage_path = out_prompt_path.parent / "llm_usage.json"
 
     orchestrator_id = str(mode_params.get("orchestrator") or "multi_agent").strip()
-    temperature = float(mode_params.get("temperature", 0.1))
+    temperature = float(mode_params.get("temperature", 0.2))
 
     should_call_llm = orchestrator_id != "minimal"
 

@@ -6,24 +6,34 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class SynthesizerPromptVariant:
     variant_id: str
-    system_prompt: str
+    preamble: str
     output_headings: str
+
+
+BASE_PREAMBLE = """You are the Synthesizer Agent.
+You receive edge-level explanations for each edge in a dependency cycle.
+
+Rules:
+- Stay consistent with the edge reports. Do not invent details.
+- No tables, no JSON.
+- Avoid overconfidence. If edge reports are unclear, say so.
+- Emphasize that the refactoring agent must inspect the actual code.
+- If you see truncation notes, assume some context may be missing.
+"""
+
+
+def make_preamble(job_and_extras: str = "") -> str:
+    # Keep the separator consistent and avoid accidental trailing whitespace issues.
+    return BASE_PREAMBLE.rstrip() + "\n\n" + job_and_extras.strip() + "\n"
 
 
 SYNTHESIZER_VARIANTS = {
     "S0": SynthesizerPromptVariant(
         variant_id="S0",
-        system_prompt="""You are the Synthesizer Agent.
-You receive edge-level explanations for each edge in a dependency cycle.
-Your job is to produce a cycle-level explanation that helps an automated refactoring agent (OpenHands) understand the cycle.
-
-Rules:
-- Stay consistent with the edge reports; do not invent details.
-- No tables, no JSON.
-- Avoid overconfidence. If edge reports are unclear, say so.
-- Emphasize that the refactoring agent must inspect the actual code.
-- If you see truncation notes, assume some context may be missing.
-""",
+        preamble=make_preamble("""
+Your job:
+- Produce a cycle-level explanation that helps an automated refactoring agent understand the cycle. Do not propose specific edges to break.
+"""),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
 Cycle summary
 How the cycle is formed
@@ -34,19 +44,15 @@ Reminders / constraints
     ),
     "S1": SynthesizerPromptVariant(
         variant_id="S1",
-        system_prompt="""You are the Synthesizer Agent.
-You receive edge-level explanations for each edge in a dependency cycle.
-
+        preamble=make_preamble("""
 Your job:
 - Produce a cycle-level explanation AND propose a concrete, minimal plan for breaking the cycle.
 
-Rules:
-- Do not invent code facts.
-- No tables, no JSON.
+Additional rules:
 - Be explicit about which edge(s) to break (1-2 candidates).
-- Keep the plan minimal and reversible.
-- If you see truncation notes, assume some context may be missing.
-""",
+- Keep the plan minimal.
+- The cycle must be truly broken, not just moved or largened.
+"""),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
 Cycle summary
 How the cycle is formed
@@ -59,22 +65,19 @@ Reminders / constraints
     ),
     "S2": SynthesizerPromptVariant(
         variant_id="S2",
-        system_prompt="""You are the Synthesizer Agent.
-You receive edge-level explanations for each edge in a dependency cycle.
-
+        preamble=make_preamble("""
 Your job:
 - Compare multiple candidate edges to break and discuss trade-offs.
 
-Rules:
-- Do not invent code facts.
-- No tables, no JSON.
+Additional rules:
 - Provide a small ranked shortlist of options (2-3), with pros/cons.
-- If you see truncation notes, assume some context may be missing.
-""",
+- The cycle must be truly broken, not just moved or largened.
+- Make sure your suggestions come of as only suggestions.
+"""),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
 Cycle summary
 How the cycle is formed
-Candidate edges (ranked 1-3)
+Candidate edges to break (ranked 1-3)
 Trade-offs (risk, effort, scope)
 Recommended choice and why
 Suggested refactoring approach (brief)

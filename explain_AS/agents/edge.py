@@ -52,7 +52,11 @@ def build_edge_user_prompt(
     file_a_hard_capped_text, file_a_hard_truncated = cap_file_text_hard(file_a_raw_text)
     file_b_hard_capped_text, file_b_hard_truncated = cap_file_text_hard(file_b_raw_text)
 
-    prompt_prefix = f"""{semantics}
+    prompt_prefix = f"""{edge_prompt_variant.preamble}
+
+---
+
+{semantics}
 
 Cycle chain:
 {cycle_chain}
@@ -114,7 +118,7 @@ File A:
         max_chars=int(file_b_char_budget),
     )
 
-    return prompt_prefix + file_a_block + file_separator + file_b_block + "\n" + prompt_suffix
+    return (prompt_prefix + file_a_block + file_separator + file_b_block + "\n" + prompt_suffix).strip() + "\n"
 
 
 def run_edge_agent(
@@ -128,9 +132,8 @@ def run_edge_agent(
     edge_variant_id: str = "E0",
 ) -> str:
     language = require_language(language)
-    edge_prompt_variant = require_edge_variant(edge_variant_id)
 
-    edge_agent = Agent(name="edge", system_prompt=edge_prompt_variant.system_prompt)
+    edge_agent = Agent(name="edge")
 
     user_prompt = build_edge_user_prompt(
         client=client,
@@ -141,7 +144,6 @@ def run_edge_agent(
         edge_variant_id=edge_variant_id,
     )
 
-    # No arbitrary output cap: Agent.ask derives soft limit from reserved tokens by default.
     return edge_agent.ask(
         client=client,
         transcript_path=transcript_path,

@@ -122,7 +122,6 @@ def make_llm_environment(pipeline_config) -> Dict[str, str]:
         "LLM_API_KEY": pipeline_config.llm.api_key,
         # explain step reads this
         "LLM_CONTEXT_LENGTH": str(int(pipeline_config.llm.context_length)),
-        "OPENHANDS_IMAGE": pipeline_config.openhands.image,
         "RUNTIME_IMAGE": pipeline_config.openhands.runtime_image,
         "MAX_ITERS": str(pipeline_config.openhands.max_iters),
         "COMMIT_MESSAGE": pipeline_config.openhands.commit_message,
