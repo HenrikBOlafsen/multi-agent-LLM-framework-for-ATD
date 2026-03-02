@@ -29,6 +29,7 @@ results_clean_baseline/*
 all_experiment_results/*
 all_experiment_results_backup/*
 all_experiment_results.zip
+results_small_test/*
 
 ATD_identification/dotnet_type_deps/bin
 ATD_identification/dotnet_type_deps/obj

@@ -298,39 +298,39 @@ export TIMING_BRANCH="$LABEL"
   fi
   timing_mark "end_vulture"
 
-  timing_mark "start_bandit"
-  echo "Time for Bandit"
-  if command -v bandit >/dev/null 2>&1; then
-    bandit -q -r "${SRC_PATHS[@]}" -f json -o "$OUT_ABS/bandit.json" || true
-  fi
-  timing_mark "end_bandit"
+  #timing_mark "start_bandit"
+  #echo "Time for Bandit"
+  #if command -v bandit >/dev/null 2>&1; then
+  #  bandit -q -r "${SRC_PATHS[@]}" -f json -o "$OUT_ABS/bandit.json" || true
+  #fi
+  #timing_mark "end_bandit"
 
-  timing_mark "start_pipAudit"
-  echo "Time for Pip-audit"
-  if command -v pip-audit >/dev/null 2>&1; then
-    pip-audit -f json -o "$OUT_ABS/pip_audit.json" || true
-  fi
-  timing_mark "end_pipAudit"
+  #timing_mark "start_pipAudit"
+  #echo "Time for Pip-audit"
+  #if command -v pip-audit >/dev/null 2>&1; then
+  #  pip-audit -f json -o "$OUT_ABS/pip_audit.json" || true
+  #fi
+  #timing_mark "end_pipAudit"
 
-  timing_mark "start_pyExamine"
-  echo "Time for PyExamine"
-  if command -v analyze_code_quality >/dev/null 2>&1; then
-    PYX_DIR="$OUT_ABS/pyexamine"; mkdir -p "$PYX_DIR"
-    : "${PYX_TIMEOUT:=3m}"
-    idx=0
-    for p in "${SRC_PATHS[@]}"; do
-      case "$p" in tests|test|t|docs|doc|build|dist|.venv|venv|.qc-venv|.git) continue ;; esac
-      [[ -d "$p" ]] || continue
-      base="$PYX_DIR/code_quality_report_${idx}"
-      echo "PyExamine: $p -> $base"
-      timeout -k 10s "$PYX_TIMEOUT" \
-        analyze_code_quality "$WT_ROOT/$p" \
-          --config "/opt/configs/pyexamine_fast.yaml" \
-          --output "$base" || echo "PyExamine timed out or failed on $p" >&2
-      idx=$((idx+1))
-    done
-  fi
-  timing_mark "end_pyExamine"
+  #timing_mark "start_pyExamine"
+  #echo "Time for PyExamine"
+  #if command -v analyze_code_quality >/dev/null 2>&1; then
+  #  PYX_DIR="$OUT_ABS/pyexamine"; mkdir -p "$PYX_DIR"
+  #  : "${PYX_TIMEOUT:=3m}"
+  #  idx=0
+  #  for p in "${SRC_PATHS[@]}"; do
+  #    case "$p" in tests|test|t|docs|doc|build|dist|.venv|venv|.qc-venv|.git) continue ;; esac
+  #    [[ -d "$p" ]] || continue
+  #    base="$PYX_DIR/code_quality_report_${idx}"
+  #    echo "PyExamine: $p -> $base"
+  #    timeout -k 10s "$PYX_TIMEOUT" \
+  #      analyze_code_quality "$WT_ROOT/$p" \
+  #        --config "/opt/configs/pyexamine_fast.yaml" \
+  #        --output "$base" || echo "PyExamine timed out or failed on $p" >&2
+  #    idx=$((idx+1))
+  #  done
+  #fi
+  #timing_mark "end_pyExamine"
 )
 
 echo "==> Collected metrics in $OUT_ABS"

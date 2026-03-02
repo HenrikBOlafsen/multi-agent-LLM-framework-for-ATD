@@ -203,7 +203,7 @@ External connections (outside-cycle), summarized per cycle file:
 """
     prompt_suffix = """
 
-Output format (MUST follow exactly these headings):
+Output format (MUST follow exactly these headings, in this order):
 Likely boundaries
 Possible boundary violations (if any)
 Notes / uncertainty

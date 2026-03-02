@@ -8,6 +8,8 @@ rope master rope python
 pydantic main pydantic python
 alembic main alembic python
 omegaconf master omegaconf python
+twisted trunk src/twisted python
+flask main src/flask python
 FluentValidation main src/FluentValidation csharp
 Polly main src/Polly csharp
 MediatR main src/MediatR csharp

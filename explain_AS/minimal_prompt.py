@@ -13,20 +13,22 @@ BASE_TEMPLATE = """Please refactor to break this dependency cycle:
 Cycle size: {size}
 {chain}
 
-Remove preferably just one static edge, ensuring no new cycles are introduced and behavior remains unchanged.
+Break the cycle by removing at minimum one edge, ensuring no new cycles are introduced and behavior remains unchanged.
 
 Important:
 - My ATD metric treats ANY module/type reference as a dependency, so making imports dynamic or lazy is NOT sufficient (unless it no longer counts as a dependency per the rules above).
 - We care about architecture (static coupling), not runtime import order.
+- We want to actually improve code architecture by reducing cyclic coupling, so do not use hacky solutions to break the cycles.
 
 Done when:
 - The cycle is broken
 - All public APIs remain identical
-- Tests pass confirming no behavioral changes
+- Tests pass, confirming no behavioral changes
 - No new cycles are created in the dependency graph
+- Code quality/maintainability/architecture has been improved
 
 How to check that an edge A->B in the cycle has been successfully broken:
-- There is not a single dependency from B in file A, as defined by the language-specific rules above.
+- There must not be even a single dependency from B in file A, as defined by the language-specific rules above.
 - If you introduce a new file, do not just make the cycle longer (e.g., A->C->B->A).
 - It is not enough to remove some imports/references: for the chosen broken edge, ALL relevant references must be removed.
 """

@@ -32,6 +32,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && rm -rf /var/lib/apt/lists/*
  
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    python3-dev \
+    pkg-config \
+    libffi-dev \
+    libssl-dev \
+    libnss-wrapper \
+ && rm -rf /var/lib/apt/lists/*
+
 # ----- your existing Python deps via uv (OpenHands must be in uv.lock) -----
 WORKDIR /opt/app
 COPY pyproject.toml uv.lock ./

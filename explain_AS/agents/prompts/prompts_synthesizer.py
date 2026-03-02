@@ -51,7 +51,8 @@ Your job:
 Additional rules:
 - Be explicit about which edge(s) to break (1-2 candidates).
 - Keep the plan minimal.
-- The cycle must be truly broken, not just moved or largened.
+- The cycle must be truly broken, not just moved or made larger.
+- We want to actually improve code architecture by reducing cyclic coupling, so do not suggest hacky solutions to break the cycles.
 """),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
 Cycle summary
@@ -71,8 +72,9 @@ Your job:
 
 Additional rules:
 - Provide a small ranked shortlist of options (2-3), with pros/cons.
-- The cycle must be truly broken, not just moved or largened.
-- Make sure your suggestions come of as only suggestions.
+- The cycle must be truly broken, not just moved or made larger.
+- We want to actually improve code architecture by reducing cyclic coupling, so do not suggest hacky solutions to break the cycles.
+- Make sure your suggestions come off as only suggestions.
 """),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
 Cycle summary

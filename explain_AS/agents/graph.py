@@ -13,7 +13,7 @@ GRAPH_SAFETY_MARGIN_TOKENS = 1000
 
 
 GRAPH_PROMPT_PREAMBLE = """You are the Structural Context Agent.
-You receive the cycle plus SCC graph context as plain text (nodes and edges).
+You receive the cycle and SCC graph context as plain text (nodes and edges).
 Your job is to summarize how the cycle sits within the SCC.
 
 Rules:
@@ -48,7 +48,7 @@ SCC context (nodes + edges):
 """
     prompt_suffix = """
 
-Output format (MUST follow exactly these headings):
+Output format (MUST follow exactly these headings, in this order):
 How the cycle sits in the SCC
 Hubs / bridges (if any)
 External connections (if visible)
