@@ -38,7 +38,7 @@ echo "Out dir : $OUTPUT_DIR"
 echo
 
 echo "== Step 1: extract type-ref file dependencies → $GRAPH_JSON =="
-# Optional but recommended: restore to reduce workspace load failures
+# restore to reduce workspace load failures
 ( cd "$REPO_PATH" && dotnet restore >/dev/null 2>&1 || true )
 
 dotnet run --project "$DOTNET_DEPS_PROJ" -- \

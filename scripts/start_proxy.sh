@@ -5,8 +5,8 @@ PROXY_NAME="${PROXY_NAME:-atd-vllm-proxy}"
 PROXY_PORT="${PROXY_PORT:-8013}"
 PROXY_IMAGE="${PROXY_IMAGE:-python:3.11-slim}"
 
-# Upstream is your Windows->Fox SSH tunnel endpoint from the *host* perspective.
-# (Your atd-dev container resolves host.docker.internal via --add-host host-gateway.)
+# Upstream is the Windows->Fox SSH tunnel endpoint from the *host* perspective.
+# (atd-dev container resolves host.docker.internal via --add-host host-gateway.)
 UPSTREAM="${UPSTREAM:-http://host.docker.internal:8012}"
 
 ROOT_IN_REPO="/workspace"

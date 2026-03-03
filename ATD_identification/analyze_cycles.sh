@@ -33,13 +33,6 @@ BUILD_GRAPH_PY="$SCRIPT_DIR/build_dependency_graph_pydeps.py"
 PYDEPS_JSON="$OUTPUT_DIR/pydeps.json"
 GRAPH_JSON="$OUTPUT_DIR/dependency_graph.json"
 
-if [[ -f "$SCRIPT_DIR/../timing.sh" ]]; then
-  # shellcheck disable=SC1091
-  source "$SCRIPT_DIR/../timing.sh"
-  export TIMING_PHASE="analyze_cycles"
-  export TIMING_REPO="$(basename "$REPO_PATH")"
-fi
-
 echo "== Analyze cycles (Python: graph-only) =="
 echo "Repo    : $REPO_PATH"
 echo "Entry   : $ENTRY_SUBDIR"
@@ -47,8 +40,6 @@ echo "Out dir : $OUTPUT_DIR"
 echo
 
 echo "== Step 1: pydeps → $PYDEPS_JSON =="
-if declare -F timing_mark >/dev/null 2>&1; then timing_mark "start_pydeps"; fi
-
 PKG_DIR="$REPO_PATH/$ENTRY_SUBDIR"
 PKG_NAME="$(basename "$PKG_DIR")"
 PKG_PARENT="$(dirname "$PKG_DIR")"
@@ -63,12 +54,10 @@ pydeps "$PKG_DIR" \
   --max-bacon=0 \
   --only "$PKG_NAME"
 
-if declare -F timing_mark >/dev/null 2>&1; then timing_mark "end_pydeps"; fi
 [[ -s "$PYDEPS_JSON" ]] || { echo "ERROR: pydeps did not produce $PYDEPS_JSON" >&2; exit 10; }
 
 echo
 echo "== Step 2: build canonical dependency graph → $GRAPH_JSON =="
-if declare -F timing_mark >/dev/null 2>&1; then timing_mark "start_buildDependencyGraph"; fi
 
 python3 "$BUILD_GRAPH_PY" "$PYDEPS_JSON" \
   --repo-root "$REPO_PATH" \
@@ -76,7 +65,6 @@ python3 "$BUILD_GRAPH_PY" "$PYDEPS_JSON" \
   --out "$GRAPH_JSON" \
   --language "python"
 
-if declare -F timing_mark >/dev/null 2>&1; then timing_mark "end_buildDependencyGraph"; fi
 [[ -s "$GRAPH_JSON" ]] || { echo "ERROR: graph builder did not produce $GRAPH_JSON" >&2; exit 11; }
 
 echo

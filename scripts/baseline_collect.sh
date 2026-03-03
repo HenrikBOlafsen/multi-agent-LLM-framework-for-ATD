@@ -6,10 +6,6 @@ set -euo pipefail
 #
 # language:
 #   python | csharp
-#
-# Baseline outputs (ATD):
-#   ATD_identification/dependency_graph.json
-#   ATD_identification/scc_report.json   (SCCs + metrics only; no representative cycles)
 
 if [[ $# -ne 5 ]]; then
   echo "Usage: $0 <repo_dir> <base_branch> <entry> <out_dir> <language>" >&2

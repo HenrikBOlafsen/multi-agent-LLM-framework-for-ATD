@@ -95,8 +95,6 @@ def assert_cycle_catalogs_exist_for_experiment_units(
     if missing_lines:
         raise typer.BadParameter(
             "Cycle catalogs are missing for one or more repos.\n\n"
-            "Generate them (and cycles_to_analyze.txt) using:\n"
-            "  scripts/build_cycles_to_analyze.sh -c <your_config.yaml> --total <N> --out cycles_to_analyze.txt\n\n"
             "Missing:\n" + "\n".join(missing_lines)
         )
 

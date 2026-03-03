@@ -16,14 +16,14 @@ MediatR main src/MediatR csharp
 LiteDB master LiteDB csharp
 FakeItEasy master src/FakeItEasy csharp
 MemoryPack main src/MemoryPack.Core csharp
-SharpYaml master src/SharpYaml csharp
 Bogus master Source/Bogus csharp
 AngleSharp devel src/AngleSharp csharp
 markdig master src/Markdig csharp
-refit main Refit csharp                             (Bare 4354 LOC)
-superpower dev src/Superpower csharp                  (Bare 2676 LOC)
-ncalc master src/NCalc.Core csharp                  (Bare 2144 LOC)
-CliWrap master CliWrap csharp                   (Bare 2067 LOC)
-
-NOT WORKING ANYMORE:
-BenchmarkDotNet master src/BenchmarkDotNet csharp
+scriban master src/Scriban csharp
+CSharpFunctionalExtensions master CSharpFunctionalExtensions csharp
+MudBlazor dev src/MudBlazor csharp
+refit main Refit csharp                             (Only 4354 LOC)
+superpower dev src/Superpower csharp                  (Only 2676 LOC)
+ncalc master src/NCalc.Core csharp                  (Only 2144 LOC)
+CliWrap master CliWrap csharp                   (Only 2067 LOC)
+SharpYaml master src/SharpYaml csharp               (only 362 stars)

@@ -1,28 +1,34 @@
 #!/usr/bin/env python3
 # code_quality_checker/quality_single_summary_csharp.py
 #
-# Minimal summary for C#/.NET repos, aligned with the Python schema style.
-#
-# Aggregates:
+# Aggregates (machine-readable):
 # - TRX results (dotnet test)
 # - dotnet_test exit code
-# - A Ruff-like lint count from SARIF (Roslyn /errorlog SARIF):
-#     dotnet_lint.issues = count of *unsuppressed* SARIF results with level:
-#         error | warning | note
-#       plus results with missing/unknown level (counted as issues for safety)
-#
-# This produces a monotonic "up is worse, down is better" metric.
+# - "Ruff-like" lint count from SARIF produced via /errorlog (Roslyn analyzers)
+# - "Radon-ish" complexity summary from Lizard CSV (optional)
 #
 # Usage:
 #   python quality_single_summary_csharp.py <METRICS_DIR> <OUT_JSON> [--with-provenance]
 #
 from __future__ import annotations
 
+import csv
 import json
+import math
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import Iterable, List, Optional, Dict
+from typing import Any, Dict, Iterable, List, Optional
+
+
+SCHEMA_VERSION = 11
+
+# Count unsuppressed WARNING/ERROR SARIF results as lint issues.
+INCLUDE_LINT_LEVELS = {"warning", "error"}
+
+# Radon-style thresholds (Radon D+E+F == CC >= 21, i.e. > 20)
+CC_OVER_20_THRESHOLD = 20
+CC_OVER_40_THRESHOLD = 40
 
 
 def _safe_strip(p: Path) -> str:
@@ -74,7 +80,11 @@ def parse_trx_counts(trx_path: Path) -> Dict[str, int]:
         return {"tests": 0, "failures": 0, "errors": 0, "skipped": 0}
 
     root = ET.parse(trx_path).getroot()
-    counters = root.find(".//{*}ResultSummary/{*}Counters") or root.find(".//Counters")
+
+    # Don't do `a or b` with Elements. An element with no children can be falsy.
+    counters = root.find(".//{*}ResultSummary/{*}Counters")
+    if counters is None:
+        counters = root.find(".//Counters")
     if counters is None:
         return {"tests": 0, "failures": 0, "errors": 0, "skipped": 0}
 
@@ -115,17 +125,12 @@ def aggregate_trx_counts(trx_files: List[Path]) -> Dict[str, int]:
     return agg
 
 
-# -------------------- SARIF -> dotnet_lint.issues --------------------
-
-_ALLOWED_LEVELS = {"error", "warning", "note"}
-# We treat missing or unknown levels as issues (safer monotonic metric).
-
+# -------------------- SARIF -> Ruff-like lint count --------------------
 
 def find_all_sarif(metrics_dir: Path) -> List[Path]:
     sarif_files = sorted(metrics_dir.glob("sarif/**/*.sarif"))
     if not sarif_files:
         sarif_files = sorted(metrics_dir.glob("sarif/*.sarif"))
-
     seen = set()
     out: List[Path] = []
     for p in sarif_files:
@@ -153,52 +158,127 @@ def _iter_sarif_results(doc: dict) -> Iterable[dict]:
                 yield r
 
 
-def _level(result: dict) -> str:
-    lvl = result.get("level")
-    if isinstance(lvl, str) and lvl.strip():
-        return lvl.strip().lower()
-    return ""
-
-
-def _is_suppressed(result: dict) -> bool:
-    # SARIF suppressionStates being non-empty indicates suppression.
-    ss = result.get("suppressionStates")
-    return isinstance(ss, list) and len(ss) > 0
-
-
-def count_sarif_lint_issues(sarif_files: List[Path]) -> int:
-    """
-    Ruff-like metric:
-      issues = count of unsuppressed SARIF results with level in {error, warning, note}
-               plus unsuppressed results with missing/unknown level.
-    """
-    total = 0
-
-    for sp in sarif_files:
+def count_lint_issues_from_sarif(sarif_paths: List[Path]) -> int:
+    issues = 0
+    for sp in sarif_paths:
         doc = _read_json(sp)
         if not doc:
             continue
-
         for r in _iter_sarif_results(doc):
-            if _is_suppressed(r):
+            ss = r.get("suppressionStates")
+            if isinstance(ss, list) and len(ss) > 0:
                 continue
+            lvl = r.get("level")
+            lvl = lvl.strip().lower() if isinstance(lvl, str) else ""
+            if lvl in INCLUDE_LINT_LEVELS:
+                issues += 1
+    return issues
 
-            lvl = _level(r)
-            if not lvl:
-                # missing level -> count as issue
-                total += 1
-                continue
 
-            if lvl in _ALLOWED_LEVELS:
-                total += 1
-            else:
-                # unknown/nonstandard level -> count as issue (safer)
-                # (This also intentionally excludes "none"/"info" only when they are standard;
-                #  if a producer uses a different token, we still count it.)
-                if lvl not in {"none", "info", "information"}:
-                    total += 1
+# -------------------- Lizard (Radon-ish complexity) --------------------
 
-    return total
+def _p95_int(values: List[int]) -> Optional[int]:
+    if not values:
+        return None
+    vs = sorted(values)
+    idx = int(math.ceil(0.95 * len(vs))) - 1  # nearest-rank p95
+    idx = max(0, min(idx, len(vs) - 1))
+    return int(vs[idx])
+
+
+def parse_lizard_complexity(metrics_dir: Path) -> Dict[str, Any]:
+    """
+    Reads CSV produced by:
+        lizard --csv --languages csharp .
+    Observed format (no header), first columns look like:
+        CCN,NLOC,token,PARAM,length,"location@..@./path/file.cs","./path/file.cs",...
+    We keep it simple:
+      - CCN = column 0 (int)
+      - file path = column 6 if present, else derive from the location column
+      - cc_over_20 = count of functions with CCN > 20  (Radon D+E+F equivalent)
+      - cc_over_40 = count of functions with CCN > 40  (Radon F equivalent)
+    """
+    csv_path = metrics_dir / "dotnet_complexity" / "lizard.csv"
+    if not csv_path.exists():
+        return {
+            "cc_total": None,
+            "cc_p95": None,
+            "cc_over_20": 0,
+            "cc_over_40": 0,
+            "functions": 0,
+            "files": 0,
+            "csv_present": False,
+        }
+
+    cc_values: List[int] = []
+    file_set: set[str] = set()
+    over_20 = 0
+    over_40 = 0
+
+    try:
+        with csv_path.open("r", encoding="utf-8", errors="ignore", newline="") as f:
+            reader = csv.reader(f)
+            for row in reader:
+                if not row:
+                    continue
+
+                # CCN in column 0
+                try:
+                    ccn = int(str(row[0]).strip())
+                except Exception:
+                    # Skip header-ish / junk rows
+                    continue
+
+                cc_values.append(ccn)
+
+                if ccn > CC_OVER_20_THRESHOLD:
+                    over_20 += 1
+                if ccn > CC_OVER_40_THRESHOLD:
+                    over_40 += 1
+
+                # File path usually in column 6
+                file_path = ""
+                if len(row) >= 7:
+                    file_path = str(row[6]).strip().strip('"')
+                if not file_path and len(row) >= 6:
+                    # Fallback: location often contains ...@...@./path/file.cs
+                    loc = str(row[5]).strip().strip('"')
+                    parts = loc.split("@")
+                    file_path = (parts[-1].strip() if parts else loc)
+
+                if file_path:
+                    file_set.add(file_path)
+    except Exception:
+        return {
+            "cc_total": None,
+            "cc_p95": None,
+            "cc_over_20": 0,
+            "cc_over_40": 0,
+            "functions": 0,
+            "files": 0,
+            "csv_present": True,
+        }
+
+    if not cc_values:
+        return {
+            "cc_total": None,
+            "cc_p95": None,
+            "cc_over_20": 0,
+            "cc_over_40": 0,
+            "functions": 0,
+            "files": int(len(file_set)),
+            "csv_present": True,
+        }
+
+    return {
+        "cc_total": int(sum(cc_values)),
+        "cc_p95": _p95_int(cc_values),
+        "cc_over_20": int(over_20),
+        "cc_over_40": int(over_40),
+        "functions": int(len(cc_values)),
+        "files": int(len(file_set)),
+        "csv_present": True,
+    }
 
 
 # -------------------- Collector --------------------
@@ -211,16 +291,17 @@ def collect(metrics_dir: Path, with_prov: bool) -> dict:
     dotnet_test_exit_code = _read_int(metrics_dir / "dotnet_test_exit_code.txt")
 
     sarif_files = find_all_sarif(metrics_dir)
-    lint_issues = count_sarif_lint_issues(sarif_files) if sarif_files else 0
+    dotnet_lint = {"issues": count_lint_issues_from_sarif(sarif_files) if sarif_files else 0}
+
+    dotnet_complexity = parse_lizard_complexity(metrics_dir)
 
     data = {
-        "schema_version": 8,
+        "schema_version": SCHEMA_VERSION,
         "language": "csharp",
-
         "dotnet_test": dotnet_test,
         "dotnet_test_exit_code": dotnet_test_exit_code,
-
-        "dotnet_lint": {"issues": int(lint_issues)},
+        "dotnet_lint": dotnet_lint,
+        "dotnet_complexity": dotnet_complexity,
     }
 
     if with_prov:
@@ -241,10 +322,7 @@ def collect(metrics_dir: Path, with_prov: bool) -> dict:
 
 def main() -> int:
     if len(sys.argv) < 3:
-        print(
-            "Usage: python quality_single_summary_csharp.py <METRICS_DIR> <OUT_JSON> [--with-provenance]",
-            file=sys.stderr,
-        )
+        print("Usage: python quality_single_summary_csharp.py <METRICS_DIR> <OUT_JSON> [--with-provenance]", file=sys.stderr)
         return 2
 
     metrics_dir = Path(sys.argv[1])

@@ -1,13 +1,6 @@
 #!/usr/bin/env bash
 # quality_collect.sh
 #
-# Simplified Python collector (keeps PyExamine + radon/vulture/bandit).
-# Main simplifications vs your previous version:
-# - Much simpler default_install(): try a small set of common install patterns only
-#   (still allows per-repo QUALITY_INSTALL overrides).
-# - Remove pytest-benchmark auto-detection and xdist support (keep plain pytest).
-# - Keep venv isolation, source detection, PYTHONPATH setup, coverage+junit outputs.
-#
 # Usage:
 #   ./quality_collect.sh <REPO_PATH> [LABEL] [SRC_HINT]
 #
@@ -111,17 +104,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_SETUP_DIR="${REPO_SETUP_DIR:-$SCRIPT_DIR/repo-test-setups}"
 REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
 
-source "${SCRIPT_DIR}/../timing.sh"
-export TIMING_PHASE="quality_collect"
-export TIMING_REPO="$REPO_NAME"
-export TIMING_BRANCH="$LABEL"
+
 
 # -----------------------------------------------------------------------------
 # Run in isolated venv
 # -----------------------------------------------------------------------------
 (
-  timing_mark "start_qualityCollectVenvSetup"
-
   cd "$WT_ROOT"
   python -m venv .qc-venv
   # shellcheck disable=SC1091
@@ -175,13 +163,12 @@ export TIMING_BRANCH="$LABEL"
     default_install
   fi
 
-  timing_mark "end_qualityCollectVenvSetup"
 
   # --- Pytest runner (simplified: no benchmark/xdist auto-magic) --------------
   default_pytest_run() {
     export WATCHDOG_FORCE_POLLING=1
 
-    # Ensure in-tree import wins (kept, because many repos assume this)
+    # Ensure in-tree import wins (many repos assume this)
     _pp="${PYTHONPATH:-}"
     export PYTHONPATH=".:${PYTHONPATH:-}"
     [[ -d "src" ]] && export PYTHONPATH="src:${PYTHONPATH:-}"
@@ -229,14 +216,12 @@ export TIMING_BRANCH="$LABEL"
     fi
   }
 
-  timing_mark "start_pytest"
   if declare -f QUALITY_TEST >/dev/null 2>&1; then
     echo "Using custom QUALITY_TEST for $REPO_NAME"
     QUALITY_TEST
   else
     default_pytest_run
   fi
-  timing_mark "end_pytest"
 
   # --- Install analysis tooling best-effort (don’t break the run) -------------
   # Intentionally after tests so test failures stay “pure”.
@@ -262,7 +247,6 @@ export TIMING_BRANCH="$LABEL"
     done
   )
 
-  timing_mark "start_ruff"
   echo "Time for Ruff"
   if command -v ruff >/dev/null 2>&1; then
     ruff_targets=()
@@ -274,45 +258,36 @@ export TIMING_BRANCH="$LABEL"
       --exclude ".git,.qc-venv,.venv,venv,build,dist,tests,test,t" \
       "${ruff_targets[@]}" > "$OUT_ABS/ruff.json" || true
   fi
-  timing_mark "end_ruff"
 
-  timing_mark "start_mypy"
   echo "Time for Mypy"
   if command -v mypy >/dev/null 2>&1; then
     mypy --hide-error-context --no-error-summary . > "$OUT_ABS/mypy.txt" || true
   fi
-  timing_mark "end_mypy"
 
-  timing_mark "start_radon"
   echo "Time for Radon"
   if command -v radon >/dev/null 2>&1 && ((${#PY_FILES[@]})); then
     radon cc -j "${PY_FILES[@]}" > "$OUT_ABS/radon_cc.json" || true
     radon mi -j "${PY_FILES[@]}" > "$OUT_ABS/radon_mi.json" || true
   fi
-  timing_mark "end_radon"
 
-  timing_mark "start_vulture"
   echo "Time for Vulture"
   if command -v vulture >/dev/null 2>&1 && ((${#PY_FILES[@]})); then
     vulture "${PY_FILES[@]}" > "$OUT_ABS/vulture.txt" || true
   fi
-  timing_mark "end_vulture"
 
-  #timing_mark "start_bandit"
+  # Bandit, Pip-audit and PyExamine is dropped for now to save compute-time and due to not being that interesting.
+  # But code kept here commented out so that we can go back to using them if we later want to.
+
   #echo "Time for Bandit"
   #if command -v bandit >/dev/null 2>&1; then
   #  bandit -q -r "${SRC_PATHS[@]}" -f json -o "$OUT_ABS/bandit.json" || true
   #fi
-  #timing_mark "end_bandit"
 
-  #timing_mark "start_pipAudit"
   #echo "Time for Pip-audit"
   #if command -v pip-audit >/dev/null 2>&1; then
   #  pip-audit -f json -o "$OUT_ABS/pip_audit.json" || true
   #fi
-  #timing_mark "end_pipAudit"
 
-  #timing_mark "start_pyExamine"
   #echo "Time for PyExamine"
   #if command -v analyze_code_quality >/dev/null 2>&1; then
   #  PYX_DIR="$OUT_ABS/pyexamine"; mkdir -p "$PYX_DIR"
@@ -330,7 +305,6 @@ export TIMING_BRANCH="$LABEL"
   #    idx=$((idx+1))
   #  done
   #fi
-  #timing_mark "end_pyExamine"
 )
 
 echo "==> Collected metrics in $OUT_ABS"

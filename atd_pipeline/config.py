@@ -74,7 +74,7 @@ class LLMConfig:
     base_url: str
     api_key: str
     model_raw: str
-    context_length: int  # REQUIRED
+    context_length: int
 
 
 @dataclass(frozen=True)

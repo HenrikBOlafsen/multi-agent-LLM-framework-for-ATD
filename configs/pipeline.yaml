@@ -8,7 +8,7 @@ policy:
   delete_refactor_branches_after_metrics: true
 
 llm:
-  base_url: "http://host.docker.internal:8013/v1"
+  base_url: "http://host.docker.internal:8012/v1"
   api_key: "placeholder"
   model_raw: "Qwen3-Coder-30B-A3B-Instruct"
   context_length: 32768

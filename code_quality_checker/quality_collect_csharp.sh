@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 # code_quality_checker/quality_collect_csharp.sh
 #
-# Minimal, research-grade C#/.NET collector with machine-readable diagnostics.
-#
 # Artifacts produced:
 #   - dotnet_test.log + dotnet_test_exit_code.txt
 #   - TRX files under test_results/
 #   - SARIF files under sarif/ via Roslyn /errorlog (one per project+TFM+Configuration)
+#   - Lizard complexity CSV under dotnet_complexity/lizard.csv
 #   - provenance files (dotnet_info, targeting, etc.)
 #
 # NOTE:
@@ -14,9 +13,10 @@
 #
 # Optional per-repo override file:
 #   repo-test-setups-dotnet/<repo-name>-test-setup.sh
-# may set:
+# there you can set:
 #   DOTNET_WORKDIR="src"
 #   DOTNET_TEST_TARGET="MyRepo.sln"
+#   DOTNET_TEST_FILTER="FullyQualifiedName~Foo"
 #
 # Usage:
 #   ./quality_collect_csharp.sh <REPO_PATH> [LABEL]
@@ -97,6 +97,7 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
 
 DOTNET_WORKDIR="${DOTNET_WORKDIR:-}"
 DOTNET_TEST_TARGET="${DOTNET_TEST_TARGET:-}"
+DOTNET_TEST_FILTER="${DOTNET_TEST_FILTER:-}"
 
 if [[ -f "$REPO_SETUP_FILE" ]]; then
   echo "Using per-repo test setup: $REPO_SETUP_FILE"
@@ -109,6 +110,7 @@ fi
 {
   echo "DOTNET_WORKDIR=${DOTNET_WORKDIR:-}"
   echo "DOTNET_TEST_TARGET=${DOTNET_TEST_TARGET:-}"
+  echo "DOTNET_TEST_FILTER=${DOTNET_TEST_FILTER:-}"
   echo "REPO_SETUP_FILE=${REPO_SETUP_FILE:-}"
 } > "$OUT_ABS/dotnet_targeting.txt" || true
 
@@ -135,7 +137,7 @@ echo "${DOTNET_WORKDIR:-}" > "$OUT_ABS/test_workdir.txt" || true
 echo "${DOTNET_TEST_TARGET:-}" > "$OUT_ABS/test_target.txt" || true
 
 # -----------------------------------------------------------------------------
-# dotnet test + TRX + SARIF (single invocation; preserve repo semantics)
+# Output dirs
 # -----------------------------------------------------------------------------
 TEST_LOG="$OUT_ABS/dotnet_test.log"
 TEST_RC_FILE="$OUT_ABS/dotnet_test_exit_code.txt"
@@ -143,9 +145,10 @@ TRX_DIR="$OUT_ABS/test_results"
 SARIF_DIR="$OUT_ABS/sarif"
 mkdir -p "$TRX_DIR" "$SARIF_DIR"
 
-# --- Minimal SARIF injection (ephemeral worktree; no restore/backup) ----------
-QC_SARIF_TARGETS="$RUN_ROOT/qc.sarif.targets"
-DBT="$RUN_ROOT/Directory.Build.targets"
+# -----------------------------------------------------------------------------
+# SARIF injection WITHOUT touching repo files (per-project + TFM + Configuration)
+# -----------------------------------------------------------------------------
+QC_SARIF_TARGETS="$OUT_ABS/qc.sarif.targets"
 
 cat > "$QC_SARIF_TARGETS" <<'XML'
 <Project>
@@ -166,64 +169,57 @@ cat > "$QC_SARIF_TARGETS" <<'XML'
 </Project>
 XML
 
-# Ensure Directory.Build.targets imports qc.sarif.targets (idempotent).
-ensure_import() {
-  local f="$1"
-  local import_line="<Import Project=\"qc.sarif.targets\" Condition=\"Exists('qc.sarif.targets')\" />"
+# -----------------------------------------------------------------------------
+# Lizard complexity
+# -----------------------------------------------------------------------------
+LIZARD_DIR="$OUT_ABS/dotnet_complexity"
+LIZARD_CSV="$LIZARD_DIR/lizard.csv"
+mkdir -p "$LIZARD_DIR"
 
-  if [[ -f "$f" ]]; then
-    if grep -q 'qc\.sarif\.targets' "$f"; then
-      return 0
-    fi
-    if grep -q '</Project>' "$f"; then
-      perl -0777 -i -pe "s#</Project>\\s*\$#  $import_line\\n</Project>\\n#s" "$f"
-    else
-      printf "\n<Project>\n  %s\n</Project>\n" "$import_line" >> "$f"
-    fi
-  else
-    cat > "$f" <<XML
-<Project>
-  $import_line
-</Project>
-XML
-  fi
+run_lizard() {
+  echo "Running Lizard complexity: lizard --csv --languages csharp ." | tee -a "$TEST_LOG"
+  (
+    set +e
+    timeout -k 30s "${LIZARD_TIMEOUT:-5m}" \
+      lizard --csv --languages csharp . > "$LIZARD_CSV" 2>>"$TEST_LOG"
+    exit 0
+  ) || true
 }
-ensure_import "$DBT"
 
-cleanup_injected() {
-  rm -f "$QC_SARIF_TARGETS" 2>/dev/null || true
-}
-trap cleanup_injected EXIT
+# -----------------------------------------------------------------------------
+# Run dotnet test (single path)
+# -----------------------------------------------------------------------------
+DOTNET_TEST_ARGS=(test)
+TEST_STRATEGY="workdir_only"
+if [[ -n "${DOTNET_TEST_TARGET:-}" ]]; then
+  DOTNET_TEST_ARGS+=( "${DOTNET_TEST_TARGET}" )
+  TEST_STRATEGY="explicit_target"
+fi
+
+if [[ -n "${DOTNET_TEST_FILTER:-}" ]]; then
+  DOTNET_TEST_ARGS+=( --filter "${DOTNET_TEST_FILTER}" )
+fi
+echo "$TEST_STRATEGY" > "$OUT_ABS/test_strategy.txt"
+
+echo "Running: dotnet ${DOTNET_TEST_ARGS[*]} (workdir: $(pwd))" | tee "$TEST_LOG"
 
 set +e
-if [[ -n "${DOTNET_TEST_TARGET:-}" ]]; then
-  echo "Running: dotnet test ${DOTNET_TEST_TARGET}  (workdir: $(pwd))" | tee "$TEST_LOG"
-  timeout -k 30s "$DOTNET_TEST_TIMEOUT" \
-    dotnet test "${DOTNET_TEST_TARGET}" \
-      --nologo \
-      /p:CollectCoverage=false \
-      /p:QC_SARIF_DIR="$SARIF_DIR" \
-      --logger "trx" \
-      --results-directory "$TRX_DIR" \
-      2>&1 | tee -a "$TEST_LOG"
-  TEST_RC=${PIPESTATUS[0]}
-  echo "explicit_target" > "$OUT_ABS/test_strategy.txt"
-else
-  echo "Running: dotnet test  (workdir: $(pwd))" | tee "$TEST_LOG"
-  timeout -k 30s "$DOTNET_TEST_TIMEOUT" \
-    dotnet test \
-      --nologo \
-      /p:CollectCoverage=false \
-      /p:QC_SARIF_DIR="$SARIF_DIR" \
-      --logger "trx" \
-      --results-directory "$TRX_DIR" \
-      2>&1 | tee -a "$TEST_LOG"
-  TEST_RC=${PIPESTATUS[0]}
-  echo "workdir_only" > "$OUT_ABS/test_strategy.txt"
-fi
+timeout -k 30s "$DOTNET_TEST_TIMEOUT" \
+  dotnet "${DOTNET_TEST_ARGS[@]}" \
+    --nologo \
+    /p:CollectCoverage=false \
+    /p:QC_SARIF_DIR="$SARIF_DIR" \
+    /p:CustomAfterMicrosoftCommonTargets="$QC_SARIF_TARGETS" \
+    --logger "trx" \
+    --results-directory "$TRX_DIR" \
+    2>&1 | tee -a "$TEST_LOG"
+TEST_RC=${PIPESTATUS[0]}
 set -e
 
 echo "$TEST_RC" > "$TEST_RC_FILE"
+
+# Always run complexity (must not affect pass/fail of tests)
+run_lizard || true
 
 if [[ $TEST_RC -ne 0 ]]; then
   echo "dotnet test failed with exit code $TEST_RC" >&2
