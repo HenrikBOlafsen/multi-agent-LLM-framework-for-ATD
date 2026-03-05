@@ -32,6 +32,7 @@ EDGE_VARIANTS = {
         preamble=make_preamble("""
 Additional rules:
 - Do not propose refactorings. Your job is to explain what the dependency is and how it is used.
+- Do not quote code (no snippets/excerpts). Refer to identifiers and describe usage in words.
 """),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
 Edge
@@ -46,14 +47,17 @@ Notes / uncertainty
         variant_id="E1",
         preamble=make_preamble("""
 Additional rules:
-- You may cautiously infer intent from naming and folder structure, but label it as interpretation.
+- Compression-first: your primary job is to compress the provided code into a small, high-signal description of this specific dependency edge.
+- Keep only what is most relevant to explaining why A depends on B under the given edge semantics.
+- Include just enough detail that a downstream agent could reconstruct the dependency story (key identifiers and the minimal call/usage shape).
+- Prefer referring to identifiers (classes, functions, methods, fields, constants) instead of quoting large code blocks.
+- You may include small code excerpts if they clarify the dependency, but avoid dumping code.
+- If context appears truncated, mention the uncertainty instead of guessing.
+- You may cautiously infer intent from naming and folder structure, but clearly label it as interpretation.
 """),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
 Edge
-Where in A
-What from B
-How A uses it
-Likely intent (cautious)
+Compressed evidence of the dependency
 Notes / uncertainty
 """,
     ),

@@ -1,3 +1,4 @@
+# explain_AS/explain_entry.py
 from __future__ import annotations
 
 import argparse
@@ -8,9 +9,9 @@ from typing import Any, Dict, Optional
 
 import requests
 
+from context import require_language
 from engine import run_explain_engine
 from llm import LLMClient
-from context import require_language
 
 
 LLM_BLOCKED_EXIT_CODE = 42
@@ -61,7 +62,7 @@ def _language_from_scc_report(scc_report: Dict[str, Any]) -> str:
 def main() -> None:
     argument_parser = argparse.ArgumentParser()
     argument_parser.add_argument("--repo-root", required=True)
-    argument_parser.add_argument("--src-root", required=True)  # kept for compatibility; not used here
+    argument_parser.add_argument("--src-root", required=True)  # used by boundary bucketing display
     argument_parser.add_argument("--scc-report", required=True)
     argument_parser.add_argument("--cycle-catalog", required=True)
     argument_parser.add_argument("--cycle-id", required=True)
@@ -70,6 +71,7 @@ def main() -> None:
     args = argument_parser.parse_args()
 
     repo_root = str(Path(args.repo_root).resolve())
+    src_root = str(args.src_root or "").strip()
     scc_report_path = Path(args.scc_report).resolve()
     cycle_catalog_path = Path(args.cycle_catalog).resolve()
     out_prompt_path = Path(args.out_prompt).resolve()
@@ -95,6 +97,7 @@ def main() -> None:
     try:
         print("=== Explain entry ===")
         print(f"repo_root     : {repo_root}")
+        print(f"src_root      : {src_root}")
         print(f"cycle_id      : {args.cycle_id}")
         print(f"language      : {language}")
         print(f"orchestrator  : {orchestrator_id}")
@@ -134,6 +137,7 @@ def main() -> None:
             client=client,
             transcript_path=transcript_path,
             repo_root=repo_root,
+            src_root=src_root,
             language=language,
             cycle=cycle,
             scc_report=scc_report,

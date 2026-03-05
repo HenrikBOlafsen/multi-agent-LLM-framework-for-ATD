@@ -24,4 +24,4 @@ modes:
       orchestrator: multi_agent
       edge_variant: E0
       synthesizer_variant: S0
-      auxiliary_agent: none
+      auxiliary_agent: project

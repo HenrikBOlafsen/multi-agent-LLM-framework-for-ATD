@@ -12,18 +12,18 @@ twisted trunk src/twisted python
 flask main src/flask python
 FluentValidation main src/FluentValidation csharp
 Polly main src/Polly csharp
-MediatR main src/MediatR csharp
 LiteDB master LiteDB csharp
 FakeItEasy master src/FakeItEasy csharp
 MemoryPack main src/MemoryPack.Core csharp
 Bogus master Source/Bogus csharp
 AngleSharp devel src/AngleSharp csharp
-markdig master src/Markdig csharp
+markdig main src/Markdig csharp
 scriban master src/Scriban csharp
 CSharpFunctionalExtensions master CSharpFunctionalExtensions csharp
 MudBlazor dev src/MudBlazor csharp
-refit main Refit csharp                             (Only 4354 LOC)
+refit main Refit csharp
 superpower dev src/Superpower csharp                  (Only 2676 LOC)
 ncalc master src/NCalc.Core csharp                  (Only 2144 LOC)
 CliWrap master CliWrap csharp                   (Only 2067 LOC)
+MediatR main src/MediatR csharp                     (Only 1676 LOC)
 SharpYaml master src/SharpYaml csharp               (only 362 stars)

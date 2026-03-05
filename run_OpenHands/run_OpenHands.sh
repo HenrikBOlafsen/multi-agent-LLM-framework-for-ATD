@@ -252,10 +252,15 @@ docker image inspect "$OPENHANDS_IMAGE" >/dev/null 2>&1 || docker pull "$OPENHAN
 docker image inspect "$RUNTIME_IMAGE"  >/dev/null 2>&1 || docker pull "$RUNTIME_IMAGE"  >/dev/null
 
 run_controller_docker() {
+  local ADD_HOST_FLAGS=()
+  if [ -z "${ATD_OPENHANDS_NETWORK_CONTAINER:-}" ]; then
+    ADD_HOST_FLAGS+=( --add-host host.docker.internal:host-gateway )
+  fi
+
   docker run --rm \
     "${TTY_FLAGS[@]}" \
     "${NETWORK_FLAGS[@]}" \
-    --add-host host.docker.internal:host-gateway \
+    "${ADD_HOST_FLAGS[@]}" \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -v "$WT_HOST:/workspace:rw" \
     -v "$OUT_DIR_HOST:/logs:rw" \

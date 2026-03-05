@@ -1,3 +1,4 @@
+# explain_AS/llm.py
 from __future__ import annotations
 
 import json
@@ -330,7 +331,7 @@ class Agent:
                 f"minimum_completion_tokens_required={minimum_completion_tokens_required}."
             )
 
-        truncation_marker = "\n\n...[TRUNCATED: prompt reduced to preserve completion budget]...\n"
+        truncation_marker = "\n\n[Truncated]\n"
         truncation_marker_tokens_estimate = estimate_tokens_from_text(truncation_marker)
 
         prompt_tokens_estimate = estimate_tokens_from_text(prompt_text)
@@ -394,7 +395,7 @@ class Agent:
 
         if max_output_chars_soft is not None and max_output_chars_soft > 0 and len(reply_text) > int(max_output_chars_soft):
             trimmed_reply_text, _ = trim_text_bottom_with_info(reply_text, int(max_output_chars_soft))
-            reply_text = trimmed_reply_text + "\n\n...[TRUNCATED: output exceeded soft limit; details omitted]...\n"
+            reply_text = trimmed_reply_text + "\n\n[Truncated]\n"
 
         append_jsonl(
             transcript_path,

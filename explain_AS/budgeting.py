@@ -21,6 +21,35 @@ def tokens_to_chars(token_count: int) -> int:
     return max(0, int(token_count)) * CHARS_PER_TOKEN
 
 
+def single_block_char_budget(
+    *,
+    block_text: str,
+    wrapper_len_chars: int,
+    total_tokens_budget: int,
+) -> int:
+    """
+    Shared helper for the common "single wrapped block" budgeting pattern:
+      need_tokens = tokens(body) + tokens(wrapper)
+      allocated = min(need_tokens, total_tokens_budget)
+      char_budget = tokens_to_chars(allocated), but at least 1 char.
+
+    Notes:
+    - wrapper_len_chars should be the exact wrapper length in CHARS for that block
+      (e.g. from context.prompt_block_wrapper_len(path)).
+    - The returned char budget is the TOTAL max_chars passed to format_block_for_prompt
+      (wrapper + body + trunc suffix if needed).
+    """
+    total_tokens_budget = max(0, int(total_tokens_budget))
+    wrapper_len_chars = max(0, int(wrapper_len_chars))
+
+    need_tokens = estimate_tokens_from_text(block_text or "") + estimate_tokens_from_chars(wrapper_len_chars)
+    allocated_tokens = min(int(need_tokens), int(total_tokens_budget))
+
+    if allocated_tokens <= 0:
+        return 1
+    return max(1, tokens_to_chars(int(allocated_tokens)))
+
+
 @dataclass(frozen=True)
 class TruncationInfo:
     truncated: bool
@@ -36,7 +65,9 @@ def trim_text_bottom_with_info(text: str, max_chars: int) -> Tuple[str, Truncati
     if max_chars <= 0:
         return "", TruncationInfo(truncated=(len(normalized_text) > 0), kept_chars=0, total_chars=len(normalized_text))
     if len(normalized_text) <= max_chars:
-        return normalized_text, TruncationInfo(truncated=False, kept_chars=len(normalized_text), total_chars=len(normalized_text))
+        return normalized_text, TruncationInfo(
+            truncated=False, kept_chars=len(normalized_text), total_chars=len(normalized_text)
+        )
     kept = normalized_text[:max_chars]
     return kept, TruncationInfo(truncated=True, kept_chars=max_chars, total_chars=len(normalized_text))
 

@@ -172,11 +172,11 @@ class PipelineConfig:
 
 def _validate_and_normalize_mode_params(params: Dict[str, Any], *, where: str) -> Dict[str, Any]:
     """
-    Enforces the *new* params schema:
+    Enforces the *current* params schema:
       - orchestrator: "minimal" | "multi_agent" (optional, default "multi_agent")
       - edge_variant: "E0" | "E1" | "E2" (optional; required iff orchestrator != minimal)
       - synthesizer_variant: "S0" | "S1" | "S2" (optional; required iff orchestrator != minimal)
-      - auxiliary_agent: "none" | "boundary" | "graph" | "review" (optional, default "none")
+      - auxiliary_agent: "none" | "boundary" | "graph" | "project" (optional, default "none")
     """
     out = dict(params)
 
@@ -189,10 +189,10 @@ def _validate_and_normalize_mode_params(params: Dict[str, Any], *, where: str) -
     if isinstance(aux, list):
         _die(f"{where}.auxiliary_agent must be a single string (max 1 auxiliary agent), not a list")
     aux = str(aux or "none").strip()
-    if aux not in {"none", "boundary", "graph", "review"}:
+    if aux not in {"none", "boundary", "graph", "project"}:
         _die(
             f"{where}.auxiliary_agent must be one of "
-            f"['none','boundary','graph','review'] (got {aux!r})"
+            f"['none','boundary','graph','project'] (got {aux!r})"
         )
     out["auxiliary_agent"] = aux
 

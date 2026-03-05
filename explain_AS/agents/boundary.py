@@ -1,11 +1,12 @@
+# explain_AS/agents/boundary.py
 from __future__ import annotations
 
 from collections import Counter
 from dataclasses import dataclass
 from typing import Dict, Iterable, List, Sequence, Set, Tuple
 
-from budgeting import estimate_tokens_from_text, tokens_to_chars
-from context import cycle_chain_str, format_block_for_prompt, require_language
+from budgeting import estimate_tokens_from_text, single_block_char_budget
+from context import cycle_chain_str, format_block_for_prompt, prompt_block_wrapper_len, require_language
 from language import edge_semantics_text
 from llm import Agent, LLMClient
 
@@ -40,26 +41,55 @@ def _norm_path(p: str) -> str:
     return (p or "").replace("\\", "/").strip()
 
 
-def _folder_bucket(path: str, *, depth: int) -> str:
+def _norm_src_root(src_root: str) -> str:
+    # Normalize to a repo-relative-ish prefix like "src/FluentValidation"
+    return _norm_path(src_root).strip("/")
+
+
+def _bucket_rel(full_path: str, *, src_root: str, depth: int) -> str:
     """
-    Bucket by the first N folder segments (excluding the filename).
-    Example (depth=2):
-      src/domain/user.py -> src/domain
-      user.py -> (root)
+    Return a bucket RELATIVE to src_root:
+      ""                  => root (directly under src_root)
+      "Internal"          => first folder
+      "Internal/Rules"    => first 2 folders, etc
+
+    Rules:
+    - Excludes the filename from depth calculation.
+    - If the file is directly under src_root (or has no folders), returns "".
     """
-    p = _norm_path(path).strip("/")
+    p = _norm_path(full_path).strip("/")
+    root = _norm_src_root(src_root)
+    if root:
+        prefix = root + "/"
+        if p.startswith(prefix):
+            p = p[len(prefix) :]
+
     parts = [x for x in p.split("/") if x]
     if len(parts) <= 1:
-        return "(root)"
-    # exclude filename from bucket depth calculation
-    max_folder_parts = max(1, len(parts) - 1)
+        return ""  # root bucket
+
+    max_folder_parts = max(1, len(parts) - 1)  # exclude filename
     take = min(int(depth), max_folder_parts)
     return "/".join(parts[:take])
+
+
+def _bucket_label(bucket_rel: str, *, src_root: str) -> str:
+    """
+    Render bucket labels as repo-relative folder paths (prefixed with src_root).
+    Root bucket is rendered as "<src_root>" (no parentheses) if provided.
+    """
+    root = _norm_src_root(src_root)
+    if not bucket_rel:
+        return root if root else "(root)"
+    if not root:
+        return bucket_rel
+    return f"{root}/{bucket_rel}".rstrip("/")
 
 
 def _summarize_paths(
     paths: Sequence[str],
     *,
+    src_root: str,
     folder_depth: int,
     max_folders: int,
     max_samples: int,
@@ -67,23 +97,75 @@ def _summarize_paths(
     """
     Returns:
       total,
-      folder_counts_top,
-      samples,
+      folder_counts_top (bucket label -> count),
+      samples (repo-relative paths),
       omitted_samples_count,
       omitted_folder_buckets_count
-    """
-    normalized = sorted({_norm_path(p) for p in (paths or []) if p and p.strip()})
-    total = len(normalized)
 
-    buckets = [_folder_bucket(p, depth=folder_depth) for p in normalized]
-    c = Counter(buckets)
-    all_folder_counts = sorted(c.items(), key=lambda kv: (-kv[1], kv[0]))
+    Notes:
+    - Buckets are computed relative to `src_root` if possible.
+    - Bucket labels are rendered as repo-relative folder paths (prefixed with src_root).
+    - Samples are chosen spread across buckets (round-robin), but output grouped by bucket so
+      same-folder samples are adjacent.
+    """
+    normalized_full = sorted({_norm_path(p) for p in (paths or []) if p and p.strip()})
+    total = len(normalized_full)
+    if total <= 0:
+        return 0, [], [], 0, 0
+
+    # Build bucket -> sorted paths (one pass, reused for both counts + sampling)
+    bucket_to_paths: Dict[str, List[str]] = {}
+    for full in normalized_full:
+        b = _bucket_rel(full, src_root=src_root, depth=folder_depth)
+        bucket_to_paths.setdefault(b, []).append(full)
+
+    for b in list(bucket_to_paths.keys()):
+        bucket_to_paths[b].sort()
+
+    # Bucket order: largest first, then label (deterministic)
+    bucket_order = sorted(
+        bucket_to_paths.keys(),
+        key=lambda b: (-len(bucket_to_paths[b]), _bucket_label(b, src_root=src_root)),
+    )
+
+    # Folder counts (top N)
+    labels = [_bucket_label(b, src_root=src_root) for b in bucket_order]
+    counts = Counter({label: len(bucket_to_paths[b]) for b, label in zip(bucket_order, labels)})
+
+    all_folder_counts = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
     folder_counts_top = all_folder_counts[: max(0, int(max_folders))]
     omitted_folder_buckets = max(0, len(all_folder_counts) - len(folder_counts_top))
 
-    samples = normalized[: max(0, int(max_samples))]
-    omitted_samples = max(0, total - len(samples))
+    # Balanced sampling (round-robin across buckets), then output grouped by bucket_order
+    max_samples = max(0, int(max_samples))
+    if max_samples <= 0:
+        return total, folder_counts_top, [], total, omitted_folder_buckets
 
+    picks_per_bucket: Dict[str, int] = {b: 0 for b in bucket_order}
+    picked_total = 0
+    depth_idx = 0
+    while picked_total < max_samples:
+        progressed = False
+        for b in bucket_order:
+            lst = bucket_to_paths[b]
+            if depth_idx < len(lst) and picked_total < max_samples:
+                picks_per_bucket[b] += 1
+                picked_total += 1
+                progressed = True
+        if not progressed:
+            break
+        depth_idx += 1
+
+    samples: List[str] = []
+    for b in bucket_order:
+        n = picks_per_bucket.get(b, 0)
+        if n > 0:
+            samples.extend(bucket_to_paths[b][:n])
+        if len(samples) >= max_samples:
+            break
+    samples = samples[:max_samples]
+
+    omitted_samples = max(0, total - len(samples))
     return total, folder_counts_top, samples, omitted_samples, omitted_folder_buckets
 
 
@@ -96,7 +178,6 @@ def _build_adjacency(edges: Iterable[SCCEdge]) -> Tuple[Dict[str, Set[str]], Dic
         tgt = _norm_path(e.target)
         if not src or not tgt:
             continue
-
         outgoing.setdefault(src, set()).add(tgt)
         incoming.setdefault(tgt, set()).add(src)
 
@@ -107,6 +188,7 @@ def _render_external_connections_block(
     *,
     cycle_nodes: Sequence[str],
     scc_edges: Sequence[SCCEdge],
+    src_root: str,
     folder_depth: int,
     max_folder_buckets_per_dir: int,
     max_samples_per_dir: int,
@@ -120,20 +202,19 @@ def _render_external_connections_block(
 
     lines: List[str] = []
     for node in pretty_cycle:
-        out_all = outgoing.get(node, set())
-        in_all = incoming.get(node, set())
-
-        out_ext = sorted([p for p in out_all if p not in cycle_set])
-        in_ext = sorted([p for p in in_all if p not in cycle_set])
+        out_ext = sorted([p for p in outgoing.get(node, set()) if p not in cycle_set])
+        in_ext = sorted([p for p in incoming.get(node, set()) if p not in cycle_set])
 
         out_total, out_folders, out_samples, out_omitted_samples, out_omitted_folders = _summarize_paths(
             out_ext,
+            src_root=src_root,
             folder_depth=folder_depth,
             max_folders=max_folder_buckets_per_dir,
             max_samples=max_samples_per_dir,
         )
         in_total, in_folders, in_samples, in_omitted_samples, in_omitted_folders = _summarize_paths(
             in_ext,
+            src_root=src_root,
             folder_depth=folder_depth,
             max_folders=max_folder_buckets_per_dir,
             max_samples=max_samples_per_dir,
@@ -178,6 +259,7 @@ def build_boundary_user_prompt(
     cycle_nodes: List[str],
     scc_edges: List[SCCEdge],
     context_length: int,
+    src_root: str,
 ) -> str:
     semantics = edge_semantics_text(language)
     chain = cycle_chain_str(cycle_nodes)
@@ -185,6 +267,7 @@ def build_boundary_user_prompt(
     external_raw = _render_external_connections_block(
         cycle_nodes=cycle_nodes,
         scc_edges=scc_edges,
+        src_root=src_root,
         folder_depth=int(BOUNDARY_FOLDER_BUCKET_DEPTH),
         max_folder_buckets_per_dir=int(BOUNDARY_MAX_FOLDER_BUCKETS_PER_DIR),
         max_samples_per_dir=int(BOUNDARY_MAX_SAMPLES_PER_DIR),
@@ -218,14 +301,17 @@ Notes / uncertainty
     )
     total_input_tokens_budget = max(0, int(total_input_tokens_budget))
 
-    external_block_char_budget = (
-        max(1, tokens_to_chars(int(total_input_tokens_budget))) if total_input_tokens_budget > 0 else 1
+    block_id = "External connections summary"
+    external_text = (external_raw.strip() or "N/A")
+    external_block_char_budget = single_block_char_budget(
+        block_text=external_text,
+        wrapper_len_chars=prompt_block_wrapper_len(block_id),
+        total_tokens_budget=int(total_input_tokens_budget),
     )
 
     external_block, _external_truncated = format_block_for_prompt(
-        label="Boundary external connections",
-        repo_rel_path="BOUNDARY_EXTERNAL_CONNECTIONS.txt",
-        block_text=(external_raw.strip() or "N/A"),
+        repo_rel_path=block_id,
+        block_text=external_text,
         max_chars=int(external_block_char_budget),
     )
 
@@ -239,6 +325,7 @@ def run_boundary_agent(
     language: str,
     cycle_nodes: List[str],
     scc_edges: List[SCCEdge],
+    src_root: str,
 ) -> str:
     language = require_language(language)
     boundary_agent = Agent(name="boundary")
@@ -248,6 +335,7 @@ def run_boundary_agent(
         cycle_nodes=cycle_nodes,
         scc_edges=scc_edges,
         context_length=int(client.context_length),
+        src_root=src_root,
     )
 
     return boundary_agent.ask(

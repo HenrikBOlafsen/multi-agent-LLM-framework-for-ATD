@@ -1,14 +1,16 @@
+# explain_AS/agents/synthesizer.py
 from __future__ import annotations
 
 from typing import List, Sequence
 
 from agents.prompts.prompts_synthesizer import require_synthesizer_variant
 from budgeting import (
+    allocate_token_budgets_even_share_with_redistribution,
+    estimate_tokens_from_chars,
     estimate_tokens_from_text,
     tokens_to_chars,
-    allocate_token_budgets_even_share_with_redistribution,
 )
-from context import cycle_chain_str, format_block_for_prompt, require_language
+from context import cycle_chain_str, format_block_for_prompt, prompt_block_wrapper_len, require_language
 from language import edge_semantics_text
 from llm import Agent, LLMClient
 
@@ -44,11 +46,15 @@ Cycle:
 Edge reports (in cycle order, may be truncated):
 """.rstrip() + "\n"
 
-    aux_separator = "\n\nOptional additional context (may be truncated):\n"
     prompt_suffix = f"\n\n{synthesizer_prompt_variant.output_headings}\n"
 
     normalized_edge_reports = [str(report or "").strip() or "N/A" for report in (edge_reports or [])]
-    normalized_aux_text = str(aux_context or "").strip() or "None."
+
+    # Only include aux section if we actually have aux context.
+    has_aux = bool(str(aux_context or "").strip())
+    normalized_aux_text = str(aux_context or "").strip()
+
+    aux_separator = "\n\nOptional additional context (may be truncated):\n" if has_aux else ""
 
     overhead_tokens_estimate = estimate_tokens_from_text(prompt_prefix + aux_separator + prompt_suffix)
 
@@ -60,38 +66,50 @@ Edge reports (in cycle order, may be truncated):
     )
     total_input_tokens_budget = max(0, int(total_input_tokens_budget))
 
-    budget_items = normalized_edge_reports + [normalized_aux_text]
-    budget_item_needs_tokens = [estimate_tokens_from_text(item_text) for item_text in budget_items]
+    # Budget items: one wrapped block per edge report, plus optional aux block.
+    budget_item_needs_tokens: List[int] = []
+    block_ids: List[str] = []
+
+    for i, report_text in enumerate(normalized_edge_reports, start=1):
+        block_id = f"Edge report {i}"
+        need = estimate_tokens_from_text(report_text) + estimate_tokens_from_chars(prompt_block_wrapper_len(block_id))
+        budget_item_needs_tokens.append(int(need))
+        block_ids.append(block_id)
+
+    if has_aux:
+        aux_block_id = "Auxiliary report"
+        need = estimate_tokens_from_text(normalized_aux_text) + estimate_tokens_from_chars(prompt_block_wrapper_len(aux_block_id))
+        budget_item_needs_tokens.append(int(need))
+        block_ids.append(aux_block_id)
 
     budget_item_allocations_tokens = allocate_token_budgets_even_share_with_redistribution(
         item_token_needs=budget_item_needs_tokens,
         total_tokens=int(total_input_tokens_budget),
     )
 
-    rendered_edge_blocks: List[str] = []
-    for index, (edge_report_text, allocated_tokens) in enumerate(
-        zip(normalized_edge_reports, budget_item_allocations_tokens[: len(normalized_edge_reports)]), start=1
+    rendered_blocks: List[str] = []
+    for idx, (block_id, text, allocated_tokens) in enumerate(
+        zip(block_ids, (normalized_edge_reports + ([normalized_aux_text] if has_aux else [])), budget_item_allocations_tokens),
+        start=1,
     ):
-        allocated_chars = max(1, tokens_to_chars(int(allocated_tokens))) if allocated_tokens > 0 else 1
-        edge_report_block, _was_truncated = format_block_for_prompt(
-            label=f"Edge report {index}",
-            repo_rel_path=f"EDGE_REPORT_{index}.txt",
-            block_text=edge_report_text,
-            max_chars=int(allocated_chars),
+        _ = idx  # kept for readability if needed later
+        allocated_chars_total = max(1, tokens_to_chars(int(allocated_tokens))) if allocated_tokens > 0 else 1
+        block, _was_truncated = format_block_for_prompt(
+            repo_rel_path=block_id,
+            block_text=text,
+            max_chars=int(allocated_chars_total),
         )
-        rendered_edge_blocks.append(f"--- Edge report {index} ---\n{edge_report_block}".strip())
+        rendered_blocks.append(block.strip())
 
-    aux_allocated_tokens = budget_item_allocations_tokens[-1] if budget_item_allocations_tokens else 0
-    aux_allocated_chars = max(1, tokens_to_chars(int(aux_allocated_tokens))) if aux_allocated_tokens > 0 else 1
-    aux_block, _aux_truncated = format_block_for_prompt(
-        label="Aux context",
-        repo_rel_path="AUX_CONTEXT.txt",
-        block_text=normalized_aux_text,
-        max_chars=int(aux_allocated_chars),
-    )
+    # Split the section so aux keeps its separator heading.
+    if has_aux:
+        edge_blocks = rendered_blocks[: len(normalized_edge_reports)]
+        aux_block = rendered_blocks[-1] if rendered_blocks else ""
+        edges_section = "\n\n".join([b for b in edge_blocks if b.strip()]).strip() or "N/A"
+        return (prompt_prefix + edges_section + aux_separator + aux_block + prompt_suffix).strip() + "\n"
 
-    edges_section = "\n\n".join(rendered_edge_blocks).strip() or "N/A"
-    return (prompt_prefix + edges_section + aux_separator + aux_block + prompt_suffix).strip() + "\n"
+    edges_section = "\n\n".join([b for b in rendered_blocks if b.strip()]).strip() or "N/A"
+    return (prompt_prefix + edges_section + prompt_suffix).strip() + "\n"
 
 
 def run_synthesizer_agent(
