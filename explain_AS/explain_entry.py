@@ -1,4 +1,3 @@
-# explain_AS/explain_entry.py
 from __future__ import annotations
 
 import argparse

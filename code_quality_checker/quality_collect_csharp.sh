@@ -1,12 +1,10 @@
 #!/usr/bin/env bash
-# code_quality_checker/quality_collect_csharp.sh
 #
 # Artifacts produced:
 #   - dotnet_test.log + dotnet_test_exit_code.txt
 #   - TRX files under test_results/
 #   - SARIF files under sarif/ via Roslyn /errorlog (one per project+TFM+Configuration)
 #   - Lizard complexity CSV under dotnet_complexity/lizard.csv
-#   - provenance files (dotnet_info, targeting, etc.)
 #
 # NOTE:
 #   We do NOT run `dotnet build` separately. `dotnet test` builds by default.
@@ -49,7 +47,6 @@ OUT_ROOT="${OUT_ROOT:-.quality}"
 FINAL_OUT_DIR="${OUT_DIR:-$OUT_ROOT/$REPO_NAME/$LABEL}"
 mkdir -p "$FINAL_OUT_DIR"
 OUT_ABS="$(realpath "$FINAL_OUT_DIR")"
-date -u +'%Y-%m-%dT%H:%M:%SZ' > "$OUT_ABS/run_started_utc.txt" || true
 
 WT_DIR=""
 WT_ROOT="$REPO_PATH"
@@ -76,17 +73,9 @@ if [[ $IS_GIT -eq 1 ]]; then
   trap cleanup EXIT
 fi
 
-if [[ $IS_GIT -eq 1 ]]; then
-  git -C "$WT_ROOT" rev-parse --short HEAD > "$OUT_ABS/git_sha.txt" || true
-  git -C "$WT_ROOT" branch --show-current  > "$OUT_ABS/git_branch.txt" || true
-fi
-
 echo "Repo: $REPO_PATH"
 echo "Worktree: $WT_ROOT  Label: $LABEL"
 echo "Out: $OUT_ABS"
-
-cd "$WT_ROOT"
-dotnet --info > "$OUT_ABS/dotnet_info.txt" 2>&1 || true
 
 # -----------------------------------------------------------------------------
 # Per-repo setup discovery
@@ -99,6 +88,7 @@ DOTNET_WORKDIR="${DOTNET_WORKDIR:-}"
 DOTNET_TEST_TARGET="${DOTNET_TEST_TARGET:-}"
 DOTNET_TEST_FILTER="${DOTNET_TEST_FILTER:-}"
 
+cd "$WT_ROOT"
 if [[ -f "$REPO_SETUP_FILE" ]]; then
   echo "Using per-repo test setup: $REPO_SETUP_FILE"
   # shellcheck disable=SC1090
@@ -106,13 +96,6 @@ if [[ -f "$REPO_SETUP_FILE" ]]; then
 else
   echo "No per-repo setup found at: $REPO_SETUP_FILE (using defaults)"
 fi
-
-{
-  echo "DOTNET_WORKDIR=${DOTNET_WORKDIR:-}"
-  echo "DOTNET_TEST_TARGET=${DOTNET_TEST_TARGET:-}"
-  echo "DOTNET_TEST_FILTER=${DOTNET_TEST_FILTER:-}"
-  echo "REPO_SETUP_FILE=${REPO_SETUP_FILE:-}"
-} > "$OUT_ABS/dotnet_targeting.txt" || true
 
 : "${DOTNET_TEST_TIMEOUT:=20m}"
 
@@ -124,17 +107,12 @@ if [[ -n "${DOTNET_WORKDIR:-}" ]]; then
   if [[ ! -d "$WT_ROOT/$DOTNET_WORKDIR" ]]; then
     echo "DOTNET_WORKDIR '$DOTNET_WORKDIR' does not exist under repo root." >&2
     echo "2" > "$OUT_ABS/dotnet_test_exit_code.txt"
-    echo "${DOTNET_WORKDIR}" > "$OUT_ABS/test_workdir.txt" || true
-    echo "${DOTNET_TEST_TARGET}" > "$OUT_ABS/test_target.txt" || true
-    echo "" > "$OUT_ABS/test_strategy.txt" || true
     exit 2
   fi
   RUN_ROOT="$WT_ROOT/$DOTNET_WORKDIR"
 fi
 
 cd "$RUN_ROOT"
-echo "${DOTNET_WORKDIR:-}" > "$OUT_ABS/test_workdir.txt" || true
-echo "${DOTNET_TEST_TARGET:-}" > "$OUT_ABS/test_target.txt" || true
 
 # -----------------------------------------------------------------------------
 # Output dirs
@@ -190,16 +168,13 @@ run_lizard() {
 # Run dotnet test (single path)
 # -----------------------------------------------------------------------------
 DOTNET_TEST_ARGS=(test)
-TEST_STRATEGY="workdir_only"
 if [[ -n "${DOTNET_TEST_TARGET:-}" ]]; then
   DOTNET_TEST_ARGS+=( "${DOTNET_TEST_TARGET}" )
-  TEST_STRATEGY="explicit_target"
 fi
 
 if [[ -n "${DOTNET_TEST_FILTER:-}" ]]; then
   DOTNET_TEST_ARGS+=( --filter "${DOTNET_TEST_FILTER}" )
 fi
-echo "$TEST_STRATEGY" > "$OUT_ABS/test_strategy.txt"
 
 echo "Running: dotnet ${DOTNET_TEST_ARGS[*]} (workdir: $(pwd))" | tee "$TEST_LOG"
 

@@ -15,18 +15,8 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
-# -----------------------------
-# Cycle helpers (DIRECTED graph)
-# -----------------------------
-
 def canonicalize_cycle(nodes: List[str]) -> Tuple[str, ...]:
-    """
-    Canonicalize a directed cycle by rotation ONLY (direction preserved).
-
-    For directed cycles, reversing a node order generally changes edge directions
-    and can fabricate a cycle that doesn't exist in the graph. So we only rotate
-    to the lexicographically smallest starting node.
-    """
+    """Canonicalize a directed cycle by rotation ONLY (direction preserved)."""
     if not nodes:
         return ()
     cyc = list(nodes)
@@ -43,10 +33,6 @@ def cycle_edges(nodes: List[str], relation: str) -> List[Dict[str, str]]:
     m = len(nodes)
     return [{"source": nodes[i], "target": nodes[(i + 1) % m], "relation": relation} for i in range(m)]
 
-
-# -------------------------
-# Parsing / loading helpers
-# -------------------------
 
 def _load_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -82,37 +68,19 @@ def _scc_node_lists(scc_report: Dict[str, Any]) -> List[List[str]]:
 
 
 def _global_pagerank_map(scc_report: Dict[str, Any]) -> Dict[str, float]:
-    """
-    Extract global PageRank from scc_report.json.
-
-    Expected shape (as in your example):
-      "node_features": {
-        "<repo-relative-path>": {"pagerank": <float>, ...},
-        ...
-      }
-
-    If missing or malformed, returns {} and callers should fall back to 0.0.
-    """
     out: Dict[str, float] = {}
     nf = scc_report.get("node_features")
     if not isinstance(nf, dict):
         return out
 
     for node_id, feats in nf.items():
-        if not isinstance(node_id, str):
-            continue
-        if not isinstance(feats, dict):
+        if not isinstance(node_id, str) or not isinstance(feats, dict):
             continue
         pr = feats.get("pagerank")
         if isinstance(pr, (int, float)):
             out[node_id] = float(pr)
-
     return out
 
-
-# -------------------------
-# Cycle sampling
-# -------------------------
 
 def _sample_cycles_in_scc(
     Gscc: nx.DiGraph,
@@ -121,13 +89,7 @@ def _sample_cycles_in_scc(
     attempts: int,
     rng: random.Random,
 ) -> List[List[str]]:
-    """
-    Find cycles by repeated bounded random walks:
-      - pick start node
-      - walk up to max_len, stop if we return to a node already on the path
-      - if that closes a cycle back to the repeated node -> record that cycle
-    This is not complete enumeration; it's a fast sampler.
-    """
+    """Fast sampler: bounded random walks; detect first repeated node to form a cycle."""
     nodes = list(Gscc.nodes())
     if not nodes:
         return []
@@ -135,7 +97,6 @@ def _sample_cycles_in_scc(
     seen: Set[Tuple[str, ...]] = set()
     found: List[List[str]] = []
 
-    # Precompute successors for speed
     succ = {u: list(Gscc.successors(u)) for u in nodes}
 
     for _ in range(attempts):
@@ -151,11 +112,9 @@ def _sample_cycles_in_scc(
             cur = rng.choice(nxts)
 
             if cur in pos:
-                # cycle detected (cur repeats). The cycle is the subpath from
-                # first occurrence of 'cur' back to 'cur'.
                 i = pos[cur]
-                cyc = path[i:] + [cur]  # closes at cur
-                if cyc[0] == cyc[-1]:
+                cyc = path[i:] + [cur]
+                if cyc and cyc[0] == cyc[-1]:
                     cyc_nodes = cyc[:-1]
                     if 2 <= len(cyc_nodes) <= max_len:
                         key = canonicalize_cycle(cyc_nodes)
@@ -167,14 +126,9 @@ def _sample_cycles_in_scc(
             path.append(cur)
             pos[cur] = len(path) - 1
 
-    # Prefer longer cycles first (useful for sampling diversity)
     found.sort(key=lambda ns: (len(ns), tuple(ns)), reverse=True)
     return found
 
-
-# -------------------------
-# Edge-disjoint packing (per SCC)
-# -------------------------
 
 def _pack_edge_disjoint_cycles(
     cycles: List[List[str]],
@@ -182,23 +136,13 @@ def _pack_edge_disjoint_cycles(
     *,
     max_keep: int,
 ) -> List[List[str]]:
-    """
-    Greedy packing to enforce pairwise edge-disjointness among returned cycles.
-
-    - Sort candidates by (length desc, avg_pagerank desc, lexical tie-break)
-    - Accept a cycle iff none of its directed edges have been used
-    - Stop once we have max_keep (if max_keep > 0)
-
-    This returns a *maximal* edge-disjoint subset relative to the provided candidates
-    (not claiming global optimum over all possible cycles in the SCC).
-    """
+    """Greedy packing of edge-disjoint cycles (within an SCC)."""
     used_edges: Set[Tuple[str, str]] = set()
     kept: List[List[str]] = []
 
     def avg_pr(cyc: List[str]) -> float:
         return float(sum(pr.get(n, 0.0) for n in cyc) / max(1, len(cyc)))
 
-    # Best-first ordering; deterministic tie-breaker on tuple(cyc)
     ordered = sorted(
         cycles,
         key=lambda cyc: (len(cyc), avg_pr(cyc), tuple(cyc)),
@@ -217,26 +161,23 @@ def _pack_edge_disjoint_cycles(
     return kept
 
 
-# -------------------------
-# Main
-# -------------------------
-
 def main() -> None:
     ap = argparse.ArgumentParser(
         description=(
-            "Generate cycle_catalog.json by sampling cycles inside SCCs (no full enumeration). "
-            "Cycles are always enforced to be edge-disjoint within each SCC."
+            "Generate cycle_catalog.json by sampling cycles inside SCCs (no full enumeration).\n"
+            "Cycles are enforced EDGE-disjoint within each SCC.\n"
+            "This yields a large candidate pool; selection-time overlap control happens later."
         )
     )
-    ap.add_argument("--dependency-graph", required=True, help="Path to dependency_graph.json")
-    ap.add_argument("--scc-report", required=True, help="Path to scc_report.json (SCC-only)")
-    ap.add_argument("--out", required=True, help="Output path for cycle_catalog.json")
-    ap.add_argument("--repo", default="", help="Repo name (optional, for metadata)")
-    ap.add_argument("--base-branch", default="", help="Base branch (optional, for metadata)")
-    ap.add_argument("--max-cycle-len", type=int, default=8)
-    ap.add_argument("--attempts-per-scc", type=int, default=5000)
-    ap.add_argument("--max-cycles-per-scc", type=int, default=200)
-    ap.add_argument("--seed", type=int, default=12345)
+    ap.add_argument("--dependency-graph", required=True)
+    ap.add_argument("--scc-report", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--repo", default="")
+    ap.add_argument("--base-branch", default="")
+    ap.add_argument("--max-cycle-len", type=int, required=True)
+    ap.add_argument("--attempts-per-scc", type=int, required=True)
+    ap.add_argument("--max-cycles-per-scc", type=int, required=True)
+    ap.add_argument("--seed", type=int, required=True)
     args = ap.parse_args()
 
     dep_path = Path(args.dependency_graph).resolve()
@@ -250,9 +191,7 @@ def main() -> None:
     relation = _relation_from_graph(dep)
     G = _build_full_graph(dep)
 
-    # Global PageRank (computed on full dependency graph) is expected to be present in scc_report.json
     global_pr = _global_pagerank_map(scc)
-
     scc_nodes_list = _scc_node_lists(scc)
     rng = random.Random(args.seed)
 
@@ -264,7 +203,6 @@ def main() -> None:
         if sub.number_of_nodes() < 2:
             continue
 
-        # Restrict PR map to SCC nodes (values are still global PR scores)
         pr = {n: float(global_pr.get(n, 0.0)) for n in sub.nodes()}
 
         sampled = _sample_cycles_in_scc(
@@ -274,7 +212,6 @@ def main() -> None:
             rng=rng,
         )
 
-        # ALWAYS enforce edge-disjointness (within SCC) before applying max cap
         sampled = _pack_edge_disjoint_cycles(
             sampled,
             pr,
@@ -321,10 +258,10 @@ def main() -> None:
         "params": {
             "max_cycle_len": args.max_cycle_len,
             "attempts_per_scc": args.attempts_per_scc,
-            "max_cycles_per_scc": args.max_cycles_per_scc,
+            "max_cycles_per_scc": args.max_cycles_per_scc,  # fixed typo
             "seed": args.seed,
-            "edge_disjoint": True,
-            "edge_disjoint_scope": "within_scc",
+            "disjointness": "edge_disjoint",
+            "disjoint_scope": "within_scc",
             "directed_canonicalization": "rotation_only",
             "pagerank_source": "scc_report.node_features.pagerank",
             "pagerank_scope": "global",

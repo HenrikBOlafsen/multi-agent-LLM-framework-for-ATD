@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# code_quality_checker/quality_single_summary_csharp.py
 #
 # Aggregates (machine-readable):
 # - TRX results (dotnet test)
@@ -8,7 +7,7 @@
 # - "Radon-ish" complexity summary from Lizard CSV (optional)
 #
 # Usage:
-#   python quality_single_summary_csharp.py <METRICS_DIR> <OUT_JSON> [--with-provenance]
+#   python quality_single_summary_csharp.py <METRICS_DIR> <OUT_JSON>
 #
 from __future__ import annotations
 
@@ -29,20 +28,6 @@ INCLUDE_LINT_LEVELS = {"warning", "error"}
 # Radon-style thresholds (Radon D+E+F == CC >= 21, i.e. > 20)
 CC_OVER_20_THRESHOLD = 20
 CC_OVER_40_THRESHOLD = 40
-
-
-def _safe_strip(p: Path) -> str:
-    try:
-        return p.read_text(encoding="utf-8").strip()
-    except Exception:
-        return ""
-
-
-def _safe_text(p: Path) -> str:
-    try:
-        return p.read_text(encoding="utf-8", errors="ignore")
-    except Exception:
-        return ""
 
 
 def _read_int(p: Path) -> Optional[int]:
@@ -283,7 +268,7 @@ def parse_lizard_complexity(metrics_dir: Path) -> Dict[str, Any]:
 
 # -------------------- Collector --------------------
 
-def collect(metrics_dir: Path, with_prov: bool) -> dict:
+def collect(metrics_dir: Path) -> dict:
     metrics_dir = Path(metrics_dir)
 
     trx_files = find_all_trx(metrics_dir)
@@ -295,7 +280,7 @@ def collect(metrics_dir: Path, with_prov: bool) -> dict:
 
     dotnet_complexity = parse_lizard_complexity(metrics_dir)
 
-    data = {
+    return {
         "schema_version": SCHEMA_VERSION,
         "language": "csharp",
         "dotnet_test": dotnet_test,
@@ -304,33 +289,17 @@ def collect(metrics_dir: Path, with_prov: bool) -> dict:
         "dotnet_complexity": dotnet_complexity,
     }
 
-    if with_prov:
-        data["provenance"] = {
-            "run_started_utc": _safe_strip(metrics_dir / "run_started_utc.txt"),
-            "git_sha": _safe_strip(metrics_dir / "git_sha.txt"),
-            "git_branch": _safe_strip(metrics_dir / "git_branch.txt"),
-            "dotnet_info": _safe_text(metrics_dir / "dotnet_info.txt"),
-            "test_strategy": _safe_strip(metrics_dir / "test_strategy.txt"),
-            "test_target": _safe_strip(metrics_dir / "test_target.txt"),
-            "test_workdir": _safe_strip(metrics_dir / "test_workdir.txt"),
-            "trx_files_count": len(trx_files),
-            "sarif_files_count": len(sarif_files),
-        }
-
-    return data
-
 
 def main() -> int:
     if len(sys.argv) < 3:
-        print("Usage: python quality_single_summary_csharp.py <METRICS_DIR> <OUT_JSON> [--with-provenance]", file=sys.stderr)
+        print("Usage: python quality_single_summary_csharp.py <METRICS_DIR> <OUT_JSON>", file=sys.stderr)
         return 2
 
     metrics_dir = Path(sys.argv[1])
     out_json = Path(sys.argv[2])
-    with_prov = ("--with-provenance" in sys.argv[3:])
 
     out_json.parent.mkdir(parents=True, exist_ok=True)
-    report = collect(metrics_dir, with_prov)
+    report = collect(metrics_dir)
     out_json.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(f"Wrote {out_json}")
     return 0

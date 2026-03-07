@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-# quality_single_summary.py
 #
 # Usage:
-#   python quality_single_summary.py <METRICS_DIR> <OUT_JSON> [--with-provenance]
+#   python quality_single_summary.py <METRICS_DIR> <OUT_JSON>
 # Example:
 #   python quality_single_summary.py results/kombu/main/code_quality_checks metrics.json
 
@@ -234,10 +233,10 @@ def pyexamine_summary(folder: Path):
 
 # -------------------- Collector --------------------
 
-def collect(folder: Path, with_prov: bool):
+def collect(folder: Path):
     folder = Path(folder)
 
-    data = {
+    return {
         "schema_version": 1,
         "language": "python",
 
@@ -259,45 +258,18 @@ def collect(folder: Path, with_prov: bool):
         "dotnet_test": None,
     }
 
-    if with_prov:
-        def safe_strip(p: Path):
-            try:
-                return p.read_text(encoding="utf-8").strip()
-            except Exception:
-                return ""
-
-        def safe_text(p: Path):
-            try:
-                return p.read_text(encoding="utf-8")
-            except Exception:
-                return ""
-
-        data["provenance"] = {
-            "run_started_utc": safe_strip(folder / "run_started_utc.txt"),
-            "python_version": safe_strip(folder / "python_version.txt"),
-            "git_sha": safe_strip(folder / "git_sha.txt"),
-            "git_branch": safe_strip(folder / "git_branch.txt"),
-            "uname": safe_strip(folder / "uname.txt"),
-            "tool_versions": safe_text(folder / "tool_versions.txt"),
-            "pip_freeze": safe_text(folder / "pip_freeze.txt"),
-            "src_paths": safe_text(folder / "src_paths.txt").splitlines(),
-        }
-
-    return data
-
 
 # -------------------- CLI --------------------
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python quality_single_summary.py <METRICS_DIR> <OUT_JSON> [--with-provenance]", file=sys.stderr)
+        print("Usage: python quality_single_summary.py <METRICS_DIR> <OUT_JSON>", file=sys.stderr)
         sys.exit(2)
 
     metrics_dir = Path(sys.argv[1])
     out_json = Path(sys.argv[2])
-    with_prov = ("--with-provenance" in sys.argv[3:])
 
     out_json.parent.mkdir(parents=True, exist_ok=True)
-    report = collect(metrics_dir, with_prov)
+    report = collect(metrics_dir)
     out_json.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(f"Wrote {out_json}")

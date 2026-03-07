@@ -3,12 +3,27 @@ from __future__ import annotations
 
 import argparse
 import json
-from collections import Counter, defaultdict, deque
+from collections import Counter, defaultdict
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple, Set
+
 
 # -------------------------
-# Parsing / loading helpers
+# Fixed, thesis-friendly knobs (NO FLAGS)
+# -------------------------
+ATTEMPTS_PER_SCC = 50000
+MAX_CYCLES_PER_SCC = 200
+SEED = 12345
+
+# Simple + defendable:
+# "We allow a file to appear in at most 2 selected cycles within the same repo,
+# to reduce intra-repo dependence while keeping enough data."
+MAX_NODE_USE_PER_REPO = 2
+
+
+# -------------------------
+# Small helpers
 # -------------------------
 
 def parse_repos_file(path: Path) -> List[Tuple[str, str, str, str]]:
@@ -37,8 +52,7 @@ def load_json(p: Path) -> Optional[Dict[str, Any]]:
         return None
 
 
-def iter_catalog_cycles(catalog: Dict[str, Any]):
-    # catalog schema: {"sccs":[{"cycles":[...]}]}
+def iter_catalog_cycles(catalog: Dict[str, Any]) -> Iterable[Dict[str, Any]]:
     for scc in (catalog.get("sccs") or []):
         for cyc in (scc.get("cycles") or []):
             yield cyc
@@ -59,161 +73,176 @@ def cycle_id(cyc: Dict[str, Any]) -> Optional[str]:
     return str(cid) if cid is not None else None
 
 
-# ----------------------------------------
-# Fair selection within one exact-size stratum
-# ----------------------------------------
+def cycle_nodes(cyc: Dict[str, Any]) -> List[str]:
+    nodes = cyc.get("nodes")
+    if isinstance(nodes, list):
+        return [str(x) for x in nodes]
+    return []
 
-def select_for_size_balanced_batch(
-    queues_by_repo: Dict[str, deque],
-    take_n: int,
-    repos_order: List[str],
-    repos_rank: Dict[str, int],
-    per_repo_selected_global: Counter,
-) -> List[Tuple[str, str]]:
+
+def cycle_pagerank_avg(cyc: Dict[str, Any]) -> float:
+    m = cyc.get("metrics")
+    if isinstance(m, dict):
+        v = m.get("pagerank_avg")
+        if isinstance(v, (int, float)):
+            return float(v)
+    return 0.0
+
+
+@dataclass(frozen=True)
+class Candidate:
+    repo: str
+    branch: str
+    lang: str
+    cid: str
+    size: int
+    nodes: Tuple[str, ...]
+    bin_key: str
+    pagerank_avg: float
+
+
+def parse_bins(spec: str) -> List[Tuple[int, int, str]]:
     """
-    Pick up to take_n cycles for one size bucket.
-
-    Strategy:
-      - If there are >= take_n repos with candidates, take 1 from distinct repos (global fairness).
-      - Else take 1 from each available repo, then fill remaining fairly.
+    spec like: "2-3,4-6,7-8"
+    returns list of (lo, hi, key) preserving input order.
     """
-    chosen: List[Tuple[str, str]] = []
-    K = sum(1 for q in queues_by_repo.values() if q)
-    if K == 0 or take_n <= 0:
-        return chosen
-
-    if K >= take_n:
-        candidates = [r for r in repos_order if queues_by_repo.get(r)]
-        candidates.sort(key=lambda r: (per_repo_selected_global[r], repos_rank.get(r, 10**9), r))
-        for repo in candidates[:take_n]:
-            cid = queues_by_repo[repo].popleft()
-            chosen.append((repo, cid))
-            per_repo_selected_global[repo] += 1
-        return chosen
-
-    # K < take_n
-    per_size_taken = Counter()
-    candidates = [r for r in repos_order if queues_by_repo.get(r)]
-    candidates.sort(key=lambda r: (per_repo_selected_global[r], repos_rank.get(r, 10**9), r))
-
-    # one to each repo first
-    for repo in candidates:
-        if len(chosen) >= take_n:
-            break
-        q = queues_by_repo.get(repo)
-        if not q:
+    out: List[Tuple[int, int, str]] = []
+    for part in spec.split(","):
+        part = part.strip()
+        if not part:
             continue
-        cid = q.popleft()
-        chosen.append((repo, cid))
-        per_repo_selected_global[repo] += 1
-        per_size_taken[repo] += 1
-
-    # fill remaining fairly
-    remaining = take_n - len(chosen)
-    available = {r for r, q in queues_by_repo.items() if q}
-    while remaining > 0 and available:
-        repo = min(
-            available,
-            key=lambda r: (per_repo_selected_global[r], per_size_taken[r], repos_rank.get(r, 10**9), r),
-        )
-        q = queues_by_repo[repo]
-        cid = q.popleft()
-        chosen.append((repo, cid))
-        per_repo_selected_global[repo] += 1
-        per_size_taken[repo] += 1
-        remaining -= 1
-        if not q:
-            available.discard(repo)
-
-    return chosen
+        if "-" not in part:
+            raise ValueError(f"Bad --size-bins item '{part}' (expected 'lo-hi')")
+        a, b = part.split("-", 1)
+        lo = int(a.strip())
+        hi = int(b.strip())
+        if lo > hi:
+            lo, hi = hi, lo
+        out.append((lo, hi, f"{lo}-{hi}"))
+    if not out:
+        raise ValueError("No bins parsed from --size-bins")
+    return out
 
 
-def pick_one_round_robin(
-    by_size_repo_queues: Dict[int, Dict[str, deque]],
-    *,
-    size_order: List[int],
-    repos_rank: Dict[str, int],
-    per_repo_selected_global: Counter,
-    per_size_selected: Counter,
-) -> Optional[Tuple[int, str, str]]:
-    """
-    Spillover selection: pick ONE cycle while:
-      - rotating across sizes (round-robin)
-      - choosing repo with fewest global picks, then fewest picks for that size, then repos.txt order
-    """
-    for sz in size_order:
-        repo_queues = by_size_repo_queues.get(sz) or {}
-        candidates = [r for r, q in repo_queues.items() if q]
-        if not candidates:
-            continue
-
-        repo = min(
-            candidates,
-            key=lambda r: (per_repo_selected_global[r], per_size_selected[sz], repos_rank.get(r, 10**9), r),
-        )
-        cid = repo_queues[repo].popleft()
-        if not repo_queues[repo]:
-            del repo_queues[repo]
-        if not repo_queues:
-            by_size_repo_queues.pop(sz, None)
-
-        per_repo_selected_global[repo] += 1
-        per_size_selected[sz] += 1
-        return (sz, repo, cid)
-
+def bin_for_size(sz: int, bins: List[Tuple[int, int, str]]) -> Optional[str]:
+    for lo, hi, key in bins:
+        if lo <= sz <= hi:
+            return key
     return None
 
 
+def derive_bin_priority(bins: List[Tuple[int, int, str]]) -> List[str]:
+    """
+    Deterministic: larger cycles first (by hi desc, then lo desc).
+    Example: 2-3,4-6,7-8 => priority 7-8,4-6,2-3
+    """
+    ordered = sorted(bins, key=lambda t: (t[1], t[0]), reverse=True)
+    return [key for _lo, _hi, key in ordered]
+
+
 # -------------------------
-# Main
+# Selection
 # -------------------------
+
+def feasible_under_node_cap(
+    cand: Candidate,
+    node_use: Dict[str, Counter],
+) -> bool:
+    ru = node_use[cand.repo]
+    for n in cand.nodes:
+        if ru.get(n, 0) >= MAX_NODE_USE_PER_REPO:
+            return False
+    return True
+
+
+def overlap_count(
+    cand: Candidate,
+    node_use: Dict[str, Counter],
+) -> int:
+    ru = node_use[cand.repo]
+    return sum(1 for n in cand.nodes if ru.get(n, 0) > 0)
+
+
+def score_candidate_min(
+    cand: Candidate,
+    per_repo_selected: Counter,
+    node_use: Dict[str, Counter],
+) -> Tuple:
+    """
+    Deterministic lexicographic score where SMALLER is better (so we use min()).
+
+    1) repo fairness: fewer already selected in repo
+    2) overlap: fewer reused nodes
+    3) size: prefer larger => use negative size
+    4) stable tie-break: repo, cid
+    """
+    selected_in_repo = int(per_repo_selected.get(cand.repo, 0))
+    ov = overlap_count(cand, node_use)
+    return (
+        selected_in_repo,
+        ov,
+        -cand.size,
+        cand.repo,
+        cand.cid,
+    )
+
 
 def main() -> None:
     ap = argparse.ArgumentParser(
         description=(
-            "Build per-repo cycle_catalog.json (always rebuilt) and write cycles_to_analyze.txt.\n"
-            "Selection is even-by-exact-cycle-size (within [min,max] or observed sizes), with repo-fairness."
+            "Rebuild per-repo cycle_catalog.json and write cycles_to_analyze.txt.\n"
+            "\n"
+            "Selection strategy (thesis-friendly):\n"
+            "  - size-bin targets (equal split, first bins get remainder)\n"
+            "  - bin priority: larger bins first (e.g., 7-8 then 4-6 then 2-3)\n"
+            "  - within each bin: global greedy selection across repos with explicit fairness + overlap penalty\n"
+            "  - hard cap per repo: --max-per-repo\n"
+            f"  - hard node reuse cap per repo: {MAX_NODE_USE_PER_REPO}\n"
+            "\n"
+            "All tuning constants are fixed in this script for reproducibility."
         )
     )
     ap.add_argument("--repos-file", required=True)
     ap.add_argument("--results-root", required=True)
-    ap.add_argument("--total", type=int, required=True, help="Total cycles to select (global)")
-    ap.add_argument("--min-size", type=int, default=None)
-    ap.add_argument("--max-size", type=int, default=None)
-    ap.add_argument("--ascending-sizes", action="store_true")
-    ap.add_argument("--output", required=True, help="Path to cycles_to_analyze.txt")
-
-    # Catalog generation knobs
-    ap.add_argument("--max-cycle-len", type=int, default=8)
-    ap.add_argument("--attempts-per-scc", type=int, default=5000)
-    ap.add_argument("--max-cycles-per-scc", type=int, default=200)
-    ap.add_argument("--seed", type=int, default=12345)
-
+    ap.add_argument("--size-bins", required=True, help='Comma-separated, e.g. "2-3,4-6,7-8"')
+    ap.add_argument("--total", type=int, required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--max-per-repo", type=int, required=True)
     args = ap.parse_args()
 
     if args.total <= 0:
         raise SystemExit("--total must be > 0")
+    if args.max_per_repo <= 0:
+        raise SystemExit("--max-per-repo must be > 0")
 
     repos_file = Path(args.repos_file).resolve()
     results_root = Path(args.results_root).resolve()
-    out_path = Path(args.output).resolve()
+    out_path = Path(args.out).resolve()
     out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    bins = parse_bins(args.size_bins)
+    bin_priority = derive_bin_priority(bins)
+    max_cycle_len_for_generator = max(hi for _lo, hi, _key in bins)
 
     repos = parse_repos_file(repos_file)
     repos_order = [r for (r, _b, _e, _l) in repos]
-    repos_rank = {r: i for i, r in enumerate(repos_order)}
     repo_to_branch: Dict[str, str] = {repo: branch for (repo, branch, _e, _l) in repos}
     repo_to_lang: Dict[str, str] = {repo: lang for (repo, _branch, _e, lang) in repos}
 
-    # Collect candidates: by_size[size][repo] = [cycle_id...]
-    by_size: Dict[int, Dict[str, List[str]]] = defaultdict(lambda: defaultdict(list))
-
-    # Run pick_cycles.py (ALWAYS) to rebuild catalog
+    # Build candidate pool (always rebuild cycle_catalog.json)
     import subprocess
     import sys
+
     pick_cycles_py = Path(__file__).resolve().parent / "pick_cycles.py"
 
-    for repo, branch, _entry, _lang in repos:
+    candidates: List[Candidate] = []
+    available_by_bin = Counter()
+    available_by_lang = Counter()
+    available_by_repo = Counter()
+    available_by_bin_repo: Dict[str, Counter] = defaultdict(Counter)
+    available_exact_by_repo: Dict[str, Counter] = defaultdict(Counter)
+
+    for repo, branch, _entry, lang in repos:
         atd_dir = results_root / repo / "branches" / branch / "ATD_identification"
         graph_json = atd_dir / "dependency_graph.json"
         scc_report = atd_dir / "scc_report.json"
@@ -230,10 +259,10 @@ def main() -> None:
             "--out", str(catalog_json),
             "--repo", repo,
             "--base-branch", branch,
-            "--max-cycle-len", str(args.max_cycle_len),
-            "--attempts-per-scc", str(args.attempts_per_scc),
-            "--max-cycles-per-scc", str(args.max_cycles_per_scc),
-            "--seed", str(args.seed),
+            "--max-cycle-len", str(max_cycle_len_for_generator),
+            "--attempts-per-scc", str(ATTEMPTS_PER_SCC),
+            "--max-cycles-per-scc", str(MAX_CYCLES_PER_SCC),
+            "--seed", str(SEED),
         ]
         print("$ " + " ".join(cmd))
         rc = subprocess.run(cmd).returncode
@@ -248,140 +277,144 @@ def main() -> None:
         for cyc in iter_catalog_cycles(catalog):
             sz = cycle_size(cyc)
             cid = cycle_id(cyc)
+            nodes = cycle_nodes(cyc)
             if sz is None or cid is None:
                 continue
-            if args.min_size is not None and sz < args.min_size:
+
+            bkey = bin_for_size(sz, bins)
+            if bkey is None:
                 continue
-            if args.max_size is not None and sz > args.max_size:
-                continue
-            by_size[sz][repo].append(cid)
 
-    # Deduplicate + deterministic sort
-    for sz in list(by_size.keys()):
-        for r in list(by_size[sz].keys()):
-            by_size[sz][r] = sorted(set(by_size[sz][r]))
+            pr_avg = cycle_pagerank_avg(cyc)
 
-    if not by_size:
-        raise SystemExit("No cycle candidates found. Did you collect baselines (dependency_graph + scc_report)?")
+            c = Candidate(
+                repo=repo,
+                branch=branch,
+                lang=lang,
+                cid=cid,
+                size=sz,
+                nodes=tuple(nodes),
+                bin_key=bkey,
+                pagerank_avg=pr_avg,
+            )
+            candidates.append(c)
 
-    # Sizes to target (exact sizes)
-    sizes = sorted(by_size.keys())
-    if not sizes:
-        raise SystemExit("No sizes found after filtering.")
+            available_by_bin[bkey] += 1
+            available_by_lang[lang] += 1
+            available_by_repo[repo] += 1
+            available_by_bin_repo[bkey][repo] += 1
+            available_exact_by_repo[repo][sz] += 1
 
-    if args.ascending_sizes:
-        size_order = list(sizes)
-    else:
-        size_order = list(reversed(sizes))
+    if not candidates:
+        raise SystemExit("No candidates found. Did you generate dependency_graph.json + scc_report.json?")
 
-    # Compute even quotas per exact size
-    base = args.total // len(sizes)
-    rem = args.total % len(sizes)
+    # Bin targets: equal split across bins in the pool (soft targets).
+    bins_in_pool = [b for b in bin_priority if available_by_bin.get(b, 0) > 0]
+    if not bins_in_pool:
+        raise SystemExit("No candidates fell into the requested bins.")
 
-    # Deterministic remainder assignment: give +1 to smallest sizes first
-    quotas: Dict[int, int] = {sz: base for sz in sizes}
-    for sz in sizes[:rem]:
-        quotas[sz] += 1
+    B = len(bins_in_pool)
+    base = args.total // B
+    rem = args.total % B
+    bin_target: Dict[str, int] = {b: base for b in bins_in_pool}
+    # remainder goes to first bins (higher priority bins get slightly more)
+    for b in bins_in_pool[:rem]:
+        bin_target[b] += 1
 
-    # Batch selection by size using repo fairness
-    per_repo_selected_global = Counter()
-    selected: List[Tuple[int, str, str]] = []  # (size, repo, cycle_id)
-    per_size_selected = Counter()
-    per_size_available = {sz: sum(len(by_size[sz][r]) for r in by_size[sz]) for sz in sizes}
+    # State
+    selected: List[Candidate] = []
+    selected_ids: Set[Tuple[str, str]] = set()  # (repo, cid)
+    per_repo_selected = Counter()
+    per_bin_selected = Counter()
+    per_lang_selected = Counter()
+    node_use: Dict[str, Counter] = defaultdict(Counter)
 
-    # Build working queues: by_size_repo_queues[size][repo] = deque(cycle_ids)
-    by_size_repo_queues: Dict[int, Dict[str, deque]] = {}
-    for sz in sizes:
-        by_size_repo_queues[sz] = {}
-        for repo in repos_order:
-            cids = by_size.get(sz, {}).get(repo, [])
-            if cids:
-                by_size_repo_queues[sz][repo] = deque(cids)
-        if not by_size_repo_queues[sz]:
-            del by_size_repo_queues[sz]
+    # Index candidates by bin for faster filtering
+    cands_by_bin: Dict[str, List[Candidate]] = defaultdict(list)
+    for c in candidates:
+        cands_by_bin[c.bin_key].append(c)
 
-    # Pass 1: fulfill quotas as best as possible
-    shortfall = 0
-    for sz in size_order:
-        want = int(quotas.get(sz, 0))
-        if want <= 0:
-            continue
+    # deterministic order inside bins (stable eligibility scanning)
+    for b in cands_by_bin:
+        cands_by_bin[b].sort(key=lambda c: (c.repo, c.size, c.cid))
 
-        repo_queues = by_size_repo_queues.get(sz, {})
-        if not repo_queues:
-            shortfall += want
-            continue
+    def can_take(c: Candidate) -> bool:
+        if (c.repo, c.cid) in selected_ids:
+            return False
+        if per_repo_selected[c.repo] >= args.max_per_repo:
+            return False
+        if not feasible_under_node_cap(c, node_use):
+            return False
+        return True
 
-        got = select_for_size_balanced_batch(
-            queues_by_repo=repo_queues,
-            take_n=want,
-            repos_order=repos_order,
-            repos_rank=repos_rank,
-            per_repo_selected_global=per_repo_selected_global,
-        )
+    def take(c: Candidate) -> None:
+        selected.append(c)
+        selected_ids.add((c.repo, c.cid))
+        per_repo_selected[c.repo] += 1
+        per_bin_selected[c.bin_key] += 1
+        per_lang_selected[c.lang] += 1
+        for n in c.nodes:
+            node_use[c.repo][n] += 1
 
-        for repo, cid in got:
-            selected.append((sz, repo, cid))
-            per_size_selected[sz] += 1
+    def pick_best_in_bin(b: str) -> Optional[Candidate]:
+        eligible = [c for c in cands_by_bin.get(b, []) if can_take(c)]
+        if not eligible:
+            return None
+        return min(eligible, key=lambda c: score_candidate_min(c, per_repo_selected, node_use))
 
-        if len(got) < want:
-            shortfall += (want - len(got))
+    # Fill bins in priority order, up to soft targets
+    for b in bins_in_pool:
+        tgt = int(bin_target.get(b, 0))
+        while len(selected) < args.total and per_bin_selected[b] < tgt:
+            best = pick_best_in_bin(b)
+            if best is None:
+                break
+            take(best)
 
-        # Clean empties
-        repo_queues = {r: q for r, q in repo_queues.items() if q}
-        if repo_queues:
-            by_size_repo_queues[sz] = repo_queues
-        else:
-            by_size_repo_queues.pop(sz, None)
-
-    # Pass 2: spillover (round-robin across sizes) until we hit total or run out
-    while len(selected) < args.total and by_size_repo_queues:
-        pick = pick_one_round_robin(
-            by_size_repo_queues,
-            size_order=size_order,
-            repos_rank=repos_rank,
-            per_repo_selected_global=per_repo_selected_global,
-            per_size_selected=per_size_selected,
-        )
-        if pick is None:
+    # Spillover: fill remaining slots from bins in priority order, ignoring targets
+    for b in bins_in_pool:
+        while len(selected) < args.total:
+            best = pick_best_in_bin(b)
+            if best is None:
+                break
+            take(best)
+        if len(selected) >= args.total:
             break
-        sz, repo, cid = pick
-        selected.append((sz, repo, cid))
 
-    # Write cycles_to_analyze.txt
-    lines: List[str] = []
-    for sz, repo, cid in selected:
-        branch = repo_to_branch.get(repo, "main")
-        lines.append(f"{repo} {branch} {cid}")
-
+    # Write output
+    lines = [f"{c.repo} {c.branch} {c.cid}" for c in selected]
     out_path.write_text("\n".join(lines) + ("\n" if lines else ""), encoding="utf-8")
 
-    # Summary
-    total_written = len(lines)
-    distinct_repos = sum(1 for r, n in per_repo_selected_global.items() if n > 0)
+    # Summaries
+    print(f"Wrote {len(lines)} lines to {out_path}")
+    if len(lines) < args.total:
+        print(f"[WARN] Requested --total {args.total} but only selected {len(lines)} (insufficient eligible candidates).")
 
-    print(f"Wrote {total_written} lines to {out_path}")
-    if total_written < args.total:
-        print(f"[WARN] Requested --total {args.total} but only selected {total_written} (insufficient candidates).")
-
+    distinct_repos = sum(1 for r, n in per_repo_selected.items() if n > 0)
     print(f"Distinct repos covered: {distinct_repos}")
-    print("Target quotas per size:")
-    for sz in sizes:
-        print(f"  size={sz}: target={quotas[sz]} available={per_size_available.get(sz,0)}")
+    print(f"Generator max-cycle-len (derived from bins): {max_cycle_len_for_generator}")
+    print(f"Max per repo: {args.max_per_repo}")
+    print(f"Node reuse cap per repo: {MAX_NODE_USE_PER_REPO}")
+    print(f"Bin priority order: {', '.join(bins_in_pool)}")
 
-    print("Selected per size:")
-    for sz in sizes:
-        print(f"  size={sz}: selected={per_size_selected.get(sz,0)}")
+    print("Size-bin targets (soft):")
+    for b in bins_in_pool:
+        tgt = bin_target.get(b, 0)
+        sel = per_bin_selected.get(b, 0)
+        short = max(0, int(tgt) - int(sel))
+        extra = max(0, int(sel) - int(tgt))
+        note = ""
+        if short > 0:
+            note = f" shortfall={short}"
+        elif extra > 0:
+            note = f" excess={extra}"
+        print(
+            f"  bin={b}: target={tgt} available={available_by_bin.get(b,0)} selected={sel}{note}"
+        )
 
-    if shortfall > 0:
-        print(f"Shortfall during quota fill (before spillover): {shortfall}")
-
-    # ---- NEW: per-repo + per-language breakdown (minimal add-on) ----
-    per_repo_selected = Counter()
-    per_lang_selected = Counter()
-    for _sz, repo, _cid in selected:
-        per_repo_selected[repo] += 1
-        per_lang_selected[repo_to_lang.get(repo, "unknown")] += 1
+    print("Language availability:")
+    for lang, a in sorted(available_by_lang.items(), key=lambda kv: (-kv[1], kv[0])):
+        print(f"  {lang}: available={a} selected={per_lang_selected.get(lang,0)}")
 
     print("Selected per repo:")
     for repo in repos_order:
@@ -389,10 +422,56 @@ def main() -> None:
         if n > 0:
             print(f"  {repo}: {n}")
 
-    print("Selected per programming language:")
-    for lang, n in sorted(per_lang_selected.items(), key=lambda kv: (-kv[1], kv[0])):
-        print(f"  {lang}: {n}")
-    # ---------------------------------------------------------------
+    # Bin availability / selection (top repos)
+    def fmt_top(counter: Counter, k: int = 8) -> str:
+        items = counter.most_common(k)
+        return ", ".join(f"{r}={n}" for r, n in items)
+
+    print("Availability by bin (top repos):")
+    for b in bins_in_pool:
+        print(f"  bin={b} total={available_by_bin.get(b,0)} top: {fmt_top(available_by_bin_repo[b])}")
+
+    selected_by_bin_repo: Dict[str, Counter] = defaultdict(Counter)
+    for c in selected:
+        selected_by_bin_repo[c.bin_key][c.repo] += 1
+
+    print("Selected by bin (top repos):")
+    for b in bins_in_pool:
+        print(f"  bin={b} total={per_bin_selected.get(b,0)} top: {fmt_top(selected_by_bin_repo[b])}")
+
+    # Per-repo exact sizes: available vs selected
+    selected_exact_by_repo: Dict[str, Counter] = defaultdict(Counter)
+    for c in selected:
+        selected_exact_by_repo[c.repo][c.size] += 1
+
+    size_values: List[int] = []
+    for lo, hi, _key in bins:
+        size_values.extend(list(range(lo, hi + 1)))
+    size_values = sorted(set(size_values))
+
+    print("Per-repo exact cycle sizes: available vs selected")
+    for repo in repos_order:
+        avail = available_exact_by_repo.get(repo, Counter())
+        sel = selected_exact_by_repo.get(repo, Counter())
+        if not avail and not sel:
+            continue
+
+        print(f"Repo: {repo} (lang={repo_to_lang.get(repo,'unknown')}, branch={repo_to_branch.get(repo,'')})")
+        for sz in size_values:
+            a = int(avail.get(sz, 0))
+            s = int(sel.get(sz, 0))
+            print(f"  size={sz}: available={a} selected={s}")
+
+    # Overlap summary
+    print("Overlap summary (per repo):")
+    for repo in repos_order:
+        ru = node_use.get(repo)
+        if not ru:
+            continue
+        max_use = max(ru.values()) if ru else 0
+        nodes_ge2 = sum(1 for _n, v in ru.items() if v >= 2)
+        distinct_nodes = len(ru)
+        print(f"  {repo}: max_node_use={max_use} nodes_used>=2={nodes_ge2} distinct_nodes={distinct_nodes}")
 
     print("Done.")
 

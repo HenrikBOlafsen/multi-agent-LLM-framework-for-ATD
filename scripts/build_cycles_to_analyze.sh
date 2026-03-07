@@ -1,62 +1,54 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Usage:
-#   scripts/build_cycles_to_analyze.sh -c pipeline.yaml \
-#     --total 100 \
-#     --out cycles_to_analyze.txt
-#
-# Optional:
-#   --min-size 2 --max-size 8
-#
-# This will:
-#  1) ALWAYS rebuild cycle_catalog.json for any baseline that has graph+scc_report
-#  2) write cycles_to_analyze.txt using even-by-cycle-size selection + repo fairness
+# Usage (ALL ARGS REQUIRED):
+#   scripts/build_cycles_to_analyze.sh \
+#     --repos-file repos_dev.txt \
+#     --results-root results \
+#     --size-bins "2-3,4-6,7-8" \
+#     --total 50 \
+#     --out cycles_to_analyze_dev.txt \
+#     --max-per-repo 8
 
-CFG="pipeline.yaml"
-if [[ "${1:-}" == "-c" ]]; then
-  CFG="${2:-}"; shift 2
-fi
-
+REPOS_FILE=""
+RESULTS_ROOT=""
+SIZE_BINS=""
 TOTAL=""
-OUT_PATH="cycles_to_analyze.txt"
-MIN_SIZE=""
-MAX_SIZE=""
+OUT_PATH=""
+MAX_PER_REPO=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
+    --repos-file) REPOS_FILE="$2"; shift 2 ;;
+    --results-root) RESULTS_ROOT="$2"; shift 2 ;;
+    --size-bins) SIZE_BINS="$2"; shift 2 ;;
     --total) TOTAL="$2"; shift 2 ;;
     --out) OUT_PATH="$2"; shift 2 ;;
-    --min-size) MIN_SIZE="$2"; shift 2 ;;
-    --max-size) MAX_SIZE="$2"; shift 2 ;;
+    --max-per-repo) MAX_PER_REPO="$2"; shift 2 ;;
+    -h|--help)
+      sed -n '1,80p' "$0"
+      exit 0
+      ;;
     *) echo "Unknown arg: $1" >&2; exit 2 ;;
   esac
 done
 
-if [[ -z "$TOTAL" ]]; then
-  echo "ERROR: --total is required" >&2
-  exit 2
-fi
+[[ -n "$REPOS_FILE" ]] || { echo "ERROR: --repos-file is required" >&2; exit 2; }
+[[ -n "$RESULTS_ROOT" ]] || { echo "ERROR: --results-root is required" >&2; exit 2; }
+[[ -n "$SIZE_BINS" ]] || { echo "ERROR: --size-bins is required" >&2; exit 2; }
+[[ -n "$TOTAL" ]] || { echo "ERROR: --total is required" >&2; exit 2; }
+[[ -n "$OUT_PATH" ]] || { echo "ERROR: --out is required" >&2; exit 2; }
+[[ -n "$MAX_PER_REPO" ]] || { echo "ERROR: --max-per-repo is required" >&2; exit 2; }
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT"
 
-REPOS_FILE="$(python3 - <<PY
-import yaml, pathlib
-cfg=yaml.safe_load(pathlib.Path("$CFG").read_text(encoding="utf-8"))
-print(cfg["repos_file"])
-PY
-)"
-RESULTS_ROOT="$(python3 - <<PY
-import yaml, pathlib
-cfg=yaml.safe_load(pathlib.Path("$CFG").read_text(encoding="utf-8"))
-print(cfg["results_root"])
-PY
-)"
+python3 "$ROOT/ATD_identification/build_cycles_to_analyze.py" \
+  --repos-file "$REPOS_FILE" \
+  --results-root "$RESULTS_ROOT" \
+  --size-bins "$SIZE_BINS" \
+  --total "$TOTAL" \
+  --out "$OUT_PATH" \
+  --max-per-repo "$MAX_PER_REPO"
 
-ARGS=( --repos-file "$REPOS_FILE" --results-root "$RESULTS_ROOT" --total "$TOTAL" --output "$OUT_PATH" )
-[[ -n "$MIN_SIZE" ]] && ARGS+=( --min-size "$MIN_SIZE" )
-[[ -n "$MAX_SIZE" ]] && ARGS+=( --max-size "$MAX_SIZE" )
-
-python3 "$ROOT/ATD_identification/build_cycles_to_analyze.py" "${ARGS[@]}"
 echo "✅ Wrote: $OUT_PATH"

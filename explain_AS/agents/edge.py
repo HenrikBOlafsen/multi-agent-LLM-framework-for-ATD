@@ -1,4 +1,3 @@
-# explain_AS/agents/edge.py
 from __future__ import annotations
 
 from dataclasses import dataclass

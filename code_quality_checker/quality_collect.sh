@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# quality_collect.sh
 #
 # Usage:
 #   ./quality_collect.sh <REPO_PATH> [LABEL] [SRC_HINT]
@@ -31,7 +30,6 @@ OUT_ROOT="${OUT_ROOT:-.quality}"
 FINAL_OUT_DIR="${OUT_DIR:-$OUT_ROOT/$REPO_NAME/$LABEL}"
 mkdir -p "$FINAL_OUT_DIR"
 OUT_ABS="$(realpath "$FINAL_OUT_DIR")"
-date -u +'%Y-%m-%dT%H:%M:%SZ' > "$OUT_ABS/run_started_utc.txt" || true
 
 WT_DIR=""
 WT_ROOT="$REPO_PATH"
@@ -87,13 +85,6 @@ detect_src_paths() {
 mapfile -t SRC_PATHS < <(detect_src_paths "$WT_ROOT" "$SRC_HINT")
 [[ ${#SRC_PATHS[@]} -eq 0 ]] && SRC_PATHS=(".")
 
-printf '%s\n' "${SRC_PATHS[@]}" > "$OUT_ABS/src_paths.txt"
-
-if [[ $IS_GIT -eq 1 ]]; then
-  git -C "$WT_ROOT" rev-parse --short HEAD > "$OUT_ABS/git_sha.txt" || true
-  git -C "$WT_ROOT" branch --show-current  > "$OUT_ABS/git_branch.txt" || true
-fi
-
 echo "Repo: $REPO_PATH"
 echo "Worktree: $WT_ROOT  Label: $LABEL"
 echo -n "Sources: "; printf '%s ' "${SRC_PATHS[@]}"; echo
@@ -104,8 +95,6 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_SETUP_DIR="${REPO_SETUP_DIR:-$SCRIPT_DIR/repo-test-setups}"
 REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
 
-
-
 # -----------------------------------------------------------------------------
 # Run in isolated venv
 # -----------------------------------------------------------------------------
@@ -115,9 +104,6 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
   # shellcheck disable=SC1091
   source .qc-venv/bin/activate
   python -m pip install -U pip wheel
-
-  python -V > "$OUT_ABS/python_version.txt" || true
-  uname -a  > "$OUT_ABS/uname.txt" || true
 
   # --- optional per-repo overrides -------------------------------------------
   if [[ -f "$REPO_SETUP_FILE" ]]; then
@@ -162,7 +148,6 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
   else
     default_install
   fi
-
 
   # --- Pytest runner (simplified: no benchmark/xdist auto-magic) --------------
   default_pytest_run() {
@@ -227,17 +212,6 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
   # Intentionally after tests so test failures stay “pure”.
   python -m pip install ruff radon vulture bandit pip-audit requests pyyaml mando >/dev/null 2>&1 || true
   python -m pip install mypy >/dev/null 2>&1 || true
-
-  python -m pip freeze > "$OUT_ABS/pip_freeze.txt" || true
-  {
-    echo -n "pytest: "; pytest --version || true
-    echo -n "ruff: "; ruff --version || true
-    echo -n "mypy: "; mypy --version || true
-    echo -n "radon: "; radon --version || true
-    echo -n "vulture: "; vulture --version || true
-    echo -n "bandit: "; bandit --version || true
-    echo -n "pip-audit: "; pip-audit --version || true
-  } > "$OUT_ABS/tool_versions.txt" || true
 
   # --- Static checks (best-effort; never crash the whole run) -----------------
   mapfile -d '' PY_FILES < <(

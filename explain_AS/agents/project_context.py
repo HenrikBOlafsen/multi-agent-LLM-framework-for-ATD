@@ -1,4 +1,3 @@
-# explain_AS/agents/project_context.py
 from __future__ import annotations
 
 import os
