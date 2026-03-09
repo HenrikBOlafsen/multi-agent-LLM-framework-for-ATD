@@ -93,9 +93,9 @@ echo "Worktree: $WT_ROOT  Label: $LABEL"
 echo -n "Sources: "; printf '%s ' "${SRC_PATHS[@]}"; echo
 echo "Out: $OUT_ABS"
 
-# --- Per-repo setup discovery (external folder, not inside repo) --------------
+# --- Per-repo setup discovery ------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO_SETUP_DIR="${REPO_SETUP_DIR:-$SCRIPT_DIR/repo-test-setups}"
+REPO_SETUP_DIR="${REPO_SETUP_DIR:-$SCRIPT_DIR/repo-test-setups-python}"
 REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
 
 # -----------------------------------------------------------------------------
@@ -108,7 +108,6 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
   source .qc-venv/bin/activate
   python -m pip install -U pip wheel
 
-  # --- optional per-repo overrides -------------------------------------------
   if [[ -f "$REPO_SETUP_FILE" ]]; then
     echo "Using per-repo test setup: $REPO_SETUP_FILE"
     # shellcheck disable=SC1090
@@ -117,11 +116,10 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
     echo "No per-repo setup found at: $REPO_SETUP_FILE (using defaults)"
   fi
 
-  # --- Default install: simplified -------------------------------------------
+  # --- Default install -------------------------------------------------------
   default_install() {
     echo "Default install (simplified): trying common patterns"
 
-    # 1) Prefer common test extras if present
     for extra in test tests dev ci; do
       echo ">> pip install -e .[${extra}] (best-effort)"
       python -m pip install -e ".[${extra}]" >/dev/null 2>&1 && {
@@ -130,17 +128,14 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
       } || true
     done
 
-    # 2) If editable install didn't happen above, at least install base package
     echo ">> pip install -e . (best-effort)"
     python -m pip install -e . >/dev/null 2>&1 || true
 
-    # 3) requirements-dev.txt is a common convention
     if [[ -f "requirements-dev.txt" ]]; then
       echo ">> pip install -r requirements-dev.txt (best-effort)"
       python -m pip install -r requirements-dev.txt || true
     fi
 
-    # 4) Ensure pytest tooling exists
     echo ">> pip install pytest pytest-cov pytest-timeout"
     python -m pip install pytest pytest-cov pytest-timeout || true
   }
@@ -152,11 +147,10 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
     default_install
   fi
 
-  # --- Pytest runner (simplified: no benchmark/xdist auto-magic) --------------
+  # --- Pytest runner ---------------------------------------------------------
   default_pytest_run() {
     export WATCHDOG_FORCE_POLLING=1
 
-    # Ensure in-tree import wins (many repos assume this)
     _pp="${PYTHONPATH:-}"
     export PYTHONPATH=".:${PYTHONPATH:-}"
     [[ -d "src" ]] && export PYTHONPATH="src:${PYTHONPATH:-}"
@@ -166,7 +160,7 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
 
     : "${PYTEST_TIMEOUT:=180}"
     : "${COV_FAIL_UNDER:=0}"
-    : "${PYTEST_WALLTIME:=}"          # optional: e.g. 15m
+    : "${PYTEST_WALLTIME:=}"
 
     TEST_LOG="$OUT_ABS/pytest_full.log"
 
@@ -211,12 +205,10 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
     default_pytest_run
   fi
 
-  # --- Install analysis tooling best-effort (don’t break the run) -------------
-  # Intentionally after tests so test failures stay “pure”.
-  python -m pip install ruff radon vulture bandit pip-audit requests pyyaml mando >/dev/null 2>&1 || true
-  python -m pip install mypy >/dev/null 2>&1 || true
+  # --- Install analysis tooling ---------------------------------------------
+  python -m pip install ruff radon vulture >/dev/null 2>&1 || true
 
-  # --- Static checks (best-effort; never crash the whole run) -----------------
+  # --- Static checks ---------------------------------------------------------
   mapfile -d '' PY_FILES < <(
     for p in "${SRC_PATHS[@]}"; do
       case "$p" in tests|test|t|docs|doc|build|dist|.venv|venv|.qc-venv|.git) continue ;; esac
@@ -236,11 +228,6 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
       "${ruff_targets[@]}" > "$OUT_ABS/ruff.json" || true
   fi
 
-  #echo "Time for Mypy"
-  #if command -v mypy >/dev/null 2>&1; then
-  #  mypy --hide-error-context --no-error-summary . > "$OUT_ABS/mypy.txt" || true
-  #fi
-
   echo "Time for Radon"
   if command -v radon >/dev/null 2>&1 && ((${#PY_FILES[@]})); then
     radon cc -j "${PY_FILES[@]}" > "$OUT_ABS/radon_cc.json" || true
@@ -251,37 +238,6 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
   if command -v vulture >/dev/null 2>&1 && ((${#PY_FILES[@]})); then
     vulture "${PY_FILES[@]}" > "$OUT_ABS/vulture.txt" || true
   fi
-
-  # Bandit, Pip-audit and PyExamine is dropped for now to save compute-time and due to not being that interesting.
-  # But code kept here commented out so that we can go back to using them if we later want to.
-
-  #echo "Time for Bandit"
-  #if command -v bandit >/dev/null 2>&1; then
-  #  bandit -q -r "${SRC_PATHS[@]}" -f json -o "$OUT_ABS/bandit.json" || true
-  #fi
-
-  #echo "Time for Pip-audit"
-  #if command -v pip-audit >/dev/null 2>&1; then
-  #  pip-audit -f json -o "$OUT_ABS/pip_audit.json" || true
-  #fi
-
-  #echo "Time for PyExamine"
-  #if command -v analyze_code_quality >/dev/null 2>&1; then
-  #  PYX_DIR="$OUT_ABS/pyexamine"; mkdir -p "$PYX_DIR"
-  #  : "${PYX_TIMEOUT:=3m}"
-  #  idx=0
-  #  for p in "${SRC_PATHS[@]}"; do
-  #    case "$p" in tests|test|t|docs|doc|build|dist|.venv|venv|.qc-venv|.git) continue ;; esac
-  #    [[ -d "$p" ]] || continue
-  #    base="$PYX_DIR/code_quality_report_${idx}"
-  #    echo "PyExamine: $p -> $base"
-  #    timeout -k 10s "$PYX_TIMEOUT" \
-  #      analyze_code_quality "$WT_ROOT/$p" \
-  #        --config "/opt/configs/pyexamine_fast.yaml" \
-  #        --output "$base" || echo "PyExamine timed out or failed on $p" >&2
-  #    idx=$((idx+1))
-  #  done
-  #fi
 )
 
 echo "==> Collected metrics in $OUT_ABS"

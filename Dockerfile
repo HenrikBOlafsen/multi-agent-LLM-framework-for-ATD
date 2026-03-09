@@ -21,7 +21,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     dotnet-sdk-10.0 \
  && rm -rf /var/lib/apt/lists/*
 
-
 ENV NUGET_PACKAGES=/opt/nuget/packages
 RUN mkdir -p /opt/nuget/packages && chmod -R 0777 /opt/nuget
 
@@ -30,7 +29,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     mono-runtime \
     ca-certificates-mono \
  && rm -rf /var/lib/apt/lists/*
- 
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
@@ -40,7 +38,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     libnss-wrapper \
  && rm -rf /var/lib/apt/lists/*
-
 
 # ----- R + lme4 (GLMM) -----
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -52,34 +49,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     r-cran-broom \
  && rm -rf /var/lib/apt/lists/*
 
-# ----- your existing Python deps via uv (OpenHands must be in uv.lock) -----
+# ----- your existing Python deps via uv -----
 WORKDIR /opt/app
 COPY pyproject.toml uv.lock ./
-# make sure you've done: `uv add openhands` locally before building
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --locked --no-install-project
 
-# Install PyExamine at the same ref
-ARG PYX_REF=eba4777fcef9987022bf739fc6ffeae1c883dae3
-RUN /opt/app/.venv/bin/pip install --no-cache-dir \
-    git+https://github.com/KarthikShivasankar/python_smells_detector.git@${PYX_REF}
-
-# Grab the default config from the repo at that ref
-RUN mkdir -p /opt/configs \
- && curl -fsSL \
-      "https://raw.githubusercontent.com/KarthikShivasankar/python_smells_detector/${PYX_REF}/code_quality_config.yaml" \
-      -o /opt/configs/pyexamine_default.yaml
-
-# Create a "fast" config by bumping the noisy thresholds
-RUN set -eu; \
-  sed -E \
-    -e '/^  DATA_CLUMPS_THRESHOLD:/{n;s/^(\s*value:).*/\1 999/;}' \
-    /opt/configs/pyexamine_default.yaml \
-    > /opt/configs/pyexamine_fast.yaml
-
-# Ensure PATH contains your venv as before
+# Ensure PATH contains your venv
 ENV PATH="/opt/app/.venv/bin:${PATH}"
 
-# ----- your existing "depends" tool setup (unchanged) -----
+# ----- your existing "depends" tool setup -----
 ARG DEPENDS_ZIP="depends-0.9.7-package-20221030.zip"
 ARG DEPENDS_URL="https://github.com/multilang-depends/depends/releases/download/v0.9.7/${DEPENDS_ZIP}"
 RUN curl -fsSL -o /tmp/depends.zip "$DEPENDS_URL" \
@@ -103,6 +81,7 @@ ENV PATH="/opt/depends/bin:/opt/depends:/opt/app/.venv/bin:${PATH}"
 
 # ----- dev shell -----
 WORKDIR /workspace
+
 # auto-activate the uv virtualenv in interactive shells (all users)
 RUN printf '\n# Auto-activate project venv\nsource /opt/app/.venv/bin/activate\n' >> /etc/bash.bashrc
 
@@ -110,4 +89,3 @@ RUN printf '\n# Auto-activate project venv\nsource /opt/app/.venv/bin/activate\n
 ENV HOME=/tmp
 
 CMD ["bash", "-l"]
-

@@ -5,13 +5,10 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "bandit>=1.8.6",
     "lizard>=1.21.2",
-    "mypy>=1.18.2",
     "networkx>=3.5",
     "numpy>=2.3.4",
     "openhands==1.12.2",
-    "pip-audit>=2.9.0",
     "pydeps>=3.0.1",
     "pytest>=8.4.2",
     "pytest-cov>=7.0.0",

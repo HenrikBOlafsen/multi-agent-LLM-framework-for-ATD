@@ -124,6 +124,18 @@ ensure_worktree_dir_writable () {
     sh -lc "mkdir -p /repo/.atd_worktrees && chown -R $(id -u):$(id -g) /repo/.atd_worktrees >/dev/null 2>&1 || true"
 }
 
+cleanup_exited_openhands_runtime_containers () {
+  local ids
+  ids="$(docker ps -aq \
+    --filter "name=openhands-runtime" \
+    --filter "status=exited" \
+    --filter "status=created")"
+
+  if [[ -n "$ids" ]]; then
+    docker rm $ids >/dev/null 2>&1 || true
+  fi
+}
+
 WT_ROOT="$REPO_DIR/.atd_worktrees"
 WT_PATH="$WT_ROOT/$NEW_BRANCH"
 mkdir -p "$WT_ROOT" || true
@@ -156,6 +168,7 @@ final_cleanup () {
 
   cleanup_openhands_store
   cleanup_worktree
+  cleanup_exited_openhands_runtime_containers
   exit "$rc"
 }
 trap 'final_cleanup $?' EXIT
