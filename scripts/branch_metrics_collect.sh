@@ -25,14 +25,14 @@ mkdir -p "$ATD_DIR" "$QC_DIR"
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-ANALYZE_PY_SH="$ROOT/ATD_identification/analyze_cycles.sh"
+ANALYZE_PY_SH="$ROOT/ATD_identification/analyze_cycles_python.sh"
 ANALYZE_CS_SH="$ROOT/ATD_identification/analyze_cycles_dotnet.sh"
 EXTRACT_SCCS_PY="$ROOT/ATD_identification/extract_sccs.py"
 
-QUALITY_PY_SH="$ROOT/code_quality_checker/quality_collect.sh"
+QUALITY_PY_SH="$ROOT/code_quality_checker/quality_collect_python.sh"
 QUALITY_CS_SH="$ROOT/code_quality_checker/quality_collect_csharp.sh"
 
-SUM_PY="$ROOT/code_quality_checker/quality_single_summary.py"
+SUM_PY="$ROOT/code_quality_checker/quality_single_summary_python.py"
 SUM_CS="$ROOT/code_quality_checker/quality_single_summary_csharp.py"
 
 [[ -d "$REPO_DIR/.git" ]] || { echo "Not a git repo: $REPO_DIR" >&2; exit 3; }
@@ -96,7 +96,7 @@ esac
 git -C "$REPO_DIR" checkout -q "$TARGET_BRANCH"
 
 # Ensure the checkout is pristine (avoid cross-run contamination)
-git -C "$REPO_DIR" reset --hard -q
+git -C "$REPO_DIR" reset --hard -q "$TARGET_BRANCH"
 git -C "$REPO_DIR" clean -fdx >/dev/null 2>&1 || true
 
 echo "== Metrics collect: $(basename "$REPO_DIR")@$TARGET_BRANCH =="

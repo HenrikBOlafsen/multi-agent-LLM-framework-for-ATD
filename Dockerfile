@@ -41,6 +41,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss-wrapper \
  && rm -rf /var/lib/apt/lists/*
 
+
+# ----- R + lme4 (GLMM) -----
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    r-base \
+    r-base-dev \
+    r-cran-lme4 \
+    r-cran-readr \
+    r-cran-dplyr \
+    r-cran-broom \
+ && rm -rf /var/lib/apt/lists/*
+
 # ----- your existing Python deps via uv (OpenHands must be in uv.lock) -----
 WORKDIR /opt/app
 COPY pyproject.toml uv.lock ./

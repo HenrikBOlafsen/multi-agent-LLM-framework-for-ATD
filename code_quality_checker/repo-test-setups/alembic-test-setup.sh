@@ -1,18 +1,18 @@
-# repo-test-setups/alembic-test-setup.sh
+#!/usr/bin/env bash
+set -euo pipefail
 
 QUALITY_INSTALL() {
-  echo "running alembic QUALITY_INSTALL()"
-
-  # Use the harness default (installs editable + pyproject extras + dependency-groups)
-  default_install
-
-  # Optional: if you want to ensure xdist never sneaks in from config,
-  # we handle that in QUALITY_TEST anyway.
+  python -m pip install -e .
+  python -m pip install \
+    "pytest>8,<8.4" \
+    pytest-cov \
+    pytest-timeout \
+    "black==25.1.0" \
+    zimports \
+    tzdata \
+    junitparser
 }
 
-
 QUALITY_TEST() {
-  echo "running alembic QUALITY_TEST()"
-  export USE_PYTEST_XDIST=0
   default_pytest_run
 }

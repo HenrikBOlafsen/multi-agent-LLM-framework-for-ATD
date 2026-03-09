@@ -15,7 +15,7 @@ TOY_REPO = ROOT / "projects_to_analyze" / "ToyPythonRepo"
 ENTRY = "src/toypythonrepo"
 OUT = ROOT / "test_runs" / "_tmp_toypython_out"
 
-ANALYZE_SH = ROOT / "ATD_identification" / "analyze_cycles.sh"
+ANALYZE_SH = ROOT / "ATD_identification" / "analyze_cycles_python.sh"
 
 
 def load_graph(dep_graph_path: Path) -> tuple[set[str], set[tuple[str, str]]]:
@@ -82,7 +82,7 @@ def run_analyzer() -> None:
     print("$ " + " ".join(cmd))
     rc = subprocess.run(cmd).returncode
     if rc != 0:
-        raise SystemExit(f"analyze_cycles.sh failed (rc={rc})")
+        raise SystemExit(f"analyze_cycles_python.sh failed (rc={rc})")
 
     graph_path = OUT / "dependency_graph.json"
     if not graph_path.exists():

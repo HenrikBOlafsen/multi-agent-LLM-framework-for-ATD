@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Usage:
-#   ./ATD_identification/analyze_cycles.sh <REPO_PATH> <ENTRY_SUBDIR> <OUTPUT_DIR>
+#   ./ATD_identification/analyze_cycles_python.sh <REPO_PATH> <ENTRY_SUBDIR> <OUTPUT_DIR>
 #
 # Produces:
 #   <OUTPUT_DIR>/pydeps.json

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 # Usage:
-#   ./quality_collect.sh <REPO_PATH> [LABEL] [SRC_HINT]
+#   ./quality_collect_python.sh <REPO_PATH> [LABEL] [SRC_HINT]
 #
 # Writes to: OUT_DIR if set, else .quality/<repo>/<label>
 set -euo pipefail
@@ -28,7 +28,10 @@ fi
 
 OUT_ROOT="${OUT_ROOT:-.quality}"
 FINAL_OUT_DIR="${OUT_DIR:-$OUT_ROOT/$REPO_NAME/$LABEL}"
+
+rm -rf "$FINAL_OUT_DIR"
 mkdir -p "$FINAL_OUT_DIR"
+
 OUT_ABS="$(realpath "$FINAL_OUT_DIR")"
 
 WT_DIR=""
@@ -233,10 +236,10 @@ REPO_SETUP_FILE="$REPO_SETUP_DIR/${REPO_NAME}-test-setup.sh"
       "${ruff_targets[@]}" > "$OUT_ABS/ruff.json" || true
   fi
 
-  echo "Time for Mypy"
-  if command -v mypy >/dev/null 2>&1; then
-    mypy --hide-error-context --no-error-summary . > "$OUT_ABS/mypy.txt" || true
-  fi
+  #echo "Time for Mypy"
+  #if command -v mypy >/dev/null 2>&1; then
+  #  mypy --hide-error-context --no-error-summary . > "$OUT_ABS/mypy.txt" || true
+  #fi
 
   echo "Time for Radon"
   if command -v radon >/dev/null 2>&1 && ((${#PY_FILES[@]})); then

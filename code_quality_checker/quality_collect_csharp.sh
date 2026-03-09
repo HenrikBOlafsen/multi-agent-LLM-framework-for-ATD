@@ -45,7 +45,10 @@ fi
 
 OUT_ROOT="${OUT_ROOT:-.quality}"
 FINAL_OUT_DIR="${OUT_DIR:-$OUT_ROOT/$REPO_NAME/$LABEL}"
+
+rm -rf "$FINAL_OUT_DIR"
 mkdir -p "$FINAL_OUT_DIR"
+
 OUT_ABS="$(realpath "$FINAL_OUT_DIR")"
 
 WT_DIR=""

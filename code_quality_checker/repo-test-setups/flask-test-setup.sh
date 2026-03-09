@@ -1,11 +1,4 @@
 #!/usr/bin/env bash
-# repo-test-setups/flask-test-setup.sh
-#
-# Minimal, "honest" Flask run:
-# - install Flask editable with async extra so async-view tests can run
-# - install pytest tooling (because we override QUALITY_TEST)
-# - run pytest normally
-
 set -euo pipefail
 
 QUALITY_INSTALL() {
@@ -16,6 +9,5 @@ QUALITY_INSTALL() {
 
 QUALITY_TEST() {
   echo "Flask: running pytest"
-  export WATCHDOG_FORCE_POLLING=1
-  python -m pytest -q
+  default_pytest_run
 }
