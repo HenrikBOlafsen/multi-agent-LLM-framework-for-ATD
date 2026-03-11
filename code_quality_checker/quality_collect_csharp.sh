@@ -100,7 +100,7 @@ else
   echo "No per-repo setup found at: $REPO_SETUP_FILE (using defaults)"
 fi
 
-: "${DOTNET_TEST_TIMEOUT:=20m}"
+: "${DOTNET_TEST_TIMEOUT:=10m}"
 
 # -----------------------------------------------------------------------------
 # Resolve workdir

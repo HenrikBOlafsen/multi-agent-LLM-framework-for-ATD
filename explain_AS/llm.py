@@ -238,7 +238,7 @@ class LLMClient:
         top_p: float = 0.9,
         top_k: int = 0,
         seed: Optional[int] = None,
-        timeout_sec: int = 300,
+        timeout_sec: int = 600,
     ):
         self.url = url
         self.api_key = api_key

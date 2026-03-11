@@ -1,4 +1,3 @@
-### test_runs/cases/ok_smoke_resume_explain_llm/run.sh
 #!/usr/bin/env bash
 set -euo pipefail
 

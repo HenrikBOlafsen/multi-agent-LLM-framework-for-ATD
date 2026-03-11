@@ -1,4 +1,3 @@
-### test_runs/cases/ok_smoke_realish/run.sh
 #!/usr/bin/env bash
 set -euo pipefail
 
