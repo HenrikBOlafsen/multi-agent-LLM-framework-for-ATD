@@ -70,7 +70,9 @@ PY
 
   TEST_LOG="$OUT_ABS/trial_full.log"
 
-  # One test was too inconsistent in that it sometimes passes and sometimes gives errors, even when ran on the same commit. So it is disabled
+  # In the qc/container environment, some Hypothesis-driven Twisted tests can
+  # trigger the global "too_slow" health check inconsistently. Suppress only
+  # that health check so trial can complete.
   set -o pipefail
   python - <<'PY' 2>&1 | tee "$TEST_LOG"
 from hypothesis import HealthCheck, settings
