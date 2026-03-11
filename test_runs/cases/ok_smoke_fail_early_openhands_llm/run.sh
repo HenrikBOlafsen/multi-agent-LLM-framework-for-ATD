@@ -92,8 +92,10 @@ echo "== Running baseline =="
 scripts/run_baseline.sh -c "$CFG"
 
 echo "== Building cycles =="
-scripts/build_cycles_to_analyze.sh -c "$CFG" \
-  --total 2 --min-size 2 --max-size 8 \
+scripts/build_cycles_to_analyze.sh \
+  --repos-file test_runs/cases/ok_smoke_fail_early_openhands_llm/repos.txt \
+  --results-root test_runs/cases/ok_smoke_fail_early_openhands_llm/results \
+  --total 2 --size-bins "2-3,7-8" --max-per-repo 1 \
   --out "$CASE/cycles_to_analyze.txt"
 
 echo "== Running LLM (expect: blocked during openhands; fail-fast stops remaining units) =="

@@ -260,11 +260,6 @@ def main() -> None:
             "attempts_per_scc": args.attempts_per_scc,
             "max_cycles_per_scc": args.max_cycles_per_scc,  # fixed typo
             "seed": args.seed,
-            "disjointness": "edge_disjoint",
-            "disjoint_scope": "within_scc",
-            "directed_canonicalization": "rotation_only",
-            "pagerank_source": "scc_report.node_features.pagerank",
-            "pagerank_scope": "global",
         },
         "summary": {
             "scc_count": len(catalog_sccs),
