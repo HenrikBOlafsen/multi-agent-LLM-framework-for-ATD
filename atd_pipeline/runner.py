@@ -262,7 +262,11 @@ def execute_phase_for_all_experiment_units(
     build_unit_environment: BuildEnvironment,
     validate_unit_outputs: ValidateOutputs,
     stop_on_llm_blocked: bool = False,
-) -> None:
+) -> bool:
+    """
+    Returns True iff execution stopped early because the LLM became unavailable.
+    Returns False otherwise.
+    """
     for repo_spec, cycle_spec, mode_spec in experiment_units:
         repo_checkout_dir = (pipeline_config.projects_dir / repo_spec.repo).resolve()
         refactor_branch = make_refactor_branch_name(pipeline_config.experiment_id, mode_spec.id, cycle_spec.cycle_id)
@@ -317,7 +321,7 @@ def execute_phase_for_all_experiment_units(
 
             if stop_on_llm_blocked and outcome == "blocked" and reason == "llm_unavailable":
                 print(f"[fail-fast] LLM unavailable during phase={phase}; stopping remaining units.")
-                return
+                return True
 
             continue
 
@@ -364,7 +368,7 @@ def execute_phase_for_all_experiment_units(
 
             if stop_on_llm_blocked:
                 print(f"[fail-fast] LLM unavailable during phase={phase}; stopping remaining units.")
-                return
+                return True
 
             continue
 
@@ -398,4 +402,6 @@ def execute_phase_for_all_experiment_units(
 
         if stop_on_llm_blocked and outcome == "blocked" and reason == "llm_unavailable":
             print(f"[fail-fast] LLM unavailable during phase={phase}; stopping remaining units.")
-            return
+            return True
+
+    return False

@@ -17,6 +17,7 @@ reports/*
 results/*
 results_small_backup/*
 results_old/*
+results copy/*
 results_all_backup/*
 test_runs/cases/ok_smoke_realish/results_old/*
 test_runs/cases/**/results/
