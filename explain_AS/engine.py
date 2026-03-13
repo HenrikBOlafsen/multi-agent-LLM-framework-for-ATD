@@ -8,7 +8,7 @@ from agents.edge import Edge, run_edge_agent
 from agents.graph import run_graph_agent
 from agents.project_context import run_project_context_agent
 from agents.synthesizer import run_synthesizer_agent
-from context import filtered_cycle_nodes, read_cycle_files, require_language
+from context import read_cycle_files, require_language
 from llm import LLMClient
 from minimal_prompt import build_minimal_prompt
 
@@ -58,7 +58,7 @@ def _get_auxiliary_agent(params: Dict[str, Any]) -> str:
 
 
 def _run_minimal(*, cycle: Dict[str, Any], language: str) -> ExplainEngineResult:
-    cycle_nodes = filtered_cycle_nodes([str(n) for n in (cycle.get("nodes") or [])], skip_init=True)
+    cycle_nodes = [str(n) for n in (cycle.get("nodes") or [])]
     prompt = build_minimal_prompt(cycle_nodes, language)
     return ExplainEngineResult(cycle_nodes=cycle_nodes, final_prompt_text=prompt)
 
@@ -88,8 +88,7 @@ def _run_multi_agent(
     synthesizer_variant_id = str(params.get("synthesizer_variant") or "S0").strip()
     auxiliary_agent = _get_auxiliary_agent(params)
 
-    raw_nodes = [str(n) for n in (cycle.get("nodes") or [])]
-    cycle_nodes = filtered_cycle_nodes(raw_nodes, skip_init=True)
+    cycle_nodes = [str(n) for n in (cycle.get("nodes") or [])]
 
     raw_edges = list(cycle.get("edges") or [])
     filtered_edges: List[Edge] = []
@@ -104,7 +103,7 @@ def _run_multi_agent(
             continue
         filtered_edges.append(Edge(a=a, b=b))
 
-    files_by_node = read_cycle_files(repo_root=repo_root, cycle_nodes=cycle_nodes, skip_init=True)
+    files_by_node = read_cycle_files(repo_root=repo_root, cycle_nodes=cycle_nodes)
 
     # Edge agents still run (needed for synthesizer), but their outputs are NOT written to prompt.txt.
     edge_reports: List[str] = []

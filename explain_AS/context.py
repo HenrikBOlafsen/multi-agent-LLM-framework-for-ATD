@@ -10,18 +10,6 @@ from budgeting import TruncationInfo, trim_text_bottom_with_info
 EDGE_FILE_HARD_CAP_CHARS = 40000
 
 
-def is_init_py(node_id: str) -> bool:
-    normalized_path = (node_id or "").replace("\\", "/")
-    return normalized_path.endswith("/__init__.py") or normalized_path == "__init__.py"
-
-
-def filtered_cycle_nodes(nodes: List[str], *, skip_init: bool = True) -> List[str]:
-    normalized_nodes = [str(n) for n in (nodes or [])]
-    if skip_init:
-        normalized_nodes = [n for n in normalized_nodes if not is_init_py(n)]
-    return normalized_nodes
-
-
 def node_to_abs(repo_root: str, node_id: str) -> str:
     return os.path.join(repo_root, node_id)
 
@@ -35,18 +23,14 @@ def read_cycle_files(
     *,
     repo_root: str,
     cycle_nodes: Iterable[str],
-    skip_init: bool = True,
 ) -> Dict[str, str]:
     """
     Returns: repo-relative node id -> raw file text.
-    Skips __init__.py if requested.
     Missing files are silently ignored (engine can decide to error later).
     """
     file_text_by_node_id: Dict[str, str] = {}
     for node in cycle_nodes:
         node_id = str(node)
-        if skip_init and is_init_py(node_id):
-            continue
         abs_path = node_to_abs(repo_root, node_id)
         if not os.path.exists(abs_path):
             continue

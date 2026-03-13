@@ -19,6 +19,7 @@ Rules:
 - Avoid overconfidence. If edge reports are unclear, say so.
 - Emphasize that the refactoring agent must inspect the actual code.
 - If you see truncation notes, assume some context may be missing.
+- Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
 """
 
 
@@ -46,11 +47,10 @@ Reminders / constraints
         variant_id="S1",
         preamble=make_preamble("""
 Your job:
-- Produce a cycle-level explanation AND propose a concrete, minimal plan for breaking the cycle.
+- Produce a cycle-level explanation AND propose a concrete plan for breaking the cycle.
 
 Additional rules:
 - Be explicit about which edge(s) to break (1-2 candidates).
-- Keep the plan minimal.
 - The cycle must be truly broken, not just moved or made larger.
 - We want to actually improve code architecture by reducing cyclic coupling, so do not suggest hacky solutions to break the cycles.
 """),

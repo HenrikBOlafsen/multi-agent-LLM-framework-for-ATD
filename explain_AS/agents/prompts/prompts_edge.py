@@ -19,6 +19,7 @@ Rules:
 - Keep it concise, but do not omit important dependency details.
 - If you see truncation notes, assume some context may be missing.
 - In your response, use the real file names instead of calling them A and B.
+- Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
 """
 
 
@@ -35,11 +36,11 @@ Additional rules:
 - Do not quote code (no snippets/excerpts). Refer to identifiers and describe usage in words.
 """),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
-Edge
+Dependency summary
 Where in A
 What from B
 How A uses it
-Notes / uncertainty
+Notes / uncertainty (if any)
 """,
     ),
 
@@ -56,9 +57,9 @@ Additional rules:
 - You may cautiously infer intent from naming and folder structure, but clearly label it as interpretation.
 """),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
-Edge
+Dependency summary
 Compressed evidence of the dependency
-Notes / uncertainty
+Notes / uncertainty (if any)
 """,
     ),
 
@@ -69,12 +70,12 @@ Additional rules:
 - You may propose 1-2 plausible decoupling options, clearly marked as suggestions.
 """),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
-Edge
+Dependency summary
 Where in A
 What from B
 How A uses it
 Decoupling ideas (1-2, cautious)
-Notes / uncertainty
+Notes / uncertainty (if any)
 """,
     ),
 }

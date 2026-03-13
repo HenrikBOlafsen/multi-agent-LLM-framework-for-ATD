@@ -319,9 +319,7 @@ if [[ "$RUN_EXIT" -eq 124 ]]; then
   exit 42
 fi
 
-if grep -Fqi "OpenAIException - Connection error" "$RUN_LOG" \
-  || grep -Fqi "ConnectionError" "$RUN_LOG" \
-  || grep -Fqi "Failed to establish a new connection" "$RUN_LOG"; then
+if grep -Fqi "openai.APIConnectionError: Connection error." "$RUN_LOG"; then
   : > "$DIFF_PATH" || true
   write_status_json "blocked" "llm_unavailable"
   exit 42

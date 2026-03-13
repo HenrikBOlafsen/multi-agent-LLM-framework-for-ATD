@@ -27,6 +27,7 @@ Rules:
 - No tables, no JSON.
 - Keep it short and focused.
 - If you see truncation notes, assume some context may be missing.
+- Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
 """.strip()
 
 
@@ -287,7 +288,6 @@ Output format (MUST follow exactly these headings, in this order):
 How the cycle sits in the SCC
 Hubs / bridges (if any)
 Outside the cycle (inside SCC) connections (if visible)
-Risks when breaking edges
 Notes / uncertainty
 """.lstrip()
 

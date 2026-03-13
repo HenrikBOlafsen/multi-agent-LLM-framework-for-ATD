@@ -68,6 +68,18 @@ cleanup() {
 }
 trap cleanup EXIT
 
+run_llm_expect_blocked() {
+  set +e
+  scripts/run_llm.sh "$@"
+  local rc=$?
+  set -e
+  if [[ "$rc" -ne 42 ]]; then
+    echo "Expected run_llm.sh to exit 42, got: $rc"
+    exit 1
+  fi
+  echo "run_llm.sh exit code: $rc"
+}
+
 echo "== Cleaning old results =="
 [[ "$RESULTS_DIR" == *"test_runs/cases/"* ]] || { echo "Refusing to delete unsafe path: $RESULTS_DIR"; exit 1; }
 docker run --rm \
@@ -97,7 +109,7 @@ scripts/build_cycles_to_analyze.sh \
   --out "$CASE/cycles_to_analyze.txt"
 
 echo "== Running LLM (expect blocked during explain) =="
-scripts/run_llm.sh -c "$CFG" --modes explain_multiAgent
+run_llm_expect_blocked -c "$CFG" --modes explain_multiAgent
 
 python3 test_runs/check_case.py "$CASE" --assert-has-blocked
 python3 test_runs/check_case.py "$CASE" --write-snapshot "$SNAPSHOT"

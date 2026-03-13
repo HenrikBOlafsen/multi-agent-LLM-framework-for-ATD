@@ -34,6 +34,7 @@ Rules:
 - No tables, no JSON.
 - Keep it concise and useful for understanding code structure.
 - If you see truncation notes, assume some context may be missing.
+- Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
 """.strip()
 
 
