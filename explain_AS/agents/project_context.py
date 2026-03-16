@@ -30,7 +30,7 @@ PROJECT_PROMPT_PREAMBLE = """You are the Project Context Agent.
 You infer what the repository is about from README files only.
 
 Rules:
-- Stay grounded in the provided README text. Do NOT guess beyond it.
+- Stay grounded in the provided README text. Do not guess beyond it.
 - No tables, no JSON.
 - If you see truncation notes, assume some context may be missing.
 - Base summaries on the specific facts in the provided reports and context. Avoid generic statements.
@@ -168,7 +168,7 @@ README sources (may be truncated):
 
     prompt_suffix = """
 
-Output format (MUST follow exactly these headings, in this order):
+Output format (must follow exactly these headings, in this order):
 Project purpose
 Key concepts / terminology
 Architecture cues (if any)

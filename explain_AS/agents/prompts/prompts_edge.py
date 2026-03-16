@@ -35,7 +35,7 @@ Additional rules:
 - Go beyond naming symbols: explain the role that the dependency plays in A when that is visible from the code.
 - Do not quote code (no snippets/excerpts). Refer to identifiers and describe usage in words.
 """),
-        output_headings="""Output format (MUST follow exactly these headings, in this order):
+        output_headings="""Output format (must follow exactly these headings, in this order):
 Dependency summary
 Where in A
 What from B
@@ -49,17 +49,15 @@ Notes / uncertainty (if any)
         variant_id="E1",
         preamble=make_preamble("""
 Additional rules:
-- Compression-first: your primary job is to compress the provided code into a small, high-signal description of this specific dependency edge.
-- Keep only what is most relevant to explaining why A depends on B under the given edge semantics.
-- Include just enough detail that a downstream agent could reconstruct the dependency story (key identifiers and the minimal call/usage shape).
-- Prefer referring to identifiers (classes, functions, methods, fields, constants) instead of quoting large code blocks.
+- Your job is to shorten the provided code into a dependency-focused summary of this edge.
+- Focus on the parts of the code that explain the dependency, but keep enough surrounding context so the role of the file remains understandable.
+- Omit clearly irrelevant details.
+- Do not give refactoring advice.
 - You may include small code excerpts if they clarify the dependency, but avoid dumping code.
-- If context appears truncated, mention the uncertainty instead of guessing.
-- You may cautiously infer intent from naming and folder structure, but clearly label it as interpretation.
 """),
-        output_headings="""Output format (MUST follow exactly these headings, in this order):
+        output_headings="""Output format (must follow exactly these headings, in this order):
 Dependency summary
-Compressed evidence of the dependency
+Dependency-focused code summary
 Notes / uncertainty (if any)
 """,
     ),
@@ -70,7 +68,7 @@ Notes / uncertainty (if any)
 Additional rules:
 - You may propose 1-2 plausible decoupling options, clearly marked as suggestions.
 """),
-        output_headings="""Output format (MUST follow exactly these headings, in this order):
+        output_headings="""Output format (must follow exactly these headings, in this order):
 Dependency summary
 Where in A
 What from B

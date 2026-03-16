@@ -18,12 +18,12 @@ GRAPH_TOP_K = 10
 
 
 GRAPH_PROMPT_PREAMBLE = """You are the Structural Context Agent.
-You receive the cycle and a deterministic SCC summary computed from the SCC edges.
+You receive the cycle and a SCC summary computed from the SCC edges.
 
 Your job is to summarize how the cycle sits within the SCC.
 
 Rules:
-- Stay factual based on the provided SCC summary. Do NOT invent missing nodes/edges.
+- Stay factual based on the provided SCC summary. Do not invent missing nodes/edges.
 - No tables, no JSON.
 - If you see truncation notes, assume some context may be missing.
 - Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
@@ -79,7 +79,6 @@ def _top_counts(items: Iterable[str], k: int) -> List[Tuple[str, int]]:
 def _sample_edges_prioritizing_groups(
     *,
     edges: List[Tuple[str, str]],
-    # group_key picks which endpoint defines "importance" (source or target)
     group_key: str,
     top_k: int,
 ) -> Tuple[List[Tuple[str, str]], int]:
@@ -98,7 +97,6 @@ def _sample_edges_prioritizing_groups(
     if group_key not in {"source", "target"}:
         raise ValueError("group_key must be 'source' or 'target'")
 
-    # Build group -> edges
     groups: dict[str, List[Tuple[str, str]]] = {}
     for a, b in edges:
         g = a if group_key == "source" else b
@@ -109,7 +107,6 @@ def _sample_edges_prioritizing_groups(
 
     group_order = sorted(groups.keys(), key=lambda g: (-len(groups[g]), g))
 
-    # Round-robin pick
     picks_per_group = {g: 0 for g in group_order}
     picked_total = 0
     depth_idx = 0
@@ -151,18 +148,11 @@ def _summarize_scc_for_cycle(
     scc_nodes = sorted(set([a for a, _ in edge_pairs] + [b for _, b in edge_pairs]))
     scc_node_set = set(scc_nodes)
 
-    # Ordered cycle edges (as given by cycle list)
-    cycle_edges_ordered: List[Tuple[str, str]] = []
-    if cycle:
-        for i in range(len(cycle)):
-            cycle_edges_ordered.append((cycle[i], cycle[(i + 1) % len(cycle)]))
-    cycle_edges_set = set(cycle_edges_ordered)
+    cycle_edges_set = _cycle_edge_set(cycle)
 
-    # Internal edges among cycle nodes, then chords = internal - ordered cycle edges
     internal_cycle_edges = [(a, b) for (a, b) in edge_pairs if a in cycle_set and b in cycle_set]
     chord_edges = sorted(set(internal_cycle_edges) - cycle_edges_set)
 
-    # Cycle <-> non-cycle neighborhood (within SCC)
     out_to_noncycle = [(a, b) for (a, b) in edge_pairs if a in cycle_set and b in scc_node_set and b not in cycle_set]
     in_from_noncycle = [(a, b) for (a, b) in edge_pairs if b in cycle_set and a in scc_node_set and a not in cycle_set]
 
@@ -171,15 +161,7 @@ def _summarize_scc_for_cycle(
 
     lines: List[str] = []
     lines.append(f"SCC summary: {len(scc_node_set)} nodes, {len(edge_pairs)} edges")
-    lines.append(f"Cycle summary: {len(cycle_set)} nodes, {len(_cycle_edge_set(cycle))} edges (as given)")
-    lines.append("")
-
-    lines.append("Cycle edges (in order):")
-    if cycle_edges_ordered:
-        for a, b in cycle_edges_ordered:
-            lines.append(f"- {a} -> {b}")
-    else:
-        lines.append("- N/A")
+    lines.append(f"Cycle summary: {len(cycle_set)} nodes, {len(cycle_edges_set)} edges (as given)")
     lines.append("")
 
     lines.append("Extra edges among cycle nodes (chords / alternate routes):")
@@ -193,7 +175,6 @@ def _summarize_scc_for_cycle(
         lines.append("- (none visible)")
     lines.append("")
 
-    # Move hubs earlier so they're less likely to be lost if truncation happens.
     lines.append("Hub candidates (by in+out degree within SCC):")
     if hub_nodes:
         for n in hub_nodes:
@@ -202,7 +183,6 @@ def _summarize_scc_for_cycle(
         lines.append("- N/A")
     lines.append("")
 
-    # Counts + edge samples for Cycle -> non-cycle
     lines.append("Cycle -> non-cycle connections (top targets):")
     top_targets = _top_counts((b for _, b in out_to_noncycle), top_k)
     if top_targets:
@@ -227,7 +207,6 @@ def _summarize_scc_for_cycle(
         lines.append("- (none)")
     lines.append("")
 
-    # Counts + edge samples for Non-cycle -> cycle
     lines.append("Non-cycle -> cycle connections (top sources):")
     top_sources = _top_counts((a for a, _ in in_from_noncycle), top_k)
     if top_sources:
@@ -279,11 +258,11 @@ def build_graph_user_prompt(
 Cycle:
 {chain}
 
-SCC summary (deterministic; may be truncated):
+SCC summary (may be truncated):
 """
     prompt_suffix = """
 
-Output format (MUST follow exactly these headings, in this order):
+Output format (must follow exactly these headings, in this order):
 How the cycle sits in the SCC
 Hubs / bridges (if any)
 Outside the cycle (inside SCC) connections (if visible)

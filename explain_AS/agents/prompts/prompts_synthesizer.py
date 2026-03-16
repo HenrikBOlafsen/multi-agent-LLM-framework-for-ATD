@@ -35,7 +35,7 @@ SYNTHESIZER_VARIANTS = {
 Your job:
 - Produce a cycle-level explanation that helps an automated refactoring agent understand the cycle. Do not propose specific edges to break.
 """),
-        output_headings="""Output format (MUST follow exactly these headings, in this order):
+        output_headings="""Output format (must follow exactly these headings, in this order):
 Cycle summary
 How the cycle is formed
 Why this coupling exists (cautious interpretation)
@@ -47,14 +47,14 @@ Reminders / constraints
         variant_id="S1",
         preamble=make_preamble("""
 Your job:
-- Produce a cycle-level explanation AND propose a concrete plan for breaking the cycle.
+- Produce a cycle-level explanation and propose a concrete plan for breaking the cycle.
 
 Additional rules:
 - Be explicit about which edge(s) to break (1-2 candidates).
 - The cycle must be truly broken, not just moved or made larger.
 - We want to actually improve code architecture by reducing cyclic coupling, so do not suggest hacky solutions to break the cycles.
 """),
-        output_headings="""Output format (MUST follow exactly these headings, in this order):
+        output_headings="""Output format (must follow exactly these headings, in this order):
 Cycle summary
 How the cycle is formed
 Candidate edge(s) to break (pick 1-2)
@@ -76,7 +76,7 @@ Additional rules:
 - We want to actually improve code architecture by reducing cyclic coupling, so do not suggest hacky solutions to break the cycles.
 - Make sure your suggestions come off as only suggestions.
 """),
-        output_headings="""Output format (MUST follow exactly these headings, in this order):
+        output_headings="""Output format (must follow exactly these headings, in this order):
 Cycle summary
 How the cycle is formed
 Candidate edges to break (ranked 1-3)
