@@ -53,6 +53,36 @@ else
   [[ -f "$SUM_PY" ]] || { echo "Missing: $SUM_PY" >&2; exit 3; }
 fi
 
+archive_code_quality_raw() {
+  local qc_dir="$1"
+  local archive="$qc_dir/raw_artifacts.tar.gz"
+  local -a entries=()
+
+  while IFS= read -r -d '' p; do
+    entries+=("$(basename "$p")")
+  done < <(
+    find "$qc_dir" -mindepth 1 -maxdepth 1 \
+      ! -name "metrics.json" \
+      ! -name "raw_artifacts.tar.gz" \
+      -print0 | sort -z
+  )
+
+  rm -f "$archive"
+
+  if [[ ${#entries[@]} -eq 0 ]]; then
+    return 0
+  fi
+
+  (
+    cd "$qc_dir"
+    tar -czf "$archive" -- "${entries[@]}"
+  )
+
+  for name in "${entries[@]}"; do
+    rm -rf -- "$qc_dir/$name"
+  done
+}
+
 # ---- Safety guard for reset/clean ----
 PIPELINE_ROOT="$ROOT"
 REPO_REAL="$(python3 -c 'import os,sys; print(os.path.realpath(sys.argv[1]))' "$REPO_DIR")"
@@ -113,5 +143,8 @@ if [[ "$LANGUAGE" == "csharp" ]]; then
 else
   python3 "$SUM_PY" "$QC_DIR" "$QC_DIR/metrics.json" || true
 fi
+
+echo "== Step: archive raw code-quality artifacts =="
+archive_code_quality_raw "$QC_DIR"
 
 echo "✅ Baseline collected: $OUT_DIR"

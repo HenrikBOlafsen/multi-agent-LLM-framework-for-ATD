@@ -38,10 +38,12 @@ ATD_GRACE_SEC="${ATD_GRACE_SEC:-60}"
 ATD_KEEP_OPENHANDS_STORE="${ATD_KEEP_OPENHANDS_STORE:-0}"
 
 # Stable outputs
-RUN_LOG="$OUT_DIR/run.log"
 TRAJ_PATH="$OUT_DIR/trajectory.json"
 STATUS_PATH="$OUT_DIR/status.json"
 DIFF_PATH="$OUT_DIR/git_diff.patch"
+
+# Transient capture log used only for runtime checks; deleted at cleanup.
+RUN_CAPTURE_TMP="$(mktemp "${TMPDIR:-/tmp}/atd_openhands_run.XXXXXX.log")"
 
 # Local commit identity
 GIT_AUTHOR_NAME="${GIT_AUTHOR_NAME:-atd-bot}"
@@ -90,7 +92,6 @@ write_status_json () {
     echo "  \"phase\": \"openhands\","
     echo "  \"outcome\": \"${outcome}\","
     echo "  \"reason\": \"${reason}\","
-    echo "  \"run_log\": \"${RUN_LOG}\","
     echo "  \"trajectory\": \"${TRAJ_PATH}\","
     echo "  \"diff\": \"${DIFF_PATH}\""
     echo "}"
@@ -153,6 +154,10 @@ cleanup_openhands_store () {
   rm -rf "$OUT_DIR/openhands_store" >/dev/null 2>&1 || true
 }
 
+cleanup_tmp_run_capture() {
+  rm -f "$RUN_CAPTURE_TMP" >/dev/null 2>&1 || true
+}
+
 WT_HOST=""
 OUT_DIR_HOST=""
 PROMPT_DIR_HOST=""
@@ -169,6 +174,7 @@ final_cleanup () {
   cleanup_openhands_store
   cleanup_worktree
   cleanup_exited_openhands_runtime_containers
+  cleanup_tmp_run_capture
   exit "$rc"
 }
 trap 'final_cleanup $?' EXIT
@@ -223,7 +229,6 @@ if [[ "$WT_RC" -ne 0 ]]; then
   set -e
   if [[ "$WT_RC2" -ne 0 ]]; then
     : > "$DIFF_PATH" || true
-    touch "$RUN_LOG" >/dev/null 2>&1 || true
     write_status_json "failed" "worktree_create_failed"
     exit 20
   fi
@@ -238,7 +243,7 @@ git clean -fdx >/dev/null 2>&1 || true
 popd >/dev/null
 
 mkdir -p "$OUT_DIR/openhands_store"
-touch "$RUN_LOG" "$DIFF_PATH" >/dev/null 2>&1 || true
+touch "$DIFF_PATH" >/dev/null 2>&1 || true
 
 # Runtime image split into repo/tag for newer OpenHands versions
 RUNTIME_REPO="$RUNTIME_IMAGE"
@@ -302,10 +307,10 @@ set -o pipefail
 
 if [[ "$ATD_WALLTIME_SEC" -gt 0 ]]; then
   timeout --signal=TERM --kill-after="${ATD_GRACE_SEC}s" "${ATD_WALLTIME_SEC}s" \
-    run_controller_docker 2>&1 | tee "$RUN_LOG"
+    run_controller_docker 2>&1 | tee "$RUN_CAPTURE_TMP"
   RUN_EXIT=$?
 else
-  run_controller_docker 2>&1 | tee "$RUN_LOG"
+  run_controller_docker 2>&1 | tee "$RUN_CAPTURE_TMP"
   RUN_EXIT=$?
 fi
 
@@ -319,7 +324,7 @@ if [[ "$RUN_EXIT" -eq 124 ]]; then
   exit 42
 fi
 
-if grep -Fqi "openai.APIConnectionError: Connection error." "$RUN_LOG"; then
+if grep -Fqi "openai.APIConnectionError: Connection error." "$RUN_CAPTURE_TMP"; then
   : > "$DIFF_PATH" || true
   write_status_json "blocked" "llm_unavailable"
   exit 42
