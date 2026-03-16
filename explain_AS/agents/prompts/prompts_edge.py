@@ -16,7 +16,6 @@ Rules:
 - Stay grounded in the code and file paths/names.
 - Stay factual. If unsure, say so.
 - No tables, no JSON.
-- Keep it concise, but do not omit important dependency details.
 - If you see truncation notes, assume some context may be missing.
 - In your response, use the real file names instead of calling them A and B.
 - Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
@@ -32,7 +31,8 @@ EDGE_VARIANTS = {
         variant_id="E0",
         preamble=make_preamble("""
 Additional rules:
-- Do not propose refactorings. Your job is to explain what the dependency is and how it is used.
+- Do not propose refactorings. Your job is to explain what the dependency is, how it is used, and why it exists in this design.
+- Go beyond naming symbols: explain the role that the dependency plays in A when that is visible from the code.
 - Do not quote code (no snippets/excerpts). Refer to identifiers and describe usage in words.
 """),
         output_headings="""Output format (MUST follow exactly these headings, in this order):
@@ -40,6 +40,7 @@ Dependency summary
 Where in A
 What from B
 How A uses it
+Why A depends on it
 Notes / uncertainty (if any)
 """,
     ),

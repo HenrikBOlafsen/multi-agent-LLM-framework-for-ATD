@@ -25,7 +25,6 @@ You infer likely architectural boundaries from file paths and naming only.
 Rules:
 - Be cautious: do not assume frameworks.
 - No tables, no JSON.
-- Keep it short and helpful.
 - If you see truncation notes, assume some context may be missing.
 - Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
 """.strip()
@@ -288,7 +287,7 @@ External connections (outside-cycle), summarized per cycle file:
 
 Output format (MUST follow exactly these headings, in this order):
 Likely boundaries
-Possible boundary violations (if any)
+Possible boundary violations for the given cycle (if any)
 Notes / uncertainty
 """.lstrip()
 

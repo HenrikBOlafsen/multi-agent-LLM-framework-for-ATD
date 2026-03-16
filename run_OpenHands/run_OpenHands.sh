@@ -342,9 +342,29 @@ if [ -z "$(git status --porcelain)" ]; then
   exit 0
 fi
 
+before_commit="$(git rev-parse HEAD)"
+
 git add -A
-git commit -m "$COMMIT_MESSAGE" >/dev/null 2>&1 || true
-git diff --binary "$BASE_BRANCH...$NEW_BRANCH" > "$DIFF_PATH" || true
+
+if ! git \
+  -c core.hooksPath=/dev/null \
+  -c commit.gpgSign=false \
+  commit --no-verify -m "$COMMIT_MESSAGE" >/dev/null 2>&1; then
+  : > "$DIFF_PATH" || true
+  write_status_json "failed" "git_commit_failed"
+  popd >/dev/null
+  exit 21
+fi
+
+after_commit="$(git rev-parse HEAD)"
+if [[ "$before_commit" == "$after_commit" ]]; then
+  : > "$DIFF_PATH" || true
+  write_status_json "failed" "commit_did_not_create_new_revision"
+  popd >/dev/null
+  exit 21
+fi
+
+git diff --binary "$BASE_BRANCH...HEAD" > "$DIFF_PATH" || true
 
 write_status_json "committed" ""
 popd >/dev/null

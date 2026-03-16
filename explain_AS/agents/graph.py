@@ -14,7 +14,7 @@ GRAPH_MIN_OUTPUT_TOKENS_RESERVED = 2000
 GRAPH_SAFETY_MARGIN_TOKENS = 1000
 
 # One knob for all "top" lists and edge sample sections.
-GRAPH_TOP_K = 12
+GRAPH_TOP_K = 10
 
 
 GRAPH_PROMPT_PREAMBLE = """You are the Structural Context Agent.
@@ -25,7 +25,6 @@ Your job is to summarize how the cycle sits within the SCC.
 Rules:
 - Stay factual based on the provided SCC summary. Do NOT invent missing nodes/edges.
 - No tables, no JSON.
-- Keep it short and focused.
 - If you see truncation notes, assume some context may be missing.
 - Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
 """.strip()

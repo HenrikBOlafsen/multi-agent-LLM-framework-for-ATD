@@ -32,9 +32,8 @@ You infer what the repository is about from README files only.
 Rules:
 - Stay grounded in the provided README text. Do NOT guess beyond it.
 - No tables, no JSON.
-- Keep it concise and useful for understanding code structure.
 - If you see truncation notes, assume some context may be missing.
-- Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
+- Base summaries on the specific facts in the provided reports and context. Avoid generic statements.
 """.strip()
 
 
