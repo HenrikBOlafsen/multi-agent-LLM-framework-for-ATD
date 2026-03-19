@@ -23,14 +23,14 @@ from language import edge_semantics_text
 from llm import Agent, LLMClient
 
 
-EDGE_MIN_OUTPUT_TOKENS_RESERVED = 2000  # baseline reservation (approx 6k chars at 3 chars/token)
+EDGE_MIN_OUTPUT_TOKENS_RESERVED = 2000
 EDGE_SAFETY_MARGIN_TOKENS = 1000
 
 
 @dataclass(frozen=True)
 class Edge:
-    a: str  # repo-relative file path
-    b: str  # repo-relative file path
+    a: str
+    b: str
 
 
 def build_edge_user_prompt(
@@ -54,7 +54,6 @@ def build_edge_user_prompt(
     file_a_hard_capped_text, file_a_hard_truncated = cap_file_text_hard(file_a_raw_text)
     file_b_hard_capped_text, file_b_hard_truncated = cap_file_text_hard(file_b_raw_text)
 
-    # IMPORTANT: Add hard-cap markers BEFORE budgeting, so they are accounted for.
     if file_a_hard_truncated:
         file_a_hard_capped_text = (file_a_hard_capped_text.rstrip() + "\n[Hard-capped]\n").lstrip("\n")
     if file_b_hard_truncated:
@@ -73,7 +72,7 @@ Analyze this specific edge:
 A = {edge.a}
 B = {edge.b}
 
-{edge_prompt_variant.output_headings}
+Write a natural-language memo for another agent. Use no forced headings unless they genuinely help.
 
 File A:
 """.rstrip() + "\n"
@@ -90,7 +89,6 @@ File A:
     )
     total_input_tokens_budget = max(0, int(total_input_tokens_budget))
 
-    # Account for block wrappers in the "need" side so allocations reflect reality.
     file_a_tokens_needed = estimate_tokens_from_text(file_a_hard_capped_text) + estimate_tokens_from_chars(
         prompt_block_wrapper_len(edge.a)
     )
@@ -104,7 +102,6 @@ File A:
         total_tokens=int(total_input_tokens_budget),
     )
 
-    # The allocated chars are TOTAL chars for the whole block (wrapper + body + trunc suffix if needed).
     file_a_char_budget = max(1, tokens_to_chars(int(file_a_tokens_allocated))) if file_a_tokens_allocated > 0 else 1
     file_b_char_budget = max(1, tokens_to_chars(int(file_b_tokens_allocated))) if file_b_tokens_allocated > 0 else 1
 
