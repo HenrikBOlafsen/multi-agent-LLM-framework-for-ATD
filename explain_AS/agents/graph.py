@@ -18,12 +18,11 @@ GRAPH_TOP_K = 10
 
 
 GRAPH_PROMPT_PREAMBLE = """You are the Structural Context Agent.
-You receive the cycle and a SCC summary computed from the SCC edges.
-
-Your job is to summarize how the cycle sits within the SCC.
+You infer how the cycle sits within the SCC from a summarized SCC graph.
 
 Rules:
-- Stay factual based on the provided SCC summary. Do not invent missing nodes/edges.
+- Focus on observations that may help another agent understand the cycle's wider graph context.
+- Stay factual based on the provided evidence. Do not invent missing nodes/edges.
 - No tables, no JSON.
 - If you see truncation notes, assume some context may be missing.
 - Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
@@ -262,11 +261,8 @@ SCC summary (may be truncated):
 """
     prompt_suffix = """
 
-Output format (must follow exactly these headings, in this order):
-How the cycle sits in the SCC
-Hubs / bridges (if any)
-Outside the cycle (inside SCC) connections (if visible)
-Notes / uncertainty
+Write a natural-language memo for another agent.
+Focus on how the cycle sits in the SCC, any visible hubs or bridges, outside-cycle connections, and important uncertainty.
 """.lstrip()
 
     overhead_tokens_estimate = estimate_tokens_from_text(prompt_prefix + prompt_suffix)

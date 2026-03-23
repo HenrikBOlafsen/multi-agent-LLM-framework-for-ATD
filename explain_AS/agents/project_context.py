@@ -168,11 +168,8 @@ README sources (may be truncated):
 
     prompt_suffix = """
 
-Output format (must follow exactly these headings, in this order):
-Project purpose
-Key concepts / terminology
-Architecture cues (if any)
-Notes / uncertainty
+Write a natural-language memo for another agent.
+Focus on project purpose, key concepts or terminology, architectural cues if visible, and important uncertainty.
 """.lstrip()
 
     overhead_tokens_estimate = estimate_tokens_from_text(prompt_prefix + prompt_suffix)

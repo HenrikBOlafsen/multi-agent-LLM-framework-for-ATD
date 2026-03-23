@@ -20,10 +20,11 @@ BOUNDARY_FOLDER_BUCKET_DEPTH = 2
 
 
 BOUNDARY_PROMPT_PREAMBLE = """You are the Boundary Heuristic Agent.
-You infer likely architectural boundaries from file paths and naming only.
+You infer likely architectural boundaries and boundary violations (if any) from file paths and naming only.
 
 Rules:
-- Be cautious: do not assume frameworks.
+- Focus on observations that may help another agent understand possible architectural boundaries around the cycle.
+- Stay factual based on the provided evidence. Do not invent missing nodes/edges.
 - No tables, no JSON.
 - If you see truncation notes, assume some context may be missing.
 - Base summaries on the specific facts in the provided reports and context. Avoid generic statements and avoid just listing the cycle dependencies.
@@ -285,10 +286,8 @@ External connections (outside-cycle), summarized per cycle file:
 """
     prompt_suffix = """
 
-Output format (must follow exactly these headings, in this order):
-Likely boundaries
-Possible boundary violations for the given cycle (if any)
-Notes / uncertainty
+Write a natural-language memo for another agent.
+Focus on likely boundaries, possible boundary tensions around the cycle, and important uncertainty.
 """.lstrip()
 
     overhead_tokens_estimate = estimate_tokens_from_text(prompt_prefix + prompt_suffix)
