@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "language": "python",
+  "pytest": {
+    "tests": 911,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "coverage": {
+    "line_percent": 91.57
+  },
+  "ruff": {
+    "issues": 0
+  },
+  "radon_cc": {
+    "total": 882,
+    "by_rank": {
+      "B": 63,
+      "A": 790,
+      "D": 3,
+      "C": 25,
+      "F": 1
+    }
+  },
+  "radon_mi": {
+    "avg": 53.08,
+    "worst": 0.0,
+    "files": 25
+  },
+  "vulture": {
+    "suspects": 168,
+    "by_confidence": {
+      "60": 166,
+      "90": 0,
+      "100": 2
+    }
+  },
+  "dotnet_test": null
+}

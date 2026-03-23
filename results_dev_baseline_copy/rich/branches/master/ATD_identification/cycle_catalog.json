@@ -1,0 +1,497 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-20T00:08:32Z",
+  "input": {
+    "dependency_graph": "/workspace/results_dev/rich/branches/master/ATD_identification/dependency_graph.json",
+    "scc_report": "/workspace/results_dev/rich/branches/master/ATD_identification/scc_report.json",
+    "repo": "rich",
+    "base_branch": "master"
+  },
+  "params": {
+    "max_cycle_len": 8,
+    "attempts_per_scc": 50000,
+    "max_cycles_per_scc": 200,
+    "seed": 12345
+  },
+  "summary": {
+    "scc_count": 1,
+    "cycle_count": 12
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "node_count": 39,
+      "edge_count": 182,
+      "cycles": [
+        {
+          "id": "scc_0_cycle_0",
+          "length": 8,
+          "nodes": [
+            "rich/align.py",
+            "rich/jupyter.py",
+            "rich/segment.py",
+            "rich/style.py",
+            "rich/color.py",
+            "rich/text.py",
+            "rich/measure.py",
+            "rich/console.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/align.py",
+              "target": "rich/jupyter.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/jupyter.py",
+              "target": "rich/segment.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/segment.py",
+              "target": "rich/style.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/style.py",
+              "target": "rich/color.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/color.py",
+              "target": "rich/text.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/text.py",
+              "target": "rich/measure.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/measure.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/console.py",
+              "target": "rich/align.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.029964666125928827,
+            "pagerank_min": 0.012356360533373491,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_1",
+          "length": 8,
+          "nodes": [
+            "rich/ansi.py",
+            "rich/color.py",
+            "rich/table.py",
+            "rich/jupyter.py",
+            "rich/console.py",
+            "rich/pretty.py",
+            "rich/highlighter.py",
+            "rich/text.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/ansi.py",
+              "target": "rich/color.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/color.py",
+              "target": "rich/table.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/table.py",
+              "target": "rich/jupyter.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/jupyter.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/console.py",
+              "target": "rich/pretty.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/pretty.py",
+              "target": "rich/highlighter.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/highlighter.py",
+              "target": "rich/text.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/text.py",
+              "target": "rich/ansi.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.021314606141354542,
+            "pagerank_min": 0.008638649584031313,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_2",
+          "length": 7,
+          "nodes": [
+            "rich/_wrap.py",
+            "rich/console.py",
+            "rich/status.py",
+            "rich/spinner.py",
+            "rich/live.py",
+            "rich/file_proxy.py",
+            "rich/text.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/_wrap.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/console.py",
+              "target": "rich/status.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/status.py",
+              "target": "rich/spinner.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/spinner.py",
+              "target": "rich/live.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/live.py",
+              "target": "rich/file_proxy.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/file_proxy.py",
+              "target": "rich/text.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/text.py",
+              "target": "rich/_wrap.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.01670330083903831,
+            "pagerank_min": 0.005802010866637839,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_3",
+          "length": 7,
+          "nodes": [
+            "rich/box.py",
+            "rich/columns.py",
+            "rich/table.py",
+            "rich/console.py",
+            "rich/traceback.py",
+            "rich/scope.py",
+            "rich/panel.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/box.py",
+              "target": "rich/columns.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/columns.py",
+              "target": "rich/table.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/table.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/console.py",
+              "target": "rich/traceback.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/traceback.py",
+              "target": "rich/scope.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/scope.py",
+              "target": "rich/panel.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/panel.py",
+              "target": "rich/box.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.013669464560671913,
+            "pagerank_min": 0.006550234505221297,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_4",
+          "length": 5,
+          "nodes": [
+            "rich/_log_render.py",
+            "rich/table.py",
+            "rich/box.py",
+            "rich/panel.py",
+            "rich/console.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/_log_render.py",
+              "target": "rich/table.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/table.py",
+              "target": "rich/box.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/box.py",
+              "target": "rich/panel.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/panel.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/console.py",
+              "target": "rich/_log_render.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.01648231863865198,
+            "pagerank_min": 0.006908954172340154,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_5",
+          "length": 4,
+          "nodes": [
+            "rich/console.py",
+            "rich/live.py",
+            "rich/table.py",
+            "rich/highlighter.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/console.py",
+              "target": "rich/live.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/live.py",
+              "target": "rich/table.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/table.py",
+              "target": "rich/highlighter.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/highlighter.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.02002346275122454,
+            "pagerank_min": 0.008595592237590686,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_6",
+          "length": 3,
+          "nodes": [
+            "rich/console.py",
+            "rich/scope.py",
+            "rich/pretty.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/console.py",
+              "target": "rich/scope.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/scope.py",
+              "target": "rich/pretty.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/pretty.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.02010497542439436,
+            "pagerank_min": 0.006724424226222183,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_7",
+          "length": 2,
+          "nodes": [
+            "rich/color.py",
+            "rich/console.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/color.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/console.py",
+              "target": "rich/color.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.031459915472714706,
+            "pagerank_min": 0.017967978482499827,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_8",
+          "length": 2,
+          "nodes": [
+            "rich/console.py",
+            "rich/rule.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/console.py",
+              "target": "rich/rule.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/rule.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.026211405749831402,
+            "pagerank_min": 0.007470959036733215,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_9",
+          "length": 2,
+          "nodes": [
+            "rich/console.py",
+            "rich/pager.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/console.py",
+              "target": "rich/pager.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/pager.py",
+              "target": "rich/console.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.025612274310053924,
+            "pagerank_min": 0.006272696157178261,
+            "pagerank_max": 0.04495185246292959
+          }
+        },
+        {
+          "id": "scc_0_cycle_10",
+          "length": 2,
+          "nodes": [
+            "rich/containers.py",
+            "rich/text.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/containers.py",
+              "target": "rich/text.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/text.py",
+              "target": "rich/containers.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.02323136402437348,
+            "pagerank_min": 0.009141131045626156,
+            "pagerank_max": 0.0373215970031208
+          }
+        },
+        {
+          "id": "scc_0_cycle_11",
+          "length": 2,
+          "nodes": [
+            "rich/markup.py",
+            "rich/text.py"
+          ],
+          "edges": [
+            {
+              "source": "rich/markup.py",
+              "target": "rich/text.py",
+              "relation": "import"
+            },
+            {
+              "source": "rich/text.py",
+              "target": "rich/markup.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.022854586485853375,
+            "pagerank_min": 0.008387575968585945,
+            "pagerank_max": 0.0373215970031208
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,452 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-19T16:35:19Z",
+  "input": {
+    "schema_version": 1,
+    "dependency_graph": "/workspace/results_dev/werkzeug/branches/main/ATD_identification/dependency_graph.json",
+    "language": "python",
+    "repo_root": "/workspace/projects_to_analyze/werkzeug",
+    "entry": "src/werkzeug"
+  },
+  "graph": {
+    "node_count": 52,
+    "edge_count": 155
+  },
+  "params": {
+    "pagerank_alpha": 0.85,
+    "pagerank_max_iter": 100,
+    "pagerank_tol": 1e-06
+  },
+  "global_metrics": {
+    "scc_count": 3,
+    "total_nodes_in_cyclic_sccs": 16,
+    "total_edges_in_cyclic_sccs": 32,
+    "total_loc_in_cyclic_sccs": 7751,
+    "max_scc_size": 12,
+    "avg_scc_size": 5.333,
+    "cycle_pressure_lb": 14
+  },
+  "node_features": {
+    "src/werkzeug/__init__.py": {
+      "pagerank": 0.041358201847323826
+    },
+    "src/werkzeug/_internal.py": {
+      "pagerank": 0.08175500134121116
+    },
+    "src/werkzeug/_reloader.py": {
+      "pagerank": 0.010077157909176626
+    },
+    "src/werkzeug/datastructures/__init__.py": {
+      "pagerank": 0.07851283414871854
+    },
+    "src/werkzeug/datastructures/accept.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/datastructures/auth.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/datastructures/cache_control.py": {
+      "pagerank": 0.012569078949476028
+    },
+    "src/werkzeug/datastructures/csp.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/datastructures/etag.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/datastructures/file_storage.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/datastructures/headers.py": {
+      "pagerank": 0.010444715063112021
+    },
+    "src/werkzeug/datastructures/mixins.py": {
+      "pagerank": 0.01813803295300371
+    },
+    "src/werkzeug/datastructures/range.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/datastructures/structures.py": {
+      "pagerank": 0.029770552036770287
+    },
+    "src/werkzeug/debug/__init__.py": {
+      "pagerank": 0.010077157909176626
+    },
+    "src/werkzeug/debug/console.py": {
+      "pagerank": 0.01612176775595945
+    },
+    "src/werkzeug/debug/repr.py": {
+      "pagerank": 0.015778548877187708
+    },
+    "src/werkzeug/debug/tbtools.py": {
+      "pagerank": 0.016928553648165773
+    },
+    "src/werkzeug/exceptions.py": {
+      "pagerank": 0.05111042944273063
+    },
+    "src/werkzeug/formparser.py": {
+      "pagerank": 0.010523197651348142
+    },
+    "src/werkzeug/http.py": {
+      "pagerank": 0.07614390423331444
+    },
+    "src/werkzeug/local.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/middleware/__init__.py": {
+      "pagerank": 0.010077157909176626
+    },
+    "src/werkzeug/middleware/dispatcher.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/middleware/http_proxy.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/middleware/lint.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/middleware/profiler.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/middleware/proxy_fix.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/middleware/shared_data.py": {
+      "pagerank": 0.010077157909176626
+    },
+    "src/werkzeug/routing/__init__.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/routing/converters.py": {
+      "pagerank": 0.016090732178935738
+    },
+    "src/werkzeug/routing/exceptions.py": {
+      "pagerank": 0.012538361644414728
+    },
+    "src/werkzeug/routing/map.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/routing/matcher.py": {
+      "pagerank": 0.009770243096483815
+    },
+    "src/werkzeug/routing/rules.py": {
+      "pagerank": 0.012538361644414728
+    },
+    "src/werkzeug/sansio/__init__.py": {
+      "pagerank": 0.04299633193955993
+    },
+    "src/werkzeug/sansio/http.py": {
+      "pagerank": 0.023361782936316054
+    },
+    "src/werkzeug/sansio/multipart.py": {
+      "pagerank": 0.010894739031777958
+    },
+    "src/werkzeug/sansio/request.py": {
+      "pagerank": 0.010523197651348142
+    },
+    "src/werkzeug/sansio/response.py": {
+      "pagerank": 0.01713880639579234
+    },
+    "src/werkzeug/sansio/utils.py": {
+      "pagerank": 0.01976791685389672
+    },
+    "src/werkzeug/security.py": {
+      "pagerank": 0.014576083296396073
+    },
+    "src/werkzeug/serving.py": {
+      "pagerank": 0.010824105544340386
+    },
+    "src/werkzeug/test.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/testapp.py": {
+      "pagerank": 0.00892715313819856
+    },
+    "src/werkzeug/urls.py": {
+      "pagerank": 0.02276869221639944
+    },
+    "src/werkzeug/user_agent.py": {
+      "pagerank": 0.010417902326587083
+    },
+    "src/werkzeug/utils.py": {
+      "pagerank": 0.033015101945128425
+    },
+    "src/werkzeug/wrappers/__init__.py": {
+      "pagerank": 0.021228231835481115
+    },
+    "src/werkzeug/wrappers/request.py": {
+      "pagerank": 0.015021510420976632
+    },
+    "src/werkzeug/wrappers/response.py": {
+      "pagerank": 0.021228231835481115
+    },
+    "src/werkzeug/wsgi.py": {
+      "pagerank": 0.03300176741006449
+    }
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "size": 12,
+      "edge_count": 28,
+      "density_directed": 0.212121,
+      "edge_surplus_lb": 14,
+      "total_loc": 5987,
+      "avg_loc_per_node": 498.92,
+      "nodes": [
+        {
+          "id": "src/werkzeug/datastructures/cache_control.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/datastructures/structures.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/exceptions.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/formparser.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/sansio/multipart.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/sansio/request.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/sansio/response.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/sansio/utils.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/utils.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/wrappers/request.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/wrappers/response.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/wsgi.py",
+          "kind": "file"
+        }
+      ],
+      "edges": [
+        {
+          "source": "src/werkzeug/datastructures/cache_control.py",
+          "target": "src/werkzeug/datastructures/structures.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/datastructures/structures.py",
+          "target": "src/werkzeug/exceptions.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/exceptions.py",
+          "target": "src/werkzeug/sansio/response.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/exceptions.py",
+          "target": "src/werkzeug/wrappers/response.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/formparser.py",
+          "target": "src/werkzeug/exceptions.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/formparser.py",
+          "target": "src/werkzeug/sansio/multipart.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/formparser.py",
+          "target": "src/werkzeug/wsgi.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/sansio/multipart.py",
+          "target": "src/werkzeug/exceptions.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/sansio/request.py",
+          "target": "src/werkzeug/sansio/utils.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/sansio/request.py",
+          "target": "src/werkzeug/utils.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/sansio/response.py",
+          "target": "src/werkzeug/datastructures/cache_control.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/sansio/response.py",
+          "target": "src/werkzeug/utils.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/sansio/utils.py",
+          "target": "src/werkzeug/exceptions.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/utils.py",
+          "target": "src/werkzeug/exceptions.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/utils.py",
+          "target": "src/werkzeug/wrappers/request.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/utils.py",
+          "target": "src/werkzeug/wrappers/response.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/utils.py",
+          "target": "src/werkzeug/wsgi.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/request.py",
+          "target": "src/werkzeug/exceptions.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/request.py",
+          "target": "src/werkzeug/formparser.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/request.py",
+          "target": "src/werkzeug/sansio/request.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/request.py",
+          "target": "src/werkzeug/utils.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/request.py",
+          "target": "src/werkzeug/wsgi.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/response.py",
+          "target": "src/werkzeug/exceptions.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/response.py",
+          "target": "src/werkzeug/sansio/response.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/response.py",
+          "target": "src/werkzeug/utils.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wrappers/response.py",
+          "target": "src/werkzeug/wsgi.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wsgi.py",
+          "target": "src/werkzeug/exceptions.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/wsgi.py",
+          "target": "src/werkzeug/sansio/utils.py",
+          "relation": "import"
+        }
+      ]
+    },
+    {
+      "id": "scc_1",
+      "size": 2,
+      "edge_count": 2,
+      "density_directed": 1.0,
+      "edge_surplus_lb": 0,
+      "total_loc": 1226,
+      "avg_loc_per_node": 613.0,
+      "nodes": [
+        {
+          "id": "src/werkzeug/http.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/sansio/http.py",
+          "kind": "file"
+        }
+      ],
+      "edges": [
+        {
+          "source": "src/werkzeug/http.py",
+          "target": "src/werkzeug/sansio/http.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/sansio/http.py",
+          "target": "src/werkzeug/http.py",
+          "relation": "import"
+        }
+      ]
+    },
+    {
+      "id": "scc_2",
+      "size": 2,
+      "edge_count": 2,
+      "density_directed": 1.0,
+      "edge_surplus_lb": 0,
+      "total_loc": 538,
+      "avg_loc_per_node": 269.0,
+      "nodes": [
+        {
+          "id": "src/werkzeug/debug/console.py",
+          "kind": "file"
+        },
+        {
+          "id": "src/werkzeug/debug/tbtools.py",
+          "kind": "file"
+        }
+      ],
+      "edges": [
+        {
+          "source": "src/werkzeug/debug/console.py",
+          "target": "src/werkzeug/debug/tbtools.py",
+          "relation": "import"
+        },
+        {
+          "source": "src/werkzeug/debug/tbtools.py",
+          "target": "src/werkzeug/debug/console.py",
+          "relation": "import"
+        }
+      ]
+    }
+  ]
+}

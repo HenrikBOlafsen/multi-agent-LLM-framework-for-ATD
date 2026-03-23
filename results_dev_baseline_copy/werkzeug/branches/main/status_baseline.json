@@ -1,0 +1,27 @@
+{
+  "artifacts": {},
+  "cmd": [
+    "bash",
+    "/workspace/scripts/baseline_collect.sh",
+    "/workspace/projects_to_analyze/werkzeug",
+    "main",
+    "src/werkzeug",
+    "/workspace/results_dev/werkzeug/branches/main",
+    "python"
+  ],
+  "duration_sec": 45.37262201309204,
+  "outcome": "ok",
+  "phase": "baseline",
+  "reason": "",
+  "returncode": 0,
+  "run_id": "20260319_163515_665808_b75488b2",
+  "ts_utc": "2026-03-19T16:36:01Z",
+  "unit": {
+    "base_branch": "main",
+    "branch": "main",
+    "cycle_id": null,
+    "entry": "src/werkzeug",
+    "mode_id": null,
+    "repo": "werkzeug"
+  }
+}

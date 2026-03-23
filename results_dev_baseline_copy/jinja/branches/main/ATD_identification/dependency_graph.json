@@ -1,0 +1,550 @@
+{
+  "schema_version": 1,
+  "language": "python",
+  "repo_root": "/workspace/projects_to_analyze/jinja",
+  "entry": "src/jinja2",
+  "nodes": [
+    {
+      "id": "src/jinja2/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/__init__.py"
+    },
+    {
+      "id": "src/jinja2/_identifier.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/_identifier.py"
+    },
+    {
+      "id": "src/jinja2/async_utils.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/async_utils.py"
+    },
+    {
+      "id": "src/jinja2/bccache.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/bccache.py"
+    },
+    {
+      "id": "src/jinja2/compiler.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/compiler.py"
+    },
+    {
+      "id": "src/jinja2/constants.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/constants.py"
+    },
+    {
+      "id": "src/jinja2/debug.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/debug.py"
+    },
+    {
+      "id": "src/jinja2/defaults.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/defaults.py"
+    },
+    {
+      "id": "src/jinja2/environment.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/environment.py"
+    },
+    {
+      "id": "src/jinja2/exceptions.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/exceptions.py"
+    },
+    {
+      "id": "src/jinja2/ext.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/ext.py"
+    },
+    {
+      "id": "src/jinja2/filters.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/filters.py"
+    },
+    {
+      "id": "src/jinja2/idtracking.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/idtracking.py"
+    },
+    {
+      "id": "src/jinja2/lexer.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/lexer.py"
+    },
+    {
+      "id": "src/jinja2/loaders.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/loaders.py"
+    },
+    {
+      "id": "src/jinja2/meta.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/meta.py"
+    },
+    {
+      "id": "src/jinja2/nativetypes.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/nativetypes.py"
+    },
+    {
+      "id": "src/jinja2/nodes.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/nodes.py"
+    },
+    {
+      "id": "src/jinja2/optimizer.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/optimizer.py"
+    },
+    {
+      "id": "src/jinja2/parser.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/parser.py"
+    },
+    {
+      "id": "src/jinja2/runtime.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/runtime.py"
+    },
+    {
+      "id": "src/jinja2/sandbox.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/sandbox.py"
+    },
+    {
+      "id": "src/jinja2/tests.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/tests.py"
+    },
+    {
+      "id": "src/jinja2/utils.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/utils.py"
+    },
+    {
+      "id": "src/jinja2/visitor.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/jinja/src/jinja2/visitor.py"
+    }
+  ],
+  "edges": [
+    {
+      "source": "src/jinja2/async_utils.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/environment.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/idtracking.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/optimizer.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/runtime.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/compiler.py",
+      "target": "src/jinja2/visitor.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/debug.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/debug.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/defaults.py",
+      "target": "src/jinja2/filters.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/defaults.py",
+      "target": "src/jinja2/tests.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/defaults.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/bccache.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/compiler.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/debug.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/defaults.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/ext.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/lexer.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/loaders.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/parser.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/runtime.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/environment.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/exceptions.py",
+      "target": "src/jinja2/runtime.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/defaults.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/environment.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/lexer.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/parser.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/runtime.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/ext.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/filters.py",
+      "target": "src/jinja2/async_utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/filters.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/filters.py",
+      "target": "src/jinja2/runtime.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/filters.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/idtracking.py",
+      "target": "src/jinja2/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/idtracking.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/idtracking.py",
+      "target": "src/jinja2/visitor.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/lexer.py",
+      "target": "src/jinja2/_identifier.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/lexer.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/lexer.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/loaders.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/loaders.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/meta.py",
+      "target": "src/jinja2/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/meta.py",
+      "target": "src/jinja2/compiler.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/meta.py",
+      "target": "src/jinja2/environment.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/meta.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/nativetypes.py",
+      "target": "src/jinja2/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/nativetypes.py",
+      "target": "src/jinja2/compiler.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/nativetypes.py",
+      "target": "src/jinja2/environment.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/nativetypes.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/nodes.py",
+      "target": "src/jinja2/compiler.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/nodes.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/optimizer.py",
+      "target": "src/jinja2/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/optimizer.py",
+      "target": "src/jinja2/environment.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/optimizer.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/optimizer.py",
+      "target": "src/jinja2/visitor.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/parser.py",
+      "target": "src/jinja2/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/parser.py",
+      "target": "src/jinja2/environment.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/parser.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/parser.py",
+      "target": "src/jinja2/lexer.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/parser.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/runtime.py",
+      "target": "src/jinja2/async_utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/runtime.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/runtime.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/runtime.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/sandbox.py",
+      "target": "src/jinja2/environment.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/sandbox.py",
+      "target": "src/jinja2/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/sandbox.py",
+      "target": "src/jinja2/runtime.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/tests.py",
+      "target": "src/jinja2/runtime.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/tests.py",
+      "target": "src/jinja2/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/utils.py",
+      "target": "src/jinja2/constants.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/utils.py",
+      "target": "src/jinja2/environment.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/utils.py",
+      "target": "src/jinja2/lexer.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/utils.py",
+      "target": "src/jinja2/runtime.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/jinja2/visitor.py",
+      "target": "src/jinja2/nodes.py",
+      "relation": "import"
+    }
+  ]
+}

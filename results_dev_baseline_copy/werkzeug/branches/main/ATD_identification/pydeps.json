@@ -1,0 +1,836 @@
+{
+    "werkzeug": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures.cache_control",
+            "werkzeug.datastructures.file_storage",
+            "werkzeug.datastructures.headers",
+            "werkzeug.datastructures.range",
+            "werkzeug.datastructures.structures",
+            "werkzeug.http",
+            "werkzeug.sansio.http"
+        ],
+        "imports": [
+            "werkzeug.serving",
+            "werkzeug.wrappers"
+        ],
+        "name": "werkzeug",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/__init__.py"
+    },
+    "werkzeug._internal": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug._reloader",
+            "werkzeug.datastructures.file_storage",
+            "werkzeug.datastructures.headers",
+            "werkzeug.datastructures.mixins",
+            "werkzeug.datastructures.structures",
+            "werkzeug.debug",
+            "werkzeug.exceptions",
+            "werkzeug.formparser",
+            "werkzeug.http",
+            "werkzeug.routing.map",
+            "werkzeug.sansio.http",
+            "werkzeug.sansio.utils",
+            "werkzeug.serving",
+            "werkzeug.test",
+            "werkzeug.utils",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "imports": [
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.request"
+        ],
+        "name": "werkzeug._internal",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/_internal.py"
+    },
+    "werkzeug._reloader": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.serving"
+        ],
+        "imports": [
+            "werkzeug._internal"
+        ],
+        "name": "werkzeug._reloader",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/_reloader.py"
+    },
+    "werkzeug.datastructures": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.exceptions",
+            "werkzeug.formparser",
+            "werkzeug.http",
+            "werkzeug.middleware.http_proxy",
+            "werkzeug.middleware.lint",
+            "werkzeug.routing.map",
+            "werkzeug.routing.rules",
+            "werkzeug.sansio.http",
+            "werkzeug.sansio.multipart",
+            "werkzeug.sansio.request",
+            "werkzeug.sansio.response",
+            "werkzeug.test",
+            "werkzeug.urls",
+            "werkzeug.utils",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "imports": [
+            "werkzeug.datastructures.accept",
+            "werkzeug.datastructures.auth",
+            "werkzeug.datastructures.cache_control",
+            "werkzeug.datastructures.csp",
+            "werkzeug.datastructures.etag",
+            "werkzeug.datastructures.file_storage",
+            "werkzeug.datastructures.headers",
+            "werkzeug.datastructures.mixins",
+            "werkzeug.datastructures.range",
+            "werkzeug.datastructures.structures"
+        ],
+        "name": "werkzeug.datastructures",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/__init__.py"
+    },
+    "werkzeug.datastructures.accept": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures"
+        ],
+        "imports": [
+            "werkzeug.datastructures.structures"
+        ],
+        "name": "werkzeug.datastructures.accept",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/accept.py"
+    },
+    "werkzeug.datastructures.auth": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures"
+        ],
+        "imports": [
+            "werkzeug.datastructures.structures",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.datastructures.auth",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/auth.py"
+    },
+    "werkzeug.datastructures.cache_control": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures",
+            "werkzeug.sansio.response"
+        ],
+        "imports": [
+            "werkzeug",
+            "werkzeug.datastructures.mixins",
+            "werkzeug.datastructures.structures",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.datastructures.cache_control",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/cache_control.py"
+    },
+    "werkzeug.datastructures.csp": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures"
+        ],
+        "imports": [
+            "werkzeug.datastructures.structures",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.datastructures.csp",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/csp.py"
+    },
+    "werkzeug.datastructures.etag": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures"
+        ],
+        "imports": [
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.datastructures.etag",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/etag.py"
+    },
+    "werkzeug.datastructures.file_storage": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures"
+        ],
+        "imports": [
+            "werkzeug",
+            "werkzeug._internal",
+            "werkzeug.datastructures.headers",
+            "werkzeug.datastructures.structures",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.datastructures.file_storage",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/file_storage.py"
+    },
+    "werkzeug.datastructures.headers": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures",
+            "werkzeug.datastructures.file_storage"
+        ],
+        "imports": [
+            "werkzeug",
+            "werkzeug._internal",
+            "werkzeug.datastructures.mixins",
+            "werkzeug.datastructures.structures",
+            "werkzeug.exceptions",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.datastructures.headers",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/headers.py"
+    },
+    "werkzeug.datastructures.mixins": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures",
+            "werkzeug.datastructures.cache_control",
+            "werkzeug.datastructures.headers",
+            "werkzeug.datastructures.structures"
+        ],
+        "imports": [
+            "werkzeug._internal"
+        ],
+        "name": "werkzeug.datastructures.mixins",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/mixins.py"
+    },
+    "werkzeug.datastructures.range": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures"
+        ],
+        "imports": [
+            "werkzeug",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.datastructures.range",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/range.py"
+    },
+    "werkzeug.datastructures.structures": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures",
+            "werkzeug.datastructures.accept",
+            "werkzeug.datastructures.auth",
+            "werkzeug.datastructures.cache_control",
+            "werkzeug.datastructures.csp",
+            "werkzeug.datastructures.file_storage",
+            "werkzeug.datastructures.headers"
+        ],
+        "imports": [
+            "werkzeug",
+            "werkzeug._internal",
+            "werkzeug.datastructures.mixins",
+            "werkzeug.exceptions",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.datastructures.structures",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/structures.py"
+    },
+    "werkzeug.debug": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.serving"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.debug.console",
+            "werkzeug.debug.tbtools",
+            "werkzeug.exceptions",
+            "werkzeug.http",
+            "werkzeug.sansio",
+            "werkzeug.sansio.utils",
+            "werkzeug.security",
+            "werkzeug.utils",
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "name": "werkzeug.debug",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/debug/__init__.py"
+    },
+    "werkzeug.debug.console": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.debug",
+            "werkzeug.debug.tbtools"
+        ],
+        "imports": [
+            "werkzeug.debug.repr",
+            "werkzeug.debug.tbtools"
+        ],
+        "name": "werkzeug.debug.console",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/debug/console.py"
+    },
+    "werkzeug.debug.repr": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.debug.console"
+        ],
+        "name": "werkzeug.debug.repr",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/debug/repr.py"
+    },
+    "werkzeug.debug.tbtools": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.debug",
+            "werkzeug.debug.console",
+            "werkzeug.serving"
+        ],
+        "imports": [
+            "werkzeug.debug.console",
+            "werkzeug.utils"
+        ],
+        "name": "werkzeug.debug.tbtools",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/debug/tbtools.py"
+    },
+    "werkzeug.exceptions": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures.headers",
+            "werkzeug.datastructures.structures",
+            "werkzeug.debug",
+            "werkzeug.formparser",
+            "werkzeug.middleware.http_proxy",
+            "werkzeug.routing.exceptions",
+            "werkzeug.routing.map",
+            "werkzeug.sansio.multipart",
+            "werkzeug.sansio.utils",
+            "werkzeug.serving",
+            "werkzeug.utils",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response",
+            "werkzeug.wsgi"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.http",
+            "werkzeug.sansio",
+            "werkzeug.sansio.response",
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "name": "werkzeug.exceptions",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/exceptions.py"
+    },
+    "werkzeug.formparser": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.wrappers.request"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.exceptions",
+            "werkzeug.http",
+            "werkzeug.sansio",
+            "werkzeug.sansio.multipart",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.formparser",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/formparser.py"
+    },
+    "werkzeug.http": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.datastructures.auth",
+            "werkzeug.datastructures.cache_control",
+            "werkzeug.datastructures.csp",
+            "werkzeug.datastructures.etag",
+            "werkzeug.datastructures.file_storage",
+            "werkzeug.datastructures.headers",
+            "werkzeug.datastructures.range",
+            "werkzeug.datastructures.structures",
+            "werkzeug.debug",
+            "werkzeug.exceptions",
+            "werkzeug.formparser",
+            "werkzeug.middleware.http_proxy",
+            "werkzeug.middleware.lint",
+            "werkzeug.middleware.proxy_fix",
+            "werkzeug.middleware.shared_data",
+            "werkzeug.sansio.http",
+            "werkzeug.sansio.multipart",
+            "werkzeug.sansio.request",
+            "werkzeug.sansio.response",
+            "werkzeug.test",
+            "werkzeug.wrappers.response"
+        ],
+        "imports": [
+            "werkzeug",
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.sansio",
+            "werkzeug.sansio.http"
+        ],
+        "name": "werkzeug.http",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/http.py"
+    },
+    "werkzeug.local": {
+        "bacon": 1,
+        "imports": [
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.local",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/local.py"
+    },
+    "werkzeug.middleware": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.serving"
+        ],
+        "name": "werkzeug.middleware",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/__init__.py"
+    },
+    "werkzeug.middleware.dispatcher": {
+        "bacon": 1,
+        "name": "werkzeug.middleware.dispatcher",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/dispatcher.py"
+    },
+    "werkzeug.middleware.http_proxy": {
+        "bacon": 1,
+        "imports": [
+            "werkzeug.datastructures",
+            "werkzeug.exceptions",
+            "werkzeug.http",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.middleware.http_proxy",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/http_proxy.py"
+    },
+    "werkzeug.middleware.lint": {
+        "bacon": 1,
+        "imports": [
+            "werkzeug.datastructures",
+            "werkzeug.http",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.middleware.lint",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/lint.py"
+    },
+    "werkzeug.middleware.profiler": {
+        "bacon": 1,
+        "name": "werkzeug.middleware.profiler",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/profiler.py"
+    },
+    "werkzeug.middleware.proxy_fix": {
+        "bacon": 1,
+        "imports": [
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.middleware.proxy_fix",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/proxy_fix.py"
+    },
+    "werkzeug.middleware.shared_data": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.serving"
+        ],
+        "imports": [
+            "werkzeug.http",
+            "werkzeug.security",
+            "werkzeug.utils",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.middleware.shared_data",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/shared_data.py"
+    },
+    "werkzeug.routing": {
+        "bacon": 1,
+        "imports": [
+            "werkzeug.routing.converters",
+            "werkzeug.routing.exceptions",
+            "werkzeug.routing.map",
+            "werkzeug.routing.matcher",
+            "werkzeug.routing.rules"
+        ],
+        "name": "werkzeug.routing",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/__init__.py"
+    },
+    "werkzeug.routing.converters": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.routing",
+            "werkzeug.routing.map",
+            "werkzeug.routing.matcher",
+            "werkzeug.routing.rules"
+        ],
+        "imports": [
+            "werkzeug.routing.map"
+        ],
+        "name": "werkzeug.routing.converters",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/converters.py"
+    },
+    "werkzeug.routing.exceptions": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.routing",
+            "werkzeug.routing.map",
+            "werkzeug.routing.matcher"
+        ],
+        "imports": [
+            "werkzeug.exceptions",
+            "werkzeug.routing.map",
+            "werkzeug.routing.rules",
+            "werkzeug.utils",
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "name": "werkzeug.routing.exceptions",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/exceptions.py"
+    },
+    "werkzeug.routing.map": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.routing",
+            "werkzeug.routing.converters",
+            "werkzeug.routing.exceptions",
+            "werkzeug.routing.rules"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.exceptions",
+            "werkzeug.routing.converters",
+            "werkzeug.routing.exceptions",
+            "werkzeug.routing.matcher",
+            "werkzeug.routing.rules",
+            "werkzeug.urls",
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.request",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.routing.map",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/map.py"
+    },
+    "werkzeug.routing.matcher": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.routing",
+            "werkzeug.routing.map"
+        ],
+        "imports": [
+            "werkzeug.routing.converters",
+            "werkzeug.routing.exceptions",
+            "werkzeug.routing.rules"
+        ],
+        "name": "werkzeug.routing.matcher",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/matcher.py"
+    },
+    "werkzeug.routing.rules": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.routing",
+            "werkzeug.routing.exceptions",
+            "werkzeug.routing.map",
+            "werkzeug.routing.matcher"
+        ],
+        "imports": [
+            "werkzeug.datastructures",
+            "werkzeug.routing.converters",
+            "werkzeug.routing.map",
+            "werkzeug.urls"
+        ],
+        "name": "werkzeug.routing.rules",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/rules.py"
+    },
+    "werkzeug.sansio": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.debug",
+            "werkzeug.exceptions",
+            "werkzeug.formparser",
+            "werkzeug.http",
+            "werkzeug.test",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.sansio",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/__init__.py"
+    },
+    "werkzeug.sansio.http": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.http",
+            "werkzeug.sansio.request"
+        ],
+        "imports": [
+            "werkzeug",
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.sansio.http",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/http.py"
+    },
+    "werkzeug.sansio.multipart": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.formparser",
+            "werkzeug.test"
+        ],
+        "imports": [
+            "werkzeug.datastructures",
+            "werkzeug.exceptions",
+            "werkzeug.http"
+        ],
+        "name": "werkzeug.sansio.multipart",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/multipart.py"
+    },
+    "werkzeug.sansio.request": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.wrappers.request"
+        ],
+        "imports": [
+            "werkzeug.datastructures",
+            "werkzeug.http",
+            "werkzeug.sansio.http",
+            "werkzeug.sansio.utils",
+            "werkzeug.user_agent",
+            "werkzeug.utils"
+        ],
+        "name": "werkzeug.sansio.request",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/request.py"
+    },
+    "werkzeug.sansio.response": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.exceptions",
+            "werkzeug.wrappers.response"
+        ],
+        "imports": [
+            "werkzeug.datastructures",
+            "werkzeug.datastructures.cache_control",
+            "werkzeug.http",
+            "werkzeug.utils"
+        ],
+        "name": "werkzeug.sansio.response",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/response.py"
+    },
+    "werkzeug.sansio.utils": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.debug",
+            "werkzeug.sansio.request",
+            "werkzeug.wsgi"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.exceptions",
+            "werkzeug.urls"
+        ],
+        "name": "werkzeug.sansio.utils",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/utils.py"
+    },
+    "werkzeug.security": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.debug",
+            "werkzeug.middleware.shared_data",
+            "werkzeug.utils"
+        ],
+        "name": "werkzeug.security",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/security.py"
+    },
+    "werkzeug.serving": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug",
+            "werkzeug.testapp"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug._reloader",
+            "werkzeug.debug",
+            "werkzeug.debug.tbtools",
+            "werkzeug.exceptions",
+            "werkzeug.middleware",
+            "werkzeug.middleware.shared_data",
+            "werkzeug.urls"
+        ],
+        "name": "werkzeug.serving",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/serving.py"
+    },
+    "werkzeug.test": {
+        "bacon": 1,
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.http",
+            "werkzeug.sansio",
+            "werkzeug.sansio.multipart",
+            "werkzeug.urls",
+            "werkzeug.utils",
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.test",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/test.py"
+    },
+    "werkzeug.testapp": {
+        "bacon": 1,
+        "imports": [
+            "werkzeug.serving",
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "name": "werkzeug.testapp",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/testapp.py"
+    },
+    "werkzeug.urls": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.routing.map",
+            "werkzeug.routing.rules",
+            "werkzeug.sansio.utils",
+            "werkzeug.serving",
+            "werkzeug.test",
+            "werkzeug.wrappers.response"
+        ],
+        "imports": [
+            "werkzeug.datastructures"
+        ],
+        "name": "werkzeug.urls",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/urls.py"
+    },
+    "werkzeug.user_agent": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.sansio.request"
+        ],
+        "name": "werkzeug.user_agent",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/user_agent.py"
+    },
+    "werkzeug.utils": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.debug",
+            "werkzeug.debug.tbtools",
+            "werkzeug.middleware.shared_data",
+            "werkzeug.routing.exceptions",
+            "werkzeug.sansio.request",
+            "werkzeug.sansio.response",
+            "werkzeug.test",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.exceptions",
+            "werkzeug.security",
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.utils",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/utils.py"
+    },
+    "werkzeug.wrappers": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug",
+            "werkzeug._internal",
+            "werkzeug.debug",
+            "werkzeug.exceptions",
+            "werkzeug.routing.exceptions",
+            "werkzeug.routing.map",
+            "werkzeug.test",
+            "werkzeug.testapp",
+            "werkzeug.utils"
+        ],
+        "imports": [
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "name": "werkzeug.wrappers",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/wrappers/__init__.py"
+    },
+    "werkzeug.wrappers.request": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug._internal",
+            "werkzeug.debug",
+            "werkzeug.exceptions",
+            "werkzeug.routing.exceptions",
+            "werkzeug.routing.map",
+            "werkzeug.test",
+            "werkzeug.testapp",
+            "werkzeug.utils",
+            "werkzeug.wrappers",
+            "werkzeug.wrappers.response"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.exceptions",
+            "werkzeug.formparser",
+            "werkzeug.sansio",
+            "werkzeug.sansio.request",
+            "werkzeug.utils",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.wrappers.request",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/wrappers/request.py"
+    },
+    "werkzeug.wrappers.response": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.debug",
+            "werkzeug.exceptions",
+            "werkzeug.routing.exceptions",
+            "werkzeug.test",
+            "werkzeug.testapp",
+            "werkzeug.utils",
+            "werkzeug.wrappers"
+        ],
+        "imports": [
+            "werkzeug._internal",
+            "werkzeug.datastructures",
+            "werkzeug.exceptions",
+            "werkzeug.http",
+            "werkzeug.sansio",
+            "werkzeug.sansio.response",
+            "werkzeug.urls",
+            "werkzeug.utils",
+            "werkzeug.wrappers.request",
+            "werkzeug.wsgi"
+        ],
+        "name": "werkzeug.wrappers.response",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/wrappers/response.py"
+    },
+    "werkzeug.wsgi": {
+        "bacon": 1,
+        "imported_by": [
+            "werkzeug.formparser",
+            "werkzeug.local",
+            "werkzeug.middleware.http_proxy",
+            "werkzeug.middleware.lint",
+            "werkzeug.middleware.shared_data",
+            "werkzeug.routing.map",
+            "werkzeug.test",
+            "werkzeug.utils",
+            "werkzeug.wrappers.request",
+            "werkzeug.wrappers.response"
+        ],
+        "imports": [
+            "werkzeug.exceptions",
+            "werkzeug.sansio",
+            "werkzeug.sansio.utils"
+        ],
+        "name": "werkzeug.wsgi",
+        "path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/wsgi.py"
+    }
+}

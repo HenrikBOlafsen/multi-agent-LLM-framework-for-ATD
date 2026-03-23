@@ -1,0 +1,27 @@
+{
+  "artifacts": {},
+  "cmd": [
+    "bash",
+    "/workspace/scripts/baseline_collect.sh",
+    "/workspace/projects_to_analyze/LiteDB",
+    "master",
+    "LiteDB",
+    "/workspace/results_dev/LiteDB/branches/master",
+    "csharp"
+  ],
+  "duration_sec": 62.40654397010803,
+  "outcome": "ok",
+  "phase": "baseline",
+  "reason": "",
+  "returncode": 0,
+  "run_id": "20260319_164445_843395_8e6afe5f",
+  "ts_utc": "2026-03-19T16:45:48Z",
+  "unit": {
+    "base_branch": "master",
+    "branch": "master",
+    "cycle_id": null,
+    "entry": "LiteDB",
+    "mode_id": null,
+    "repo": "LiteDB"
+  }
+}

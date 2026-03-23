@@ -1,0 +1,2495 @@
+{
+  "schema_version": 1,
+  "language": "csharp",
+  "repo_root": "/workspace/projects_to_analyze/FluentValidation",
+  "entry": "src/FluentValidation",
+  "nodes": [
+    {
+      "id": "src/FluentValidation/AbstractValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/AbstractValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/AssemblyInfo.FluentValidation.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/AssemblyInfo.FluentValidation.cs"
+    },
+    {
+      "id": "src/FluentValidation/AssemblyScanner.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/AssemblyScanner.cs"
+    },
+    {
+      "id": "src/FluentValidation/AsyncValidatorInvokedSynchronouslyException.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/AsyncValidatorInvokedSynchronouslyException.cs"
+    },
+    {
+      "id": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/DefaultValidatorExtensions.cs"
+    },
+    {
+      "id": "src/FluentValidation/DefaultValidatorExtensions_Validate.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/DefaultValidatorExtensions_Validate.cs"
+    },
+    {
+      "id": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/DefaultValidatorOptions.cs"
+    },
+    {
+      "id": "src/FluentValidation/Enums.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Enums.cs"
+    },
+    {
+      "id": "src/FluentValidation/ICollectionRule.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/ICollectionRule.cs"
+    },
+    {
+      "id": "src/FluentValidation/InlineValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/InlineValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/AccessorCache.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/AccessorCache.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/ChildRulesContainer.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/ChildRulesContainer.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/CollectionPropertyRule.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/CompositeValidatorSelector.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/CompositeValidatorSelector.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/ConditionBuilder.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/ConditionBuilder.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/DefaultValidatorSelector.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/DefaultValidatorSelector.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/Extensions.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/Extensions.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/ExtensionsInternal.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/ExtensionsInternal.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/IncludeRule.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/IncludeRule.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/IRuleComponent.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/IValidatorSelector.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/MemberNameValidatorSelector.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/MemberNameValidatorSelector.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/MessageBuilderContext.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/MessageBuilderContext.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/MessageFormatter.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/PropertyChain.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/PropertyChain.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/PropertyRule.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/PropertyRule.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/RuleBase.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/RuleBase.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/RuleBuilder.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/RuleComponent.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/RuleComponent.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/RuleComponentForNullableStruct.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/RuleComponentForNullableStruct.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/RulesetValidatorSelector.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/RulesetValidatorSelector.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/TrackingCollection.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/TrackingCollection.cs"
+    },
+    {
+      "id": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Internal/ValidationStrategy.cs"
+    },
+    {
+      "id": "src/FluentValidation/IValidationContext.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/IValidationContext.cs"
+    },
+    {
+      "id": "src/FluentValidation/IValidationRule.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/IValidationRule.cs"
+    },
+    {
+      "id": "src/FluentValidation/IValidationRuleInternal.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/IValidationRuleInternal.cs"
+    },
+    {
+      "id": "src/FluentValidation/IValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/IValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/IValidatorDescriptor.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/IValidatorDescriptor.cs"
+    },
+    {
+      "id": "src/FluentValidation/IValidatorFactory.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/IValidatorFactory.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/ILanguageManager.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/ILanguageManager.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/LanguageManager.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/LanguageManager.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/AlbanianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/AlbanianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/ArabicLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/ArabicLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/AzerbaijaneseLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/AzerbaijaneseLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/BengaliLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/BengaliLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/BosnianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/BosnianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/BulgarianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/BulgarianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/CatalanLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/CatalanLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/ChineseSimplifiedLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/ChineseSimplifiedLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/ChineseTraditionalLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/ChineseTraditionalLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/CroatianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/CroatianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/CzechLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/CzechLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/DanishLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/DanishLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/DutchLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/DutchLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/EnglishLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/EnglishLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/EstonianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/EstonianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/FinnishLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/FinnishLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/FrenchLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/FrenchLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/GeorgianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/GeorgianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/GermanLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/GermanLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/GreekLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/GreekLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/HebrewLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/HebrewLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/HindiLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/HindiLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/HungarianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/HungarianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/IcelandicLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/IcelandicLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/IndonesianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/IndonesianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/ItalianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/ItalianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/JapaneseLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/JapaneseLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/KazakhLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/KazakhLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/KhmerLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/KhmerLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/KoreanLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/KoreanLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/LatvianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/LatvianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/MacedonianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/MacedonianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/NorwegianBokmalLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/NorwegianBokmalLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/NorwegianNynorskLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/NorwegianNynorskLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/PersianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/PersianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/PolishLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/PolishLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/PortugueseBrazilLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/PortugueseBrazilLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/PortugueseLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/PortugueseLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/RomanianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/RomanianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/RomanshLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/RomanshLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/RussianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/RussianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/SerbianCyrillicLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/SerbianCyrillicLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/SerbianLatinLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/SerbianLatinLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/SlovakLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/SlovakLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/SlovenianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/SlovenianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/SpanishLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/SpanishLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/SwedishLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/SwedishLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/TajikLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/TajikLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/TamilLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/TamilLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/TeluguLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/TeluguLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/ThaiLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/ThaiLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/TurkishLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/TurkishLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/UkrainianLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/UkrainianLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/UzbekCyrillicLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/UzbekCyrillicLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/UzbekLatinLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/UzbekLatinLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/VietnameseLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/VietnameseLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Resources/Languages/WelshLanguage.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Resources/Languages/WelshLanguage.cs"
+    },
+    {
+      "id": "src/FluentValidation/Results/ValidationFailure.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Results/ValidationFailure.cs"
+    },
+    {
+      "id": "src/FluentValidation/Results/ValidationResult.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Results/ValidationResult.cs"
+    },
+    {
+      "id": "src/FluentValidation/Syntax.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Syntax.cs"
+    },
+    {
+      "id": "src/FluentValidation/TestHelper/ITestValidationContinuation.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/TestHelper/ITestValidationContinuation.cs"
+    },
+    {
+      "id": "src/FluentValidation/TestHelper/TestValidationResult.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/TestHelper/TestValidationResult.cs"
+    },
+    {
+      "id": "src/FluentValidation/TestHelper/ValidationTestException.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/TestHelper/ValidationTestException.cs"
+    },
+    {
+      "id": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/TestHelper/ValidatorTestExtensions.cs"
+    },
+    {
+      "id": "src/FluentValidation/ValidationException.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/ValidationException.cs"
+    },
+    {
+      "id": "src/FluentValidation/ValidatorDescriptor.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/ValidatorDescriptor.cs"
+    },
+    {
+      "id": "src/FluentValidation/ValidatorFactoryBase.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/ValidatorFactoryBase.cs"
+    },
+    {
+      "id": "src/FluentValidation/ValidatorOptions.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/ValidatorOptions.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/AbstractComparisonValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/AsyncPredicateValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/AsyncPredicateValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/AsyncPropertyValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/AsyncPropertyValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/ChildValidatorAdaptor.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/ComparableComparer.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/ComparableComparer.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/CreditCardValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/CreditCardValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/EmailValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/EmailValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/EmptyValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/EmptyValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/EnumValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/EnumValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/EqualValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/EqualValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/ExclusiveBetweenValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/ExclusiveBetweenValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/GreaterThanOrEqualValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/GreaterThanOrEqualValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/GreaterThanValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/GreaterThanValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/InclusiveBetweenValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/InclusiveBetweenValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/IPropertyValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/LengthValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/LengthValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/LessThanOrEqualValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/LessThanOrEqualValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/LessThanValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/LessThanValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/NoopPropertyValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/NoopPropertyValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/NotEmptyValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/NotEmptyValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/NotEqualValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/NotEqualValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/NotNullValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/NotNullValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/NullValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/NullValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/PolymorphicValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/PolymorphicValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/PrecisionScaleValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/PrecisionScaleValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/PredicateValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/PredicateValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/PropertyValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/RangeValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/RangeValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/RegularExpressionValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/RegularExpressionValidator.cs"
+    },
+    {
+      "id": "src/FluentValidation/Validators/StringEnumValidator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/FluentValidation/src/FluentValidation/Validators/StringEnumValidator.cs"
+    }
+  ],
+  "edges": [
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/AsyncValidatorInvokedSynchronouslyException.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Internal/ExtensionsInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Internal/IncludeRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Internal/PropertyRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Internal/RulesetValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Internal/TrackingCollection.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/IValidationRuleInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/IValidatorDescriptor.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Results/ValidationResult.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/Syntax.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AbstractValidator.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/AssemblyScanner.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/AbstractValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/ICollectionRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/InlineValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Internal/AccessorCache.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Internal/ChildRulesContainer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Internal/RuleComponentForNullableStruct.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Internal/TrackingCollection.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/IValidationRuleInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Syntax.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Validators/EmailValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Validators/PolymorphicValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions.cs",
+      "target": "src/FluentValidation/Validators/RangeValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions_Validate.cs",
+      "target": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions_Validate.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions_Validate.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorExtensions_Validate.cs",
+      "target": "src/FluentValidation/Results/ValidationResult.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "target": "src/FluentValidation/ICollectionRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "target": "src/FluentValidation/Internal/ExtensionsInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/DefaultValidatorOptions.cs",
+      "target": "src/FluentValidation/Syntax.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ICollectionRule.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/InlineValidator.cs",
+      "target": "src/FluentValidation/AbstractValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/InlineValidator.cs",
+      "target": "src/FluentValidation/Syntax.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/AccessorCache.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ChildRulesContainer.cs",
+      "target": "src/FluentValidation/InlineValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/ICollectionRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/Internal/AccessorCache.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/Internal/PropertyChain.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/Internal/RuleBase.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/Internal/RuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/IValidationRuleInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CollectionPropertyRule.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CompositeValidatorSelector.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CompositeValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/CompositeValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ConditionBuilder.cs",
+      "target": "src/FluentValidation/Internal/TrackingCollection.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ConditionBuilder.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ConditionBuilder.cs",
+      "target": "src/FluentValidation/IValidationRuleInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ConditionBuilder.cs",
+      "target": "src/FluentValidation/Syntax.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/DefaultValidatorSelector.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/DefaultValidatorSelector.cs",
+      "target": "src/FluentValidation/Internal/RulesetValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/DefaultValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/DefaultValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ExtensionsInternal.cs",
+      "target": "src/FluentValidation/Resources/ILanguageManager.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IncludeRule.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IncludeRule.cs",
+      "target": "src/FluentValidation/Internal/MemberNameValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IncludeRule.cs",
+      "target": "src/FluentValidation/Internal/PropertyRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IncludeRule.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IncludeRule.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IncludeRule.cs",
+      "target": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MemberNameValidatorSelector.cs",
+      "target": "src/FluentValidation/Internal/IncludeRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MemberNameValidatorSelector.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MemberNameValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MemberNameValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MemberNameValidatorSelector.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MessageBuilderContext.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MessageBuilderContext.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MessageBuilderContext.cs",
+      "target": "src/FluentValidation/Internal/RuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MessageBuilderContext.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/MessageBuilderContext.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyChain.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/Internal/AccessorCache.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/Internal/PropertyChain.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/Internal/RuleBase.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/Internal/RuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/IValidationRuleInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/PropertyRule.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/Internal/MessageBuilderContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/Internal/RuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/IValidationRuleInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBase.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/AbstractValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/Internal/RuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/Internal/TrackingCollection.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/IValidationRuleInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/Syntax.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleBuilder.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleComponent.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleComponent.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleComponent.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleComponent.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleComponent.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleComponentForNullableStruct.cs",
+      "target": "src/FluentValidation/Internal/RuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleComponentForNullableStruct.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RuleComponentForNullableStruct.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RulesetValidatorSelector.cs",
+      "target": "src/FluentValidation/Internal/IncludeRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RulesetValidatorSelector.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RulesetValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/RulesetValidatorSelector.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "target": "src/FluentValidation/Internal/MemberNameValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "target": "src/FluentValidation/Internal/RulesetValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationContext.cs",
+      "target": "src/FluentValidation/Internal/ExtensionsInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationContext.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationContext.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationContext.cs",
+      "target": "src/FluentValidation/Internal/PropertyChain.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationContext.cs",
+      "target": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationContext.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationContext.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationRule.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationRule.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationRule.cs",
+      "target": "src/FluentValidation/Internal/MessageBuilderContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationRule.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationRule.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationRuleInternal.cs",
+      "target": "src/FluentValidation/Internal/RuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationRuleInternal.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidationRuleInternal.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidator.cs",
+      "target": "src/FluentValidation/IValidatorDescriptor.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidator.cs",
+      "target": "src/FluentValidation/Results/ValidationResult.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidatorDescriptor.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidatorDescriptor.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidatorDescriptor.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/IValidatorFactory.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/ILanguageManager.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/AlbanianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/ArabicLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/AzerbaijaneseLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/BengaliLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/BosnianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/BulgarianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/CatalanLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/ChineseSimplifiedLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/ChineseTraditionalLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/CroatianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/CzechLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/DanishLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/DutchLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/EnglishLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/EstonianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/FinnishLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/FrenchLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/GeorgianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/GermanLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/GreekLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/HebrewLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/HindiLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/HungarianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/IcelandicLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/IndonesianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/ItalianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/JapaneseLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/KazakhLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/KhmerLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/KoreanLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/LatvianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/MacedonianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/NorwegianBokmalLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/NorwegianNynorskLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/PersianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/PolishLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/PortugueseBrazilLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/PortugueseLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/RomanianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/RomanshLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/RussianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/SerbianCyrillicLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/SerbianLatinLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/SlovakLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/SlovenianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/SpanishLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/SwedishLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/TajikLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/TamilLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/TeluguLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/ThaiLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/TurkishLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/UkrainianLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/UzbekCyrillicLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/UzbekLatinLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/VietnameseLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Resources/LanguageManager.cs",
+      "target": "src/FluentValidation/Resources/Languages/WelshLanguage.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Results/ValidationFailure.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Results/ValidationResult.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Syntax.cs",
+      "target": "src/FluentValidation/AbstractValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Syntax.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Syntax.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Syntax.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ITestValidationContinuation.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/TestValidationResult.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/TestValidationResult.cs",
+      "target": "src/FluentValidation/Results/ValidationResult.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/TestValidationResult.cs",
+      "target": "src/FluentValidation/TestHelper/ITestValidationContinuation.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/TestValidationResult.cs",
+      "target": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/TestValidationResult.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidationTestException.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/AsyncValidatorInvokedSynchronouslyException.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/Internal/ValidationStrategy.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/IValidationRuleInternal.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/IValidatorDescriptor.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/Results/ValidationResult.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/TestHelper/ITestValidationContinuation.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/TestHelper/TestValidationResult.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/TestHelper/ValidatorTestExtensions.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidationException.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidationException.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorDescriptor.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorDescriptor.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorDescriptor.cs",
+      "target": "src/FluentValidation/IValidatorDescriptor.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorDescriptor.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorFactoryBase.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorFactoryBase.cs",
+      "target": "src/FluentValidation/IValidatorFactory.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/Enums.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/Internal/IRuleComponent.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/Internal/PropertyChain.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/IValidationRule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/Resources/ILanguageManager.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/Results/ValidationFailure.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/ValidatorOptions.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AsyncPredicateValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AsyncPredicateValidator.cs",
+      "target": "src/FluentValidation/Validators/AsyncPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AsyncPropertyValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AsyncPropertyValidator.cs",
+      "target": "src/FluentValidation/Resources/ILanguageManager.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AsyncPropertyValidator.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/AsyncPropertyValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "target": "src/FluentValidation/Internal/PropertyChain.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "target": "src/FluentValidation/Validators/NoopPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/CreditCardValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/CreditCardValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EmailValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EmailValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EmailValidator.cs",
+      "target": "src/FluentValidation/Validators/RegularExpressionValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EmptyValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EmptyValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EnumValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EnumValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EnumValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EqualValidator.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EqualValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EqualValidator.cs",
+      "target": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/EqualValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ExclusiveBetweenValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/ExclusiveBetweenValidator.cs",
+      "target": "src/FluentValidation/Validators/RangeValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/GreaterThanOrEqualValidator.cs",
+      "target": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/GreaterThanValidator.cs",
+      "target": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/InclusiveBetweenValidator.cs",
+      "target": "src/FluentValidation/Validators/ExclusiveBetweenValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/InclusiveBetweenValidator.cs",
+      "target": "src/FluentValidation/Validators/RangeValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/LengthValidator.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/LengthValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/LengthValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/LengthValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/LessThanOrEqualValidator.cs",
+      "target": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/LessThanValidator.cs",
+      "target": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NoopPropertyValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NoopPropertyValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotEmptyValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotEmptyValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotEmptyValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotEqualValidator.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotEqualValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotEqualValidator.cs",
+      "target": "src/FluentValidation/Validators/AbstractComparisonValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotEqualValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotNullValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotNullValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NotNullValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NullValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NullValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/NullValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PolymorphicValidator.cs",
+      "target": "src/FluentValidation/Internal/IValidatorSelector.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PolymorphicValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PolymorphicValidator.cs",
+      "target": "src/FluentValidation/IValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PolymorphicValidator.cs",
+      "target": "src/FluentValidation/Validators/ChildValidatorAdaptor.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PrecisionScaleValidator.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PrecisionScaleValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PrecisionScaleValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PredicateValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PredicateValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PredicateValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "target": "src/FluentValidation/Resources/ILanguageManager.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "target": "src/FluentValidation/ValidatorOptions.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RangeValidator.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RangeValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RangeValidator.cs",
+      "target": "src/FluentValidation/Validators/ComparableComparer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RangeValidator.cs",
+      "target": "src/FluentValidation/Validators/ExclusiveBetweenValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RangeValidator.cs",
+      "target": "src/FluentValidation/Validators/InclusiveBetweenValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RangeValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RegularExpressionValidator.cs",
+      "target": "src/FluentValidation/Internal/MessageFormatter.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RegularExpressionValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RegularExpressionValidator.cs",
+      "target": "src/FluentValidation/Validators/IPropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/RegularExpressionValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/StringEnumValidator.cs",
+      "target": "src/FluentValidation/IValidationContext.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "src/FluentValidation/Validators/StringEnumValidator.cs",
+      "target": "src/FluentValidation/Validators/PropertyValidator.cs",
+      "relation": "type_ref"
+    }
+  ]
+}

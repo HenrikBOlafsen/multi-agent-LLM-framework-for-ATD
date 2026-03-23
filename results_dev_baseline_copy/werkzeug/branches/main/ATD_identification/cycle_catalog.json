@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-20T00:08:31Z",
+  "input": {
+    "dependency_graph": "/workspace/results_dev/werkzeug/branches/main/ATD_identification/dependency_graph.json",
+    "scc_report": "/workspace/results_dev/werkzeug/branches/main/ATD_identification/scc_report.json",
+    "repo": "werkzeug",
+    "base_branch": "main"
+  },
+  "params": {
+    "max_cycle_len": 8,
+    "attempts_per_scc": 50000,
+    "max_cycles_per_scc": 200,
+    "seed": 12345
+  },
+  "summary": {
+    "scc_count": 3,
+    "cycle_count": 5
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "node_count": 12,
+      "edge_count": 28,
+      "cycles": [
+        {
+          "id": "scc_0_cycle_0",
+          "length": 8,
+          "nodes": [
+            "src/werkzeug/exceptions.py",
+            "src/werkzeug/wrappers/response.py",
+            "src/werkzeug/sansio/response.py",
+            "src/werkzeug/utils.py",
+            "src/werkzeug/wrappers/request.py",
+            "src/werkzeug/formparser.py",
+            "src/werkzeug/wsgi.py",
+            "src/werkzeug/sansio/utils.py"
+          ],
+          "edges": [
+            {
+              "source": "src/werkzeug/exceptions.py",
+              "target": "src/werkzeug/wrappers/response.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/wrappers/response.py",
+              "target": "src/werkzeug/sansio/response.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/sansio/response.py",
+              "target": "src/werkzeug/utils.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/utils.py",
+              "target": "src/werkzeug/wrappers/request.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/wrappers/request.py",
+              "target": "src/werkzeug/formparser.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/formparser.py",
+              "target": "src/werkzeug/wsgi.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/wsgi.py",
+              "target": "src/werkzeug/sansio/utils.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/sansio/utils.py",
+              "target": "src/werkzeug/exceptions.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.025100870244427313,
+            "pagerank_min": 0.010523197651348142,
+            "pagerank_max": 0.05111042944273063
+          }
+        },
+        {
+          "id": "scc_0_cycle_1",
+          "length": 4,
+          "nodes": [
+            "src/werkzeug/datastructures/cache_control.py",
+            "src/werkzeug/datastructures/structures.py",
+            "src/werkzeug/exceptions.py",
+            "src/werkzeug/sansio/response.py"
+          ],
+          "edges": [
+            {
+              "source": "src/werkzeug/datastructures/cache_control.py",
+              "target": "src/werkzeug/datastructures/structures.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/datastructures/structures.py",
+              "target": "src/werkzeug/exceptions.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/exceptions.py",
+              "target": "src/werkzeug/sansio/response.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/sansio/response.py",
+              "target": "src/werkzeug/datastructures/cache_control.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.027647216706192322,
+            "pagerank_min": 0.012569078949476028,
+            "pagerank_max": 0.05111042944273063
+          }
+        },
+        {
+          "id": "scc_0_cycle_2",
+          "length": 2,
+          "nodes": [
+            "src/werkzeug/utils.py",
+            "src/werkzeug/wrappers/response.py"
+          ],
+          "edges": [
+            {
+              "source": "src/werkzeug/utils.py",
+              "target": "src/werkzeug/wrappers/response.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/wrappers/response.py",
+              "target": "src/werkzeug/utils.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.02712166689030477,
+            "pagerank_min": 0.021228231835481115,
+            "pagerank_max": 0.033015101945128425
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_1",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_1_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/werkzeug/http.py",
+            "src/werkzeug/sansio/http.py"
+          ],
+          "edges": [
+            {
+              "source": "src/werkzeug/http.py",
+              "target": "src/werkzeug/sansio/http.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/sansio/http.py",
+              "target": "src/werkzeug/http.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.04975284358481524,
+            "pagerank_min": 0.023361782936316054,
+            "pagerank_max": 0.07614390423331444
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_2",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_2_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/werkzeug/debug/console.py",
+            "src/werkzeug/debug/tbtools.py"
+          ],
+          "edges": [
+            {
+              "source": "src/werkzeug/debug/console.py",
+              "target": "src/werkzeug/debug/tbtools.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/werkzeug/debug/tbtools.py",
+              "target": "src/werkzeug/debug/console.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.016525160702062613,
+            "pagerank_min": 0.01612176775595945,
+            "pagerank_max": 0.016928553648165773
+          }
+        }
+      ]
+    }
+  ]
+}

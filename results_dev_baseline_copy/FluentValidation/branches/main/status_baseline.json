@@ -1,0 +1,27 @@
+{
+  "artifacts": {},
+  "cmd": [
+    "bash",
+    "/workspace/scripts/baseline_collect.sh",
+    "/workspace/projects_to_analyze/FluentValidation",
+    "main",
+    "src/FluentValidation",
+    "/workspace/results_dev/FluentValidation/branches/main",
+    "csharp"
+  ],
+  "duration_sec": 38.09533214569092,
+  "outcome": "ok",
+  "phase": "baseline",
+  "reason": "",
+  "returncode": 0,
+  "run_id": "20260319_164407_746905_5289ade0",
+  "ts_utc": "2026-03-19T16:44:45Z",
+  "unit": {
+    "base_branch": "main",
+    "branch": "main",
+    "cycle_id": null,
+    "entry": "src/FluentValidation",
+    "mode_id": null,
+    "repo": "FluentValidation"
+  }
+}

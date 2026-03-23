@@ -1,0 +1,1480 @@
+{
+  "schema_version": 1,
+  "language": "csharp",
+  "repo_root": "/workspace/projects_to_analyze/Bogus",
+  "entry": "Source/Bogus",
+  "nodes": [
+    {
+      "id": "Source/Bogus/Binder.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Binder.cs"
+    },
+    {
+      "id": "Source/Bogus/BogusException.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/BogusException.cs"
+    },
+    {
+      "id": "Source/Bogus/Bson/BArray.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Bson/BArray.cs"
+    },
+    {
+      "id": "Source/Bogus/Bson/BObject.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Bson/BObject.cs"
+    },
+    {
+      "id": "Source/Bogus/Bson/Bson.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Bson/Bson.cs"
+    },
+    {
+      "id": "Source/Bogus/Bson/BValue.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Bson/BValue.cs"
+    },
+    {
+      "id": "Source/Bogus/Bson/BValueType.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Bson/BValueType.cs"
+    },
+    {
+      "id": "Source/Bogus/Chars.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Chars.cs"
+    },
+    {
+      "id": "Source/Bogus/Database.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Database.cs"
+    },
+    {
+      "id": "Source/Bogus/DataCategoryAttribute.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataCategoryAttribute.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSet.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSet.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Address.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Address.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/ColorFormat.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/ColorFormat.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Commerce.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Commerce.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Company.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Company.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Database.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Database.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Date.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Date.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Date.net60.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Date.net60.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Finance.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Finance.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Hacker.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Hacker.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Images.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Images.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Images.PlaceImg.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Images.PlaceImg.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Internet.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Internet.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Lorem.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Lorem.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Music.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Music.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Name.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Name.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/PhoneNumbers.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/PhoneNumbers.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Rant.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Rant.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/System.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/System.cs"
+    },
+    {
+      "id": "Source/Bogus/DataSets/Vehicle.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/DataSets/Vehicle.cs"
+    },
+    {
+      "id": "Source/Bogus/Distributions/Gaussian/ExtensionsForRandomizer.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Distributions/Gaussian/ExtensionsForRandomizer.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Belgium/ExtensionsForBelgium.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Belgium/ExtensionsForBelgium.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Brazil/ExtensionsForBrazil.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Brazil/ExtensionsForBrazil.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Canada/ExtensionsForCanada.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Canada/ExtensionsForCanada.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Denmark/ExtensionsForDenmark.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Denmark/ExtensionsForDenmark.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/ExtensionsForCultureInfo.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/ExtensionsForCultureInfo.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/ExtensionsForPropertyInfo.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/ExtensionsForPropertyInfo.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/ExtensionsForRandomizer.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/ExtensionsForRandomizer.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/ExtensionsForString.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/ExtensionsForString.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Extras/CheckDigitExtension.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Extras/CheckDigitExtension.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Extras/FinanceExtensions.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Extras/FinanceExtensions.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Finland/ExtensionsForFinland.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Finland/ExtensionsForFinland.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Iran/ExtensionsForIran.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Iran/ExtensionsForIran.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Italy/ExtensionsForItaly.CodiceFiscale.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Italy/ExtensionsForItaly.CodiceFiscale.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Italy/ExtensionsForItaly.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Italy/ExtensionsForItaly.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Norway/ExtensionsForNorway.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Norway/ExtensionsForNorway.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Poland/ExtensionsForPoland.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Poland/ExtensionsForPoland.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Portugal/ExtensionsForPortugal.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Portugal/ExtensionsForPortugal.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Portugal/TaxNumberGenerator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Portugal/TaxNumberGenerator.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Romania/ExtensionsForRomania.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Romania/ExtensionsForRomania.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Romania/RomanianBirthCounty.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Romania/RomanianBirthCounty.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/Sweden/ExtensionsForSweden.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/Sweden/ExtensionsForSweden.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForGreatBritainRegistrationPlate.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/UnitedKingdom/ExtensionsForGreatBritainRegistrationPlate.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForUnitedKingdom.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/UnitedKingdom/ExtensionsForUnitedKingdom.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/UnitedKingdom/VatRegistrationNumberType.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/UnitedKingdom/VatRegistrationNumberType.cs"
+    },
+    {
+      "id": "Source/Bogus/Extensions/UnitedStates/ExtensionsForUnitedStates.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Extensions/UnitedStates/ExtensionsForUnitedStates.cs"
+    },
+    {
+      "id": "Source/Bogus/Faker.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Faker.cs"
+    },
+    {
+      "id": "Source/Bogus/Faker[T].cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Faker[T].cs"
+    },
+    {
+      "id": "Source/Bogus/Faker[T].Extensions.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Faker[T].Extensions.cs"
+    },
+    {
+      "id": "Source/Bogus/Hashids.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Hashids.cs"
+    },
+    {
+      "id": "Source/Bogus/IHashids.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/IHashids.cs"
+    },
+    {
+      "id": "Source/Bogus/ILocaleAware.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/ILocaleAware.cs"
+    },
+    {
+      "id": "Source/Bogus/IRuleSet.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/IRuleSet.cs"
+    },
+    {
+      "id": "Source/Bogus/Person.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Person.cs"
+    },
+    {
+      "id": "Source/Bogus/Platform/ExtensionsForType.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Platform/ExtensionsForType.cs"
+    },
+    {
+      "id": "Source/Bogus/Premium/ContextHelper.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Premium/ContextHelper.cs"
+    },
+    {
+      "id": "Source/Bogus/Premium/License.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Premium/License.cs"
+    },
+    {
+      "id": "Source/Bogus/Premium/LicenseVerifier.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Premium/LicenseVerifier.cs"
+    },
+    {
+      "id": "Source/Bogus/Premium/PremiumDataSet.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Premium/PremiumDataSet.cs"
+    },
+    {
+      "id": "Source/Bogus/Properties/AssemblyInfo.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Properties/AssemblyInfo.cs"
+    },
+    {
+      "id": "Source/Bogus/PropertyName.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/PropertyName.cs"
+    },
+    {
+      "id": "Source/Bogus/Randomizer.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Randomizer.cs"
+    },
+    {
+      "id": "Source/Bogus/ResourceHelper.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/ResourceHelper.cs"
+    },
+    {
+      "id": "Source/Bogus/Rule.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Rule.cs"
+    },
+    {
+      "id": "Source/Bogus/SeedNotifier[T].cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/SeedNotifier[T].cs"
+    },
+    {
+      "id": "Source/Bogus/Tokenizer.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Tokenizer.cs"
+    },
+    {
+      "id": "Source/Bogus/Transliterater.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Transliterater.cs"
+    },
+    {
+      "id": "Source/Bogus/Transliterater.Generated.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Transliterater.Generated.cs"
+    },
+    {
+      "id": "Source/Bogus/Utils.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Utils.cs"
+    },
+    {
+      "id": "Source/Bogus/ValidationException.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/ValidationException.cs"
+    },
+    {
+      "id": "Source/Bogus/ValidationResult.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/ValidationResult.cs"
+    },
+    {
+      "id": "Source/Bogus/Vendor/UserAgentGenerator.cs",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/Bogus/Source/Bogus/Vendor/UserAgentGenerator.cs"
+    }
+  ],
+  "edges": [
+    {
+      "source": "Source/Bogus/Bson/BArray.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Bson/BArray.cs",
+      "target": "Source/Bogus/Bson/BValueType.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Bson/BObject.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Bson/BObject.cs",
+      "target": "Source/Bogus/Bson/BValueType.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Bson/Bson.cs",
+      "target": "Source/Bogus/Bson/BArray.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Bson/Bson.cs",
+      "target": "Source/Bogus/Bson/BObject.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Bson/Bson.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Bson/Bson.cs",
+      "target": "Source/Bogus/Bson/BValueType.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Bson/BValue.cs",
+      "target": "Source/Bogus/Bson/BValueType.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Database.cs",
+      "target": "Source/Bogus/Bson/BObject.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Database.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Database.cs",
+      "target": "Source/Bogus/ResourceHelper.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/Bson/BArray.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/Bson/BObject.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/Database.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/DataCategoryAttribute.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/ILocaleAware.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/Properties/AssemblyInfo.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSet.cs",
+      "target": "Source/Bogus/SeedNotifier[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Address.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Address.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Address.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Address.cs",
+      "target": "Source/Bogus/SeedNotifier[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Commerce.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Commerce.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Company.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Company.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Company.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Company.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Company.cs",
+      "target": "Source/Bogus/SeedNotifier[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Company.cs",
+      "target": "Source/Bogus/Tokenizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Database.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Date.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Date.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Date.net60.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Finance.cs",
+      "target": "Source/Bogus/Bson/BArray.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Finance.cs",
+      "target": "Source/Bogus/Bson/BObject.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Finance.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Finance.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Hacker.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Images.cs",
+      "target": "Source/Bogus/DataCategoryAttribute.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Images.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Images.cs",
+      "target": "Source/Bogus/DataSets/Images.PlaceImg.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Images.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Internet.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Internet.cs",
+      "target": "Source/Bogus/DataSets/ColorFormat.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Internet.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Internet.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Internet.cs",
+      "target": "Source/Bogus/SeedNotifier[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Internet.cs",
+      "target": "Source/Bogus/Utils.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Internet.cs",
+      "target": "Source/Bogus/Vendor/UserAgentGenerator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Lorem.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Lorem.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Lorem.cs",
+      "target": "Source/Bogus/Utils.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Music.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Name.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Name.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/PhoneNumbers.cs",
+      "target": "Source/Bogus/Bson/BArray.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/PhoneNumbers.cs",
+      "target": "Source/Bogus/DataCategoryAttribute.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/PhoneNumbers.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/PhoneNumbers.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Rant.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/System.cs",
+      "target": "Source/Bogus/Bson/BArray.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/System.cs",
+      "target": "Source/Bogus/Bson/BObject.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/System.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/System.cs",
+      "target": "Source/Bogus/Chars.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/System.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/System.cs",
+      "target": "Source/Bogus/DataSets/Lorem.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/System.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Vehicle.cs",
+      "target": "Source/Bogus/Chars.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Vehicle.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/DataSets/Vehicle.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Distributions/Gaussian/ExtensionsForRandomizer.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Belgium/ExtensionsForBelgium.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Belgium/ExtensionsForBelgium.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Belgium/ExtensionsForBelgium.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Brazil/ExtensionsForBrazil.cs",
+      "target": "Source/Bogus/DataSets/Company.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Brazil/ExtensionsForBrazil.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Brazil/ExtensionsForBrazil.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Canada/ExtensionsForCanada.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Canada/ExtensionsForCanada.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Denmark/ExtensionsForDenmark.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Denmark/ExtensionsForDenmark.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Denmark/ExtensionsForDenmark.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/ExtensionsForCultureInfo.cs",
+      "target": "Source/Bogus/Database.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/ExtensionsForRandomizer.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/ExtensionsForString.cs",
+      "target": "Source/Bogus/Transliterater.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/ExtensionsForString.cs",
+      "target": "Source/Bogus/Transliterater.Generated.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Extras/FinanceExtensions.cs",
+      "target": "Source/Bogus/DataSets/Finance.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Extras/FinanceExtensions.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Finland/ExtensionsForFinland.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Finland/ExtensionsForFinland.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Finland/ExtensionsForFinland.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Iran/ExtensionsForIran.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Iran/ExtensionsForIran.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Italy/ExtensionsForItaly.cs",
+      "target": "Source/Bogus/DataSets/Finance.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Italy/ExtensionsForItaly.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Italy/ExtensionsForItaly.cs",
+      "target": "Source/Bogus/Extensions/Italy/ExtensionsForItaly.CodiceFiscale.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Italy/ExtensionsForItaly.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Norway/ExtensionsForNorway.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Norway/ExtensionsForNorway.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Norway/ExtensionsForNorway.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Poland/ExtensionsForPoland.cs",
+      "target": "Source/Bogus/DataSets/Company.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Poland/ExtensionsForPoland.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Poland/ExtensionsForPoland.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Poland/ExtensionsForPoland.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Portugal/ExtensionsForPortugal.cs",
+      "target": "Source/Bogus/DataSets/Company.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Portugal/ExtensionsForPortugal.cs",
+      "target": "Source/Bogus/Extensions/Portugal/TaxNumberGenerator.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Portugal/ExtensionsForPortugal.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Portugal/ExtensionsForPortugal.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Romania/ExtensionsForRomania.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Romania/ExtensionsForRomania.cs",
+      "target": "Source/Bogus/Extensions/Romania/RomanianBirthCounty.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Romania/ExtensionsForRomania.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Romania/ExtensionsForRomania.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Sweden/ExtensionsForSweden.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Sweden/ExtensionsForSweden.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/Sweden/ExtensionsForSweden.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForGreatBritainRegistrationPlate.cs",
+      "target": "Source/Bogus/DataSets/Vehicle.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForGreatBritainRegistrationPlate.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForUnitedKingdom.cs",
+      "target": "Source/Bogus/Bson/BArray.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForUnitedKingdom.cs",
+      "target": "Source/Bogus/Database.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForUnitedKingdom.cs",
+      "target": "Source/Bogus/DataSets/Address.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForUnitedKingdom.cs",
+      "target": "Source/Bogus/DataSets/Finance.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForUnitedKingdom.cs",
+      "target": "Source/Bogus/Extensions/UnitedKingdom/VatRegistrationNumberType.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedKingdom/ExtensionsForUnitedKingdom.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedStates/ExtensionsForUnitedStates.cs",
+      "target": "Source/Bogus/DataSets/Company.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedStates/ExtensionsForUnitedStates.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Extensions/UnitedStates/ExtensionsForUnitedStates.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Address.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Commerce.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Company.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Database.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Date.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Date.net60.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Finance.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Hacker.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Images.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Internet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Lorem.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Music.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/PhoneNumbers.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Rant.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/System.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/DataSets/Vehicle.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/Hashids.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/ILocaleAware.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/Person.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/SeedNotifier[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker.cs",
+      "target": "Source/Bogus/Tokenizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/Binder.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/Faker.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/ILocaleAware.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/IRuleSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/PropertyName.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/Rule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/ValidationException.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].cs",
+      "target": "Source/Bogus/ValidationResult.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].Extensions.cs",
+      "target": "Source/Bogus/Faker.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].Extensions.cs",
+      "target": "Source/Bogus/Faker[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Faker[T].Extensions.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Hashids.cs",
+      "target": "Source/Bogus/IHashids.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/IRuleSet.cs",
+      "target": "Source/Bogus/Faker.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/IRuleSet.cs",
+      "target": "Source/Bogus/Faker[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/DataSets/Address.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/DataSets/Company.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/DataSets/Date.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/DataSets/Date.net60.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/DataSets/Internet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/DataSets/PhoneNumbers.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/ILocaleAware.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Person.cs",
+      "target": "Source/Bogus/SeedNotifier[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/ContextHelper.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/ContextHelper.cs",
+      "target": "Source/Bogus/Faker.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/ContextHelper.cs",
+      "target": "Source/Bogus/ILocaleAware.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/ContextHelper.cs",
+      "target": "Source/Bogus/SeedNotifier[T].cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/LicenseVerifier.cs",
+      "target": "Source/Bogus/Premium/License.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/PremiumDataSet.cs",
+      "target": "Source/Bogus/Bson/BObject.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/PremiumDataSet.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/PremiumDataSet.cs",
+      "target": "Source/Bogus/Database.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/PremiumDataSet.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/PremiumDataSet.cs",
+      "target": "Source/Bogus/Premium/License.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/PremiumDataSet.cs",
+      "target": "Source/Bogus/Premium/LicenseVerifier.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Premium/PremiumDataSet.cs",
+      "target": "Source/Bogus/ResourceHelper.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/Bson/BArray.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/Chars.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/Database.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/DataSets/Address.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/DataSets/Commerce.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/DataSets/Company.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/DataSets/Finance.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/DataSets/Hacker.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Randomizer.cs",
+      "target": "Source/Bogus/DataSets/Name.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/ResourceHelper.cs",
+      "target": "Source/Bogus/Bson/BObject.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/ResourceHelper.cs",
+      "target": "Source/Bogus/Bson/Bson.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/ResourceHelper.cs",
+      "target": "Source/Bogus/Bson/BValue.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Rule.cs",
+      "target": "Source/Bogus/Faker.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/SeedNotifier[T].cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Tokenizer.cs",
+      "target": "Source/Bogus/DataSet.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Tokenizer.cs",
+      "target": "Source/Bogus/Faker.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Transliterater.cs",
+      "target": "Source/Bogus/Rule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Transliterater.Generated.cs",
+      "target": "Source/Bogus/Rule.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Transliterater.Generated.cs",
+      "target": "Source/Bogus/Transliterater.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Vendor/UserAgentGenerator.cs",
+      "target": "Source/Bogus/Randomizer.cs",
+      "relation": "type_ref"
+    },
+    {
+      "source": "Source/Bogus/Vendor/UserAgentGenerator.cs",
+      "target": "Source/Bogus/Rule.cs",
+      "relation": "type_ref"
+    }
+  ]
+}

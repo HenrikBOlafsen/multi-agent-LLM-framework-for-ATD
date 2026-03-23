@@ -1,0 +1,23 @@
+{
+  "schema_version": 11,
+  "language": "csharp",
+  "dotnet_test": {
+    "tests": 4228,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 2
+  },
+  "dotnet_test_exit_code": 0,
+  "dotnet_lint": {
+    "issues": 66
+  },
+  "dotnet_complexity": {
+    "cc_total": 38106,
+    "cc_p95": 15,
+    "cc_over_20": 28,
+    "cc_over_40": 1,
+    "functions": 5045,
+    "files": 624,
+    "csv_present": true
+  }
+}

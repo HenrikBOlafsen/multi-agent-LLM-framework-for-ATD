@@ -1,0 +1,27 @@
+{
+  "artifacts": {},
+  "cmd": [
+    "bash",
+    "/workspace/scripts/baseline_collect.sh",
+    "/workspace/projects_to_analyze/AngleSharp",
+    "devel",
+    "src/AngleSharp",
+    "/workspace/results_dev/AngleSharp/branches/devel",
+    "csharp"
+  ],
+  "duration_sec": 119.41383481025696,
+  "outcome": "ok",
+  "phase": "baseline",
+  "reason": "",
+  "returncode": 0,
+  "run_id": "20260319_163854_453367_9ad96f72",
+  "ts_utc": "2026-03-19T16:40:53Z",
+  "unit": {
+    "base_branch": "devel",
+    "branch": "devel",
+    "cycle_id": null,
+    "entry": "src/AngleSharp",
+    "mode_id": null,
+    "repo": "AngleSharp"
+  }
+}

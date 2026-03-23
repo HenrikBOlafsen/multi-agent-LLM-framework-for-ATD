@@ -1,0 +1,1418 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-20T00:08:35Z",
+  "input": {
+    "dependency_graph": "/workspace/results_dev/AngleSharp/branches/devel/ATD_identification/dependency_graph.json",
+    "scc_report": "/workspace/results_dev/AngleSharp/branches/devel/ATD_identification/scc_report.json",
+    "repo": "AngleSharp",
+    "base_branch": "devel"
+  },
+  "params": {
+    "max_cycle_len": 8,
+    "attempts_per_scc": 50000,
+    "max_cycles_per_scc": 200,
+    "seed": 12345
+  },
+  "summary": {
+    "scc_count": 10,
+    "cycle_count": 42
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "node_count": 144,
+      "edge_count": 576,
+      "cycles": [
+        {
+          "id": "scc_0_cycle_0",
+          "length": 8,
+          "nodes": [
+            "src/AngleSharp/Dom/DomEventHandler.cs",
+            "src/AngleSharp/Dom/Events/Event.cs",
+            "src/AngleSharp/Dom/IElement.cs",
+            "src/AngleSharp/Dom/IParentNode.cs",
+            "src/AngleSharp/Dom/INode.cs",
+            "src/AngleSharp/Dom/IDocument.cs",
+            "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+            "src/AngleSharp/Dom/Events/IGlobalEventHandlers.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/DomEventHandler.cs",
+              "target": "src/AngleSharp/Dom/Events/Event.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Events/Event.cs",
+              "target": "src/AngleSharp/Dom/IElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IElement.cs",
+              "target": "src/AngleSharp/Dom/IParentNode.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IParentNode.cs",
+              "target": "src/AngleSharp/Dom/INode.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/INode.cs",
+              "target": "src/AngleSharp/Dom/IDocument.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IDocument.cs",
+              "target": "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+              "target": "src/AngleSharp/Dom/Events/IGlobalEventHandlers.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Events/IGlobalEventHandlers.cs",
+              "target": "src/AngleSharp/Dom/DomEventHandler.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.011218333934141842,
+            "pagerank_min": 0.0029400887187507945,
+            "pagerank_max": 0.024147727570141424
+          }
+        },
+        {
+          "id": "scc_0_cycle_1",
+          "length": 8,
+          "nodes": [
+            "src/AngleSharp/Dom/Events/Event.cs",
+            "src/AngleSharp/Dom/Internal/Node.cs",
+            "src/AngleSharp/Dom/IComment.cs",
+            "src/AngleSharp/Dom/ICharacterData.cs",
+            "src/AngleSharp/Dom/INonDocumentTypeChildNode.cs",
+            "src/AngleSharp/Dom/IElement.cs",
+            "src/AngleSharp/Dom/INode.cs",
+            "src/AngleSharp/Dom/IEventTarget.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Events/Event.cs",
+              "target": "src/AngleSharp/Dom/Internal/Node.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Node.cs",
+              "target": "src/AngleSharp/Dom/IComment.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IComment.cs",
+              "target": "src/AngleSharp/Dom/ICharacterData.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/ICharacterData.cs",
+              "target": "src/AngleSharp/Dom/INonDocumentTypeChildNode.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/INonDocumentTypeChildNode.cs",
+              "target": "src/AngleSharp/Dom/IElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IElement.cs",
+              "target": "src/AngleSharp/Dom/INode.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/INode.cs",
+              "target": "src/AngleSharp/Dom/IEventTarget.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IEventTarget.cs",
+              "target": "src/AngleSharp/Dom/Events/Event.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.008358436415415867,
+            "pagerank_min": 0.0018325818677704642,
+            "pagerank_max": 0.024147727570141424
+          }
+        },
+        {
+          "id": "scc_0_cycle_2",
+          "length": 8,
+          "nodes": [
+            "src/AngleSharp/Dom/IDocument.cs",
+            "src/AngleSharp/Html/Dom/IHtmlHeadElement.cs",
+            "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+            "src/AngleSharp/Dom/IElement.cs",
+            "src/AngleSharp/Dom/IShadowRoot.cs",
+            "src/AngleSharp/Dom/IStyleSheetList.cs",
+            "src/AngleSharp/Dom/IStyleSheet.cs",
+            "src/AngleSharp/IBrowsingContext.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/IDocument.cs",
+              "target": "src/AngleSharp/Html/Dom/IHtmlHeadElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/IHtmlHeadElement.cs",
+              "target": "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+              "target": "src/AngleSharp/Dom/IElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IElement.cs",
+              "target": "src/AngleSharp/Dom/IShadowRoot.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IShadowRoot.cs",
+              "target": "src/AngleSharp/Dom/IStyleSheetList.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IStyleSheetList.cs",
+              "target": "src/AngleSharp/Dom/IStyleSheet.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IStyleSheet.cs",
+              "target": "src/AngleSharp/IBrowsingContext.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/IBrowsingContext.cs",
+              "target": "src/AngleSharp/Dom/IDocument.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.008263503233090762,
+            "pagerank_min": 0.0013036510736599948,
+            "pagerank_max": 0.024147727570141424
+          }
+        },
+        {
+          "id": "scc_0_cycle_3",
+          "length": 7,
+          "nodes": [
+            "src/AngleSharp/Dom/IAttr.cs",
+            "src/AngleSharp/Dom/INode.cs",
+            "src/AngleSharp/Dom/INodeList.cs",
+            "src/AngleSharp/IMarkupFormattable.cs",
+            "src/AngleSharp/IMarkupFormatter.cs",
+            "src/AngleSharp/Dom/IElement.cs",
+            "src/AngleSharp/Dom/INamedNodeMap.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/IAttr.cs",
+              "target": "src/AngleSharp/Dom/INode.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/INode.cs",
+              "target": "src/AngleSharp/Dom/INodeList.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/INodeList.cs",
+              "target": "src/AngleSharp/IMarkupFormattable.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/IMarkupFormattable.cs",
+              "target": "src/AngleSharp/IMarkupFormatter.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/IMarkupFormatter.cs",
+              "target": "src/AngleSharp/Dom/IElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IElement.cs",
+              "target": "src/AngleSharp/Dom/INamedNodeMap.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/INamedNodeMap.cs",
+              "target": "src/AngleSharp/Dom/IAttr.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.007467335970195133,
+            "pagerank_min": 0.00219504333609411,
+            "pagerank_max": 0.024147727570141424
+          }
+        },
+        {
+          "id": "scc_0_cycle_4",
+          "length": 5,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlScriptElement.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs",
+            "src/AngleSharp/Dom/Internal/StringMap.cs",
+            "src/AngleSharp/Dom/Internal/Element.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlScriptElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlScriptElement.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs",
+              "target": "src/AngleSharp/Dom/Internal/StringMap.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/StringMap.cs",
+              "target": "src/AngleSharp/Dom/Internal/Element.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Element.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.005117996920750608,
+            "pagerank_min": 0.0007408017246036624,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_5",
+          "length": 5,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/CharacterData.cs",
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Svg/Dom/Internal/SvgElement.cs",
+            "src/AngleSharp/Dom/Internal/Node.cs",
+            "src/AngleSharp/Dom/Internal/TextNode.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/CharacterData.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Svg/Dom/Internal/SvgElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Svg/Dom/Internal/SvgElement.cs",
+              "target": "src/AngleSharp/Dom/Internal/Node.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Node.cs",
+              "target": "src/AngleSharp/Dom/Internal/TextNode.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/TextNode.cs",
+              "target": "src/AngleSharp/Dom/Internal/CharacterData.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.00434568210643774,
+            "pagerank_min": 0.0007922379092121939,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_6",
+          "length": 4,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlFrameSetElement.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs",
+            "src/AngleSharp/Dom/Internal/Node.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlFrameSetElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlFrameSetElement.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs",
+              "target": "src/AngleSharp/Dom/Internal/Node.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Node.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.007024957079045803,
+            "pagerank_min": 0.0006621444901239297,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_7",
+          "length": 4,
+          "nodes": [
+            "src/AngleSharp/Browser/Dom/IHistory.cs",
+            "src/AngleSharp/Dom/IDocument.cs",
+            "src/AngleSharp/IBrowsingContext.cs",
+            "src/AngleSharp/Dom/IWindow.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Browser/Dom/IHistory.cs",
+              "target": "src/AngleSharp/Dom/IDocument.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IDocument.cs",
+              "target": "src/AngleSharp/IBrowsingContext.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/IBrowsingContext.cs",
+              "target": "src/AngleSharp/Dom/IWindow.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IWindow.cs",
+              "target": "src/AngleSharp/Browser/Dom/IHistory.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.004675954557728167,
+            "pagerank_min": 0.0017274590912381808,
+            "pagerank_max": 0.009899458484938409
+          }
+        },
+        {
+          "id": "scc_0_cycle_8",
+          "length": 4,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/AnyElement.cs",
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Html/Parser/HtmlDomBuilderExtensions.cs",
+            "src/AngleSharp/Dom/Internal/Element.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/AnyElement.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Html/Parser/HtmlDomBuilderExtensions.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Parser/HtmlDomBuilderExtensions.cs",
+              "target": "src/AngleSharp/Dom/Internal/Element.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Element.cs",
+              "target": "src/AngleSharp/Dom/Internal/AnyElement.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.004178355929451591,
+            "pagerank_min": 0.0006621444901239297,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_9",
+          "length": 4,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Dom/Internal/DomImplementation.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlDocument.cs",
+            "src/AngleSharp/Mathml/Dom/Internal/MathElement.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Dom/Internal/DomImplementation.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/DomImplementation.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlDocument.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlDocument.cs",
+              "target": "src/AngleSharp/Mathml/Dom/Internal/MathElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Mathml/Dom/Internal/MathElement.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.004097072249995526,
+            "pagerank_min": 0.0006621444901239297,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_10",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Dom/IChildNode.cs",
+            "src/AngleSharp/Dom/INode.cs",
+            "src/AngleSharp/Dom/IElement.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/IChildNode.cs",
+              "target": "src/AngleSharp/Dom/INode.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/INode.cs",
+              "target": "src/AngleSharp/Dom/IElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IElement.cs",
+              "target": "src/AngleSharp/Dom/IChildNode.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.013300927409814136,
+            "pagerank_min": 0.0034745822884152382,
+            "pagerank_max": 0.024147727570141424
+          }
+        },
+        {
+          "id": "scc_0_cycle_11",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlHtmlElement.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlHtmlElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlHtmlElement.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlElement.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0076203692251120185,
+            "pagerank_min": 0.0007058068836874015,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_12",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Dom/Internal/Element.cs",
+            "src/AngleSharp/Dom/Internal/DocumentFragment.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Dom/Internal/Element.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Element.cs",
+              "target": "src/AngleSharp/Dom/Internal/DocumentFragment.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/DocumentFragment.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.005325891504491524,
+            "pagerank_min": 0.0006263706291624538,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_13",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Dom/Internal/MutationHost.cs",
+            "src/AngleSharp/Dom/MutationObserver.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Dom/Internal/MutationHost.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/MutationHost.cs",
+              "target": "src/AngleSharp/Dom/MutationObserver.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/MutationObserver.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.00509517136831772,
+            "pagerank_min": 0.0007602532473485367,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_14",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Dom/Internal/DocumentType.cs",
+            "src/AngleSharp/Dom/Internal/Notation.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Dom/Internal/DocumentType.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/DocumentType.cs",
+              "target": "src/AngleSharp/Dom/Internal/Notation.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Notation.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.004927224649384755,
+            "pagerank_min": 0.0006068796153484982,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_15",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Node.cs",
+            "src/AngleSharp/Dom/Internal/Range.cs",
+            "src/AngleSharp/Dom/Internal/NodeList.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Node.cs",
+              "target": "src/AngleSharp/Dom/Internal/Range.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Range.cs",
+              "target": "src/AngleSharp/Dom/Internal/NodeList.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/NodeList.cs",
+              "target": "src/AngleSharp/Dom/Internal/Node.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0027001079555930194,
+            "pagerank_min": 0.0009357003241058636,
+            "pagerank_max": 0.005282383034410629
+          }
+        },
+        {
+          "id": "scc_0_cycle_16",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Attr.cs",
+            "src/AngleSharp/Dom/Internal/NamedNodeMap.cs",
+            "src/AngleSharp/Dom/Internal/Element.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Attr.cs",
+              "target": "src/AngleSharp/Dom/Internal/NamedNodeMap.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/NamedNodeMap.cs",
+              "target": "src/AngleSharp/Dom/Internal/Element.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Element.cs",
+              "target": "src/AngleSharp/Dom/Internal/Attr.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0010788220142875728,
+            "pagerank_min": 0.0006550460046854166,
+            "pagerank_max": 0.0018687976140790911
+          }
+        },
+        {
+          "id": "scc_0_cycle_17",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Attr.cs",
+            "src/AngleSharp/Dom/Internal/Element.cs",
+            "src/AngleSharp/Dom/Internal/NamedNodeMap.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Attr.cs",
+              "target": "src/AngleSharp/Dom/Internal/Element.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Element.cs",
+              "target": "src/AngleSharp/Dom/Internal/NamedNodeMap.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/NamedNodeMap.cs",
+              "target": "src/AngleSharp/Dom/Internal/Attr.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0010788220142875728,
+            "pagerank_min": 0.0006550460046854166,
+            "pagerank_max": 0.0018687976140790911
+          }
+        },
+        {
+          "id": "scc_0_cycle_18",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/IElement.cs",
+            "src/AngleSharp/Dom/IHtmlCollection.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/IElement.cs",
+              "target": "src/AngleSharp/Dom/IHtmlCollection.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IHtmlCollection.cs",
+              "target": "src/AngleSharp/Dom/IElement.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.014798360798781955,
+            "pagerank_min": 0.005448994027422487,
+            "pagerank_max": 0.024147727570141424
+          }
+        },
+        {
+          "id": "scc_0_cycle_19",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+            "src/AngleSharp/Html/Dom/IHtmlMenuElement.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+              "target": "src/AngleSharp/Html/Dom/IHtmlMenuElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/IHtmlMenuElement.cs",
+              "target": "src/AngleSharp/Html/Dom/IHtmlElement.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.011537778990971007,
+            "pagerank_min": 0.003303378191494344,
+            "pagerank_max": 0.01977217979044767
+          }
+        },
+        {
+          "id": "scc_0_cycle_20",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Css/Dom/ISelector.cs",
+            "src/AngleSharp/Css/ISelectorVisitor.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Css/Dom/ISelector.cs",
+              "target": "src/AngleSharp/Css/ISelectorVisitor.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Css/ISelectorVisitor.cs",
+              "target": "src/AngleSharp/Css/Dom/ISelector.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.009690584095791977,
+            "pagerank_min": 0.006503753256029348,
+            "pagerank_max": 0.012877414935554608
+          }
+        },
+        {
+          "id": "scc_0_cycle_21",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlBodyElement.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlBodyElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlBodyElement.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0070844400882916075,
+            "pagerank_min": 0.000686373906350189,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_22",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Html/Dom/Internal/HtmlHeadElement.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlHeadElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlHeadElement.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.007072325380178478,
+            "pagerank_min": 0.0006621444901239297,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_23",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/Document.cs",
+            "src/AngleSharp/Dom/Internal/Window.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/Document.cs",
+              "target": "src/AngleSharp/Dom/Internal/Window.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Window.cs",
+              "target": "src/AngleSharp/Dom/Internal/Document.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.007072325380178478,
+            "pagerank_min": 0.0006621444901239297,
+            "pagerank_max": 0.013482506270233027
+          }
+        },
+        {
+          "id": "scc_0_cycle_24",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/IDocument.cs",
+            "src/AngleSharp/Html/Dom/IHtmlFormElement.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/IDocument.cs",
+              "target": "src/AngleSharp/Html/Dom/IHtmlFormElement.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Dom/IHtmlFormElement.cs",
+              "target": "src/AngleSharp/Dom/IDocument.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.006676488014769503,
+            "pagerank_min": 0.003453517544600596,
+            "pagerank_max": 0.009899458484938409
+          }
+        },
+        {
+          "id": "scc_0_cycle_25",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/EventTarget.cs",
+            "src/AngleSharp/Dom/Events/Event.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/EventTarget.cs",
+              "target": "src/AngleSharp/Dom/Events/Event.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Events/Event.cs",
+              "target": "src/AngleSharp/Dom/EventTarget.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.006622270292328252,
+            "pagerank_min": 0.001829308853757726,
+            "pagerank_max": 0.011415231730898779
+          }
+        },
+        {
+          "id": "scc_0_cycle_26",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/IDocument.cs",
+            "src/AngleSharp/Dom/IWindow.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/IDocument.cs",
+              "target": "src/AngleSharp/Dom/IWindow.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IWindow.cs",
+              "target": "src/AngleSharp/Dom/IDocument.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.00652254237907458,
+            "pagerank_min": 0.003145626273210752,
+            "pagerank_max": 0.009899458484938409
+          }
+        },
+        {
+          "id": "scc_0_cycle_27",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/IDocument.cs",
+            "src/AngleSharp/Dom/IImplementation.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/IDocument.cs",
+              "target": "src/AngleSharp/Dom/IImplementation.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IImplementation.cs",
+              "target": "src/AngleSharp/Dom/IDocument.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.005419698888064697,
+            "pagerank_min": 0.000939939291190985,
+            "pagerank_max": 0.009899458484938409
+          }
+        },
+        {
+          "id": "scc_0_cycle_28",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/IPreRemove.cs",
+            "src/AngleSharp/Dom/Internal/Node.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/IPreRemove.cs",
+              "target": "src/AngleSharp/Dom/Internal/Node.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Node.cs",
+              "target": "src/AngleSharp/Dom/Internal/IPreRemove.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0030466826358141207,
+            "pagerank_min": 0.0008109822372176131,
+            "pagerank_max": 0.005282383034410629
+          }
+        },
+        {
+          "id": "scc_0_cycle_29",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/Internal/IPreInsert.cs",
+            "src/AngleSharp/Dom/Internal/Node.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Internal/IPreInsert.cs",
+              "target": "src/AngleSharp/Dom/Internal/Node.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/Internal/Node.cs",
+              "target": "src/AngleSharp/Dom/Internal/IPreInsert.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0030064715937242062,
+            "pagerank_min": 0.0007305601530377838,
+            "pagerank_max": 0.005282383034410629
+          }
+        },
+        {
+          "id": "scc_0_cycle_30",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/IWindow.cs",
+            "src/AngleSharp/Dom/IWindowTimers.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/IWindow.cs",
+              "target": "src/AngleSharp/Dom/IWindowTimers.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/IWindowTimers.cs",
+              "target": "src/AngleSharp/Dom/IWindow.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0019960453741621788,
+            "pagerank_min": 0.0008464644751136054,
+            "pagerank_max": 0.003145626273210752
+          }
+        },
+        {
+          "id": "scc_0_cycle_31",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/MutationCallback.cs",
+            "src/AngleSharp/Dom/MutationObserver.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/MutationCallback.cs",
+              "target": "src/AngleSharp/Dom/MutationObserver.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/MutationObserver.cs",
+              "target": "src/AngleSharp/Dom/MutationCallback.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0008290577140113381,
+            "pagerank_min": 0.0006153608406510793,
+            "pagerank_max": 0.001042754587371597
+          }
+        },
+        {
+          "id": "scc_0_cycle_32",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Html/Dom/Internal/HtmlScriptElement.cs",
+            "src/AngleSharp/Io/Processors/ScriptRequestProcessor.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlScriptElement.cs",
+              "target": "src/AngleSharp/Io/Processors/ScriptRequestProcessor.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Io/Processors/ScriptRequestProcessor.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlScriptElement.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0006621359329660573,
+            "pagerank_min": 0.0005834701413284522,
+            "pagerank_max": 0.0007408017246036624
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_1",
+      "node_count": 3,
+      "edge_count": 4,
+      "cycles": [
+        {
+          "id": "scc_1_cycle_0",
+          "length": 3,
+          "nodes": [
+            "src/AngleSharp/Media/Dom/ITextTrack.cs",
+            "src/AngleSharp/Media/Dom/ITextTrackCueList.cs",
+            "src/AngleSharp/Media/Dom/ITextTrackCue.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Media/Dom/ITextTrack.cs",
+              "target": "src/AngleSharp/Media/Dom/ITextTrackCueList.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Media/Dom/ITextTrackCueList.cs",
+              "target": "src/AngleSharp/Media/Dom/ITextTrackCue.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Media/Dom/ITextTrackCue.cs",
+              "target": "src/AngleSharp/Media/Dom/ITextTrack.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0008958309034487847,
+            "pagerank_min": 0.0006968340519820941,
+            "pagerank_max": 0.0010963425740525157
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_2",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_2_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/IStyleFormattable.cs",
+            "src/AngleSharp/IStyleFormatter.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/IStyleFormattable.cs",
+              "target": "src/AngleSharp/IStyleFormatter.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/IStyleFormatter.cs",
+              "target": "src/AngleSharp/IStyleFormattable.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.008808054738605646,
+            "pagerank_min": 0.008516536513944049,
+            "pagerank_max": 0.009099572963267244
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_3",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_3_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Html/Parser/Tokens/HtmlTagToken.cs",
+            "src/AngleSharp/Html/Parser/Tokens/HtmlToken.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Html/Parser/Tokens/HtmlTagToken.cs",
+              "target": "src/AngleSharp/Html/Parser/Tokens/HtmlToken.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Parser/Tokens/HtmlToken.cs",
+              "target": "src/AngleSharp/Html/Parser/Tokens/HtmlTagToken.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0010912523173150419,
+            "pagerank_min": 0.000855441374162761,
+            "pagerank_max": 0.001327063260467323
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_4",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_4_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Html/Forms/FormDataSetEntry.cs",
+            "src/AngleSharp/Html/Forms/IFormDataSetVisitor.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Html/Forms/FormDataSetEntry.cs",
+              "target": "src/AngleSharp/Html/Forms/IFormDataSetVisitor.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Forms/IFormDataSetVisitor.cs",
+              "target": "src/AngleSharp/Html/Forms/FormDataSetEntry.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0029394074438411745,
+            "pagerank_min": 0.0028104103813187554,
+            "pagerank_max": 0.0030684045063635937
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_5",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_5_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Html/Dom/Internal/HtmlInputElement.cs",
+            "src/AngleSharp/Html/InputTypes/ImageInputType.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlInputElement.cs",
+              "target": "src/AngleSharp/Html/InputTypes/ImageInputType.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/InputTypes/ImageInputType.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlInputElement.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0005969189700459431,
+            "pagerank_min": 0.0005629368662798282,
+            "pagerank_max": 0.0006309010738120579
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_6",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_6_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Html/Dom/Internal/HtmlFrameElementBase.cs",
+            "src/AngleSharp/Io/Processors/FrameRequestProcessor.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Html/Dom/Internal/HtmlFrameElementBase.cs",
+              "target": "src/AngleSharp/Io/Processors/FrameRequestProcessor.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Io/Processors/FrameRequestProcessor.cs",
+              "target": "src/AngleSharp/Html/Dom/Internal/HtmlFrameElementBase.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0006703789401236626,
+            "pagerank_min": 0.0005988255050323693,
+            "pagerank_max": 0.000741932375214956
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_7",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_7_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Html/Dom/IHtmlCanvasElement.cs",
+            "src/AngleSharp/Media/Dom/IRenderingContext.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Html/Dom/IHtmlCanvasElement.cs",
+              "target": "src/AngleSharp/Media/Dom/IRenderingContext.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Media/Dom/IRenderingContext.cs",
+              "target": "src/AngleSharp/Html/Dom/IHtmlCanvasElement.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0015162922935242351,
+            "pagerank_min": 0.0014369641870282154,
+            "pagerank_max": 0.0015956204000202546
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_8",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_8_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Html/Construction/IConstructableNode.cs",
+            "src/AngleSharp/Html/Construction/IConstructableNodeList.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Html/Construction/IConstructableNode.cs",
+              "target": "src/AngleSharp/Html/Construction/IConstructableNodeList.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Html/Construction/IConstructableNodeList.cs",
+              "target": "src/AngleSharp/Html/Construction/IConstructableNode.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.002500214073468341,
+            "pagerank_min": 0.0018562942571808344,
+            "pagerank_max": 0.0031441338897558475
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_9",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_9_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/AngleSharp/Dom/Url.cs",
+            "src/AngleSharp/Dom/UrlSearchParams.cs"
+          ],
+          "edges": [
+            {
+              "source": "src/AngleSharp/Dom/Url.cs",
+              "target": "src/AngleSharp/Dom/UrlSearchParams.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "src/AngleSharp/Dom/UrlSearchParams.cs",
+              "target": "src/AngleSharp/Dom/Url.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.00821015678526922,
+            "pagerank_min": 0.0019121166133103504,
+            "pagerank_max": 0.01450819695722809
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-19T16:37:51Z",
+  "input": {
+    "schema_version": 1,
+    "dependency_graph": "/workspace/results_dev/lark/branches/master/ATD_identification/dependency_graph.json",
+    "language": "python",
+    "repo_root": "/workspace/projects_to_analyze/lark",
+    "entry": "lark"
+  },
+  "graph": {
+    "node_count": 34,
+    "edge_count": 126
+  },
+  "params": {
+    "pagerank_alpha": 0.85,
+    "pagerank_max_iter": 100,
+    "pagerank_tol": 1e-06
+  },
+  "global_metrics": {
+    "scc_count": 2,
+    "total_nodes_in_cyclic_sccs": 9,
+    "total_edges_in_cyclic_sccs": 15,
+    "total_loc_in_cyclic_sccs": 3054,
+    "max_scc_size": 7,
+    "avg_scc_size": 4.5,
+    "cycle_pressure_lb": 6
+  },
+  "node_features": {
+    "lark/__init__.py": {
+      "pagerank": 0.0719005488329268
+    },
+    "lark/__pyinstaller/__init__.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/ast_utils.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/common.py": {
+      "pagerank": 0.02680136903138254
+    },
+    "lark/exceptions.py": {
+      "pagerank": 0.08953867768586464
+    },
+    "lark/grammar.py": {
+      "pagerank": 0.06890869275560935
+    },
+    "lark/grammars/__init__.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/indenter.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/lark.py": {
+      "pagerank": 0.02475496921755118
+    },
+    "lark/lexer.py": {
+      "pagerank": 0.13820169455576298
+    },
+    "lark/load_grammar.py": {
+      "pagerank": 0.01198971918581058
+    },
+    "lark/parse_tree_builder.py": {
+      "pagerank": 0.015999308743011753
+    },
+    "lark/parser_frontends.py": {
+      "pagerank": 0.013122072804336672
+    },
+    "lark/parsers/__init__.py": {
+      "pagerank": 0.014651309001871421
+    },
+    "lark/parsers/cyk.py": {
+      "pagerank": 0.011385042490522948
+    },
+    "lark/parsers/earley.py": {
+      "pagerank": 0.014645518257761513
+    },
+    "lark/parsers/earley_common.py": {
+      "pagerank": 0.011927148694934182
+    },
+    "lark/parsers/earley_forest.py": {
+      "pagerank": 0.013540006564810823
+    },
+    "lark/parsers/grammar_analysis.py": {
+      "pagerank": 0.014727521243185618
+    },
+    "lark/parsers/lalr_analysis.py": {
+      "pagerank": 0.0164727755731099
+    },
+    "lark/parsers/lalr_interactive_parser.py": {
+      "pagerank": 0.013372168788561987
+    },
+    "lark/parsers/lalr_parser.py": {
+      "pagerank": 0.011385042490522948
+    },
+    "lark/parsers/lalr_parser_state.py": {
+      "pagerank": 0.0174366657050557
+    },
+    "lark/parsers/xearley.py": {
+      "pagerank": 0.011385042490522948
+    },
+    "lark/reconstruct.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/tools/__init__.py": {
+      "pagerank": 0.016982516517144275
+    },
+    "lark/tools/nearley.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/tools/serialize.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/tools/standalone.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/tree.py": {
+      "pagerank": 0.044001557440440923
+    },
+    "lark/tree_matcher.py": {
+      "pagerank": 0.011630393609027883
+    },
+    "lark/tree_templates.py": {
+      "pagerank": 0.010371070571824029
+    },
+    "lark/utils.py": {
+      "pagerank": 0.19105595612754211
+    },
+    "lark/visitors.py": {
+      "pagerank": 0.030844647046312047
+    }
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "size": 7,
+      "edge_count": 13,
+      "density_directed": 0.309524,
+      "edge_surplus_lb": 6,
+      "total_loc": 2291,
+      "avg_loc_per_node": 327.29,
+      "nodes": [
+        {
+          "id": "lark/__init__.py",
+          "kind": "file"
+        },
+        {
+          "id": "lark/lark.py",
+          "kind": "file"
+        },
+        {
+          "id": "lark/load_grammar.py",
+          "kind": "file"
+        },
+        {
+          "id": "lark/parser_frontends.py",
+          "kind": "file"
+        },
+        {
+          "id": "lark/parsers/lalr_interactive_parser.py",
+          "kind": "file"
+        },
+        {
+          "id": "lark/parsers/lalr_parser.py",
+          "kind": "file"
+        },
+        {
+          "id": "lark/parsers/lalr_parser_state.py",
+          "kind": "file"
+        }
+      ],
+      "edges": [
+        {
+          "source": "lark/__init__.py",
+          "target": "lark/lark.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/lark.py",
+          "target": "lark/__init__.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/lark.py",
+          "target": "lark/load_grammar.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/lark.py",
+          "target": "lark/parser_frontends.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/lark.py",
+          "target": "lark/parsers/lalr_interactive_parser.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/load_grammar.py",
+          "target": "lark/parser_frontends.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/parser_frontends.py",
+          "target": "lark/parsers/lalr_parser.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/parsers/lalr_interactive_parser.py",
+          "target": "lark/__init__.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/parsers/lalr_interactive_parser.py",
+          "target": "lark/parsers/lalr_parser_state.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/parsers/lalr_parser.py",
+          "target": "lark/__init__.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/parsers/lalr_parser.py",
+          "target": "lark/parsers/lalr_interactive_parser.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/parsers/lalr_parser.py",
+          "target": "lark/parsers/lalr_parser_state.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/parsers/lalr_parser_state.py",
+          "target": "lark/__init__.py",
+          "relation": "import"
+        }
+      ]
+    },
+    {
+      "id": "scc_1",
+      "size": 2,
+      "edge_count": 2,
+      "density_directed": 1.0,
+      "edge_surplus_lb": 0,
+      "total_loc": 763,
+      "avg_loc_per_node": 381.5,
+      "nodes": [
+        {
+          "id": "lark/exceptions.py",
+          "kind": "file"
+        },
+        {
+          "id": "lark/lexer.py",
+          "kind": "file"
+        }
+      ],
+      "edges": [
+        {
+          "source": "lark/exceptions.py",
+          "target": "lark/lexer.py",
+          "relation": "import"
+        },
+        {
+          "source": "lark/lexer.py",
+          "target": "lark/exceptions.py",
+          "relation": "import"
+        }
+      ]
+    }
+  ]
+}

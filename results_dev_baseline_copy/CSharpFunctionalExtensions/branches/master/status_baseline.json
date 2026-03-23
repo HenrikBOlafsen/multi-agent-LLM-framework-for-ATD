@@ -1,0 +1,27 @@
+{
+  "artifacts": {},
+  "cmd": [
+    "bash",
+    "/workspace/scripts/baseline_collect.sh",
+    "/workspace/projects_to_analyze/CSharpFunctionalExtensions",
+    "master",
+    "CSharpFunctionalExtensions",
+    "/workspace/results_dev/CSharpFunctionalExtensions/branches/master",
+    "csharp"
+  ],
+  "duration_sec": 59.9638237953186,
+  "outcome": "ok",
+  "phase": "baseline",
+  "reason": "",
+  "returncode": 0,
+  "run_id": "20260319_164120_849562_db1bd1cb",
+  "ts_utc": "2026-03-19T16:42:20Z",
+  "unit": {
+    "base_branch": "master",
+    "branch": "master",
+    "cycle_id": null,
+    "entry": "CSharpFunctionalExtensions",
+    "mode_id": null,
+    "repo": "CSharpFunctionalExtensions"
+  }
+}

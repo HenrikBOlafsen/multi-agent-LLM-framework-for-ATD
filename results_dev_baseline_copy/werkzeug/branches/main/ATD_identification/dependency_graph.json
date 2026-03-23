@@ -1,0 +1,1045 @@
+{
+  "schema_version": 1,
+  "language": "python",
+  "repo_root": "/workspace/projects_to_analyze/werkzeug",
+  "entry": "src/werkzeug",
+  "nodes": [
+    {
+      "id": "src/werkzeug/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/__init__.py"
+    },
+    {
+      "id": "src/werkzeug/_internal.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/_internal.py"
+    },
+    {
+      "id": "src/werkzeug/_reloader.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/_reloader.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/__init__.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/accept.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/accept.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/auth.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/auth.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/cache_control.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/cache_control.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/csp.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/csp.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/etag.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/etag.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/file_storage.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/file_storage.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/headers.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/headers.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/mixins.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/mixins.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/range.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/range.py"
+    },
+    {
+      "id": "src/werkzeug/datastructures/structures.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/datastructures/structures.py"
+    },
+    {
+      "id": "src/werkzeug/debug/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/debug/__init__.py"
+    },
+    {
+      "id": "src/werkzeug/debug/console.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/debug/console.py"
+    },
+    {
+      "id": "src/werkzeug/debug/repr.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/debug/repr.py"
+    },
+    {
+      "id": "src/werkzeug/debug/tbtools.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/debug/tbtools.py"
+    },
+    {
+      "id": "src/werkzeug/exceptions.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/exceptions.py"
+    },
+    {
+      "id": "src/werkzeug/formparser.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/formparser.py"
+    },
+    {
+      "id": "src/werkzeug/http.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/http.py"
+    },
+    {
+      "id": "src/werkzeug/local.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/local.py"
+    },
+    {
+      "id": "src/werkzeug/middleware/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/__init__.py"
+    },
+    {
+      "id": "src/werkzeug/middleware/dispatcher.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/dispatcher.py"
+    },
+    {
+      "id": "src/werkzeug/middleware/http_proxy.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/http_proxy.py"
+    },
+    {
+      "id": "src/werkzeug/middleware/lint.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/lint.py"
+    },
+    {
+      "id": "src/werkzeug/middleware/profiler.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/profiler.py"
+    },
+    {
+      "id": "src/werkzeug/middleware/proxy_fix.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/proxy_fix.py"
+    },
+    {
+      "id": "src/werkzeug/middleware/shared_data.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/middleware/shared_data.py"
+    },
+    {
+      "id": "src/werkzeug/routing/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/__init__.py"
+    },
+    {
+      "id": "src/werkzeug/routing/converters.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/converters.py"
+    },
+    {
+      "id": "src/werkzeug/routing/exceptions.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/exceptions.py"
+    },
+    {
+      "id": "src/werkzeug/routing/map.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/map.py"
+    },
+    {
+      "id": "src/werkzeug/routing/matcher.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/matcher.py"
+    },
+    {
+      "id": "src/werkzeug/routing/rules.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/routing/rules.py"
+    },
+    {
+      "id": "src/werkzeug/sansio/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/__init__.py"
+    },
+    {
+      "id": "src/werkzeug/sansio/http.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/http.py"
+    },
+    {
+      "id": "src/werkzeug/sansio/multipart.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/multipart.py"
+    },
+    {
+      "id": "src/werkzeug/sansio/request.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/request.py"
+    },
+    {
+      "id": "src/werkzeug/sansio/response.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/response.py"
+    },
+    {
+      "id": "src/werkzeug/sansio/utils.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/sansio/utils.py"
+    },
+    {
+      "id": "src/werkzeug/security.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/security.py"
+    },
+    {
+      "id": "src/werkzeug/serving.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/serving.py"
+    },
+    {
+      "id": "src/werkzeug/test.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/test.py"
+    },
+    {
+      "id": "src/werkzeug/testapp.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/testapp.py"
+    },
+    {
+      "id": "src/werkzeug/urls.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/urls.py"
+    },
+    {
+      "id": "src/werkzeug/user_agent.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/user_agent.py"
+    },
+    {
+      "id": "src/werkzeug/utils.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/utils.py"
+    },
+    {
+      "id": "src/werkzeug/wrappers/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/wrappers/__init__.py"
+    },
+    {
+      "id": "src/werkzeug/wrappers/request.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/wrappers/request.py"
+    },
+    {
+      "id": "src/werkzeug/wrappers/response.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/wrappers/response.py"
+    },
+    {
+      "id": "src/werkzeug/wsgi.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/werkzeug/src/werkzeug/wsgi.py"
+    }
+  ],
+  "edges": [
+    {
+      "source": "src/werkzeug/_reloader.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/accept.py",
+      "target": "src/werkzeug/datastructures/structures.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/auth.py",
+      "target": "src/werkzeug/datastructures/structures.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/auth.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/cache_control.py",
+      "target": "src/werkzeug/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/cache_control.py",
+      "target": "src/werkzeug/datastructures/mixins.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/cache_control.py",
+      "target": "src/werkzeug/datastructures/structures.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/cache_control.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/csp.py",
+      "target": "src/werkzeug/datastructures/structures.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/csp.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/etag.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/file_storage.py",
+      "target": "src/werkzeug/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/file_storage.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/file_storage.py",
+      "target": "src/werkzeug/datastructures/headers.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/file_storage.py",
+      "target": "src/werkzeug/datastructures/structures.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/file_storage.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/headers.py",
+      "target": "src/werkzeug/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/headers.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/headers.py",
+      "target": "src/werkzeug/datastructures/mixins.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/headers.py",
+      "target": "src/werkzeug/datastructures/structures.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/headers.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/headers.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/mixins.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/range.py",
+      "target": "src/werkzeug/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/range.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/structures.py",
+      "target": "src/werkzeug/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/structures.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/structures.py",
+      "target": "src/werkzeug/datastructures/mixins.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/structures.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/datastructures/structures.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/debug/console.py",
+      "target": "src/werkzeug/debug/repr.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/debug/console.py",
+      "target": "src/werkzeug/debug/tbtools.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/debug/tbtools.py",
+      "target": "src/werkzeug/debug/console.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/debug/tbtools.py",
+      "target": "src/werkzeug/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/exceptions.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/exceptions.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/exceptions.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/exceptions.py",
+      "target": "src/werkzeug/sansio/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/exceptions.py",
+      "target": "src/werkzeug/sansio/response.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/exceptions.py",
+      "target": "src/werkzeug/wrappers/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/exceptions.py",
+      "target": "src/werkzeug/wrappers/response.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/formparser.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/formparser.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/formparser.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/formparser.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/formparser.py",
+      "target": "src/werkzeug/sansio/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/formparser.py",
+      "target": "src/werkzeug/sansio/multipart.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/formparser.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/http.py",
+      "target": "src/werkzeug/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/http.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/http.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/http.py",
+      "target": "src/werkzeug/sansio/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/http.py",
+      "target": "src/werkzeug/sansio/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/local.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/http_proxy.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/http_proxy.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/http_proxy.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/http_proxy.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/lint.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/lint.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/lint.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/proxy_fix.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/shared_data.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/shared_data.py",
+      "target": "src/werkzeug/security.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/shared_data.py",
+      "target": "src/werkzeug/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/middleware/shared_data.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/exceptions.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/exceptions.py",
+      "target": "src/werkzeug/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/routing/converters.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/routing/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/routing/matcher.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/routing/rules.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/urls.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/map.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/matcher.py",
+      "target": "src/werkzeug/routing/converters.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/matcher.py",
+      "target": "src/werkzeug/routing/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/matcher.py",
+      "target": "src/werkzeug/routing/rules.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/rules.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/rules.py",
+      "target": "src/werkzeug/routing/converters.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/routing/rules.py",
+      "target": "src/werkzeug/urls.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/http.py",
+      "target": "src/werkzeug/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/http.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/http.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/http.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/multipart.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/multipart.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/multipart.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/request.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/request.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/request.py",
+      "target": "src/werkzeug/sansio/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/request.py",
+      "target": "src/werkzeug/sansio/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/request.py",
+      "target": "src/werkzeug/user_agent.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/request.py",
+      "target": "src/werkzeug/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/response.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/response.py",
+      "target": "src/werkzeug/datastructures/cache_control.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/response.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/response.py",
+      "target": "src/werkzeug/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/utils.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/utils.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/sansio/utils.py",
+      "target": "src/werkzeug/urls.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/serving.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/serving.py",
+      "target": "src/werkzeug/_reloader.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/serving.py",
+      "target": "src/werkzeug/debug/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/serving.py",
+      "target": "src/werkzeug/debug/tbtools.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/serving.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/serving.py",
+      "target": "src/werkzeug/middleware/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/serving.py",
+      "target": "src/werkzeug/middleware/shared_data.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/serving.py",
+      "target": "src/werkzeug/urls.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/sansio/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/sansio/multipart.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/urls.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/wrappers/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/wrappers/request.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/wrappers/response.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/test.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/testapp.py",
+      "target": "src/werkzeug/serving.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/testapp.py",
+      "target": "src/werkzeug/wrappers/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/testapp.py",
+      "target": "src/werkzeug/wrappers/request.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/testapp.py",
+      "target": "src/werkzeug/wrappers/response.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/urls.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/utils.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/utils.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/utils.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/utils.py",
+      "target": "src/werkzeug/security.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/utils.py",
+      "target": "src/werkzeug/wrappers/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/utils.py",
+      "target": "src/werkzeug/wrappers/request.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/utils.py",
+      "target": "src/werkzeug/wrappers/response.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/utils.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/request.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/request.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/request.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/request.py",
+      "target": "src/werkzeug/formparser.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/request.py",
+      "target": "src/werkzeug/sansio/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/request.py",
+      "target": "src/werkzeug/sansio/request.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/request.py",
+      "target": "src/werkzeug/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/request.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/_internal.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/datastructures/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/http.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/sansio/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/sansio/response.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/urls.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wrappers/response.py",
+      "target": "src/werkzeug/wsgi.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wsgi.py",
+      "target": "src/werkzeug/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wsgi.py",
+      "target": "src/werkzeug/sansio/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/werkzeug/wsgi.py",
+      "target": "src/werkzeug/sansio/utils.py",
+      "relation": "import"
+    }
+  ]
+}

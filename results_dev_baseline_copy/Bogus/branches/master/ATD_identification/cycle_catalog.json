@@ -1,0 +1,271 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-20T00:08:36Z",
+  "input": {
+    "dependency_graph": "/workspace/results_dev/Bogus/branches/master/ATD_identification/dependency_graph.json",
+    "scc_report": "/workspace/results_dev/Bogus/branches/master/ATD_identification/scc_report.json",
+    "repo": "Bogus",
+    "base_branch": "master"
+  },
+  "params": {
+    "max_cycle_len": 8,
+    "attempts_per_scc": 50000,
+    "max_cycles_per_scc": 200,
+    "seed": 12345
+  },
+  "summary": {
+    "scc_count": 2,
+    "cycle_count": 7
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "node_count": 25,
+      "edge_count": 82,
+      "cycles": [
+        {
+          "id": "scc_0_cycle_0",
+          "length": 8,
+          "nodes": [
+            "Source/Bogus/DataSet.cs",
+            "Source/Bogus/SeedNotifier[T].cs",
+            "Source/Bogus/Randomizer.cs",
+            "Source/Bogus/DataSets/Company.cs",
+            "Source/Bogus/Tokenizer.cs",
+            "Source/Bogus/Faker.cs",
+            "Source/Bogus/DataSets/Address.cs",
+            "Source/Bogus/DataSets/Name.cs"
+          ],
+          "edges": [
+            {
+              "source": "Source/Bogus/DataSet.cs",
+              "target": "Source/Bogus/SeedNotifier[T].cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/SeedNotifier[T].cs",
+              "target": "Source/Bogus/Randomizer.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Randomizer.cs",
+              "target": "Source/Bogus/DataSets/Company.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/DataSets/Company.cs",
+              "target": "Source/Bogus/Tokenizer.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Tokenizer.cs",
+              "target": "Source/Bogus/Faker.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Faker.cs",
+              "target": "Source/Bogus/DataSets/Address.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/DataSets/Address.cs",
+              "target": "Source/Bogus/DataSets/Name.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/DataSets/Name.cs",
+              "target": "Source/Bogus/DataSet.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0391995439185048,
+            "pagerank_min": 0.008137330464918763,
+            "pagerank_max": 0.11027088200908057
+          }
+        },
+        {
+          "id": "scc_0_cycle_1",
+          "length": 5,
+          "nodes": [
+            "Source/Bogus/DataSets/Internet.cs",
+            "Source/Bogus/Vendor/UserAgentGenerator.cs",
+            "Source/Bogus/Rule.cs",
+            "Source/Bogus/Faker.cs",
+            "Source/Bogus/Person.cs"
+          ],
+          "edges": [
+            {
+              "source": "Source/Bogus/DataSets/Internet.cs",
+              "target": "Source/Bogus/Vendor/UserAgentGenerator.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Vendor/UserAgentGenerator.cs",
+              "target": "Source/Bogus/Rule.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Rule.cs",
+              "target": "Source/Bogus/Faker.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Faker.cs",
+              "target": "Source/Bogus/Person.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Person.cs",
+              "target": "Source/Bogus/DataSets/Internet.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.015362170336251812,
+            "pagerank_min": 0.005076011515692079,
+            "pagerank_max": 0.02699932531983466
+          }
+        },
+        {
+          "id": "scc_0_cycle_2",
+          "length": 3,
+          "nodes": [
+            "Source/Bogus/DataSet.cs",
+            "Source/Bogus/Randomizer.cs",
+            "Source/Bogus/DataSets/Finance.cs"
+          ],
+          "edges": [
+            {
+              "source": "Source/Bogus/DataSet.cs",
+              "target": "Source/Bogus/Randomizer.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Randomizer.cs",
+              "target": "Source/Bogus/DataSets/Finance.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/DataSets/Finance.cs",
+              "target": "Source/Bogus/DataSet.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.06799836774178188,
+            "pagerank_min": 0.017891575527993732,
+            "pagerank_max": 0.11027088200908057
+          }
+        },
+        {
+          "id": "scc_0_cycle_3",
+          "length": 2,
+          "nodes": [
+            "Source/Bogus/DataSets/Name.cs",
+            "Source/Bogus/Randomizer.cs"
+          ],
+          "edges": [
+            {
+              "source": "Source/Bogus/DataSets/Name.cs",
+              "target": "Source/Bogus/Randomizer.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Randomizer.cs",
+              "target": "Source/Bogus/DataSets/Name.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.07134284335111186,
+            "pagerank_min": 0.03241480469314316,
+            "pagerank_max": 0.11027088200908057
+          }
+        },
+        {
+          "id": "scc_0_cycle_4",
+          "length": 2,
+          "nodes": [
+            "Source/Bogus/DataSets/Address.cs",
+            "Source/Bogus/Randomizer.cs"
+          ],
+          "edges": [
+            {
+              "source": "Source/Bogus/DataSets/Address.cs",
+              "target": "Source/Bogus/Randomizer.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Randomizer.cs",
+              "target": "Source/Bogus/DataSets/Address.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.06361774235511385,
+            "pagerank_min": 0.016964602701147115,
+            "pagerank_max": 0.11027088200908057
+          }
+        },
+        {
+          "id": "scc_0_cycle_5",
+          "length": 2,
+          "nodes": [
+            "Source/Bogus/DataSets/Commerce.cs",
+            "Source/Bogus/Randomizer.cs"
+          ],
+          "edges": [
+            {
+              "source": "Source/Bogus/DataSets/Commerce.cs",
+              "target": "Source/Bogus/Randomizer.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/Randomizer.cs",
+              "target": "Source/Bogus/DataSets/Commerce.cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.062434605021420495,
+            "pagerank_min": 0.014598328033760417,
+            "pagerank_max": 0.11027088200908057
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_1",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_1_cycle_0",
+          "length": 2,
+          "nodes": [
+            "Source/Bogus/Faker[T].cs",
+            "Source/Bogus/IRuleSet.cs"
+          ],
+          "edges": [
+            {
+              "source": "Source/Bogus/Faker[T].cs",
+              "target": "Source/Bogus/IRuleSet.cs",
+              "relation": "type_ref"
+            },
+            {
+              "source": "Source/Bogus/IRuleSet.cs",
+              "target": "Source/Bogus/Faker[T].cs",
+              "relation": "type_ref"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.0062300397774340335,
+            "pagerank_min": 0.00493734611251945,
+            "pagerank_max": 0.007522733442348616
+          }
+        }
+      ]
+    }
+  ]
+}

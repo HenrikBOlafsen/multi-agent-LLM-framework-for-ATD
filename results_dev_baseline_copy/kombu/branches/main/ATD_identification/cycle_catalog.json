@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-20T00:08:29Z",
+  "input": {
+    "dependency_graph": "/workspace/results_dev/kombu/branches/main/ATD_identification/dependency_graph.json",
+    "scc_report": "/workspace/results_dev/kombu/branches/main/ATD_identification/scc_report.json",
+    "repo": "kombu",
+    "base_branch": "main"
+  },
+  "params": {
+    "max_cycle_len": 8,
+    "attempts_per_scc": 50000,
+    "max_cycles_per_scc": 200,
+    "seed": 12345
+  },
+  "summary": {
+    "scc_count": 1,
+    "cycle_count": 2
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "node_count": 6,
+      "edge_count": 11,
+      "cycles": [
+        {
+          "id": "scc_0_cycle_0",
+          "length": 6,
+          "nodes": [
+            "kombu/abstract.py",
+            "kombu/connection.py",
+            "kombu/simple.py",
+            "kombu/messaging.py",
+            "kombu/common.py",
+            "kombu/entity.py"
+          ],
+          "edges": [
+            {
+              "source": "kombu/abstract.py",
+              "target": "kombu/connection.py",
+              "relation": "import"
+            },
+            {
+              "source": "kombu/connection.py",
+              "target": "kombu/simple.py",
+              "relation": "import"
+            },
+            {
+              "source": "kombu/simple.py",
+              "target": "kombu/messaging.py",
+              "relation": "import"
+            },
+            {
+              "source": "kombu/messaging.py",
+              "target": "kombu/common.py",
+              "relation": "import"
+            },
+            {
+              "source": "kombu/common.py",
+              "target": "kombu/entity.py",
+              "relation": "import"
+            },
+            {
+              "source": "kombu/entity.py",
+              "target": "kombu/abstract.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.010797808920917036,
+            "pagerank_min": 0.0074374461016671126,
+            "pagerank_max": 0.0130012445920115
+          }
+        },
+        {
+          "id": "scc_0_cycle_1",
+          "length": 2,
+          "nodes": [
+            "kombu/connection.py",
+            "kombu/messaging.py"
+          ],
+          "edges": [
+            {
+              "source": "kombu/connection.py",
+              "target": "kombu/messaging.py",
+              "relation": "import"
+            },
+            {
+              "source": "kombu/messaging.py",
+              "target": "kombu/connection.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.012394432297914926,
+            "pagerank_min": 0.01224489379741621,
+            "pagerank_max": 0.012543970798413644
+          }
+        }
+      ]
+    }
+  ]
+}

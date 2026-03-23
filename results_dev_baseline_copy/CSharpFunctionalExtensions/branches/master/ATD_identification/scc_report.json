@@ -1,0 +1,2898 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-19T16:41:44Z",
+  "input": {
+    "schema_version": 1,
+    "dependency_graph": "/workspace/results_dev/CSharpFunctionalExtensions/branches/master/ATD_identification/dependency_graph.json",
+    "language": "csharp",
+    "repo_root": "/workspace/projects_to_analyze/CSharpFunctionalExtensions",
+    "entry": "CSharpFunctionalExtensions"
+  },
+  "graph": {
+    "node_count": 341,
+    "edge_count": 4469
+  },
+  "params": {
+    "pagerank_alpha": 0.85,
+    "pagerank_max_iter": 100,
+    "pagerank_tol": 1e-06
+  },
+  "global_metrics": {
+    "scc_count": 1,
+    "total_nodes_in_cyclic_sccs": 21,
+    "total_edges_in_cyclic_sccs": 349,
+    "total_loc_in_cyclic_sccs": 1367,
+    "max_scc_size": 21,
+    "avg_scc_size": 21.0,
+    "cycle_pressure_lb": 189
+  },
+  "node_features": {
+    "CSharpFunctionalExtensions/Entity/Entity.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/ICombine.cs": {
+      "pagerank": 0.001868949078255242
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/AsMaybe.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/AsMaybe.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/AsMaybe.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/AsNullable.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Bind.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Bind.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Bind.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Bind.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Bind.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Bind.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Bind.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/BindOptional.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Choose.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Deconstruct.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Execute.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Execute.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Execute.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Execute.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Execute.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Execute.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Execute.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ExecuteNoValue.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ExecuteNoValue.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ExecuteNoValue.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ExecuteNoValue.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ExecuteNoValue.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ExecuteNoValue.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ExecuteNoValue.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Flatten.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrDefault.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrDefault.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrDefault.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrDefault.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrDefault.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrDefault.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrDefault.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrThrow.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/GetValueOrThrow.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Map.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Map.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Map.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Map.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Map.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Map.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Map.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Match.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Match.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Match.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Optional.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Or.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Or.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Or.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Or.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Or.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Or.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Or.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Select.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Select.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Select.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/SelectMany.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/SelectMany.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/SelectMany.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/SelectMany.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/SelectMany.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/SelectMany.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/SelectMany.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Tap.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Tap.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Tap.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Tap.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Tap.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Tap.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Tap.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TapNoValue.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TapNoValue.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TapNoValue.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TapNoValue.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TapNoValue.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TapNoValue.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TapNoValue.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToInvertedResult.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToInvertedResult.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToInvertedResult.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToList.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToResult.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToResult.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToResult.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToUnitResult.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToUnitResult.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/ToUnitResult.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TryFind.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TryFirst.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/TryLast.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Where.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Where.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Where.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Where.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Where.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Where.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Extensions/Where.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Maybe/Maybe.Configuration.cs": {
+      "pagerank": 0.058181426544735716
+    },
+    "CSharpFunctionalExtensions/Maybe/Maybe.cs": {
+      "pagerank": 0.03144280343414713
+    },
+    "CSharpFunctionalExtensions/Maybe/MaybeEqualityComparer.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Exceptions/ResultFailureException.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Exceptions/ResultSuccessException.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Internal/Result.Messages.cs": {
+      "pagerank": 0.025553816636015407
+    },
+    "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs": {
+      "pagerank": 0.006046234762903693
+    },
+    "CSharpFunctionalExtensions/Result/Internal/SerializationValue.cs": {
+      "pagerank": 0.0062603027666015285
+    },
+    "CSharpFunctionalExtensions/Result/Internal/TaskExtensions.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Internal/ValueTaskExtensions.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/IResult.cs": {
+      "pagerank": 0.006915500827903628
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/CSharpFunctionalExtensionsJsonSerializerOptions.cs": {
+      "pagerank": 0.0007981677859621957
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/DtoMessages.cs": {
+      "pagerank": 0.0008591494237024345
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/HttpResponseMessageJsonExtensions.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/JsonSerializerOptionsExtensionMethods.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/ResultDto.cs": {
+      "pagerank": 0.0008630494121625661
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/ResultJsonConverter.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/ResultJsonOfTConverter.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/ResultOfTEJsonConverterFactory.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/UnitResultDto.cs": {
+      "pagerank": 0.0008436676513303972
+    },
+    "CSharpFunctionalExtensions/Result/Json/Serialization/UnitResultJsonConverterFactoryOfT.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Combine.cs": {
+      "pagerank": 0.02460334921696871
+    },
+    "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs": {
+      "pagerank": 0.04763410694277305
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/AsMaybe.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Bind.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Bind.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Bind.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Bind.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Bind.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Bind.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Bind.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindIf.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindIf.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindIf.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindIf.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindIf.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindIf.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindIf.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindOptional.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindTry.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindTry.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindTry.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindTry.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindTry.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindTry.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindTry.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindWithTransactionScope.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindWithTransactionScope.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindWithTransactionScope.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindWithTransactionScope.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindWithTransactionScope.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindWithTransactionScope.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindWithTransactionScope.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindZip.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindZip.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindZip.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/BindZip.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Check.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Check.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Check.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Check.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Check.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Check.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Check.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CheckIf.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CheckIf.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CheckIf.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CheckIf.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CheckIf.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CheckIf.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CheckIf.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Combine.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Combine.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Combine.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CombineInOrder.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/CombineInOrder.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Compensate.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Compensate.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Compensate.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Compensate.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Compensate.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Compensate.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Compensate.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Deconstruct.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Ensure.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Ensure.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Ensure.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Ensure.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Ensure.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Ensure.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Ensure.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/EnsureNot.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/EnsureNotNull.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/EnsureNotNull.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/EnsureNotNull.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/EnsureNotNull.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/EnsureNotNull.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/EnsureNotNull.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/EnsureNotNull.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Finally.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Finally.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Finally.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Finally.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Finally.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Finally.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Finally.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/GetValueOrDefault.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/GetValueOrDefault.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/GetValueOrDefault.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/GetValueOrDefault.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/GetValueOrDefault.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/GetValueOrDefault.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/GetValueOrDefault.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Map.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Map.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Map.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Map.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Map.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Map.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Map.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapError.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapError.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapError.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapError.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapError.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapError.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapError.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapIf.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapIf.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapIf.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapIf.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapIf.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapIf.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapIf.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapTry.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapTry.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapTry.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapTry.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapTry.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapTry.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapTry.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapWithTransactionScope.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapWithTransactionScope.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapWithTransactionScope.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapWithTransactionScope.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapWithTransactionScope.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapWithTransactionScope.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/MapWithTransactionScope.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Match.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Match.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Match.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Match.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Match.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Match.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Match.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnFailureCompensate.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnFailureCompensate.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnFailureCompensate.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnFailureCompensate.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnFailureCompensate.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnFailureCompensate.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnFailureCompensate.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnSuccessTry.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnSuccessTry.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnSuccessTry.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/OnSuccessTry.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Required.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Select.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Select.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Select.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/SelectMany.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/SelectMany.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/SelectMany.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/SelectMany.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/SelectMany.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/SelectMany.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/SelectMany.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Tap.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Tap.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Tap.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Tap.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Tap.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Tap.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/Tap.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapError.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapError.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapError.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapError.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapError.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapError.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapError.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapErrorIf.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapErrorIf.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapErrorIf.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapErrorIf.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapErrorIf.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapErrorIf.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapErrorIf.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIf.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIf.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIf.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIf.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIf.ValueTask.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIf.ValueTask.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIf.ValueTask.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIfTry.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIfTry.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIfTry.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapIfTry.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapTry.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapTry.Task.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapTry.Task.Left.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/TapTry.Task.Right.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Extensions/WithTransactionScope.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Failure.cs": {
+      "pagerank": 0.02451217646572955
+    },
+    "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs": {
+      "pagerank": 0.024692785905067346
+    },
+    "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs": {
+      "pagerank": 0.02451217646572955
+    },
+    "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs": {
+      "pagerank": 0.02451217646572955
+    },
+    "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs": {
+      "pagerank": 0.02440165655515069
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Of.cs": {
+      "pagerank": 0.025553816636015407
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Success.cs": {
+      "pagerank": 0.02455984918936296
+    },
+    "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs": {
+      "pagerank": 0.024692785905067346
+    },
+    "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs": {
+      "pagerank": 0.024692785905067346
+    },
+    "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs": {
+      "pagerank": 0.024692785905067346
+    },
+    "CSharpFunctionalExtensions/Result/Methods/ToString.cs": {
+      "pagerank": 0.042361153657613226
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Try.cs": {
+      "pagerank": 0.02455984918936296
+    },
+    "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs": {
+      "pagerank": 0.02451217646572955
+    },
+    "CSharpFunctionalExtensions/Result/Methods/TryGet.cs": {
+      "pagerank": 0.042361153657613226
+    },
+    "CSharpFunctionalExtensions/Result/NullableExtensions.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/Result/Result.Configuration.cs": {
+      "pagerank": 0.025553816636015407
+    },
+    "CSharpFunctionalExtensions/Result/Result.cs": {
+      "pagerank": 0.02460334921696871
+    },
+    "CSharpFunctionalExtensions/Result/ResultT.cs": {
+      "pagerank": 0.042489787961406345
+    },
+    "CSharpFunctionalExtensions/Result/ResultTE.cs": {
+      "pagerank": 0.0409078108242148
+    },
+    "CSharpFunctionalExtensions/Result/UnitResult.cs": {
+      "pagerank": 0.03217711253130221
+    },
+    "CSharpFunctionalExtensions/ValueObject/ComparableValueObject.cs": {
+      "pagerank": 0.0016444652818107415
+    },
+    "CSharpFunctionalExtensions/ValueObject/EnumValueObject.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/ValueObject/SimpleValueObject.cs": {
+      "pagerank": 0.0007708678667412748
+    },
+    "CSharpFunctionalExtensions/ValueObject/ValueObject.cs": {
+      "pagerank": 0.0034793696069424346
+    },
+    "CSharpFunctionalExtensions/ValueObject/ValueObjectOfT.cs": {
+      "pagerank": 0.0007708678667412748
+    }
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "size": 21,
+      "edge_count": 349,
+      "density_directed": 0.830952,
+      "edge_surplus_lb": 189,
+      "total_loc": 1367,
+      "avg_loc_per_node": 65.1,
+      "nodes": [
+        {
+          "id": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/Result.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "kind": "file"
+        },
+        {
+          "id": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "kind": "file"
+        }
+      ],
+      "edges": [
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "target": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/Result.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultT.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/ResultTE.cs",
+          "target": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Internal/ResultCommonLogic.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Combine.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ConvertFailure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Failure.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FailureIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/FirstFailureOrSuccess.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Of.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Success.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.ValueTask.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/SuccessIf.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/ToString.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.Task.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/Try.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Methods/TryGet.cs",
+          "relation": "type_ref"
+        },
+        {
+          "source": "CSharpFunctionalExtensions/Result/UnitResult.cs",
+          "target": "CSharpFunctionalExtensions/Result/Result.cs",
+          "relation": "type_ref"
+        }
+      ]
+    }
+  ]
+}

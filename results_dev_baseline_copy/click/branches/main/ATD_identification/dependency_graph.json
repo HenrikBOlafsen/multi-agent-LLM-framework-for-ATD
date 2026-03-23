@@ -1,0 +1,340 @@
+{
+  "schema_version": 1,
+  "language": "python",
+  "repo_root": "/workspace/projects_to_analyze/click",
+  "entry": "src/click",
+  "nodes": [
+    {
+      "id": "src/click/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/__init__.py"
+    },
+    {
+      "id": "src/click/_compat.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/_compat.py"
+    },
+    {
+      "id": "src/click/_termui_impl.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/_termui_impl.py"
+    },
+    {
+      "id": "src/click/_textwrap.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/_textwrap.py"
+    },
+    {
+      "id": "src/click/_utils.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/_utils.py"
+    },
+    {
+      "id": "src/click/_winconsole.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/_winconsole.py"
+    },
+    {
+      "id": "src/click/core.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/core.py"
+    },
+    {
+      "id": "src/click/decorators.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/decorators.py"
+    },
+    {
+      "id": "src/click/exceptions.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/exceptions.py"
+    },
+    {
+      "id": "src/click/formatting.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/formatting.py"
+    },
+    {
+      "id": "src/click/globals.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/globals.py"
+    },
+    {
+      "id": "src/click/parser.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/parser.py"
+    },
+    {
+      "id": "src/click/shell_completion.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/shell_completion.py"
+    },
+    {
+      "id": "src/click/termui.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/termui.py"
+    },
+    {
+      "id": "src/click/testing.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/testing.py"
+    },
+    {
+      "id": "src/click/types.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/types.py"
+    },
+    {
+      "id": "src/click/utils.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/click/src/click/utils.py"
+    }
+  ],
+  "edges": [
+    {
+      "source": "src/click/_compat.py",
+      "target": "src/click/_winconsole.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/_termui_impl.py",
+      "target": "src/click/_compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/_termui_impl.py",
+      "target": "src/click/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/_termui_impl.py",
+      "target": "src/click/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/_winconsole.py",
+      "target": "src/click/_compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/_utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/decorators.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/formatting.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/globals.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/parser.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/shell_completion.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/termui.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/types.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/core.py",
+      "target": "src/click/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/decorators.py",
+      "target": "src/click/core.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/decorators.py",
+      "target": "src/click/globals.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/decorators.py",
+      "target": "src/click/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/exceptions.py",
+      "target": "src/click/_compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/exceptions.py",
+      "target": "src/click/globals.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/exceptions.py",
+      "target": "src/click/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/formatting.py",
+      "target": "src/click/_compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/formatting.py",
+      "target": "src/click/_textwrap.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/formatting.py",
+      "target": "src/click/parser.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/parser.py",
+      "target": "src/click/_utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/parser.py",
+      "target": "src/click/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/parser.py",
+      "target": "src/click/shell_completion.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/shell_completion.py",
+      "target": "src/click/core.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/shell_completion.py",
+      "target": "src/click/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/termui.py",
+      "target": "src/click/_compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/termui.py",
+      "target": "src/click/_termui_impl.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/termui.py",
+      "target": "src/click/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/termui.py",
+      "target": "src/click/globals.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/termui.py",
+      "target": "src/click/types.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/termui.py",
+      "target": "src/click/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/testing.py",
+      "target": "src/click/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/testing.py",
+      "target": "src/click/_compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/testing.py",
+      "target": "src/click/core.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/testing.py",
+      "target": "src/click/formatting.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/testing.py",
+      "target": "src/click/termui.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/testing.py",
+      "target": "src/click/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/types.py",
+      "target": "src/click/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/types.py",
+      "target": "src/click/_compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/types.py",
+      "target": "src/click/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/types.py",
+      "target": "src/click/utils.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/utils.py",
+      "target": "src/click/_compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/utils.py",
+      "target": "src/click/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "src/click/utils.py",
+      "target": "src/click/globals.py",
+      "relation": "import"
+    }
+  ]
+}

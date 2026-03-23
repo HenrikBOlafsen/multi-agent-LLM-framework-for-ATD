@@ -1,0 +1,1320 @@
+{
+  "schema_version": 1,
+  "language": "python",
+  "repo_root": "/workspace/projects_to_analyze/kombu",
+  "entry": "kombu",
+  "nodes": [
+    {
+      "id": "kombu/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/__init__.py"
+    },
+    {
+      "id": "kombu/abstract.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/abstract.py"
+    },
+    {
+      "id": "kombu/asynchronous/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/__init__.py"
+    },
+    {
+      "id": "kombu/asynchronous/aws/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/aws/__init__.py"
+    },
+    {
+      "id": "kombu/asynchronous/aws/connection.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/aws/connection.py"
+    },
+    {
+      "id": "kombu/asynchronous/aws/ext.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/aws/ext.py"
+    },
+    {
+      "id": "kombu/asynchronous/aws/sqs/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/aws/sqs/__init__.py"
+    },
+    {
+      "id": "kombu/asynchronous/aws/sqs/connection.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/aws/sqs/connection.py"
+    },
+    {
+      "id": "kombu/asynchronous/aws/sqs/ext.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/aws/sqs/ext.py"
+    },
+    {
+      "id": "kombu/asynchronous/aws/sqs/message.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/aws/sqs/message.py"
+    },
+    {
+      "id": "kombu/asynchronous/aws/sqs/queue.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/aws/sqs/queue.py"
+    },
+    {
+      "id": "kombu/asynchronous/debug.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/debug.py"
+    },
+    {
+      "id": "kombu/asynchronous/http/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/http/__init__.py"
+    },
+    {
+      "id": "kombu/asynchronous/http/base.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/http/base.py"
+    },
+    {
+      "id": "kombu/asynchronous/http/curl.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/http/curl.py"
+    },
+    {
+      "id": "kombu/asynchronous/hub.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/hub.py"
+    },
+    {
+      "id": "kombu/asynchronous/semaphore.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/semaphore.py"
+    },
+    {
+      "id": "kombu/asynchronous/timer.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/asynchronous/timer.py"
+    },
+    {
+      "id": "kombu/clocks.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/clocks.py"
+    },
+    {
+      "id": "kombu/common.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/common.py"
+    },
+    {
+      "id": "kombu/compat.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/compat.py"
+    },
+    {
+      "id": "kombu/compression.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/compression.py"
+    },
+    {
+      "id": "kombu/connection.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/connection.py"
+    },
+    {
+      "id": "kombu/entity.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/entity.py"
+    },
+    {
+      "id": "kombu/exceptions.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/exceptions.py"
+    },
+    {
+      "id": "kombu/log.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/log.py"
+    },
+    {
+      "id": "kombu/matcher.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/matcher.py"
+    },
+    {
+      "id": "kombu/message.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/message.py"
+    },
+    {
+      "id": "kombu/messaging.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/messaging.py"
+    },
+    {
+      "id": "kombu/mixins.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/mixins.py"
+    },
+    {
+      "id": "kombu/pidbox.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/pidbox.py"
+    },
+    {
+      "id": "kombu/pools.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/pools.py"
+    },
+    {
+      "id": "kombu/resource.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/resource.py"
+    },
+    {
+      "id": "kombu/serialization.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/serialization.py"
+    },
+    {
+      "id": "kombu/simple.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/simple.py"
+    },
+    {
+      "id": "kombu/transport/SLMQ.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/SLMQ.py"
+    },
+    {
+      "id": "kombu/transport/SQS.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/SQS.py"
+    },
+    {
+      "id": "kombu/transport/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/__init__.py"
+    },
+    {
+      "id": "kombu/transport/azureservicebus.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/azureservicebus.py"
+    },
+    {
+      "id": "kombu/transport/azurestoragequeues.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/azurestoragequeues.py"
+    },
+    {
+      "id": "kombu/transport/base.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/base.py"
+    },
+    {
+      "id": "kombu/transport/confluentkafka.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/confluentkafka.py"
+    },
+    {
+      "id": "kombu/transport/consul.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/consul.py"
+    },
+    {
+      "id": "kombu/transport/etcd.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/etcd.py"
+    },
+    {
+      "id": "kombu/transport/filesystem.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/filesystem.py"
+    },
+    {
+      "id": "kombu/transport/gcpubsub.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/gcpubsub.py"
+    },
+    {
+      "id": "kombu/transport/librabbitmq.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/librabbitmq.py"
+    },
+    {
+      "id": "kombu/transport/memory.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/memory.py"
+    },
+    {
+      "id": "kombu/transport/mongodb.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/mongodb.py"
+    },
+    {
+      "id": "kombu/transport/native_delayed_delivery.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/native_delayed_delivery.py"
+    },
+    {
+      "id": "kombu/transport/pyamqp.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/pyamqp.py"
+    },
+    {
+      "id": "kombu/transport/pyro.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/pyro.py"
+    },
+    {
+      "id": "kombu/transport/qpid.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/qpid.py"
+    },
+    {
+      "id": "kombu/transport/redis.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/redis.py"
+    },
+    {
+      "id": "kombu/transport/sqlalchemy/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/sqlalchemy/__init__.py"
+    },
+    {
+      "id": "kombu/transport/sqlalchemy/models.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/sqlalchemy/models.py"
+    },
+    {
+      "id": "kombu/transport/virtual/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/virtual/__init__.py"
+    },
+    {
+      "id": "kombu/transport/virtual/base.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/virtual/base.py"
+    },
+    {
+      "id": "kombu/transport/virtual/exchange.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/virtual/exchange.py"
+    },
+    {
+      "id": "kombu/transport/zookeeper.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/transport/zookeeper.py"
+    },
+    {
+      "id": "kombu/utils/__init__.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/__init__.py"
+    },
+    {
+      "id": "kombu/utils/amq_manager.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/amq_manager.py"
+    },
+    {
+      "id": "kombu/utils/collections.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/collections.py"
+    },
+    {
+      "id": "kombu/utils/compat.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/compat.py"
+    },
+    {
+      "id": "kombu/utils/debug.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/debug.py"
+    },
+    {
+      "id": "kombu/utils/div.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/div.py"
+    },
+    {
+      "id": "kombu/utils/encoding.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/encoding.py"
+    },
+    {
+      "id": "kombu/utils/eventio.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/eventio.py"
+    },
+    {
+      "id": "kombu/utils/functional.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/functional.py"
+    },
+    {
+      "id": "kombu/utils/imports.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/imports.py"
+    },
+    {
+      "id": "kombu/utils/json.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/json.py"
+    },
+    {
+      "id": "kombu/utils/limits.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/limits.py"
+    },
+    {
+      "id": "kombu/utils/objects.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/objects.py"
+    },
+    {
+      "id": "kombu/utils/scheduling.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/scheduling.py"
+    },
+    {
+      "id": "kombu/utils/text.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/text.py"
+    },
+    {
+      "id": "kombu/utils/time.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/time.py"
+    },
+    {
+      "id": "kombu/utils/url.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/url.py"
+    },
+    {
+      "id": "kombu/utils/uuid.py",
+      "kind": "file",
+      "abs_path": "/workspace/projects_to_analyze/kombu/kombu/utils/uuid.py"
+    }
+  ],
+  "edges": [
+    {
+      "source": "kombu/abstract.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/abstract.py",
+      "target": "kombu/connection.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/abstract.py",
+      "target": "kombu/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/abstract.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/abstract.py",
+      "target": "kombu/utils/functional.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/__init__.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/__init__.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/__init__.py",
+      "target": "kombu/asynchronous/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/connection.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/connection.py",
+      "target": "kombu/asynchronous/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/connection.py",
+      "target": "kombu/asynchronous/aws/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/sqs/connection.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/sqs/connection.py",
+      "target": "kombu/asynchronous/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/sqs/connection.py",
+      "target": "kombu/asynchronous/aws/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/sqs/connection.py",
+      "target": "kombu/asynchronous/aws/sqs/ext.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/sqs/connection.py",
+      "target": "kombu/asynchronous/aws/sqs/message.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/sqs/connection.py",
+      "target": "kombu/asynchronous/aws/sqs/queue.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/sqs/message.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/aws/sqs/queue.py",
+      "target": "kombu/asynchronous/aws/sqs/message.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/debug.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/http/__init__.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/http/__init__.py",
+      "target": "kombu/asynchronous/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/http/base.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/http/curl.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/http/curl.py",
+      "target": "kombu/asynchronous/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/http/curl.py",
+      "target": "kombu/asynchronous/http/base.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/hub.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/hub.py",
+      "target": "kombu/asynchronous/debug.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/hub.py",
+      "target": "kombu/asynchronous/timer.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/asynchronous/timer.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/common.py",
+      "target": "kombu/entity.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/common.py",
+      "target": "kombu/log.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/common.py",
+      "target": "kombu/serialization.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/common.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/common.py",
+      "target": "kombu/utils/uuid.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/compat.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/compat.py",
+      "target": "kombu/entity.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/compat.py",
+      "target": "kombu/messaging.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/compression.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/log.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/messaging.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/resource.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/simple.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/utils/collections.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/utils/debug.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/utils/functional.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/utils/objects.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/connection.py",
+      "target": "kombu/utils/url.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/entity.py",
+      "target": "kombu/abstract.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/entity.py",
+      "target": "kombu/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/entity.py",
+      "target": "kombu/serialization.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/exceptions.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/log.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/log.py",
+      "target": "kombu/utils/encoding.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/log.py",
+      "target": "kombu/utils/functional.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/log.py",
+      "target": "kombu/utils/objects.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/matcher.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/matcher.py",
+      "target": "kombu/utils/compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/matcher.py",
+      "target": "kombu/utils/encoding.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/message.py",
+      "target": "kombu/compression.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/message.py",
+      "target": "kombu/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/message.py",
+      "target": "kombu/serialization.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/message.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/message.py",
+      "target": "kombu/utils/functional.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/messaging.py",
+      "target": "kombu/common.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/messaging.py",
+      "target": "kombu/compression.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/messaging.py",
+      "target": "kombu/connection.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/messaging.py",
+      "target": "kombu/entity.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/messaging.py",
+      "target": "kombu/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/messaging.py",
+      "target": "kombu/serialization.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/messaging.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/messaging.py",
+      "target": "kombu/utils/functional.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/mixins.py",
+      "target": "kombu/common.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/mixins.py",
+      "target": "kombu/log.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/mixins.py",
+      "target": "kombu/messaging.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/mixins.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/mixins.py",
+      "target": "kombu/utils/compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/mixins.py",
+      "target": "kombu/utils/encoding.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/mixins.py",
+      "target": "kombu/utils/limits.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/mixins.py",
+      "target": "kombu/utils/objects.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/clocks.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/common.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/log.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/matcher.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/utils/functional.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/utils/objects.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pidbox.py",
+      "target": "kombu/utils/uuid.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pools.py",
+      "target": "kombu/connection.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pools.py",
+      "target": "kombu/messaging.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pools.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pools.py",
+      "target": "kombu/utils/collections.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pools.py",
+      "target": "kombu/utils/compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/pools.py",
+      "target": "kombu/utils/functional.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/resource.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/resource.py",
+      "target": "kombu/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/resource.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/resource.py",
+      "target": "kombu/utils/compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/resource.py",
+      "target": "kombu/utils/functional.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/serialization.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/serialization.py",
+      "target": "kombu/exceptions.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/serialization.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/serialization.py",
+      "target": "kombu/utils/compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/serialization.py",
+      "target": "kombu/utils/encoding.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/simple.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/simple.py",
+      "target": "kombu/connection.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/simple.py",
+      "target": "kombu/entity.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/simple.py",
+      "target": "kombu/messaging.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/SLMQ.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/SLMQ.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/SLMQ.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/SQS.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/SQS.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/SQS.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/__init__.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/azureservicebus.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/azureservicebus.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/azureservicebus.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/azurestoragequeues.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/azurestoragequeues.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/azurestoragequeues.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/base.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/confluentkafka.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/confluentkafka.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/consul.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/consul.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/consul.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/etcd.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/etcd.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/etcd.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/filesystem.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/filesystem.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/gcpubsub.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/gcpubsub.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/gcpubsub.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/librabbitmq.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/librabbitmq.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/librabbitmq.py",
+      "target": "kombu/transport/base.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/memory.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/memory.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/memory.py",
+      "target": "kombu/transport/base.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/memory.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/mongodb.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/mongodb.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/mongodb.py",
+      "target": "kombu/transport/base.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/mongodb.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/native_delayed_delivery.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/pyamqp.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/pyamqp.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/pyamqp.py",
+      "target": "kombu/transport/base.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/pyro.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/pyro.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/pyro.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/qpid.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/qpid.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/redis.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/redis.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/redis.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/sqlalchemy/__init__.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/sqlalchemy/__init__.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/virtual/base.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/virtual/base.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/virtual/base.py",
+      "target": "kombu/transport/virtual/exchange.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/virtual/exchange.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/zookeeper.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/zookeeper.py",
+      "target": "kombu/transport/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/transport/zookeeper.py",
+      "target": "kombu/transport/virtual/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/compat.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/debug.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/div.py",
+      "target": "kombu/utils/encoding.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/eventio.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/eventio.py",
+      "target": "kombu/utils/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/eventio.py",
+      "target": "kombu/utils/compat.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/functional.py",
+      "target": "kombu/utils/encoding.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/imports.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/scheduling.py",
+      "target": "kombu/utils/imports.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/text.py",
+      "target": "kombu/__init__.py",
+      "relation": "import"
+    },
+    {
+      "source": "kombu/utils/url.py",
+      "target": "kombu/log.py",
+      "relation": "import"
+    }
+  ]
+}

@@ -1,0 +1,359 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-19T16:33:16Z",
+  "input": {
+    "schema_version": 1,
+    "dependency_graph": "/workspace/results_dev/kombu/branches/main/ATD_identification/dependency_graph.json",
+    "language": "python",
+    "repo_root": "/workspace/projects_to_analyze/kombu",
+    "entry": "kombu"
+  },
+  "graph": {
+    "node_count": 78,
+    "edge_count": 184
+  },
+  "params": {
+    "pagerank_alpha": 0.85,
+    "pagerank_max_iter": 100,
+    "pagerank_tol": 1e-06
+  },
+  "global_metrics": {
+    "scc_count": 1,
+    "total_nodes_in_cyclic_sccs": 6,
+    "total_edges_in_cyclic_sccs": 11,
+    "total_loc_in_cyclic_sccs": 2822,
+    "max_scc_size": 6,
+    "avg_scc_size": 6.0,
+    "cycle_pressure_lb": 4
+  },
+  "node_features": {
+    "kombu/__init__.py": {
+      "pagerank": 0.24269321016145406
+    },
+    "kombu/abstract.py": {
+      "pagerank": 0.010320395110637244
+    },
+    "kombu/asynchronous/__init__.py": {
+      "pagerank": 0.018178300309212275
+    },
+    "kombu/asynchronous/aws/__init__.py": {
+      "pagerank": 0.009457637850455218
+    },
+    "kombu/asynchronous/aws/connection.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/asynchronous/aws/ext.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/asynchronous/aws/sqs/__init__.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/asynchronous/aws/sqs/connection.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/asynchronous/aws/sqs/ext.py": {
+      "pagerank": 0.007577106621561334
+    },
+    "kombu/asynchronous/aws/sqs/message.py": {
+      "pagerank": 0.014017725337030666
+    },
+    "kombu/asynchronous/aws/sqs/queue.py": {
+      "pagerank": 0.007577106621561334
+    },
+    "kombu/asynchronous/debug.py": {
+      "pagerank": 0.008517372236008276
+    },
+    "kombu/asynchronous/http/__init__.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/asynchronous/http/base.py": {
+      "pagerank": 0.008517372236008276
+    },
+    "kombu/asynchronous/http/curl.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/asynchronous/hub.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/asynchronous/semaphore.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/asynchronous/timer.py": {
+      "pagerank": 0.008517372236008276
+    },
+    "kombu/clocks.py": {
+      "pagerank": 0.007201000375782558
+    },
+    "kombu/common.py": {
+      "pagerank": 0.009238903125356504
+    },
+    "kombu/compat.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/compression.py": {
+      "pagerank": 0.009097863283189464
+    },
+    "kombu/connection.py": {
+      "pagerank": 0.01224489379741621
+    },
+    "kombu/entity.py": {
+      "pagerank": 0.0130012445920115
+    },
+    "kombu/exceptions.py": {
+      "pagerank": 0.01880444540236468
+    },
+    "kombu/log.py": {
+      "pagerank": 0.016599559426146472
+    },
+    "kombu/matcher.py": {
+      "pagerank": 0.007201000375782558
+    },
+    "kombu/message.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/messaging.py": {
+      "pagerank": 0.012543970798413644
+    },
+    "kombu/mixins.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/pidbox.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/pools.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/resource.py": {
+      "pagerank": 0.0074374461016671126
+    },
+    "kombu/serialization.py": {
+      "pagerank": 0.014352057561406296
+    },
+    "kombu/simple.py": {
+      "pagerank": 0.0074374461016671126
+    },
+    "kombu/transport/SLMQ.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/SQS.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/__init__.py": {
+      "pagerank": 0.04598833629399172
+    },
+    "kombu/transport/azureservicebus.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/azurestoragequeues.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/base.py": {
+      "pagerank": 0.013218700308242985
+    },
+    "kombu/transport/confluentkafka.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/consul.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/etcd.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/filesystem.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/gcpubsub.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/librabbitmq.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/memory.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/mongodb.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/native_delayed_delivery.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/pyamqp.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/pyro.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/qpid.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/redis.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/sqlalchemy/__init__.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/sqlalchemy/models.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/virtual/__init__.py": {
+      "pagerank": 0.02906355523394677
+    },
+    "kombu/transport/virtual/base.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/transport/virtual/exchange.py": {
+      "pagerank": 0.008517372236008276
+    },
+    "kombu/transport/zookeeper.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/utils/__init__.py": {
+      "pagerank": 0.02658556965005457
+    },
+    "kombu/utils/amq_manager.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/utils/collections.py": {
+      "pagerank": 0.008377711716114055
+    },
+    "kombu/utils/compat.py": {
+      "pagerank": 0.015907486948380407
+    },
+    "kombu/utils/debug.py": {
+      "pagerank": 0.0074374461016671126
+    },
+    "kombu/utils/div.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/utils/encoding.py": {
+      "pagerank": 0.03624747145796657
+    },
+    "kombu/utils/eventio.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/utils/functional.py": {
+      "pagerank": 0.017948972062597917
+    },
+    "kombu/utils/imports.py": {
+      "pagerank": 0.012278434693796044
+    },
+    "kombu/utils/json.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/utils/limits.py": {
+      "pagerank": 0.007342040217949599
+    },
+    "kombu/utils/objects.py": {
+      "pagerank": 0.012233905474309078
+    },
+    "kombu/utils/scheduling.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/utils/text.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/utils/time.py": {
+      "pagerank": 0.0066368410071143925
+    },
+    "kombu/utils/url.py": {
+      "pagerank": 0.0074374461016671126
+    },
+    "kombu/utils/uuid.py": {
+      "pagerank": 0.00877164055047654
+    }
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "size": 6,
+      "edge_count": 11,
+      "density_directed": 0.366667,
+      "edge_surplus_lb": 4,
+      "total_loc": 2822,
+      "avg_loc_per_node": 470.33,
+      "nodes": [
+        {
+          "id": "kombu/abstract.py",
+          "kind": "file"
+        },
+        {
+          "id": "kombu/common.py",
+          "kind": "file"
+        },
+        {
+          "id": "kombu/connection.py",
+          "kind": "file"
+        },
+        {
+          "id": "kombu/entity.py",
+          "kind": "file"
+        },
+        {
+          "id": "kombu/messaging.py",
+          "kind": "file"
+        },
+        {
+          "id": "kombu/simple.py",
+          "kind": "file"
+        }
+      ],
+      "edges": [
+        {
+          "source": "kombu/abstract.py",
+          "target": "kombu/connection.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/common.py",
+          "target": "kombu/entity.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/connection.py",
+          "target": "kombu/messaging.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/connection.py",
+          "target": "kombu/simple.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/entity.py",
+          "target": "kombu/abstract.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/messaging.py",
+          "target": "kombu/common.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/messaging.py",
+          "target": "kombu/connection.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/messaging.py",
+          "target": "kombu/entity.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/simple.py",
+          "target": "kombu/connection.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/simple.py",
+          "target": "kombu/entity.py",
+          "relation": "import"
+        },
+        {
+          "source": "kombu/simple.py",
+          "target": "kombu/messaging.py",
+          "relation": "import"
+        }
+      ]
+    }
+  ]
+}

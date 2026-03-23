@@ -1,0 +1,155 @@
+{
+  "schema_version": 1,
+  "generated_at_utc": "2026-03-20T00:08:30Z",
+  "input": {
+    "dependency_graph": "/workspace/results_dev/click/branches/main/ATD_identification/dependency_graph.json",
+    "scc_report": "/workspace/results_dev/click/branches/main/ATD_identification/scc_report.json",
+    "repo": "click",
+    "base_branch": "main"
+  },
+  "params": {
+    "max_cycle_len": 8,
+    "attempts_per_scc": 50000,
+    "max_cycles_per_scc": 200,
+    "seed": 12345
+  },
+  "summary": {
+    "scc_count": 3,
+    "cycle_count": 4
+  },
+  "sccs": [
+    {
+      "id": "scc_0",
+      "node_count": 5,
+      "edge_count": 8,
+      "cycles": [
+        {
+          "id": "scc_0_cycle_0",
+          "length": 4,
+          "nodes": [
+            "src/click/core.py",
+            "src/click/formatting.py",
+            "src/click/parser.py",
+            "src/click/shell_completion.py"
+          ],
+          "edges": [
+            {
+              "source": "src/click/core.py",
+              "target": "src/click/formatting.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/click/formatting.py",
+              "target": "src/click/parser.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/click/parser.py",
+              "target": "src/click/shell_completion.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/click/shell_completion.py",
+              "target": "src/click/core.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.025185627098564322,
+            "pagerank_min": 0.0199665201595038,
+            "pagerank_max": 0.032863390251304636
+          }
+        },
+        {
+          "id": "scc_0_cycle_1",
+          "length": 2,
+          "nodes": [
+            "src/click/core.py",
+            "src/click/decorators.py"
+          ],
+          "edges": [
+            {
+              "source": "src/click/core.py",
+              "target": "src/click/decorators.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/click/decorators.py",
+              "target": "src/click/core.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.02533371324049686,
+            "pagerank_min": 0.017804036229689083,
+            "pagerank_max": 0.032863390251304636
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_1",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_1_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/click/exceptions.py",
+            "src/click/utils.py"
+          ],
+          "edges": [
+            {
+              "source": "src/click/exceptions.py",
+              "target": "src/click/utils.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/click/utils.py",
+              "target": "src/click/exceptions.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.05897655749382677,
+            "pagerank_min": 0.054709757621322665,
+            "pagerank_max": 0.06324335736633088
+          }
+        }
+      ]
+    },
+    {
+      "id": "scc_2",
+      "node_count": 2,
+      "edge_count": 2,
+      "cycles": [
+        {
+          "id": "scc_2_cycle_0",
+          "length": 2,
+          "nodes": [
+            "src/click/_compat.py",
+            "src/click/_winconsole.py"
+          ],
+          "edges": [
+            {
+              "source": "src/click/_compat.py",
+              "target": "src/click/_winconsole.py",
+              "relation": "import"
+            },
+            {
+              "source": "src/click/_winconsole.py",
+              "target": "src/click/_compat.py",
+              "relation": "import"
+            }
+          ],
+          "metrics": {
+            "pagerank_avg": 0.28036107904867713,
+            "pagerank_min": 0.2658837437586984,
+            "pagerank_max": 0.2948384143386559
+          }
+        }
+      ]
+    }
+  ]
+}
