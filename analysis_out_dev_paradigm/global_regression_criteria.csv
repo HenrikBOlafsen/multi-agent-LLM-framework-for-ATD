@@ -1,0 +1,5 @@
+mode_id,Configuration,Denominator,Any global regression,Redundancy increase,New outside-target cyclic nodes,Both criteria
+no_explain,No explanation,80,27.5,17.5,22.5,12.5
+explain_E0_S0_noaux,Descriptive,75,12.0,5.3,12.0,5.3
+explain_E1_S1_noaux,Advisory,85,15.3,9.4,8.2,2.4
+explain_E2_S2_noaux,Directive,89,18.0,11.2,14.6,7.9

@@ -1,0 +1,49 @@
+repo,mode_id,Configuration,Runs,Successes,Success
+AngleSharp,no_explain,No explanation,15,3,20.0
+AngleSharp,explain_E0_S0_noaux,Descriptive,15,1,6.7
+AngleSharp,explain_E1_S1_noaux,Advisory,15,4,26.7
+AngleSharp,explain_E2_S2_noaux,Directive,15,2,13.3
+Bogus,no_explain,No explanation,15,1,6.7
+Bogus,explain_E0_S0_noaux,Descriptive,15,1,6.7
+Bogus,explain_E1_S1_noaux,Advisory,15,3,20.0
+Bogus,explain_E2_S2_noaux,Directive,15,2,13.3
+CSharpFunctionalExtensions,no_explain,No explanation,15,3,20.0
+CSharpFunctionalExtensions,explain_E0_S0_noaux,Descriptive,15,2,13.3
+CSharpFunctionalExtensions,explain_E1_S1_noaux,Advisory,15,3,20.0
+CSharpFunctionalExtensions,explain_E2_S2_noaux,Directive,15,4,26.7
+FakeItEasy,no_explain,No explanation,15,5,33.3
+FakeItEasy,explain_E0_S0_noaux,Descriptive,15,3,20.0
+FakeItEasy,explain_E1_S1_noaux,Advisory,15,1,6.7
+FakeItEasy,explain_E2_S2_noaux,Directive,15,3,20.0
+FluentValidation,no_explain,No explanation,15,5,33.3
+FluentValidation,explain_E0_S0_noaux,Descriptive,15,9,60.0
+FluentValidation,explain_E1_S1_noaux,Advisory,15,7,46.7
+FluentValidation,explain_E2_S2_noaux,Directive,15,7,46.7
+LiteDB,no_explain,No explanation,15,4,26.7
+LiteDB,explain_E0_S0_noaux,Descriptive,15,6,40.0
+LiteDB,explain_E1_S1_noaux,Advisory,15,6,40.0
+LiteDB,explain_E2_S2_noaux,Directive,15,4,26.7
+click,no_explain,No explanation,15,2,13.3
+click,explain_E0_S0_noaux,Descriptive,15,3,20.0
+click,explain_E1_S1_noaux,Advisory,15,5,33.3
+click,explain_E2_S2_noaux,Directive,15,3,20.0
+jinja,no_explain,No explanation,15,2,13.3
+jinja,explain_E0_S0_noaux,Descriptive,15,5,33.3
+jinja,explain_E1_S1_noaux,Advisory,15,6,40.0
+jinja,explain_E2_S2_noaux,Directive,15,9,60.0
+kombu,no_explain,No explanation,10,0,0.0
+kombu,explain_E0_S0_noaux,Descriptive,10,0,0.0
+kombu,explain_E1_S1_noaux,Advisory,10,1,10.0
+kombu,explain_E2_S2_noaux,Directive,10,1,10.0
+lark,no_explain,No explanation,10,0,0.0
+lark,explain_E0_S0_noaux,Descriptive,10,0,0.0
+lark,explain_E1_S1_noaux,Advisory,10,1,10.0
+lark,explain_E2_S2_noaux,Directive,10,0,0.0
+rich,no_explain,No explanation,15,2,13.3
+rich,explain_E0_S0_noaux,Descriptive,15,5,33.3
+rich,explain_E1_S1_noaux,Advisory,15,2,13.3
+rich,explain_E2_S2_noaux,Directive,15,3,20.0
+werkzeug,no_explain,No explanation,15,0,0.0
+werkzeug,explain_E0_S0_noaux,Descriptive,15,2,13.3
+werkzeug,explain_E1_S1_noaux,Advisory,15,2,13.3
+werkzeug,explain_E2_S2_noaux,Directive,15,1,6.7

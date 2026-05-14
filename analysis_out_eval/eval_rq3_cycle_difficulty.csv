@@ -1,0 +1,8 @@
+"Pooled_success_rate_bin","Cycles","Baseline_success_pct","Selected_success_pct"
+"0%",13,0,0
+">0--10%",7,1.9,6.7
+">10--25%",2,30,6.7
+">25--50%",7,25.7,42.9
+">50--75%",1,53.3,80
+">75--<100%",0,NA,NA
+"100%",0,NA,NA

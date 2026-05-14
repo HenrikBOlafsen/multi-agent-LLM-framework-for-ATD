@@ -1,0 +1,8 @@
+modes:
+  - id: no_explain
+    label: No explanation
+    experiments: [expFinal1, expFinal2, expFinal3, expFinal4, expFinal5, expFinal6, expFinal7, expFinal8, expFinal9, expFinal10, expFinal11, expFinal12, expFinal13, expFinal14, expFinal15]
+
+  - id: explain_E1_S1_noaux
+    label: Advisory
+    experiments: [expFinal1, expFinal2, expFinal3, expFinal4, expFinal5, expFinal6, expFinal7, expFinal8, expFinal9, expFinal10, expFinal11, expFinal12, expFinal13, expFinal14, expFinal15]

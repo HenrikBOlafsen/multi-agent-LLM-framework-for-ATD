@@ -1,0 +1,5 @@
+mode_id,Configuration,Mean expl. chars,Median expl. chars
+no_explain,No explanation,0,0
+explain_E0_S0_noaux,Descriptive,2651,2704
+explain_E1_S1_noaux,Advisory,2944,3000
+explain_E2_S2_noaux,Directive,2942,2950

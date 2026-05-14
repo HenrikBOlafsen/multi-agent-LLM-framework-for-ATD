@@ -1,0 +1,13 @@
+mode_id,cycle_size_bin,Cycle size,Runs,Behavior preserved,Cycle broken,Local improvement,Success
+no_explain,2--3,2--3 (baseline),55,49.1,32.7,18.2,12.7
+explain_E0_S0_noaux,2--3,2--3 (Descriptive),55,52.7,32.7,16.4,12.7
+explain_E1_S1_noaux,2--3,2--3 (Advisory),55,43.6,30.9,21.8,18.2
+explain_E2_S2_noaux,2--3,2--3 (Directive),55,63.6,47.3,20.0,18.2
+no_explain,4--6,4--6 (baseline),55,49.1,25.5,21.8,21.8
+explain_E0_S0_noaux,4--6,4--6 (Descriptive),55,30.9,20.0,20.0,18.2
+explain_E1_S1_noaux,4--6,4--6 (Advisory),55,54.5,34.5,29.1,29.1
+explain_E2_S2_noaux,4--6,4--6 (Directive),55,38.2,25.5,23.6,23.6
+no_explain,7--8,7--8 (baseline),60,43.3,18.3,16.7,13.3
+explain_E0_S0_noaux,7--8,7--8 (Descriptive),60,48.3,36.7,33.3,33.3
+explain_E1_S1_noaux,7--8,7--8 (Advisory),60,51.7,28.3,26.7,25.0
+explain_E2_S2_noaux,7--8,7--8 (Directive),60,55.0,30.0,30.0,26.7

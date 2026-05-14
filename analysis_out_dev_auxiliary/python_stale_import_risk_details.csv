@@ -1,0 +1,447 @@
+mode_id,Configuration,experiment_id,repo,cycle_id,risk_type,symbol,removal_kind,old_module,new_module,old_file,new_file,affected_file,affected_line
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,click,scc_2_cycle_0,stale_local_reference_after_move,_FixupStream,moved,click._compat,click._windows,src/click/_compat.py,src/click/_windows.py,src/click/_compat.py,403
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_0,stale_old_import,has_safe_repr,moved,jinja2.compiler,jinja2.utils,src/jinja2/compiler.py,src/jinja2/utils.py,src/jinja2/nativetypes.py,11
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,jinja,scc_0_cycle_0,stale_old_import,has_safe_repr,moved,jinja2.compiler,jinja2.utils,src/jinja2/compiler.py,src/jinja2/utils.py,src/jinja2/nativetypes.py,11
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,jinja,scc_0_cycle_0,removed_import_still_used,markupsafe,import_removed,markupsafe,,src/jinja2/utils.py,,src/jinja2/utils.py,298
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,jinja,scc_0_cycle_0,removed_import_still_used,markupsafe,import_removed,markupsafe,,src/jinja2/utils.py,,src/jinja2/utils.py,299
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,jinja,scc_0_cycle_0,removed_import_still_used,markupsafe,import_removed,markupsafe,,src/jinja2/utils.py,,src/jinja2/utils.py,300
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,jinja,scc_0_cycle_0,removed_import_still_used,markupsafe,import_removed,markupsafe,,src/jinja2/utils.py,,src/jinja2/utils.py,420
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,jinja,scc_0_cycle_0,removed_import_still_used,markupsafe,import_removed,markupsafe,,src/jinja2/utils.py,,src/jinja2/utils.py,421
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,jinja,scc_0_cycle_0,removed_import_still_used,markupsafe,import_removed,markupsafe,,src/jinja2/utils.py,,src/jinja2/utils.py,685
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,ChainableUndefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,30
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/debug.py,11
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/environment.py,47
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/ext.py,15
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/filters.py,36
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/sandbox.py,19
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Cycler,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,5
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,DebugUndefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,31
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Joiner,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,7
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,LRUCache,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,55
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,LRUCache,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/lexer.py,15
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Namespace,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,8
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,StrictUndefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,33
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,34
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/environment.py,49
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/exceptions.py,4
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/exceptions.py,38
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/exceptions.py,71
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/ext.py,16
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/filters.py,22
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/sandbox.py,20
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/tests.py,8
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,clear_caches,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,36
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,consume,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,52
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,generate_lorem_ipsum,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,6
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,htmlsafe_json_dumps,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,24
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,import_string,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,53
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,import_string,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/ext.py,17
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,internalcode,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,54
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,internalcode,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/loaders.py,18
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,is_undefined,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,37
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,make_logging_undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,32
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,new_context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/environment.py,48
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,pass_context,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,38
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,pass_context,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/ext.py,18
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,pass_context,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,25
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,39
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,26
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/tests.py,9
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,pformat,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,27
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,select_autoescape,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,40
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,url_quote,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,28
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,jinja,scc_0_cycle_1,stale_old_import,urlize,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,29
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,kombu,scc_0_cycle_0,removed_import_still_used,PooledConnection,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,263
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,kombu,scc_0_cycle_0,removed_import_still_used,is_connection,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,237
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,kombu,scc_0_cycle_1,removed_import_still_used,PooledConnection,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,262
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,lark,scc_1_cycle_0,removed_import_still_used,TerminalDef,import_removed,lexer,,lark/common.py,,lark/common.py,162
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,rich,scc_0_cycle_10,removed_import_still_used,Lines,import_removed,containers,,rich/text.py,,rich/text.py,1096
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,rich,scc_0_cycle_10,removed_import_still_used,Lines,import_removed,containers,,rich/text.py,,rich/text.py,1107
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,rich,scc_0_cycle_10,removed_import_still_used,Lines,import_removed,containers,,rich/text.py,,rich/text.py,1207
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,rich,scc_0_cycle_10,removed_import_still_used,Lines,import_removed,containers,,rich/text.py,,rich/text.py,1212
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,rich,scc_0_cycle_10,removed_import_still_used,Lines,import_removed,containers,,rich/text.py,,rich/text.py,1236
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Span,deleted,rich.text,,rich/text.py,,rich/highlighter.py,5
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Span,deleted,rich.text,,rich/text.py,,rich/markup.py,10
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/__main__.py,15
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/_inspect.py,12
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/_log_render.py,5
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/abc.py,22
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/ansi.py,8
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/box.py,431
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/color.py,15
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/color.py,318
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/color.py,597
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/console.py,62
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/containers.py,127
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/default_styles.py,178
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/file_proxy.py,5
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/highlighter.py,5
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/json.py,5
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/live.py,15
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/live_render.py,9
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/logging.py,14
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/markdown.py,22
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/markup.py,10
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/palette.py,23
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/panel.py,11
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/pretty.py,47
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/progress.py,52
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/prompt.py,5
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/rule.py,9
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/scope.py,8
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/segment.py,724
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/spinner.py,6
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/syntax.py,52
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/table.py,25
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,rich,scc_0_cycle_10,stale_old_import,Text,deleted,rich.text,,rich/text.py,,rich/traceback.py,46
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,156
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,178
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,191
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,203
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,211
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,216
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,223
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,228
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,237
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,257
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,350
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,362
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,369
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,376
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,384
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,397
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,405
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,413
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,421
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,430
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,439
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,450
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,462
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/sansio/request.py,,src/werkzeug/sansio/request.py,477
+explain_E1_S1_noaux,Advisory (no auxiliary),expEE2,werkzeug,scc_0_cycle_0,removed_import_still_used,cached_property,import_removed,utils,,src/werkzeug/test.py,,src/werkzeug/test.py,1350
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,werkzeug,scc_1_cycle_0,removed_import_still_used,generate_etag,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,41
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_date,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,47
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_date,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,64
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_etags,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,73
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_etags,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,75
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_etags,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,85
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_if_range_header,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,59
+explain_E1_S1_noaux,Advisory (no auxiliary),expAA2,werkzeug,scc_1_cycle_0,removed_import_still_used,unquote_etag,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,70
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,dump_age,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/sansio/http_utils.py,13
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,dump_age,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/sansio/response.py,18
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,generate_etag,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/sansio/http_utils.py,17
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,http_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/exceptions.py,665
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,http_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/middleware/shared_data.py,26
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,http_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/sansio/http_utils.py,18
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,http_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/wrappers/response.py,11
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,is_resource_modified,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/middleware/shared_data.py,27
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,is_resource_modified,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/wrappers/response.py,12
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,parse_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/sansio/http_utils.py,25
+explain_E1_S1_noaux,Advisory (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,parse_if_range_header,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/sansio/http_utils.py,27
+explain_E2_S2_noaux,Directive (no auxiliary),expAA2,click,scc_0_cycle_0,removed_import_still_used,_split_opt,import_removed,parser,,src/click/core.py,,src/click/core.py,1905
+explain_E2_S2_noaux,Directive (no auxiliary),expAA2,click,scc_0_cycle_0,removed_import_still_used,_split_opt,import_removed,parser,,src/click/core.py,,src/click/core.py,2850
+explain_E2_S2_noaux,Directive (no auxiliary),expAA2,click,scc_0_cycle_0,removed_import_still_used,_split_opt,import_removed,parser,,src/click/core.py,,src/click/core.py,2861
+explain_E2_S2_noaux,Directive (no auxiliary),expAA2,click,scc_0_cycle_0,removed_import_still_used,_split_opt,import_removed,parser,,src/click/core.py,,src/click/core.py,3026
+explain_E2_S2_noaux,Directive (no auxiliary),expAA2,click,scc_1_cycle_0,removed_import_still_used,open_stream,import_removed,_compat,,src/click/utils.py,,src/click/utils.py,90
+explain_E2_S2_noaux,Directive (no auxiliary),expCC2,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,47
+explain_E2_S2_noaux,Directive (no auxiliary),expCC2,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,85
+explain_E2_S2_noaux,Directive (no auxiliary),expCC2,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,86
+explain_E2_S2_noaux,Directive (no auxiliary),expCC2,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,272
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,ChainableUndefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,30
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/debug.py,11
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/environment.py,47
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/ext.py,15
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/filters.py,36
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/sandbox.py,19
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Cycler,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,5
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,DebugUndefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,31
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Joiner,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,7
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,LRUCache,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,55
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,LRUCache,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/lexer.py,15
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Namespace,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,8
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,StrictUndefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,33
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,34
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/_runtime_helpers.py,49
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/environment.py,49
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/exceptions.py,4
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/exceptions.py,38
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/exceptions.py,71
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/ext.py,16
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/filters.py,22
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/sandbox.py,20
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,Undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/tests.py,8
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,_PassArg,moved,jinja2.utils,jinja2._runtime_helpers,src/jinja2/utils.py,src/jinja2/_runtime_helpers.py,src/jinja2/compiler.py,22
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,_PassArg,moved,jinja2.utils,jinja2._runtime_helpers,src/jinja2/utils.py,src/jinja2/_runtime_helpers.py,src/jinja2/environment.py,50
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,_PassArg,moved,jinja2.utils,jinja2._shared_helpers,src/jinja2/utils.py,src/jinja2/_shared_helpers.py,src/jinja2/compiler.py,22
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,_PassArg,moved,jinja2.utils,jinja2._shared_helpers,src/jinja2/utils.py,src/jinja2/_shared_helpers.py,src/jinja2/environment.py,50
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,clear_caches,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,35
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,consume,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,52
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,generate_lorem_ipsum,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,6
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,htmlsafe_json_dumps,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,23
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,import_string,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,53
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,import_string,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/ext.py,17
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,internalcode,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,54
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,internalcode,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/loaders.py,18
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,make_logging_undefined,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/__init__.py,32
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,new_context,deleted,jinja2.runtime,,src/jinja2/runtime.py,,src/jinja2/environment.py,48
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_context,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,37
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_context,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/ext.py,18
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_context,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,24
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,38
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,25
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/tests.py,9
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_eval_context,moved,jinja2.utils,jinja2._runtime_helpers,src/jinja2/utils.py,src/jinja2/_runtime_helpers.py,src/jinja2/__init__.py,39
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_eval_context,moved,jinja2.utils,jinja2._runtime_helpers,src/jinja2/utils.py,src/jinja2/_runtime_helpers.py,src/jinja2/filters.py,26
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_eval_context,moved,jinja2.utils,jinja2._shared_helpers,src/jinja2/utils.py,src/jinja2/_shared_helpers.py,src/jinja2/__init__.py,39
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pass_eval_context,moved,jinja2.utils,jinja2._shared_helpers,src/jinja2/utils.py,src/jinja2/_shared_helpers.py,src/jinja2/filters.py,26
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,pformat,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,27
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,select_autoescape,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,40
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,url_quote,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,28
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,jinja,scc_0_cycle_1,stale_old_import,urlize,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,29
+explain_E2_S2_noaux,Directive (no auxiliary),expDD2,kombu,scc_0_cycle_0,removed_import_still_used,compress,import_removed,compression,,kombu/messaging.py,,kombu/messaging.py,295
+explain_E2_S2_noaux,Directive (no auxiliary),expAA2,rich,scc_0_cycle_0,removed_import_still_used,Align,import_removed,align,,rich/console.py,,rich/console.py,1541
+explain_E2_S2_noaux,Directive (no auxiliary),expAA2,rich,scc_0_cycle_0,removed_import_still_used,AlignMethod,import_removed,align,,rich/console.py,,rich/console.py,1541
+explain_E2_S2_noaux,Directive (no auxiliary),expEE2,rich,scc_0_cycle_0,removed_import_still_used,Align,import_removed,align,,rich/console.py,,rich/console.py,1540
+explain_E2_S2_noaux,Directive (no auxiliary),expDD2,werkzeug,scc_0_cycle_1,removed_import_still_used,CallbackDict,import_removed,datastructures,,src/werkzeug/sansio/response.py,,src/werkzeug/sansio/response.py,503
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,werkzeug,scc_1_cycle_0,stale_old_import,parse_cookie,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/debug/__init__.py,24
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,werkzeug,scc_1_cycle_0,stale_old_import,parse_cookie,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/test.py,30
+explain_E2_S2_noaux,Directive (no auxiliary),expBB2,werkzeug,scc_1_cycle_0,stale_old_import,remove_entity_headers,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/wrappers/response.py,15
+explain_E2_S2_noaux,Directive (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,is_resource_modified,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/middleware/shared_data.py,27
+explain_E2_S2_noaux,Directive (no auxiliary),expDD2,werkzeug,scc_1_cycle_0,stale_old_import,is_resource_modified,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/wrappers/response.py,12
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,click,scc_1_cycle_0,stale_old_import,FileError,deleted,click.exceptions,,src/click/exceptions.py,,src/click/utils.py,165
+explain_E1_S1_boundary,Advisory + boundary agent,expEE4,click,scc_1_cycle_0,stale_old_import,echo,moved,click.utils,click._shared,src/click/utils.py,src/click/_shared.py,src/click/__init__.py,66
+explain_E1_S1_boundary,Advisory + boundary agent,expEE4,click,scc_1_cycle_0,stale_old_import,echo,moved,click.utils,click._shared,src/click/utils.py,src/click/_shared.py,src/click/_termui_impl.py,31
+explain_E1_S1_boundary,Advisory + boundary agent,expEE4,click,scc_1_cycle_0,stale_old_import,echo,moved,click.utils,click._shared,src/click/utils.py,src/click/_shared.py,src/click/core.py,42
+explain_E1_S1_boundary,Advisory + boundary agent,expEE4,click,scc_1_cycle_0,stale_old_import,echo,moved,click.utils,click._shared,src/click/utils.py,src/click/_shared.py,src/click/decorators.py,15
+explain_E1_S1_boundary,Advisory + boundary agent,expEE4,click,scc_1_cycle_0,stale_old_import,echo,moved,click.utils,click._shared,src/click/utils.py,src/click/_shared.py,src/click/shell_completion.py,16
+explain_E1_S1_boundary,Advisory + boundary agent,expEE4,click,scc_1_cycle_0,stale_old_import,echo,moved,click.utils,click._shared,src/click/utils.py,src/click/_shared.py,src/click/termui.py,20
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,click,scc_2_cycle_0,stale_local_reference_after_move,_FixupStream,moved,click._compat,click._io,src/click/_compat.py,src/click/_io.py,src/click/_compat.py,405
+explain_E1_S1_boundary,Advisory + boundary agent,expAA4,jinja,scc_0_cycle_0,stale_old_import,generate,deleted,jinja2.compiler,,src/jinja2/compiler.py,,src/jinja2/environment.py,20
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_0,stale_old_import,has_safe_repr,moved,jinja2.compiler,jinja2.utils,src/jinja2/compiler.py,src/jinja2/utils.py,src/jinja2/nativetypes.py,11
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,Cycler,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,5
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,Joiner,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,7
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,LRUCache,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,55
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,LRUCache,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/lexer.py,15
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,async_variant,deleted,jinja2.async_utils,,src/jinja2/async_utils.py,,src/jinja2/filters.py,17
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,auto_aiter,deleted,jinja2.async_utils,,src/jinja2/async_utils.py,,src/jinja2/filters.py,18
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,auto_aiter,deleted,jinja2.async_utils,,src/jinja2/async_utils.py,,src/jinja2/runtime.py,13
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,auto_await,deleted,jinja2.async_utils,,src/jinja2/async_utils.py,,src/jinja2/filters.py,19
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,auto_await,deleted,jinja2.async_utils,,src/jinja2/async_utils.py,,src/jinja2/runtime.py,14
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,auto_to_list,deleted,jinja2.async_utils,,src/jinja2/async_utils.py,,src/jinja2/filters.py,20
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,clear_caches,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,35
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,generate_lorem_ipsum,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/defaults.py,6
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,htmlsafe_json_dumps,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,23
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,import_string,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,53
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,import_string,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/ext.py,17
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,is_undefined,moved,jinja2.utils,jinja2.runtime,src/jinja2/utils.py,src/jinja2/runtime.py,src/jinja2/__init__.py,36
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,pformat,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,27
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,select_autoescape,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,40
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,url_quote,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,28
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,jinja,scc_0_cycle_1,stale_old_import,urlize,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,29
+explain_E1_S1_boundary,Advisory + boundary agent,expBB4,kombu,scc_0_cycle_0,stale_old_import,is_connection,moved,kombu.connection,kombu.abstract,kombu/connection.py,kombu/abstract.py,kombu/messaging.py,10
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_0,removed_import_still_used,PooledConnection,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,263
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_0,removed_import_still_used,is_connection,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,237
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,get_logger,import_removed,log,,kombu/connection.py,,kombu/connection.py,39
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,Resource,import_removed,resource,,kombu/connection.py,,kombu/connection.py,1033
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,Resource,import_removed,resource,,kombu/connection.py,,kombu/connection.py,1078
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,supports_librabbitmq,import_removed,transport,,kombu/connection.py,,kombu/connection.py,259
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,HashedSeq,import_removed,utils.collections,,kombu/connection.py,,kombu/connection.py,697
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,dictfilter,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,199
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,lazy,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,1056
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,lazy,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,1069
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,lazy,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,1088
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,lazy,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,1096
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,retry_over_time,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,453
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,shufflecycle,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,50
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,cached_property,import_removed,utils.objects,,kombu/connection.py,,kombu/connection.py,968
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,cached_property,import_removed,utils.objects,,kombu/connection.py,,kombu/connection.py,982
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,cached_property,import_removed,utils.objects,,kombu/connection.py,,kombu/connection.py,998
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,cached_property,import_removed,utils.objects,,kombu/connection.py,,kombu/connection.py,1010
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,cached_property,import_removed,utils.objects,,kombu/connection.py,,kombu/connection.py,1015
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,as_url,import_removed,utils.url,,kombu/connection.py,,kombu/connection.py,727
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,maybe_sanitize_url,import_removed,utils.url,,kombu/connection.py,,kombu/connection.py,717
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,maybe_sanitize_url,import_removed,utils.url,,kombu/connection.py,,kombu/connection.py,722
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,parse_url,import_removed,utils.url,,kombu/connection.py,,kombu/connection.py,197
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,parse_url,import_removed,utils.url,,kombu/connection.py,,kombu/connection.py,246
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,quote,import_removed,utils.url,,kombu/connection.py,,kombu/connection.py,728
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,kombu,scc_0_cycle_1,removed_import_still_used,urlparse,import_removed,utils.url,,kombu/connection.py,,kombu/connection.py,194
+explain_E1_S1_boundary,Advisory + boundary agent,expBB4,lark,scc_0_cycle_0,removed_import_still_used,UnexpectedEOF,import_removed,exceptions,,lark/parsers/earley.py,,lark/parsers/earley.py,288
+explain_E1_S1_boundary,Advisory + boundary agent,expBB4,lark,scc_0_cycle_0,removed_import_still_used,UnexpectedInput,import_removed,lark.exceptions,,lark/parsers/lalr_parser.py,,lark/parsers/lalr_parser.py,42
+explain_E1_S1_boundary,Advisory + boundary agent,expBB4,lark,scc_0_cycle_0,removed_import_still_used,UnexpectedInput,import_removed,lark.exceptions,,lark/parsers/lalr_parser.py,,lark/parsers/lalr_parser.py,110
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_DictAccessorProperty,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/utils.py,18
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_dt_as_utc,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/http.py,20
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_dt_as_utc,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/sansio/http.py,7
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_get_environ,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/exceptions.py,55
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_get_environ,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/routing/map.py,11
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_get_environ,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/test.py,18
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_get_environ,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/wrappers/response.py,8
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_log,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/_reloader.py,13
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_log,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/debug/__init__.py,21
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_log,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/serving.py,33
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_plain_int,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/datastructures/file_storage.py,11
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_plain_int,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/formparser.py,7
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_plain_int,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/http.py,21
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_plain_int,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/sansio/utils.py,6
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_wsgi_decoding_dance,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/routing/map.py,12
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_wsgi_decoding_dance,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/test.py,19
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_wsgi_decoding_dance,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/wrappers/request.py,9
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_wsgi_encoding_dance,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/serving.py,34
+explain_E1_S1_boundary,Advisory + boundary agent,expDD4,werkzeug,scc_0_cycle_0,stale_old_import,_wsgi_encoding_dance,deleted,werkzeug._internal,,src/werkzeug/_internal.py,,src/werkzeug/test.py,20
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,werkzeug,scc_1_cycle_0,removed_import_still_used,_sansio_http,import_removed,sansio,,src/werkzeug/http.py,,src/werkzeug/http.py,1112
+explain_E1_S1_boundary,Advisory + boundary agent,expCC4,werkzeug,scc_1_cycle_0,removed_import_still_used,_sansio_http,import_removed,sansio,,src/werkzeug/http.py,,src/werkzeug/http.py,1218
+explain_E1_S1_graph,Advisory + graph agent,expAA4,click,scc_0_cycle_0,removed_import_still_used,_split_opt,import_removed,parser,,src/click/formatting.py,,src/click/formatting.py,292
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,_NonClosingTextIOWrapper,deleted,click._compat,,src/click/_compat.py,,src/click/_winconsole.py,32
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,_find_binary_reader,deleted,click._compat,,src/click/_compat.py,,src/click/testing.py,17
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,_find_binary_writer,deleted,click._compat,,src/click/_compat.py,,src/click/utils.py,14
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,get_best_encoding,deleted,click._compat,,src/click/_compat.py,,src/click/_termui_impl.py,24
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,get_text_stderr,deleted,click._compat,,src/click/_compat.py,,src/click/exceptions.py,8
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,isatty,deleted,click._compat,,src/click/_compat.py,,src/click/_termui_impl.py,25
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,isatty,deleted,click._compat,,src/click/_compat.py,,src/click/termui.py,12
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,should_strip_ansi,deleted,click._compat,,src/click/_compat.py,,src/click/utils.py,18
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,strip_ansi,deleted,click._compat,,src/click/_compat.py,,src/click/_termui_impl.py,27
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,strip_ansi,deleted,click._compat,,src/click/_compat.py,,src/click/termui.py,13
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,strip_ansi,deleted,click._compat,,src/click/_compat.py,,src/click/utils.py,19
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,term_len,deleted,click._compat,,src/click/_compat.py,,src/click/_termui_impl.py,28
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,stale_old_import,term_len,deleted,click._compat,,src/click/_compat.py,,src/click/formatting.py,7
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,removed_import_still_used,HelpFormatter,import_removed,formatting,,src/click/core.py,,src/click/core.py,271
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,removed_import_still_used,Argument,import_removed,core,,src/click/shell_completion.py,,src/click/shell_completion.py,504
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,removed_import_still_used,Group,import_removed,core,,src/click/shell_completion.py,,src/click/shell_completion.py,576
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,removed_import_still_used,Option,import_removed,core,,src/click/shell_completion.py,,src/click/shell_completion.py,536
+explain_E1_S1_graph,Advisory + graph agent,expDD4,click,scc_0_cycle_0,removed_import_still_used,ParameterSource,import_removed,core,,src/click/shell_completion.py,,src/click/shell_completion.py,512
+explain_E1_S1_graph,Advisory + graph agent,expEE4,click,scc_2_cycle_0,stale_local_reference_after_move,_FixupStream,moved,click._compat,click._windows,src/click/_compat.py,src/click/_windows.py,src/click/_compat.py,403
+explain_E1_S1_graph,Advisory + graph agent,expAA4,jinja,scc_0_cycle_1,stale_old_import,_PassArg,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/async_utils.py,6
+explain_E1_S1_graph,Advisory + graph agent,expAA4,jinja,scc_0_cycle_1,stale_old_import,_PassArg,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/compiler.py,22
+explain_E1_S1_graph,Advisory + graph agent,expAA4,jinja,scc_0_cycle_1,stale_old_import,_PassArg,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/environment.py,50
+explain_E1_S1_graph,Advisory + graph agent,expAA4,jinja,scc_0_cycle_1,stale_old_import,_PassArg,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/nodes.py,13
+explain_E1_S1_graph,Advisory + graph agent,expAA4,jinja,scc_0_cycle_1,stale_old_import,_PassArg,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/runtime.py,27
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,stale_old_import,auto_to_list,deleted,jinja2.async_utils,,src/jinja2/async_utils.py,,src/jinja2/filters.py,20
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/__init__.py,38
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/filters.py,25
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,stale_old_import,pass_environment,deleted,jinja2.utils,,src/jinja2/utils.py,,src/jinja2/tests.py,9
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,stale_old_import,pass_eval_context,moved,jinja2.utils,jinja2._pass_arg,src/jinja2/utils.py,src/jinja2/_pass_arg.py,src/jinja2/__init__.py,39
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,stale_old_import,pass_eval_context,moved,jinja2.utils,jinja2._pass_arg,src/jinja2/utils.py,src/jinja2/_pass_arg.py,src/jinja2/filters.py,26
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,stale_local_reference_after_move,_PassArg,moved,jinja2.utils,jinja2._pass_arg,src/jinja2/utils.py,src/jinja2/_pass_arg.py,src/jinja2/utils.py,51
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,removed_import_still_used,auto_aiter,import_removed,async_utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,595
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,277
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,281
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,283
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,291
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,293
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_1,removed_import_still_used,pass_eval_context,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,692
+explain_E1_S1_graph,Advisory + graph agent,expBB4,jinja,scc_0_cycle_2,removed_import_still_used,Optimizer,import_removed,optimizer,,src/jinja2/compiler.py,,src/jinja2/compiler.py,331
+explain_E1_S1_graph,Advisory + graph agent,expCC4,kombu,scc_0_cycle_0,removed_import_still_used,compress,import_removed,compression,,kombu/messaging.py,,kombu/messaging.py,295
+explain_E1_S1_graph,Advisory + graph agent,expDD4,kombu,scc_0_cycle_0,removed_import_still_used,maybe_channel,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,427
+explain_E1_S1_graph,Advisory + graph agent,expDD4,kombu,scc_0_cycle_0,removed_import_still_used,maybe_channel,import_removed,connection,,kombu/simple.py,,kombu/simple.py,36
+explain_E1_S1_graph,Advisory + graph agent,expCC4,kombu,scc_0_cycle_1,removed_import_still_used,compress,import_removed,compression,,kombu/messaging.py,,kombu/messaging.py,294
+explain_E1_S1_graph,Advisory + graph agent,expBB4,werkzeug,scc_0_cycle_0,removed_import_still_used,uri_to_iri,import_removed,urls,,src/werkzeug/sansio/utils.py,,src/werkzeug/sansio/utils.py,136
+explain_E1_S1_graph,Advisory + graph agent,expBB4,werkzeug,scc_0_cycle_0,removed_import_still_used,uri_to_iri,import_removed,urls,,src/werkzeug/sansio/utils.py,,src/werkzeug/sansio/utils.py,144
+explain_E1_S1_graph,Advisory + graph agent,expBB4,werkzeug,scc_0_cycle_0,removed_import_still_used,uri_to_iri,import_removed,urls,,src/werkzeug/sansio/utils.py,,src/werkzeug/sansio/utils.py,152
+explain_E1_S1_graph,Advisory + graph agent,expBB4,werkzeug,scc_1_cycle_0,removed_import_still_used,_sansio_http,import_removed,sansio,,src/werkzeug/http.py,,src/werkzeug/http.py,1112
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,90
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,128
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,129
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,315
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,jinja,scc_0_cycle_0,stale_old_import,has_safe_repr,moved,jinja2.compiler,jinja2.nodes,src/jinja2/compiler.py,src/jinja2/nodes.py,src/jinja2/nativetypes.py,11
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,jinja,scc_0_cycle_0,stale_old_import,has_safe_repr,moved,jinja2.compiler,jinja2.nodes,src/jinja2/compiler.py,src/jinja2/nodes.py,src/jinja2/nativetypes.py,11
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,jinja,scc_0_cycle_1,stale_old_import,is_undefined,moved,jinja2.utils,jinja2._shared,src/jinja2/utils.py,src/jinja2/_shared.py,src/jinja2/__init__.py,36
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,jinja,scc_0_cycle_1,stale_old_import,is_undefined,moved,jinja2.utils,jinja2.runtime,src/jinja2/utils.py,src/jinja2/runtime.py,src/jinja2/__init__.py,36
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,jinja,scc_0_cycle_1,stale_local_reference_after_move,auto_aiter,moved,jinja2.async_utils,jinja2.runtime,src/jinja2/async_utils.py,src/jinja2/runtime.py,src/jinja2/async_utils.py,14
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,279
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,283
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,285
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,293
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,295
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,jinja,scc_0_cycle_1,removed_import_still_used,EvalContext,import_removed,nodes,,src/jinja2/runtime.py,,src/jinja2/runtime.py,186
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,jinja,scc_0_cycle_1,removed_import_still_used,EvalContext,import_removed,nodes,,src/jinja2/runtime.py,,src/jinja2/runtime.py,723
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,jinja,scc_0_cycle_1,removed_import_still_used,concat,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,95
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,jinja,scc_0_cycle_1,removed_import_still_used,concat,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,100
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,jinja,scc_0_cycle_1,removed_import_still_used,object_type_repr,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,853
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,jinja,scc_0_cycle_1,removed_import_still_used,object_type_repr,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,858
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,jinja,scc_0_cycle_1,removed_import_still_used,object_type_repr,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,1042
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,kombu,scc_0_cycle_0,removed_import_still_used,PooledConnection,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,263
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_0,removed_import_still_used,dictfilter,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,205
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_0,removed_import_still_used,lazy,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,1081
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_0,removed_import_still_used,lazy,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,1094
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_0,removed_import_still_used,lazy,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,1113
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_0,removed_import_still_used,lazy,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,1121
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_0,removed_import_still_used,retry_over_time,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,459
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_0,removed_import_still_used,shufflecycle,import_removed,utils.functional,,kombu/connection.py,,kombu/connection.py,56
+explain_E2_S2_boundary,Directive + boundary agent,expEE3,kombu,scc_0_cycle_0,removed_import_still_used,is_connection,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,238
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,kombu,scc_0_cycle_1,stale_local_reference_after_move,PooledConnection,moved,kombu.connection,kombu.common,kombu/connection.py,kombu/common.py,kombu/connection.py,1049
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,kombu,scc_0_cycle_1,stale_local_reference_after_move,is_connection,moved,kombu.connection,kombu.common,kombu/connection.py,kombu/common.py,kombu/connection.py,1115
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_1,stale_old_import,maybe_channel,moved,kombu.connection,kombu.common,kombu/connection.py,kombu/common.py,kombu/abstract.py,8
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_1,stale_old_import,maybe_channel,moved,kombu.connection,kombu.common,kombu/connection.py,kombu/common.py,kombu/simple.py,12
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_1,stale_local_reference_after_move,PooledConnection,moved,kombu.connection,kombu.common,kombu/connection.py,kombu/common.py,kombu/connection.py,1049
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_1,removed_import_still_used,NAMESPACE_OID,import_removed,uuid,,kombu/common.py,,kombu/common.py,49
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_1,removed_import_still_used,NAMESPACE_OID,import_removed,uuid,,kombu/common.py,,kombu/common.py,51
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_1,removed_import_still_used,uuid3,import_removed,uuid,,kombu/common.py,,kombu/common.py,49
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_1,removed_import_still_used,uuid4,import_removed,uuid,,kombu/common.py,,kombu/common.py,41
+explain_E2_S2_boundary,Directive + boundary agent,expDD3,kombu,scc_0_cycle_1,removed_import_still_used,uuid5,import_removed,uuid,,kombu/common.py,,kombu/common.py,51
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,rich,scc_0_cycle_10,stale_old_import,Renderables,deleted,rich.containers,,rich/containers.py,,rich/_log_render.py,43
+explain_E2_S2_boundary,Directive + boundary agent,expCC3,rich,scc_0_cycle_10,stale_old_import,Renderables,deleted,rich.containers,,rich/containers.py,,rich/markdown.py,15
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,werkzeug,scc_1_cycle_0,removed_import_still_used,generate_etag,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,40
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_date,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,46
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_date,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,63
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_etags,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,72
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_etags,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,74
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_etags,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,84
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,werkzeug,scc_1_cycle_0,removed_import_still_used,parse_if_range_header,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,58
+explain_E2_S2_boundary,Directive + boundary agent,expBB3,werkzeug,scc_1_cycle_0,removed_import_still_used,unquote_etag,import_removed,http,,src/werkzeug/sansio/http.py,,src/werkzeug/sansio/http.py,69
+explain_E2_S2_graph,Directive + graph agent,expBB3,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,91
+explain_E2_S2_graph,Directive + graph agent,expBB3,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,129
+explain_E2_S2_graph,Directive + graph agent,expBB3,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,130
+explain_E2_S2_graph,Directive + graph agent,expBB3,click,scc_1_cycle_0,removed_import_still_used,echo,import_removed,utils,,src/click/exceptions.py,,src/click/exceptions.py,316
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,stale_old_import,pass_environment,moved,jinja2.utils,jinja2._compat,src/jinja2/utils.py,src/jinja2/_compat.py,src/jinja2/__init__.py,38
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,stale_old_import,pass_environment,moved,jinja2.utils,jinja2._compat,src/jinja2/utils.py,src/jinja2/_compat.py,src/jinja2/tests.py,9
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_eval_context,import_removed,utils,,src/jinja2/async_utils.py,,src/jinja2/async_utils.py,50
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,689
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,1448
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,1532
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,1573
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,1609
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,1649
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_eval_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,176
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_eval_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,257
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_eval_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,577
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_eval_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,739
+explain_E2_S2_graph,Directive + graph agent,expAA3,jinja,scc_0_cycle_0,removed_import_still_used,pass_eval_context,import_removed,utils,,src/jinja2/filters.py,,src/jinja2/filters.py,1687
+explain_E2_S2_graph,Directive + graph agent,expEE3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,319
+explain_E2_S2_graph,Directive + graph agent,expEE3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,323
+explain_E2_S2_graph,Directive + graph agent,expEE3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,325
+explain_E2_S2_graph,Directive + graph agent,expEE3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,333
+explain_E2_S2_graph,Directive + graph agent,expEE3,jinja,scc_0_cycle_1,removed_import_still_used,_PassArg,import_removed,utils,,src/jinja2/runtime.py,,src/jinja2/runtime.py,335
+explain_E2_S2_graph,Directive + graph agent,expDD3,kombu,scc_0_cycle_1,removed_import_still_used,is_connection,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,248
+explain_E2_S2_graph,Directive + graph agent,expDD3,kombu,scc_0_cycle_1,removed_import_still_used,maybe_channel,import_removed,connection,,kombu/messaging.py,,kombu/messaging.py,438
+explain_E2_S2_graph,Directive + graph agent,expEE3,kombu,scc_0_cycle_1,stale_old_import,is_connection,moved,kombu.connection,kombu.utils.connection_utils,kombu/connection.py,kombu/utils/connection_utils.py,kombu/utils/connection_utils.py,16
+explain_E2_S2_graph,Directive + graph agent,expEE3,kombu,scc_0_cycle_1,stale_old_import,is_connection,moved,kombu.connection,kombu.utils.connection_utils,kombu/connection.py,kombu/utils/connection_utils.py,kombu/utils/shared.py,16
+explain_E2_S2_graph,Directive + graph agent,expEE3,kombu,scc_0_cycle_1,stale_old_import,is_connection,moved,kombu.connection,kombu.utils.shared,kombu/connection.py,kombu/utils/shared.py,kombu/utils/connection_utils.py,16
+explain_E2_S2_graph,Directive + graph agent,expEE3,kombu,scc_0_cycle_1,stale_old_import,is_connection,moved,kombu.connection,kombu.utils.shared,kombu/connection.py,kombu/utils/shared.py,kombu/utils/shared.py,16
+explain_E2_S2_graph,Directive + graph agent,expEE3,kombu,scc_0_cycle_1,stale_old_import,maybe_channel,moved,kombu.connection,kombu.utils.connection_utils,kombu/connection.py,kombu/utils/connection_utils.py,kombu/abstract.py,8
+explain_E2_S2_graph,Directive + graph agent,expEE3,kombu,scc_0_cycle_1,stale_old_import,maybe_channel,moved,kombu.connection,kombu.utils.connection_utils,kombu/connection.py,kombu/utils/connection_utils.py,kombu/simple.py,12
+explain_E2_S2_graph,Directive + graph agent,expEE3,kombu,scc_0_cycle_1,stale_old_import,maybe_channel,moved,kombu.connection,kombu.utils.shared,kombu/connection.py,kombu/utils/shared.py,kombu/abstract.py,8
+explain_E2_S2_graph,Directive + graph agent,expEE3,kombu,scc_0_cycle_1,stale_old_import,maybe_channel,moved,kombu.connection,kombu.utils.shared,kombu/connection.py,kombu/utils/shared.py,kombu/simple.py,12
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/__init__.py,12
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/common.py,18
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/indenter.py,8
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/lark.py,24
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/load_grammar.py,15
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/parse_tree_builder.py,6
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/parsers/cyk.py,12
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/parsers/earley.py,15
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/parsers/lalr_interactive_parser.py,8
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/parsers/lalr_parser.py,6
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/parsers/lalr_parser_state.py,3
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/parsers/xearley.py,22
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/reconstruct.py,9
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/tree.py,6
+explain_E2_S2_graph,Directive + graph agent,expEE3,lark,scc_1_cycle_0,stale_old_import,Token,moved,lark.lexer,lark.token,lark/lexer.py,lark/token.py,lark/visitors.py,7
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_0_cycle_0,stale_old_import,BadHost,deleted,werkzeug.exceptions,,src/werkzeug/exceptions.py,,src/werkzeug/routing/map.py,15
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_0_cycle_0,stale_old_import,BadRequestKeyError,deleted,werkzeug.exceptions,,src/werkzeug/exceptions.py,,src/werkzeug/datastructures/headers.py,8
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_0_cycle_0,stale_old_import,ClientDisconnected,deleted,werkzeug.exceptions,,src/werkzeug/exceptions.py,,src/werkzeug/wsgi.py,8
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_0_cycle_0,stale_old_import,SecurityError,deleted,werkzeug.exceptions,,src/werkzeug/exceptions.py,,src/werkzeug/debug/__init__.py,23
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_0_cycle_0,stale_old_import,SecurityError,deleted,werkzeug.exceptions,,src/werkzeug/exceptions.py,,src/werkzeug/sansio/utils.py,7
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_1_cycle_0,stale_old_import,http_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/exceptions.py,665
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_1_cycle_0,stale_old_import,http_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/middleware/shared_data.py,26
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_1_cycle_0,stale_old_import,http_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/sansio/response.py,22
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_1_cycle_0,stale_old_import,http_date,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/wrappers/response.py,11
+explain_E2_S2_graph,Directive + graph agent,expDD3,werkzeug,scc_1_cycle_0,stale_old_import,quote_etag,deleted,werkzeug.http,,src/werkzeug/http.py,,src/werkzeug/sansio/response.py,31

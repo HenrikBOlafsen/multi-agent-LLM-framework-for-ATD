@@ -1,0 +1,2 @@
+fakeRepoPython1 master fakepkg python
+fakeRepoCsharp1 main FakeApp csharp

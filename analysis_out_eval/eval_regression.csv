@@ -1,0 +1,4 @@
+"Effect","Coefficient","Odds_ratio","CI_95_odds_ratio","p"
+"Configuration (Advisory)",0.563,1.755,"1.096--2.81","0.018"
+"Cycle random-effect variance",5.065,NA,NA,NA
+"Repository random-effect variance (robustness model)",2.246,NA,NA,NA

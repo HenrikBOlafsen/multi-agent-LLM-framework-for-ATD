@@ -1,0 +1,5 @@
+mode_id,Configuration,No change,Behavior regression,Noncompliant change,Cosmetic only,Structural regression,Success
+no_explain,No explanation,0.0,25.0,50.0,0.0,25.0,0.0
+explain_E0_S0_noaux,explain_E0_S0_noaux,,,,,,
+explain_E1_S1_noaux,Explain debug,25.0,0.0,0.0,0.0,25.0,50.0
+explain_E2_S2_noaux,explain_E2_S2_noaux,,,,,,

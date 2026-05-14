@@ -1,0 +1,8 @@
+projects_dir: projects_to_analyze
+repos_file: repos_testing.txt
+cycles_file: cycles_to_analyze_testing.txt
+results_root: results_testing
+
+modes:
+  - id: no_explain
+  - id: explain_E1_S1_noaux

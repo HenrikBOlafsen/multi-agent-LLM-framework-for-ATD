@@ -1,0 +1,7 @@
+mode_id,Configuration,Runs,Behavior preserved,Cycle broken,Local improvement,Success
+explain_E1_S1_noaux,Advisory (no auxiliary),170,50.0,31.2,25.9,24.1
+explain_E2_S2_noaux,Directive (no auxiliary),170,52.4,34.1,24.7,22.9
+explain_E1_S1_boundary,Advisory + boundary agent,170,52.4,29.4,23.5,21.8
+explain_E1_S1_graph,Advisory + graph agent,170,49.4,29.4,23.5,22.4
+explain_E2_S2_boundary,Directive + boundary agent,170,54.1,33.5,21.8,21.8
+explain_E2_S2_graph,Directive + graph agent,170,50.0,29.4,21.8,18.8

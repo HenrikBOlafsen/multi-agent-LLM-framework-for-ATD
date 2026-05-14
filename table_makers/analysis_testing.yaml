@@ -1,0 +1,8 @@
+modes:
+  - id: no_explain
+    label: No explanation
+    experiments: [expT1, expT2]
+
+  - id: explain_E1_S1_noaux
+    label: Explain debug
+    experiments: [expT1, expT2]

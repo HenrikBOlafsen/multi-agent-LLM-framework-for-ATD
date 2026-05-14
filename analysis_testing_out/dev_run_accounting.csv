@@ -1,0 +1,7 @@
+mode_id,Configuration,Executed,Structurally evaluable,No code change,Blocked,Other incomplete
+no_explain,No explanation,4,4,0,0,0
+explain_E0_S0_noaux,explain_E0_S0_noaux,0,0,0,0,0
+explain_E1_S1_noaux,Explain debug,4,4,1,0,0
+explain_E2_S2_noaux,explain_E2_S2_noaux,0,0,0,0,0
+explain_E2_S2_boundary,explain_E2_S2_boundary,0,0,0,0,0
+explain_E2_S2_graph,explain_E2_S2_graph,0,0,0,0,0

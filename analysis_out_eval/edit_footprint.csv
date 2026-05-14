@@ -1,0 +1,3 @@
+mode_id,Configuration,Median files modified,IQR files modified,Median chars changed,IQR chars changed,Median chars changed (succ. only)
+no_explain,No explanation,2.0,2.0,1668.5,4138.0,1117.0
+explain_E1_S1_noaux,Advisory,3.0,2.0,1472.0,3601.0,665.0

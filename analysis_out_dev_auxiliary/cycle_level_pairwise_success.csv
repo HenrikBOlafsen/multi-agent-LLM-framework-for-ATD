@@ -1,0 +1,6 @@
+Comparison,Left mode,Right mode,Paired cycles,Delta mean (pp),CI low (pp),CI high (pp)
+Advisory vs Directive,explain_E1_S1_noaux,explain_E2_S2_noaux,34,1.2,-4.7,7.1
+Advisory + boundary vs Advisory,explain_E1_S1_boundary,explain_E1_S1_noaux,34,-2.4,-9.4,5.3
+Advisory + graph vs Advisory,explain_E1_S1_graph,explain_E1_S1_noaux,34,-1.8,-9.4,5.9
+Directive + boundary vs Directive,explain_E2_S2_boundary,explain_E2_S2_noaux,34,-1.2,-8.2,5.9
+Directive + graph vs Directive,explain_E2_S2_graph,explain_E2_S2_noaux,34,-4.1,-12.4,4.1

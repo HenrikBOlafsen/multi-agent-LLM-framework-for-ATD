@@ -1,0 +1,5 @@
+mode_id,Configuration,Runs,Structurally evaluable,Other incomplete
+no_explain,No explanation,170,170,0
+explain_E0_S0_noaux,Descriptive,170,167,3
+explain_E1_S1_noaux,Advisory,170,167,3
+explain_E2_S2_noaux,Directive,170,168,2

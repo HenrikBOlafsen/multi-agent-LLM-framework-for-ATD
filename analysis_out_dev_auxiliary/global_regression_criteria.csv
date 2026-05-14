@@ -1,0 +1,7 @@
+mode_id,Configuration,Denominator,Any global regression,Redundancy increase,New outside-target cyclic nodes,Both criteria
+explain_E1_S1_noaux,Advisory (no auxiliary),85,15.3,9.4,8.2,2.4
+explain_E2_S2_noaux,Directive (no auxiliary),89,18.0,11.2,14.6,7.9
+explain_E1_S1_boundary,Advisory + boundary agent,89,15.7,9.0,12.4,5.6
+explain_E1_S1_graph,Advisory + graph agent,84,13.1,8.3,10.7,6.0
+explain_E2_S2_boundary,Directive + boundary agent,92,19.6,9.8,19.6,9.8
+explain_E2_S2_graph,Directive + graph agent,85,17.6,10.6,15.3,8.2

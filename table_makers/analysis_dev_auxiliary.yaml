@@ -1,0 +1,24 @@
+modes:
+  - id: explain_E1_S1_noaux
+    label: Advisory (no auxiliary)
+    experiments: [expAA2, expBB2, expCC2, expDD2, expEE2]
+
+  - id: explain_E2_S2_noaux
+    label: Directive (no auxiliary)
+    experiments: [expAA2, expBB2, expCC2, expDD2, expEE2]
+
+  - id: explain_E1_S1_boundary
+    label: Advisory + boundary agent
+    experiments: [expAA4, expBB4, expCC4, expDD4, expEE4]
+
+  - id: explain_E1_S1_graph
+    label: Advisory + graph agent
+    experiments: [expAA4, expBB4, expCC4, expDD4, expEE4]
+
+  - id: explain_E2_S2_boundary
+    label: Directive + boundary agent
+    experiments: [expAA3, expBB3, expCC3, expDD3, expEE3]
+
+  - id: explain_E2_S2_graph
+    label: Directive + graph agent
+    experiments: [expAA3, expBB3, expCC3, expDD3, expEE3]

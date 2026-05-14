@@ -1,0 +1,5 @@
+mode_id,Configuration,Runs,Behavior preserved,Cycle broken,Local improvement,Success
+no_explain,No explanation,4,75.0,0.0,50.0,0.0
+explain_E0_S0_noaux,explain_E0_S0_noaux,0,,,,
+explain_E1_S1_noaux,Explain debug,4,75.0,75.0,75.0,50.0
+explain_E2_S2_noaux,explain_E2_S2_noaux,0,,,,

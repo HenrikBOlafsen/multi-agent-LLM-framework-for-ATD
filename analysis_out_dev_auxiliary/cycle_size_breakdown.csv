@@ -1,0 +1,19 @@
+mode_id,cycle_size_bin,Cycle size,Runs,Behavior preserved,Cycle broken,Local improvement,Success
+explain_E1_S1_noaux,2--3,2--3 (Advisory (no auxiliary)),55,43.6,30.9,21.8,18.2
+explain_E2_S2_noaux,2--3,2--3 (Directive (no auxiliary)),55,63.6,47.3,20.0,18.2
+explain_E1_S1_boundary,2--3,2--3 (Advisory + boundary agent),55,50.9,36.4,20.0,16.4
+explain_E1_S1_graph,2--3,2--3 (Advisory + graph agent),55,50.9,34.5,20.0,18.2
+explain_E2_S2_boundary,2--3,2--3 (Directive + boundary agent),55,54.5,41.8,20.0,20.0
+explain_E2_S2_graph,2--3,2--3 (Directive + graph agent),55,54.5,34.5,14.5,12.7
+explain_E1_S1_noaux,4--6,4--6 (Advisory (no auxiliary)),55,54.5,34.5,29.1,29.1
+explain_E2_S2_noaux,4--6,4--6 (Directive (no auxiliary)),55,38.2,25.5,23.6,23.6
+explain_E1_S1_boundary,4--6,4--6 (Advisory + boundary agent),55,49.1,29.1,27.3,27.3
+explain_E1_S1_graph,4--6,4--6 (Advisory + graph agent),55,43.6,27.3,23.6,23.6
+explain_E2_S2_boundary,4--6,4--6 (Directive + boundary agent),55,45.5,30.9,18.2,18.2
+explain_E2_S2_graph,4--6,4--6 (Directive + graph agent),55,52.7,36.4,32.7,29.1
+explain_E1_S1_noaux,7--8,7--8 (Advisory (no auxiliary)),60,51.7,28.3,26.7,25.0
+explain_E2_S2_noaux,7--8,7--8 (Directive (no auxiliary)),60,55.0,30.0,30.0,26.7
+explain_E1_S1_boundary,7--8,7--8 (Advisory + boundary agent),60,56.7,23.3,23.3,21.7
+explain_E1_S1_graph,7--8,7--8 (Advisory + graph agent),60,53.3,26.7,26.7,25.0
+explain_E2_S2_boundary,7--8,7--8 (Directive + boundary agent),60,61.7,28.3,26.7,26.7
+explain_E2_S2_graph,7--8,7--8 (Directive + graph agent),60,43.3,18.3,18.3,15.0

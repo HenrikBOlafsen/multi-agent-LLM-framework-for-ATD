@@ -1,0 +1,73 @@
+repo,mode_id,Configuration,Runs,Successes,Success
+AngleSharp,explain_E1_S1_noaux,Advisory (no auxiliary),15,4,26.7
+AngleSharp,explain_E2_S2_noaux,Directive (no auxiliary),15,2,13.3
+AngleSharp,explain_E1_S1_boundary,Advisory + boundary agent,15,1,6.7
+AngleSharp,explain_E1_S1_graph,Advisory + graph agent,15,1,6.7
+AngleSharp,explain_E2_S2_boundary,Directive + boundary agent,15,2,13.3
+AngleSharp,explain_E2_S2_graph,Directive + graph agent,15,0,0.0
+Bogus,explain_E1_S1_noaux,Advisory (no auxiliary),15,3,20.0
+Bogus,explain_E2_S2_noaux,Directive (no auxiliary),15,2,13.3
+Bogus,explain_E1_S1_boundary,Advisory + boundary agent,15,3,20.0
+Bogus,explain_E1_S1_graph,Advisory + graph agent,15,4,26.7
+Bogus,explain_E2_S2_boundary,Directive + boundary agent,15,1,6.7
+Bogus,explain_E2_S2_graph,Directive + graph agent,15,2,13.3
+CSharpFunctionalExtensions,explain_E1_S1_noaux,Advisory (no auxiliary),15,3,20.0
+CSharpFunctionalExtensions,explain_E2_S2_noaux,Directive (no auxiliary),15,4,26.7
+CSharpFunctionalExtensions,explain_E1_S1_boundary,Advisory + boundary agent,15,4,26.7
+CSharpFunctionalExtensions,explain_E1_S1_graph,Advisory + graph agent,15,4,26.7
+CSharpFunctionalExtensions,explain_E2_S2_boundary,Directive + boundary agent,15,4,26.7
+CSharpFunctionalExtensions,explain_E2_S2_graph,Directive + graph agent,15,3,20.0
+FakeItEasy,explain_E1_S1_noaux,Advisory (no auxiliary),15,1,6.7
+FakeItEasy,explain_E2_S2_noaux,Directive (no auxiliary),15,3,20.0
+FakeItEasy,explain_E1_S1_boundary,Advisory + boundary agent,15,4,26.7
+FakeItEasy,explain_E1_S1_graph,Advisory + graph agent,15,4,26.7
+FakeItEasy,explain_E2_S2_boundary,Directive + boundary agent,15,5,33.3
+FakeItEasy,explain_E2_S2_graph,Directive + graph agent,15,3,20.0
+FluentValidation,explain_E1_S1_noaux,Advisory (no auxiliary),15,7,46.7
+FluentValidation,explain_E2_S2_noaux,Directive (no auxiliary),15,7,46.7
+FluentValidation,explain_E1_S1_boundary,Advisory + boundary agent,15,6,40.0
+FluentValidation,explain_E1_S1_graph,Advisory + graph agent,15,5,33.3
+FluentValidation,explain_E2_S2_boundary,Directive + boundary agent,15,11,73.3
+FluentValidation,explain_E2_S2_graph,Directive + graph agent,15,6,40.0
+LiteDB,explain_E1_S1_noaux,Advisory (no auxiliary),15,6,40.0
+LiteDB,explain_E2_S2_noaux,Directive (no auxiliary),15,4,26.7
+LiteDB,explain_E1_S1_boundary,Advisory + boundary agent,15,4,26.7
+LiteDB,explain_E1_S1_graph,Advisory + graph agent,15,5,33.3
+LiteDB,explain_E2_S2_boundary,Directive + boundary agent,15,4,26.7
+LiteDB,explain_E2_S2_graph,Directive + graph agent,15,5,33.3
+click,explain_E1_S1_noaux,Advisory (no auxiliary),15,5,33.3
+click,explain_E2_S2_noaux,Directive (no auxiliary),15,3,20.0
+click,explain_E1_S1_boundary,Advisory + boundary agent,15,5,33.3
+click,explain_E1_S1_graph,Advisory + graph agent,15,2,13.3
+click,explain_E2_S2_boundary,Directive + boundary agent,15,3,20.0
+click,explain_E2_S2_graph,Directive + graph agent,15,4,26.7
+jinja,explain_E1_S1_noaux,Advisory (no auxiliary),15,6,40.0
+jinja,explain_E2_S2_noaux,Directive (no auxiliary),15,9,60.0
+jinja,explain_E1_S1_boundary,Advisory + boundary agent,15,4,26.7
+jinja,explain_E1_S1_graph,Advisory + graph agent,15,6,40.0
+jinja,explain_E2_S2_boundary,Directive + boundary agent,15,4,26.7
+jinja,explain_E2_S2_graph,Directive + graph agent,15,4,26.7
+kombu,explain_E1_S1_noaux,Advisory (no auxiliary),10,1,10.0
+kombu,explain_E2_S2_noaux,Directive (no auxiliary),10,1,10.0
+kombu,explain_E1_S1_boundary,Advisory + boundary agent,10,1,10.0
+kombu,explain_E1_S1_graph,Advisory + graph agent,10,1,10.0
+kombu,explain_E2_S2_boundary,Directive + boundary agent,10,0,0.0
+kombu,explain_E2_S2_graph,Directive + graph agent,10,0,0.0
+lark,explain_E1_S1_noaux,Advisory (no auxiliary),10,1,10.0
+lark,explain_E2_S2_noaux,Directive (no auxiliary),10,0,0.0
+lark,explain_E1_S1_boundary,Advisory + boundary agent,10,2,20.0
+lark,explain_E1_S1_graph,Advisory + graph agent,10,1,10.0
+lark,explain_E2_S2_boundary,Directive + boundary agent,10,1,10.0
+lark,explain_E2_S2_graph,Directive + graph agent,10,2,20.0
+rich,explain_E1_S1_noaux,Advisory (no auxiliary),15,2,13.3
+rich,explain_E2_S2_noaux,Directive (no auxiliary),15,3,20.0
+rich,explain_E1_S1_boundary,Advisory + boundary agent,15,3,20.0
+rich,explain_E1_S1_graph,Advisory + graph agent,15,5,33.3
+rich,explain_E2_S2_boundary,Directive + boundary agent,15,2,13.3
+rich,explain_E2_S2_graph,Directive + graph agent,15,3,20.0
+werkzeug,explain_E1_S1_noaux,Advisory (no auxiliary),15,2,13.3
+werkzeug,explain_E2_S2_noaux,Directive (no auxiliary),15,1,6.7
+werkzeug,explain_E1_S1_boundary,Advisory + boundary agent,15,0,0.0
+werkzeug,explain_E1_S1_graph,Advisory + graph agent,15,0,0.0
+werkzeug,explain_E2_S2_boundary,Directive + boundary agent,15,0,0.0
+werkzeug,explain_E2_S2_graph,Directive + graph agent,15,0,0.0

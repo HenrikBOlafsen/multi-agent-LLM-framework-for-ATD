@@ -1,0 +1,6 @@
+"Structural_dimension","Coefficient","Odds_ratio","CI_95_odds_ratio"
+"Cycle size",0.412,1.51,"0.581--3.922"
+"Cycle centrality",-0.841,0.431,"0.147--1.264"
+"Enclosing SCC size",0.256,1.292,"0.466--3.578"
+"Repository size",0.103,1.109,"0.445--2.765"
+"Cycle external connectivity",0.094,1.099,"0.383--3.15"

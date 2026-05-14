@@ -1,0 +1,282 @@
+mode_id,Configuration,experiment_id,repo,cycle_id,risk_type,symbol,removal_kind,old_module,new_module,old_file,new_file,affected_file,affected_line
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,302
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,436
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,595
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,792
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,929
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,1082
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,1225
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,1386
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,1589
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,1676
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,schemaobj,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,2283
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,util,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,75
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,util,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,95
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,util,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,2788
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,util,import_removed,,,alembic/operations/ops.py,,alembic/operations/ops.py,2815
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,174
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,176
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,187
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,289
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,292
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,415
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,426
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,578
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,584
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,778
+no_explain,No explanation,expFinal3,alembic,scc_0_cycle_0,removed_import_still_used,sqla_compat,import_removed,util,,alembic/operations/ops.py,,alembic/operations/ops.py,782
+no_explain,No explanation,expFinal12,alembic,scc_0_cycle_3,removed_import_still_used,command,import_removed,,,alembic/config.py,,alembic/config.py,873
+no_explain,No explanation,expFinal12,flask,scc_0_cycle_0,stale_local_reference_after_move,AppGroup,moved,flask.cli,flask.cli_utils,src/flask/cli.py,src/flask/cli_utils.py,src/flask/cli.py,495
+no_explain,No explanation,expFinal12,flask,scc_0_cycle_0,removed_import_still_used,cli,import_removed,,,src/flask/app.py,,src/flask/app.py,710
+no_explain,No explanation,expFinal12,flask,scc_0_cycle_0,removed_import_still_used,cli,import_removed,,,src/flask/app.py,,src/flask/app.py,743
+no_explain,No explanation,expFinal8,flask,scc_0_cycle_0,removed_import_still_used,cli,import_removed,,,src/flask/app.py,,src/flask/app.py,710
+no_explain,No explanation,expFinal8,flask,scc_0_cycle_0,removed_import_still_used,cli,import_removed,,,src/flask/app.py,,src/flask/app.py,743
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/_impl.py,7
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/basecontainer.py,9
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/dictconfig.py,19
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/grammar_visitor.py,77
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/grammar_visitor.py,186
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/grammar_visitor.py,219
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/grammar_visitor.py,243
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/omegaconf.py,33
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/resolvers/oc/__init__.py,7
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,format_and_raise,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/dictconfig.py,19
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,format_and_raise,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/listconfig.py,17
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_old_import,format_and_raise,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/omegaconf.py,33
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_local_reference_after_move,format_and_raise,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/_utils.py,371
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_local_reference_after_move,format_and_raise,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/_utils.py,414
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_local_reference_after_move,format_and_raise,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/_utils.py,425
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_local_reference_after_move,format_and_raise,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/_utils.py,473
+no_explain,No explanation,expFinal10,omegaconf,scc_0_cycle_0,stale_local_reference_after_move,format_and_raise,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/_utils.py,483
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/_impl.py,7
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/basecontainer.py,9
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/dictconfig.py,19
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/omegaconf.py,33
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,355
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,368
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,375
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,382
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,394
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,397
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,399
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,408
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,409
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,410
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,413
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,421
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,422
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,424
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,426
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,430
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,441
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,442
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,443
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,444
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,445
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,446
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,447
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,448
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,449
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,450
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,451
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,452
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,453
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,454
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,455
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,456
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,457
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,458
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,459
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,460
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,461
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,462
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,463
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,464
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,465
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,466
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,467
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,470
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,475
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,480
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,485
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,490
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,496
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,530
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,532
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,535
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,538
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,562
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,586
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,654
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,659
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,671
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,675
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,690
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,964
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,987
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,992
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,1196
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,1211
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,1226
+no_explain,No explanation,expFinal13,omegaconf,scc_0_cycle_0,removed_import_still_used,_utils,import_removed,omegaconf,,tests/test_utils.py,,tests/test_utils.py,1241
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/_impl.py,7
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/base.py,9
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/basecontainer.py,9
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/dictconfig.py,19
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/grammar_visitor.py,77
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/grammar_visitor.py,186
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/grammar_visitor.py,219
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/grammar_visitor.py,243
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/omegaconf.py,33
+no_explain,No explanation,expFinal8,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,deleted,omegaconf._utils,,omegaconf/_utils.py,,omegaconf/resolvers/oc/__init__.py,7
+no_explain,No explanation,expFinal9,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/_impl.py,7
+no_explain,No explanation,expFinal9,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/basecontainer.py,9
+no_explain,No explanation,expFinal9,omegaconf,scc_0_cycle_0,stale_old_import,_get_value,moved,omegaconf._utils,omegaconf.base,omegaconf/_utils.py,omegaconf/base.py,omegaconf/dictconfig.py,19
+no_explain,No explanation,expFinal10,pydantic,scc_0_cycle_0,removed_import_still_used,PydanticDeprecatedSince26,import_removed,pydantic.warnings,,pydantic/json_schema.py,,pydantic/json_schema.py,964
+no_explain,No explanation,expFinal10,pydantic,scc_0_cycle_0,removed_import_still_used,PydanticDeprecatedSince26,import_removed,pydantic.warnings,,pydantic/json_schema.py,,pydantic/json_schema.py,975
+no_explain,No explanation,expFinal10,pydantic,scc_0_cycle_0,removed_import_still_used,PydanticDeprecatedSince29,import_removed,pydantic.warnings,,pydantic/json_schema.py,,pydantic/json_schema.py,2677
+no_explain,No explanation,expFinal15,pydantic,scc_0_cycle_0,stale_local_reference_after_move,PydanticJsonSchemaWarning,moved,pydantic.json_schema,pydantic._internal._core_metadata,pydantic/json_schema.py,pydantic/_internal/_core_metadata.py,pydantic/json_schema.py,2428
+no_explain,No explanation,expFinal3,pydantic,scc_0_cycle_0,removed_import_still_used,PydanticDeprecatedSince26,import_removed,pydantic.warnings,,pydantic/json_schema.py,,pydantic/json_schema.py,962
+no_explain,No explanation,expFinal3,pydantic,scc_0_cycle_0,removed_import_still_used,PydanticDeprecatedSince26,import_removed,pydantic.warnings,,pydantic/json_schema.py,,pydantic/json_schema.py,973
+no_explain,No explanation,expFinal3,pydantic,scc_0_cycle_0,removed_import_still_used,PydanticDeprecatedSince29,import_removed,pydantic.warnings,,pydantic/json_schema.py,,pydantic/json_schema.py,2675
+no_explain,No explanation,expFinal11,pydantic,scc_0_cycle_3,removed_import_still_used,Protocol,import_removed,typing,,pydantic/_internal/_dataclasses.py,,pydantic/_internal/_dataclasses.py,39
+no_explain,No explanation,expFinal2,pydantic,scc_0_cycle_3,stale_old_import,set_model_mocks,moved,pydantic._internal._mock_val_ser,pydantic._internal._mock_utils,pydantic/_internal/_mock_val_ser.py,pydantic/_internal/_mock_utils.py,pydantic/_internal/_model_construction.py,28
+no_explain,No explanation,expFinal5,pydantic,scc_0_cycle_3,removed_import_still_used,set_dataclass_mocks,import_removed,_mock_val_ser,,pydantic/_internal/_dataclasses.py,,pydantic/_internal/_dataclasses.py,127
+no_explain,No explanation,expFinal5,pydantic,scc_0_cycle_3,removed_import_still_used,set_dataclass_mocks,import_removed,_mock_val_ser,,pydantic/_internal/_dataclasses.py,,pydantic/_internal/_dataclasses.py,165
+no_explain,No explanation,expFinal5,pydantic,scc_0_cycle_3,removed_import_still_used,set_dataclass_mocks,import_removed,_mock_val_ser,,pydantic/_internal/_dataclasses.py,,pydantic/_internal/_dataclasses.py,173
+no_explain,No explanation,expFinal1,rope,scc_1_cycle_0,stale_old_import,Lambda,deleted,rope.base.builtins,,rope/base/builtins.py,,rope/refactor/functionutils.py,5
+no_explain,No explanation,expFinal1,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+no_explain,No explanation,expFinal10,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+no_explain,No explanation,expFinal10,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,688
+no_explain,No explanation,expFinal12,rope,scc_1_cycle_0,stale_old_import,Lambda,moved,rope.base.builtins,rope.base.evaluate,rope/base/builtins.py,rope/base/evaluate.py,rope/refactor/functionutils.py,5
+no_explain,No explanation,expFinal12,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+no_explain,No explanation,expFinal13,rope,scc_1_cycle_0,stale_old_import,Lambda,moved,rope.base.builtins,rope.base.evaluate,rope/base/builtins.py,rope/base/evaluate.py,rope/refactor/functionutils.py,5
+no_explain,No explanation,expFinal13,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+no_explain,No explanation,expFinal14,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+no_explain,No explanation,expFinal15,rope,scc_1_cycle_0,stale_old_import,Lambda,moved,rope.base.builtins,rope.base.evaluate,rope/base/builtins.py,rope/base/evaluate.py,rope/refactor/functionutils.py,5
+no_explain,No explanation,expFinal15,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,57
+no_explain,No explanation,expFinal2,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,37
+no_explain,No explanation,expFinal3,rope,scc_1_cycle_0,stale_old_import,Lambda,moved,rope.base.builtins,rope.base.lambda_class,rope/base/builtins.py,rope/base/lambda_class.py,rope/refactor/functionutils.py,5
+no_explain,No explanation,expFinal3,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,52
+no_explain,No explanation,expFinal4,rope,scc_1_cycle_0,stale_old_import,Lambda,moved,rope.base.builtins,rope.base.evaluate,rope/base/builtins.py,rope/base/evaluate.py,rope/refactor/functionutils.py,5
+no_explain,No explanation,expFinal4,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+no_explain,No explanation,expFinal5,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+no_explain,No explanation,expFinal5,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,692
+no_explain,No explanation,expFinal7,rope,scc_1_cycle_0,stale_old_import,OrderedSet,deleted,rope.base.utils.datastructures,,rope/base/utils/datastructures.py,,rope/refactor/extract.py,9
+no_explain,No explanation,expFinal7,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,38
+no_explain,No explanation,expFinal8,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+no_explain,No explanation,expFinal9,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,53
+no_explain,No explanation,expFinal9,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,696
+no_explain,No explanation,expFinal13,twisted,scc_0_cycle_0,removed_import_still_used,Logger,import_removed,_logger,,src/twisted/logger/_observer.py,,src/twisted/logger/_observer.py,32
+no_explain,No explanation,expFinal13,twisted,scc_0_cycle_0,removed_import_still_used,Logger,import_removed,_logger,,src/twisted/logger/_observer.py,,src/twisted/logger/_observer.py,104
+no_explain,No explanation,expFinal13,twisted,scc_0_cycle_0,removed_import_still_used,LogPublisher,import_removed,_observer,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,254
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,ILogObserver,import_removed,_interfaces,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,35
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,ILogObserver,import_removed,_interfaces,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,37
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,ILogObserver,import_removed,_interfaces,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,136
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,ILogObserver,import_removed,_interfaces,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,139
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,ILogObserver,import_removed,_interfaces,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,210
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,ILogObserver,import_removed,_interfaces,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,226
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,ILogObserver,import_removed,_interfaces,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,227
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,ILogObserver,import_removed,_interfaces,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,229
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,InvalidLogLevelError,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,319
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,InvalidLogLevelError,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,327
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,289
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,290
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,291
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,293
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,295
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,297
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,299
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,302
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,305
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,309
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,339
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,340
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,368
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,369
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,370
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,378
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,379
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,380
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,381
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,383
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,384
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,386
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,387
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,389
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,390
+no_explain,No explanation,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogPublisher,import_removed,_observer,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,252
+no_explain,No explanation,expFinal9,twisted,scc_0_cycle_0,removed_import_still_used,LogPublisher,import_removed,_observer,,src/twisted/logger/test/test_filter.py,,src/twisted/logger/test/test_filter.py,254
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/__init__.py,,alembic/operations/__init__.py,224
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,132
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,264
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,388
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,523
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,749
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,886
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1041
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1488
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1601
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1686
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,2040
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,2222
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,BatchOperations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,2487
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,131
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,263
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,387
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,522
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,748
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,885
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1040
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1164
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1333
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1450
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1487
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1600
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,1685
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,2039
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,2221
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,2362
+explain_E1_S1_noaux,Advisory,expFinal4,alembic,scc_0_cycle_0,removed_import_still_used,Operations,import_removed,base,,alembic/operations/ops.py,,alembic/operations/ops.py,2486
+explain_E1_S1_noaux,Advisory,expFinal1,alembic,scc_0_cycle_3,removed_import_still_used,Callable,import_removed,typing,,alembic/runtime/environment.py,,alembic/runtime/environment.py,45
+explain_E1_S1_noaux,Advisory,expFinal1,alembic,scc_0_cycle_3,removed_import_still_used,Callable,import_removed,typing,,alembic/runtime/environment.py,,alembic/runtime/environment.py,49
+explain_E1_S1_noaux,Advisory,expFinal1,alembic,scc_0_cycle_3,removed_import_still_used,Callable,import_removed,typing,,alembic/runtime/environment.py,,alembic/runtime/environment.py,65
+explain_E1_S1_noaux,Advisory,expFinal1,alembic,scc_0_cycle_3,removed_import_still_used,Callable,import_removed,typing,,alembic/runtime/environment.py,,alembic/runtime/environment.py,69
+explain_E1_S1_noaux,Advisory,expFinal1,alembic,scc_0_cycle_3,removed_import_still_used,Callable,import_removed,typing,,alembic/runtime/environment.py,,alembic/runtime/environment.py,80
+explain_E1_S1_noaux,Advisory,expFinal1,alembic,scc_0_cycle_3,removed_import_still_used,Callable,import_removed,typing,,alembic/runtime/environment.py,,alembic/runtime/environment.py,85
+explain_E1_S1_noaux,Advisory,expFinal1,alembic,scc_0_cycle_3,removed_import_still_used,Callable,import_removed,typing,,alembic/runtime/environment.py,,alembic/runtime/environment.py,97
+explain_E1_S1_noaux,Advisory,expFinal13,alembic,scc_0_cycle_3,removed_import_still_used,FetchedValue,import_removed,sqlalchemy.sql.schema,,alembic/runtime/environment.py,,alembic/runtime/environment.py,84
+explain_E1_S1_noaux,Advisory,expFinal14,flask,scc_0_cycle_0,removed_import_still_used,RequestRedirect,import_removed,werkzeug.routing,,src/flask/debughelpers.py,,src/flask/debughelpers.py,55
+explain_E1_S1_noaux,Advisory,expFinal14,flask,scc_0_cycle_0,removed_import_still_used,_cv_app,import_removed,globals,,src/flask/debughelpers.py,,src/flask/debughelpers.py,136
+explain_E1_S1_noaux,Advisory,expFinal15,omegaconf,scc_0_cycle_3,stale_old_import,_maybe_wrap,moved,omegaconf.omegaconf,omegaconf._wrap_helpers,omegaconf/omegaconf.py,omegaconf/_wrap_helpers.py,omegaconf/basecontainer.py,647
+explain_E1_S1_noaux,Advisory,expFinal13,pydantic,scc_0_cycle_0,stale_local_reference_after_move,PydanticJsonSchemaWarning,moved,pydantic.json_schema,pydantic.warnings,pydantic/json_schema.py,pydantic/warnings.py,pydantic/json_schema.py,2434
+explain_E1_S1_noaux,Advisory,expFinal15,pydantic,scc_0_cycle_0,stale_old_import,PydanticJsonSchemaWarning,moved,pydantic.json_schema,pydantic.warnings,pydantic/json_schema.py,pydantic/warnings.py,pydantic/fields.py,29
+explain_E1_S1_noaux,Advisory,expFinal4,pydantic,scc_0_cycle_0,stale_local_reference_after_move,PydanticJsonSchemaWarning,moved,pydantic.json_schema,pydantic.warnings,pydantic/json_schema.py,pydantic/warnings.py,pydantic/json_schema.py,2434
+explain_E1_S1_noaux,Advisory,expFinal5,pydantic,scc_0_cycle_0,stale_local_reference_after_move,PydanticJsonSchemaWarning,moved,pydantic.json_schema,pydantic.warnings,pydantic/json_schema.py,pydantic/warnings.py,pydantic/json_schema.py,2421
+explain_E1_S1_noaux,Advisory,expFinal5,pydantic,scc_0_cycle_0,removed_import_still_used,PydanticJsonSchemaWarning,import_removed,json_schema,,pydantic/fields.py,,pydantic/fields.py,617
+explain_E1_S1_noaux,Advisory,expFinal8,pydantic,scc_0_cycle_0,stale_local_reference_after_move,PydanticJsonSchemaWarning,moved,pydantic.json_schema,pydantic.warnings,pydantic/json_schema.py,pydantic/warnings.py,pydantic/json_schema.py,2434
+explain_E1_S1_noaux,Advisory,expFinal9,pydantic,scc_0_cycle_0,stale_local_reference_after_move,PydanticJsonSchemaWarning,moved,pydantic.json_schema,pydantic.warnings,pydantic/json_schema.py,pydantic/warnings.py,pydantic/json_schema.py,2434
+explain_E1_S1_noaux,Advisory,expFinal4,pydantic,scc_0_cycle_4,removed_import_still_used,BaseModel,import_removed,main,,pydantic/root_model.py,,pydantic/root_model.py,35
+explain_E1_S1_noaux,Advisory,expFinal14,rope,scc_0_cycle_0,stale_old_import,OrderedSet,deleted,rope.base.utils.datastructures,,rope/base/utils/datastructures.py,,rope/refactor/extract.py,9
+explain_E1_S1_noaux,Advisory,expFinal1,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal12,rope,scc_1_cycle_0,stale_old_import,Lambda,deleted,rope.base.builtins,,rope/base/builtins.py,,rope/refactor/functionutils.py,5
+explain_E1_S1_noaux,Advisory,expFinal13,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal14,rope,scc_1_cycle_0,stale_old_import,Lambda,deleted,rope.base.builtins,,rope/base/builtins.py,,rope/refactor/functionutils.py,5
+explain_E1_S1_noaux,Advisory,expFinal14,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal2,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal3,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal4,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal4,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,692
+explain_E1_S1_noaux,Advisory,expFinal5,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal5,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,692
+explain_E1_S1_noaux,Advisory,expFinal6,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal7,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,38
+explain_E1_S1_noaux,Advisory,expFinal7,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,694
+explain_E1_S1_noaux,Advisory,expFinal8,rope,scc_1_cycle_0,stale_old_import,Lambda,deleted,rope.base.builtins,,rope/base/builtins.py,,rope/refactor/functionutils.py,5
+explain_E1_S1_noaux,Advisory,expFinal8,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,36
+explain_E1_S1_noaux,Advisory,expFinal9,rope,scc_1_cycle_0,removed_import_still_used,rope,import_removed,rope.base.evaluate,,rope/base/builtins.py,,rope/base/builtins.py,37
+explain_E1_S1_noaux,Advisory,expFinal2,twisted,scc_0_cycle_0,stale_old_import,bitbucketLogObserver,moved,twisted.logger._observer,twisted.logger._interfaces,src/twisted/logger/_observer.py,src/twisted/logger/_interfaces.py,src/twisted/logger/test/test_filter.py,25
+explain_E1_S1_noaux,Advisory,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,InvalidLogLevelError,import_removed,_levels,,src/twisted/logger/_filter.py,,src/twisted/logger/_filter.py,182
+explain_E1_S1_noaux,Advisory,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/_filter.py,,src/twisted/logger/_filter.py,135
+explain_E1_S1_noaux,Advisory,expFinal2,twisted,scc_0_cycle_0,removed_import_still_used,LogLevel,import_removed,_levels,,src/twisted/logger/_filter.py,,src/twisted/logger/_filter.py,181
+explain_E1_S1_noaux,Advisory,expFinal5,twisted,scc_0_cycle_0,stale_old_import,bitbucketLogObserver,moved,twisted.logger._observer,twisted.logger._filter,src/twisted/logger/_observer.py,src/twisted/logger/_filter.py,src/twisted/logger/test/test_filter.py,25

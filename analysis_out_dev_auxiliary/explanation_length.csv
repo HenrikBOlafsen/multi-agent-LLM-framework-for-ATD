@@ -1,0 +1,7 @@
+mode_id,Configuration,Mean expl. chars,Median expl. chars
+explain_E1_S1_noaux,Advisory (no auxiliary),2944,3000
+explain_E2_S2_noaux,Directive (no auxiliary),2942,2950
+explain_E1_S1_boundary,Advisory + boundary agent,3124,3112
+explain_E1_S1_graph,Advisory + graph agent,3037,3035
+explain_E2_S2_boundary,Directive + boundary agent,3111,3106
+explain_E2_S2_graph,Directive + graph agent,3083,2995

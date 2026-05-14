@@ -1,7 +1,5 @@
 # Ignore all subfolders of folder
 projects_to_analyze/*/
-# …except this one
-!projects_to_analyze/customTestProject/
 
 .env
 .git
@@ -15,9 +13,11 @@ output_ATD_identification/*
 .quality/*
 reports/*
 results/*
-results_small_backup/*
-results_old/*
-results copy/*
+results_dev/*
+results_eval/*
+results_testing/*
+results_dev_backup.tar.gz
+results_eval_backup.tar.gz
 results_all_backup/*
 test_runs/cases/ok_smoke_realish/results_old/*
 test_runs/cases/**/results/
@@ -27,12 +27,12 @@ test_runs/cases/**/models.json
 test_runs/cases/**/fake_llm.log
 openhands_logs/*
 results_clean_baseline/*
-all_experiment_results/*
-all_experiment_results_backup/*
-all_experiment_results.zip
-results_small_test/*
+analysis_backups/*
 
 ATD_identification/dotnet_type_deps/bin
 ATD_identification/dotnet_type_deps/obj
 
 vllm_proxy_logs/*
+
+repo_selection_stats.csv
+repo_selection_summary.csv

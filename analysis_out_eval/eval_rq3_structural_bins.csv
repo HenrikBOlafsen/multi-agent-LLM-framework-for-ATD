@@ -1,0 +1,13 @@
+Factor,Bin,Cycles,Runs per configuration,Baseline successes,Baseline success (%),Selected successes,Selected success (%)
+Cycle centrality,<=1x average,10,150,19,12.7,19,12.7
+Cycle centrality,1--2x average,14,210,20,9.5,35,16.7
+Cycle centrality,>2x average,6,90,7,7.8,12,13.3
+Enclosing SCC size,1--10,11,165,14,8.5,36,21.8
+Enclosing SCC size,11--50,16,240,30,12.5,30,12.5
+Enclosing SCC size,>50,3,45,2,4.4,0,0.0
+Repository size,<=100,14,210,20,9.5,37,17.6
+Repository size,101--300,9,135,13,9.6,4,3.0
+Repository size,>300,7,105,13,12.4,25,23.8
+Cycle external connectivity,<=50,12,180,18,10.0,28,15.6
+Cycle external connectivity,51--100,7,105,14,13.3,23,21.9
+Cycle external connectivity,>100,11,165,14,8.5,15,9.1

@@ -1,0 +1,7 @@
+mode_id,Configuration,Runs,Runs with trajectory,Reached 150 model responses,Reached 150 model responses (%),Reached 150 without finish,Reached 150 without finish (%)
+explain_E1_S1_noaux,Advisory (no auxiliary),170,168,0,0.0,0,0.0
+explain_E2_S2_noaux,Directive (no auxiliary),170,168,0,0.0,0,0.0
+explain_E1_S1_boundary,Advisory + boundary agent,170,168,0,0.0,0,0.0
+explain_E1_S1_graph,Advisory + graph agent,170,163,0,0.0,0,0.0
+explain_E2_S2_boundary,Directive + boundary agent,170,168,0,0.0,0,0.0
+explain_E2_S2_graph,Directive + graph agent,170,168,0,0.0,0,0.0

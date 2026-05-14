@@ -1,8 +1,8 @@
 projects_dir: projects_to_analyze
-repos_file: repos_dev.txt
-cycles_file: cycles_to_analyze_dev.txt
-results_root: results_dev
-experiment_id: expAA
+repos_file: repos_all.txt
+cycles_file: placeholder
+results_root: placeholder
+experiment_id: placeholder
 
 policy:
   delete_refactor_branches_after_metrics: true
@@ -44,6 +44,20 @@ modes:
       synthesizer_variant: S2
       auxiliary_agent: none
 
+  - id: explain_E1_S1_boundary
+    params:
+      orchestrator: multi_agent
+      edge_variant: E1
+      synthesizer_variant: S1
+      auxiliary_agent: boundary
+
+  - id: explain_E1_S1_graph
+    params:
+      orchestrator: multi_agent
+      edge_variant: E1
+      synthesizer_variant: S1
+      auxiliary_agent: graph
+  
   - id: explain_E2_S2_boundary
     params:
       orchestrator: multi_agent

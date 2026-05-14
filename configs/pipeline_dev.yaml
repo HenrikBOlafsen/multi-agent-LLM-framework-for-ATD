@@ -1,8 +1,8 @@
 projects_dir: projects_to_analyze
-repos_file: repos_eval.txt
-cycles_file: cycles_to_analyze_eval.txt
-results_root: results_eval
-experiment_id: expFinal15
+repos_file: repos_dev.txt
+cycles_file: cycles_to_analyze_dev.txt
+results_root: results_dev
+experiment_id: expEE4
 
 policy:
   delete_refactor_branches_after_metrics: true
@@ -19,13 +19,16 @@ openhands:
   commit_message: "Refactor: break dependency cycle"
 
 modes:
-  - id: no_explain
-    params:
-      orchestrator: minimal
-
-  - id: explain_E1_S1_noaux
+  - id: explain_E1_S1_boundary
     params:
       orchestrator: multi_agent
       edge_variant: E1
       synthesizer_variant: S1
-      auxiliary_agent: none
+      auxiliary_agent: boundary
+
+  - id: explain_E1_S1_graph
+    params:
+      orchestrator: multi_agent
+      edge_variant: E1
+      synthesizer_variant: S1
+      auxiliary_agent: graph

@@ -1,0 +1,7 @@
+mode_id,cycle_size_bin,Cycle size,Runs,Behavior preserved,Cycle broken,Local improvement,Success
+no_explain,2--3,2--3 (baseline),120,35.0,18.3,6.7,6.7
+explain_E1_S1_noaux,2--3,2--3 (selected),120,29.2,15.0,5.8,5.8
+no_explain,4--6,4--6 (baseline),150,20.7,14.0,14.7,6.7
+explain_E1_S1_noaux,4--6,4--6 (selected),150,27.3,20.7,18.7,17.3
+no_explain,7--8,7--8 (baseline),180,35.0,17.2,17.2,15.6
+explain_E1_S1_noaux,7--8,7--8 (selected),180,42.2,23.3,18.3,18.3

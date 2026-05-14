@@ -4,26 +4,21 @@ werkzeug main src/werkzeug python
 rich master rich python
 jinja main src/jinja2 python
 lark master lark python
+AngleSharp devel src/AngleSharp csharp
+Bogus master Source/Bogus csharp
+CSharpFunctionalExtensions master CSharpFunctionalExtensions csharp
+FakeItEasy master src/FakeItEasy csharp
+FluentValidation main src/FluentValidation csharp
+LiteDB master LiteDB csharp
 rope master rope python
 pydantic main pydantic python
 alembic main alembic python
 omegaconf master omegaconf python
 twisted trunk src/twisted python
 flask main src/flask python
-FluentValidation main src/FluentValidation csharp
 Polly main src/Polly csharp
-LiteDB master LiteDB csharp
-FakeItEasy master src/FakeItEasy csharp
 MemoryPack main src/MemoryPack.Core csharp
-Bogus master Source/Bogus csharp
-AngleSharp devel src/AngleSharp csharp
 markdig main src/Markdig csharp
 scriban master src/Scriban csharp
-CSharpFunctionalExtensions master CSharpFunctionalExtensions csharp
 MudBlazor dev src/MudBlazor csharp
 refit main Refit csharp
-superpower dev src/Superpower csharp                  (Only 2676 LOC)
-ncalc master src/NCalc.Core csharp                  (Only 2144 LOC)
-CliWrap master CliWrap csharp                   (Only 2067 LOC)
-MediatR main src/MediatR csharp                     (Only 1676 LOC)
-SharpYaml master src/SharpYaml csharp               (only 362 stars)

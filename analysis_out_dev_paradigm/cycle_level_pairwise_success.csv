@@ -1,0 +1,7 @@
+Comparison,Left mode,Right mode,Paired cycles,Delta mean (pp),CI low (pp),CI high (pp)
+Descriptive vs No-explanation,explain_E0_S0_noaux,no_explain,34,5.9,-4.7,15.3
+Advisory vs No-explanation,explain_E1_S1_noaux,no_explain,34,8.2,-1.8,17.1
+Directive vs No-explanation,explain_E2_S2_noaux,no_explain,34,7.1,-2.9,17.1
+Descriptive vs Advisory,explain_E0_S0_noaux,explain_E1_S1_noaux,34,-2.4,-8.8,4.1
+Descriptive vs Directive,explain_E0_S0_noaux,explain_E2_S2_noaux,34,-1.2,-6.5,4.7
+Advisory vs Directive,explain_E1_S1_noaux,explain_E2_S2_noaux,34,1.2,-4.7,7.1

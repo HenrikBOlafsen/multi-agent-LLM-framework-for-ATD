@@ -1,0 +1,5 @@
+mode_id,Configuration,Behavior-failed Python runs,Runs with stale old import,Runs with stale local reference after move,Runs with removed import still used,Runs with any stale reference risk,Any stale reference risk (%)
+no_explain,No explanation,35,4,2,6,10,28.6
+explain_E0_S0_noaux,Descriptive,40,2,1,13,15,37.5
+explain_E1_S1_noaux,Advisory,38,5,1,7,12,31.6
+explain_E2_S2_noaux,Directive,33,3,0,7,10,30.3

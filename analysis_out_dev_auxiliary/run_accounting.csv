@@ -1,0 +1,7 @@
+mode_id,Configuration,Runs,Structurally evaluable,Other incomplete
+explain_E1_S1_noaux,Advisory (no auxiliary),170,167,3
+explain_E2_S2_noaux,Directive (no auxiliary),170,168,2
+explain_E1_S1_boundary,Advisory + boundary agent,170,168,2
+explain_E1_S1_graph,Advisory + graph agent,170,163,7
+explain_E2_S2_boundary,Directive + boundary agent,170,168,2
+explain_E2_S2_graph,Directive + graph agent,170,168,2

@@ -1,0 +1,5 @@
+mode_id,Configuration,Structural imp.,Weakening imp.,No local improvement
+no_explain,No explanation,9.3,58.1,32.6
+explain_E0_S0_noaux,Descriptive,2.0,72.5,25.5
+explain_E1_S1_noaux,Advisory,1.9,75.5,22.6
+explain_E2_S2_noaux,Directive,1.7,67.2,31.0
